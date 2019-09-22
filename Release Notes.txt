@@ -1,0 +1,33 @@
+REV 1.0.0.0
+- First release of the library
+
+REV 1.0.1.0
+- Fixed a bug that prevented any other Device Library from being loaded by the ECP Tester
+
+REV 1.0.2.0
+- Fixed a bug that caused the SerialPort to crash sometimes when the connection is closed. 
+
+REV 1.0.3.0
+- Implemented that the ECP Tester also shows the device in the function list, so it is possible
+  to implement and control extra functonality that are specific for the device.
+- Added the ability to check if a connected device is compatible with the device.
+- Changed the license to LGPL
+
+REV 1.0.4.0
+- Implemented setting up the default port in the device definition file
+- Implemented setting up the profiler in the device definition file
+
+REV 1.0.5.0
+- Implemented a OnStateChanged that you can subscribe to to listen for changed to the internal
+  state of a Device.
+
+REV 1.0.6.0
+- Implemnted that Devices has states and the ECP Tester only refreshes the property grid when
+  the state is selected. This solved the undesired effect that properties cannot be changed in 
+  the state of the Device or the Functions
+
+REV 1.0.7.0
+- Implemented a TestDelay between functions in testing
+
+REV 2.0.0.0
+- Updated to ECP Rev 2.0 and added a ConfigurePrint

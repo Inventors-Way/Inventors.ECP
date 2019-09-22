@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Inventors.ECP</id>
+    <version>1.0.0</version>
+    <authors>Inventors' Way</authors>
+    <owners>Inventors' Way ApS</owners>
+    <license type="expression">LGPL-3.0-only</license>
+    <projectUrl>https://github.com/Inventors-Way/ITLS-ECP</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Implementation of the ECP Communications protocol for embedded devices</description>    
+    <releaseNotes>Initial release</releaseNotes>
+    <copyright>Copyright 2019 Inventors Way ApS</copyright>
+    <tags>Communication</tags>
+    <dependencies>
+      <dependency id="Inventors.Logging" version="1.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\Debug\Inventors.ECP.dll" target="lib/net472" />
+  </files>
+</package>
