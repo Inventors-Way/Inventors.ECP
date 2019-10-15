@@ -53,6 +53,11 @@ namespace Inventors.ECP
             }
         }
 
+        public bool IsOpen()
+        {
+            return Master.IsOpen;
+        }
+
         public void Dispatch()
         {
             if (Master.IsOpen)
@@ -63,10 +68,24 @@ namespace Inventors.ECP
 
         public void Execute(Function function)
         {
-            watch.Restart();
-            Master.Execute(function);
-            watch.Stop();
-            function.TransmissionTime = watch.ElapsedMilliseconds;
+            for (int n = 0; n < Retries; ++n)
+            {
+                try
+                {
+                    watch.Restart();
+                    Master.Execute(function);
+                    watch.Stop();
+                    function.TransmissionTime = watch.ElapsedMilliseconds;
+                    break;
+                }
+                catch (Exception e)
+                {
+                    if (n == Retries - 1)
+                    {
+                        throw e;
+                    }
+                }
+            }
         }
 
         public Task BeginExecute(Function function, 
@@ -134,6 +153,9 @@ namespace Inventors.ECP
                 Master.Timeout = value;
             }
         }
+
+        [Category("Retries")]
+        public int Retries { get; set; } = 1;
 
         [Browsable(false)]
         public CommunicationLayer CommLayer { get; private set; }
