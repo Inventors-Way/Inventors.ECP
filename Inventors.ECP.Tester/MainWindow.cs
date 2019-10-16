@@ -198,6 +198,10 @@ namespace Inventors.ECP.Tester
                     BeginUpdate(() => { propertyGrid.Refresh(); });
                 }
             };
+            device.OnConnected += onConnected;
+            device.OnConnectFailed += onConnectedFailed;
+            device.OnDisconnected += onDisconnected;
+            device.OnDisconnectFailed += onDisconnecedFailed;
 
             profiler.Device = device;
             profiler.Profiling = loader.Profiling;
@@ -267,30 +271,59 @@ namespace Inventors.ECP.Tester
 
         private void connectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            try
-            {
+            //try
+            //{
                 if (portMenuItem.DropDownItems.Count > 0)
                 {
-                    device.Open();
-                    Log.Status("Port openend: {0}", serial.PortName);
-                    UpdateAppStates(AppState.APP_STATE_CONNECTED);
+                    device.Connect();
+                    //Log.Status("Port openend: {0}", serial.PortName);
+                    //UpdateAppStates(AppState.APP_STATE_CONNECTED);
                 }
                 else
                 {
                     Log.Status("No ports available");
                 }
-            }
-            catch (Exception ex)
+            //}
+            //catch (Exception ex)
+            //{
+            //    Log.Error("Problem opening port: " + ex.Message);
+            //}
+        }
+
+        public void onConnected(object sender, bool success)
+        {
+            Log.Status("Device Connected: {0} [{1}]", device.ToString(), serial.PortName);
+
+            BeginUpdate(() =>
             {
-                Log.Error("Problem opening port: " + ex.Message);
-            }
+                UpdateAppStates(AppState.APP_STATE_CONNECTED);
+            });
+        }
+
+        public void onDisconnected(object sender, bool success)
+        {
+            BeginUpdate(() =>
+            {
+                UpdateAppStates(AppState.APP_STATE_INITIALIZED);
+            });
+            Log.Status("Device disconnected: {0} [{1}]", device.ToString(), serial.PortName);
+        }
+
+        public void onConnectedFailed(object sender, Exception e)
+        {
+            Log.Error("Problem connecting to device: " + e.Message);
+        }
+
+        public void onDisconnecedFailed(object sender, Exception e)
+        {
+            Log.Error("Problem disconnecting from device: " + e.Message);
         }
 
         private void disconnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            device.Close();
-            UpdateAppStates(AppState.APP_STATE_INITIALIZED);
-            Log.Status("Port closed");
+            device.Disconnect();
+            //UpdateAppStates(AppState.APP_STATE_INITIALIZED);
+            //Log.Status("Port closed");
         }
 
         private void UpdateAppStates(AppState newState)

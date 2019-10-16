@@ -23,11 +23,19 @@ namespace Inventors.ECP
             }
         }
 
+        private bool connected = false;
+        private object lockObject = new object();
+
         [Browsable(false)]
         public abstract DeviceState State {get; }
 
         public event EventHandler<MessageEventArgs<PrintfMessage>> OnPrintf;
         public event EventHandler<DeviceState> OnStateChanged;
+        public event EventHandler<bool> OnConnected;
+        public event EventHandler<Exception> OnConnectFailed;
+        public event EventHandler<bool> OnDisconnected;
+        public event EventHandler<Exception> OnDisconnectFailed;
+
 
         public Device(CommunicationLayer commLayer)
         {
@@ -39,22 +47,97 @@ namespace Inventors.ECP
 
         public virtual void Connect()
         {
+            if (!Master.IsOpen)
+            {
+                try
+                {
+                    Master.Open();
+                    BeginExecute(new DeviceIdentification(),
+                        (f) =>
+                        {
+                            var devId = f as DeviceIdentification;
 
+                            if (IsCompatible(devId))
+                            {
+                                Connected = true;
+                                NotifyConnection(true);
+                            }
+                            else
+                            {
+                                NotifyConnectionFailed(new IncompatibleDeviceException(devId.ToString()));
+                                Disconnect();
+                            }
+                        },
+                        (f, e) =>
+                        {
+                            NotifyConnectionFailed(e);
+                        });
+                }
+                catch (Exception e)
+                {
+                    NotifyConnectionFailed(e);
+                }
+            }
         }
 
         public virtual void Disconnect()
         {
-
+            if (Master.IsOpen)
+            {
+                try
+                {
+                    Master.Close();
+                    Connected = false;
+                    NotifyDisconnected(true);
+                }
+                catch (Exception e)
+                {
+                    NotifyDisconnectFailed(e);
+                }
+            }
         }
 
-        [Category("Communication Layer")]
+        [Browsable(false)]
         [XmlIgnore]
-        public virtual bool Connected
+        public bool Connected
         {
             get
             {
-                return Master.IsOpen;
+                lock (lockObject)
+                {
+                    return connected;
+                }
             }
+            set
+            {
+                lock (lockObject)
+                {
+                    if (connected != value)
+                    {
+                        connected = value;
+                    }
+                }
+            }
+        }
+
+        protected void NotifyConnection(bool success)
+        {
+            OnConnected?.Invoke(this, success);
+        }
+
+        protected void NotifyConnectionFailed(Exception e)
+        {
+            OnConnectFailed?.Invoke(this, e);
+        }
+
+        protected void NotifyDisconnected(bool success)
+        {
+            OnDisconnected?.Invoke(this, success);
+        }
+
+        protected void NotifyDisconnectFailed(Exception e)
+        {
+            OnDisconnectFailed?.Invoke(this, e);
         }
 
         [Category("Communication Layer")]
@@ -69,7 +152,7 @@ namespace Inventors.ECP
             {
                 Master.ResetOnConnection = value;
             }
-        }
+        } 
 
         public void Open()
         {

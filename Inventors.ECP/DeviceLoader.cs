@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Inventors.Logging;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -19,7 +20,25 @@ namespace Inventors.ECP
         public string Factory { get; set; }
 
         [XmlAttribute("baudrate")]
-        public int BaudRate { get; set; }
+        public string BaudRateString
+        {
+            get
+            {
+                return BaudRate.ToString();
+            }
+            set
+            {
+                int result; 
+
+                if (int.TryParse(value, out result))
+                {
+                    BaudRate = result;
+                }
+            }
+        }
+
+        [XmlIgnore]
+        public int BaudRate { get; set; } = -1;
 
         [XmlAttribute("port")]
         public string PortName { get; set; }
@@ -61,7 +80,12 @@ namespace Inventors.ECP
             if (type != null)
             {
                 retValue = (Device) Activator.CreateInstance(type, new object[] { layer });
-                layer.BaudRate = BaudRate;
+
+                if (BaudRate > 0)
+                {
+                    layer.BaudRate = BaudRate;
+                    Log.Debug("Baudrate set to: {0}", BaudRate);
+                }
             }
 
             return retValue;

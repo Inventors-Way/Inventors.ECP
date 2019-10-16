@@ -39,7 +39,7 @@ namespace Inventors.ECP
 
         public abstract int BaudRate { get; set; }
 
-        public bool ResetOnConnection { get; set; } = true;
+        public bool ResetOnConnection { get; set; } = false;
 
         public CommunicationLayer()
         {
