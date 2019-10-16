@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Inventors.ECP</id>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <authors>Inventors' Way</authors>
     <owners>Inventors' Way ApS</owners>
     <license type="expression">LGPL-3.0-only</license>
@@ -11,9 +11,8 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Implementation of the ECP Communications protocol for embedded devices</description>    
     <releaseNotes>
-    Added a IsOpen to Devices.
-    Implemented retries of the transmission
-    Updated Inventors.Logging to version 1.1
+    Implemented an abstract Connect/Disconnect method + an IsConnected property
+    Implemented a property for ResetOnConnection
     </releaseNotes>
     <copyright>Copyright 2019 Inventors Way ApS</copyright>
     <tags>Communication</tags>

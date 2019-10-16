@@ -37,6 +37,40 @@ namespace Inventors.ECP
             Master.Dispatchers.Add(new MessageDispatcher(PrintfMessage.CODE, (p) => { return new PrintfMessage(p); }));
         }
 
+        public virtual void Connect()
+        {
+
+        }
+
+        public virtual void Disconnect()
+        {
+
+        }
+
+        [Category("Communication Layer")]
+        [XmlIgnore]
+        public virtual bool Connected
+        {
+            get
+            {
+                return Master.IsOpen;
+            }
+        }
+
+        [Category("Communication Layer")]
+        [XmlIgnore]
+        public bool ResetOnConnection
+        {
+            get
+            {
+                return Master.ResetOnConnection;
+            }
+            set
+            {
+                Master.ResetOnConnection = value;
+            }
+        }
+
         public void Open()
         {
             if (!Master.IsOpen)
@@ -53,9 +87,13 @@ namespace Inventors.ECP
             }
         }
 
-        public bool IsOpen()
+        [Browsable(false)]
+        public bool IsOpen
         {
-            return Master.IsOpen;
+            get
+            {
+                return Master.IsOpen;
+            }
         }
 
         public void Dispatch()

@@ -27,7 +27,7 @@ namespace Inventors.ECP
                     StopBits = StopBits.One,
                     DataBits = 8,
                     Handshake = Handshake.None,
-                    DtrEnable = true,
+                    DtrEnable = ResetOnConnection,
                     ReadTimeout = 10
                 };
 
@@ -117,6 +117,7 @@ namespace Inventors.ECP
 
         public string PortName { get; set; }
         public override int BaudRate { get; set; }
+
         private SerialPort port = null;
         private readonly int BlockLimit = 1024;
     }

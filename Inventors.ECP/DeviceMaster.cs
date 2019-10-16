@@ -44,6 +44,18 @@ namespace Inventors.ECP
             }
         }
 
+        public bool ResetOnConnection
+        {
+            get
+            {
+                return connection.ResetOnConnection;
+            }
+            set
+            {
+                connection.ResetOnConnection = value;
+            }
+        }
+
         public void Execute(Function function)
         {
             function.OnSend();
