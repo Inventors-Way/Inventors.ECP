@@ -214,11 +214,11 @@ namespace Inventors.ECP
 
         public dynamic MessageListener { get; set; } = null;
 
-        private CommunicationLayer connection;
+        private readonly CommunicationLayer connection;
         private Function current = null;
         private readonly object lockObject = new object();
         private Exception currentException = null;
-        private Stopwatch stopwatch = new Stopwatch();
+        private readonly Stopwatch stopwatch = new Stopwatch();
         private CommState state = CommState.WAITING;
         private Queue<Packet> messages = new Queue<Packet>();
     }

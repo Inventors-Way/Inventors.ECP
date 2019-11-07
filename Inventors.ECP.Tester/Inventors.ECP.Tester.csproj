@@ -99,15 +99,15 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Inventors.ECP\Inventors.ECP.csproj">
-      <Project>{af418682-6651-401b-891d-218b6f67d113}</Project>
-      <Name>Inventors.ECP</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="216410 - spanner.ico" />
     <None Include="icons\216173 - device phone.ico" />
     <None Include="icons\216190 - export.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Inventors.ECP\Inventors.ECP.csproj">
+      <Project>{fe314a70-db7c-469b-b403-e1737bdadda1}</Project>
+      <Name>Inventors.ECP</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
