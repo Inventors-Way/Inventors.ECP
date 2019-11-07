@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Inventors.ECP</id>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
     <authors>Inventors' Way</authors>
     <owners>Inventors' Way ApS</owners>
     <license type="expression">LGPL-3.0-only</license>
@@ -11,8 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Implementation of the ECP Communications protocol for embedded devices</description>    
     <releaseNotes>
-    Implemented connect/disconnect and associated events
-    Made setting the baudrate optional in the DeviceLoader
+      Updated Inventors.Logging to revision 2.0.0
     </releaseNotes>
     <copyright>Copyright 2019 Inventors Way ApS</copyright>
     <tags>Communication</tags>
