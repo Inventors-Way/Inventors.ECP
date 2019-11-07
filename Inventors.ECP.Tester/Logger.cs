@@ -9,36 +9,44 @@ using Inventors.Logging;
 
 namespace Inventors.ECP.Tester
 {
-   public class Logger : ILogger
-   {
-      public delegate void InvokeDelegate();
+    public class Logger : ILogger
+    {
+        public delegate void InvokeDelegate();
 
-      public void Add(DateTime time, LogCategory category, LogLevel level, string str)
-      {
-         if (mBox != null)
-         {
-            if (mBox.InvokeRequired)
+        public void Add(DateTime time, LogCategory category, LogLevel level, string str)
+        {
+            if (mBox != null)
             {
-               mBox.BeginInvoke(new InvokeDelegate(() => mBox.AppendText(level.ToString() + ": " + str + System.Environment.NewLine)));
+                if (mBox.InvokeRequired)
+                {
+                    mBox.BeginInvoke(new InvokeDelegate(() => mBox.AppendText(level.ToString() + ": " + str + System.Environment.NewLine)));
+                }
+                else
+                    mBox.AppendText("[" + DateTime.Now.ToLongTimeString() + "]" + level.ToString() + ": " + str + System.Environment.NewLine);
+
             }
-            else
-               mBox.AppendText("[" + DateTime.Now.ToLongTimeString() + "]" + level.ToString() + ": " + str + System.Environment.NewLine);
-            
-         }
-      }
+        }
 
-      public TextBox Box
-      {
-         get
-         {
-            return mBox;
-         }
-         set
-         {
-            mBox = value;
-         }
-      }
+        public void Initialize()
+        {
+        }
 
-      TextBox mBox = null;
-   }
+        public void AddMonitor(LogCategory category, ILogger log)
+        {
+        }
+
+        public TextBox Box
+        {
+            get
+            {
+                return mBox;
+            }
+            set
+            {
+                mBox = value;
+            }
+        }
+
+        TextBox mBox = null;
+    }
 }
