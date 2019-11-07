@@ -27,7 +27,17 @@ namespace Inventors.ECP.Tester
          }
       }
 
-      public TextBox Box
+        public void Initialize()
+        {
+            
+        }
+
+        public void AddMonitor(LogCategory category, ILogger log)
+        {
+            
+        }
+
+        public TextBox Box
       {
          get
          {
