@@ -14,7 +14,7 @@
     <PackageTags>Communication</PackageTags>
     <PackageReleaseNotes>Ported to .NET Standard 2.0</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageIconUrl>http://inventors.dk/img/Flavicon.png</PackageIconUrl>
+    <PackageIconUrl></PackageIconUrl>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Functions\" />

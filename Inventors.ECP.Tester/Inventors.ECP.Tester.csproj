@@ -51,8 +51,8 @@
     <ApplicationIcon>216410 - spanner.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Inventors.Logging, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Inventors.Logging.2.0.0\lib\netstandard2.0\Inventors.Logging.dll</HintPath>
+    <Reference Include="Inventors.Logging, Version=2.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Inventors.Logging.2.1.1\lib\netstandard2.0\Inventors.Logging.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
