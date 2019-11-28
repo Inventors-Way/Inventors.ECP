@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<DOCUMENT Type="Advanced Installer" CreateVersion="16.2" version="16.2" Modules="professional" RootPath="." Language="en" Id="{0687AB8F-C018-4E72-ADE8-CA2B69065AF4}">
+<DOCUMENT Type="Advanced Installer" CreateVersion="16.2" version="16.5" Modules="professional" RootPath="." Language="en" Id="{0687AB8F-C018-4E72-ADE8-CA2B69065AF4}">
   <COMPONENT cid="caphyon.advinst.msicomp.ProjectOptionsComponent">
     <ROW Name="HiddenItems" Value="AppXProductDetailsComponent;AppXDependenciesComponent;AppXAppDetailsComponent;AppXVisualAssetsComponent;AppXCapabilitiesComponent;AppXAppDeclarationsComponent;AppXUriRulesComponent;MsiJavaComponent;MsiDriverPackagesComponent;UserAccountsComponent;ScheduledTasksComponent;SqlConnectionComponent;AutorunComponent;FirewallExceptionComponent;GameUxComponent;MsiDirectEditorComponent;SharePointSlnComponent;SilverlightSlnComponent;MultipleInstancesComponent;SccmComponent;ActSyncAppComponent;FixupComponent"/>
   </COMPONENT>
@@ -15,10 +15,10 @@
     <ROW Property="ARPNOREPAIR" MultiBuildValue="DefaultBuild:1"/>
     <ROW Property="ARPPRODUCTICON" Value="spanner.exe" Type="8"/>
     <ROW Property="Manufacturer" Value="Inventors Way"/>
-    <ROW Property="ProductCode" Value="1033:{E2BE19E4-2955-44D7-A719-01557C4CF9FC} " Type="16"/>
+    <ROW Property="ProductCode" Value="1033:{02A992BB-9C15-4126-8886-6146E7AA3764} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="ECP Tester"/>
-    <ROW Property="ProductVersion" Value="1.0.4" Type="32"/>
+    <ROW Property="ProductVersion" Value="1.0.5" Type="32"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND;AI_SETUPEXEPATH;SETUPEXEDIR"/>
     <ROW Property="UpgradeCode" Value="{7AF47BB0-E218-41DD-B835-61EC033F35ED}"/>
     <ROW Property="WindowsType9X" MultiBuildValue="DefaultBuild:Windows 9x/ME" ValueLocId="-"/>
@@ -62,8 +62,8 @@
     <ROW File="Inventors.ECP.dll" Component_="Inventors.ECP.dll" FileName="INVENT~1.DLL|Inventors.ECP.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Debug\Inventors.ECP.dll" SelfReg="false"/>
     <ROW File="Inventors.ECP.pdb" Component_="Inventors.ECP.dll" FileName="INVENT~1.PDB|Inventors.ECP.pdb" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Debug\Inventors.ECP.pdb" SelfReg="false"/>
     <ROW File="Inventors.Logging.dll" Component_="Inventors.Logging.dll" FileName="INVENT~2.DLL|Inventors.Logging.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Debug\Inventors.Logging.dll" SelfReg="false"/>
-    <ROW File="device.ddfx_1" Component_="device.ddfx" FileName="DEVICE~1.DDF|device.ddfx" Attributes="0" SourcePath="Inventors.ECP.DefaultDevice\bin\Debug\device.ddfx" SelfReg="false"/>
-    <ROW File="Inventors.ECP.DefaultDevice.dll_1" Component_="Inventors.ECP.DefaultDevice.dll_1" FileName="INVENT~1.DLL|Inventors.ECP.DefaultDevice.dll" Attributes="0" SourcePath="Inventors.ECP.DefaultDevice\bin\Debug\Inventors.ECP.DefaultDevice.dll" SelfReg="false"/>
+    <ROW File="device.ddfx_1" Component_="device.ddfx" FileName="DEVICE~1.DDF|device.ddfx" Attributes="0" SourcePath="Inventors.ECP.DefaultDevice\bin\Debug\netstandard2.0\device.ddfx" SelfReg="false"/>
+    <ROW File="Inventors.ECP.DefaultDevice.dll_1" Component_="Inventors.ECP.DefaultDevice.dll_1" FileName="INVENT~1.DLL|Inventors.ECP.DefaultDevice.dll" Attributes="0" SourcePath="Inventors.ECP.DefaultDevice\bin\Debug\netstandard2.0\Inventors.ECP.DefaultDevice.dll" SelfReg="false"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.BootstrOptComponent">
     <ROW BootstrOptKey="GlobalOptions" DownloadFolder="[AppDataFolder][|Manufacturer]\[|ProductName]\prerequisites" Options="2"/>
