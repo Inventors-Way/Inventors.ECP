@@ -65,12 +65,13 @@ namespace Inventors.ECP
                             else
                             {
                                 NotifyConnectionFailed(new IncompatibleDeviceException(devId.ToString()));
-                                Disconnect();
+                                Master.Close();
                             }
                         },
                         (f, e) =>
                         {
                             NotifyConnectionFailed(e);
+                            Master.Close();
                         });
                 }
                 catch (Exception e)

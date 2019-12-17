@@ -271,23 +271,14 @@ namespace Inventors.ECP.Tester
 
         private void connectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //try
-            //{
-                if (portMenuItem.DropDownItems.Count > 0)
-                {
-                    device.Connect();
-                    //Log.Status("Port openend: {0}", serial.PortName);
-                    //UpdateAppStates(AppState.APP_STATE_CONNECTED);
-                }
-                else
-                {
-                    Log.Status("No ports available");
-                }
-            //}
-            //catch (Exception ex)
-            //{
-            //    Log.Error("Problem opening port: " + ex.Message);
-            //}
+            if (portMenuItem.DropDownItems.Count > 0)
+            {
+                device.Connect();
+            }
+            else
+            {
+                Log.Status("No ports available");
+            }
         }
 
         public void onConnected(object sender, bool success)
@@ -312,18 +303,24 @@ namespace Inventors.ECP.Tester
         public void onConnectedFailed(object sender, Exception e)
         {
             Log.Error("Problem connecting to device: " + e.Message);
+            BeginUpdate(() =>
+            {
+                UpdateAppStates(AppState.APP_STATE_INITIALIZED);
+            });
         }
 
         public void onDisconnecedFailed(object sender, Exception e)
         {
             Log.Error("Problem disconnecting from device: " + e.Message);
+            BeginUpdate(() =>
+            {
+                UpdateAppStates(AppState.APP_STATE_INITIALIZED);
+            });
         }
 
         private void disconnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             device.Disconnect();
-            //UpdateAppStates(AppState.APP_STATE_INITIALIZED);
-            //Log.Status("Port closed");
         }
 
         private void UpdateAppStates(AppState newState)
