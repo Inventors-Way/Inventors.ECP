@@ -12,7 +12,7 @@
     <RepositoryUrl>https://github.com/Inventors-Way/Inventors.ECP</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>Communication</PackageTags>
-    <PackageReleaseNotes>Ported to .NET Standard 2.0</PackageReleaseNotes>
+    <PackageReleaseNotes>Bugfix to failed connection</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageIconUrl></PackageIconUrl>
   </PropertyGroup>
