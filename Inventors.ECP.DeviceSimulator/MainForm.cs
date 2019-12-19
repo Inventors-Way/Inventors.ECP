@@ -30,6 +30,7 @@ namespace Inventors.ECP.DeviceSimulator
             SetupSlave();
             SetupPorts();
             SetTitle();
+            UpdateStatus();
         }
 
         private void SetupLogging()
@@ -61,6 +62,7 @@ namespace Inventors.ECP.DeviceSimulator
             {
                 Log.Debug("Port changed to: {0}", s.Text);
                 serial.PortName = s.Text;
+                UpdateStatus();
             });
 
             for (int n = 0; n < names.Length; ++n)
@@ -103,7 +105,7 @@ namespace Inventors.ECP.DeviceSimulator
                 pings = 0;
                 slave.Open();
                 slave.Printf("Default Slave Device");
-                Log.Status("Connection opened");
+                UpdateStatus();
             }
         }
 
@@ -112,7 +114,7 @@ namespace Inventors.ECP.DeviceSimulator
             if (slave.IsOpen)
             {
                 slave.Close();
-                Log.Status("Connection closed");
+                UpdateStatus();
             }
         }
 
@@ -124,6 +126,18 @@ namespace Inventors.ECP.DeviceSimulator
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void UpdateStatus()
+        {
+            if (slave.IsOpen)
+            {
+                statusText.Text = String.Format("Connected [ {0} (Ping: {1})]", serial.PortName, pings);
+            }
+            else
+            {
+                statusText.Text = String.Format("Not connected [ {0} ]", serial.PortName);
+            }
         }
 
         public bool Accept(DeviceIdentification func)
@@ -149,8 +163,8 @@ namespace Inventors.ECP.DeviceSimulator
         public bool Accept(Ping func)
         {
             func.Count = pings;
+            UpdateStatus();
             ++pings;
-            Log.Status("PING [ {0} ]", func.Count);
             return true;
         }
 
