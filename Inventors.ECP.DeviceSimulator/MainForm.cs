@@ -17,6 +17,7 @@ namespace Inventors.ECP.DeviceSimulator
     {
         private Logger logger;
         private SerialPortLayer serial = null;
+        private MenuItemSet portMenuItems;
 
         public MainForm()
         {
@@ -40,10 +41,16 @@ namespace Inventors.ECP.DeviceSimulator
             {
                 BaudRate = 115200
             };
+            portMenuItems = new MenuItemSet((s) =>
+            {
+                Log.Debug("Port changed to: {0}", s.Text);
+                serial.PortName = s.Text;
+            });
 
             for (int n = 0; n < names.Length; ++n)
             {
                 var item = new ToolStripMenuItem(names[n]);
+                portMenuItems.Add(item);
                 portMenuItem.DropDownItems.Add(item);
 
                 if (n == 0)
@@ -68,10 +75,29 @@ namespace Inventors.ECP.DeviceSimulator
             }
         }
 
-
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void connectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void disconnectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void documentationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
