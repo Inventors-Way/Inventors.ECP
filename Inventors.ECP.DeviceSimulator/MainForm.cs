@@ -138,6 +138,10 @@ namespace Inventors.ECP.DeviceSimulator
             func.EngineeringVersion = 4;
             func.Checksum = 5;
             func.SerialNumber = 1001;
+            Log.Status("Device Identification:");
+            Log.Status("   Manufacturer: {0} [{1}]", func.Manufacture, func.ManufactureID);
+            Log.Status("   Device      : {0} [{1}] (Checksum: {2})", func.Device, func.DeviceID, func.Checksum);
+            Log.Status("   Firmware    : {0}", func.Version);
 
             return true;
         }
@@ -146,11 +150,13 @@ namespace Inventors.ECP.DeviceSimulator
         {
             func.Count = pings;
             ++pings;
+            Log.Status("PING [ {0} ]", func.Count);
             return true;
         }
 
         public bool Accept(GetEndianness func)
         {
+            Log.Status("Endianness: {0}", func.EqualEndianness);
             return true;
         }
 
