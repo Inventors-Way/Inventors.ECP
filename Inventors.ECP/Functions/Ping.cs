@@ -10,13 +10,14 @@ namespace Inventors.ECP.Functions
     public class Ping : 
         Function
     {
-        private static byte ResponseLength = 4;
+        public Ping() : 
+            base(code: 0x02, requestLength: 0, responseLength: 4) 
+        { 
+        }
 
-        public Ping() : base(0x02) { }
-
-        protected override bool IsResponseValid()
+        public override void Dispatch(dynamic listener)
         {
-            return response.Length == ResponseLength;
+            listener.Accept(this);
         }
 
         [Category("Ping")]
@@ -25,7 +26,11 @@ namespace Inventors.ECP.Functions
         {
             get
             {
-                return response != null ? response.GetUInt32(0) : 0;
+                return response.GetUInt32(0);
+            }
+            set
+            {
+                response.InsertUInt32(0, value);
             }
         }
 

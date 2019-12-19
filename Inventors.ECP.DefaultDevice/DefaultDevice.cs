@@ -26,7 +26,6 @@ namespace Inventors.ECP.DefaultDevice
             functions.Add(new DeviceIdentification());
             functions.Add(new Ping());
             functions.Add(new GetEndianness());
-            functions.Add(new ConfigurePrint());
         }
 
         public override bool IsCompatible(DeviceIdentification identification)

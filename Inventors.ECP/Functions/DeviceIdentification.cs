@@ -11,13 +11,14 @@ namespace Inventors.ECP.Functions
     public class DeviceIdentification :
        Function
     {
-        private readonly static byte ResponseLength = 64;
+        public DeviceIdentification() : 
+            base(code: 0x01, requestLength: 0, responseLength: 64) 
+        { 
+        }
 
-        public DeviceIdentification() : base(0x01) { }
-
-        protected override bool IsResponseValid()
+        public override void Dispatch(dynamic listener)
         {
-            return response.Length == ResponseLength;
+            listener.Accept(this);
         }
 
         [Category("Manufacturer")]

@@ -27,7 +27,7 @@ namespace Inventors.ECP
         private object lockObject = new object();
 
         [Browsable(false)]
-        public abstract DeviceState State {get; }
+        public abstract DeviceState State { get; }
 
         public event EventHandler<MessageEventArgs<PrintfMessage>> OnPrintf;
         public event EventHandler<DeviceState> OnStateChanged;

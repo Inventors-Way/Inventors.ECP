@@ -10,13 +10,15 @@ namespace Inventors.ECP.Functions
     public class GetEndianness :
         Function
     {
-        private static byte ResponseLength = 2;
-
-        public GetEndianness() : base(0x03) { }
-
-        protected override bool IsResponseValid()
+        public GetEndianness() : 
+            base(code: 0x03, requestLength: 0, responseLength: 2) 
         {
-            return response.Length == ResponseLength;
+            response.InsertUInt16(0, 1);
+        }
+
+        public override void Dispatch(dynamic listener)
+        {
+            listener.Accept(this);
         }
 
         [Category("Endianness")]

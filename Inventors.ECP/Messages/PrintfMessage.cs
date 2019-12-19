@@ -36,6 +36,18 @@ namespace Inventors.ECP.Messages
                     return "";
                 }
             }
+            set
+            {
+                if ((value.Length < 255) && (value.Length > 0))
+                {
+                    mPacket = new Packet(CODE, (byte) value.Length);
+                    mPacket.InsertString(0, value.Length, value);
+                }
+                else
+                {
+                    mPacket = new Packet(CODE, 0);
+                }
+            }
         }
 
         public override string ToString()
