@@ -42,7 +42,7 @@ namespace Inventors.ECP
             CommLayer = commLayer;
             this.Master = new DeviceMaster(commLayer);
             Master.MessageListener = this;
-            Master.Dispatchers.Add(new MessageDispatcher(PrintfMessage.CODE, (p) => { return new PrintfMessage(p); }));
+            Master.Dispatchers.Add(PrintfMessage.CreateDispatcher());
         }
 
         public virtual void Connect()

@@ -182,7 +182,7 @@ namespace Inventors.ECP.Functions
             }
             set
             {
-                response.InsertUInt32(14, value);
+                response.InsertUInt16(14, value);
             }
         }
 
