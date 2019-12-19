@@ -18,6 +18,7 @@ namespace Inventors.ECP.DeviceSimulator
         private Logger logger;
         private SerialPortLayer serial = null;
         private MenuItemSet portMenuItems;
+        private DeviceSlave slave;
 
         public MainForm()
         {
@@ -41,6 +42,7 @@ namespace Inventors.ECP.DeviceSimulator
             {
                 BaudRate = 115200
             };
+            slave = new DeviceSlave(serial);
             portMenuItems = new MenuItemSet((s) =>
             {
                 Log.Debug("Port changed to: {0}", s.Text);
