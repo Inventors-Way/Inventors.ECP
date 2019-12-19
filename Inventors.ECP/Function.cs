@@ -12,14 +12,14 @@ namespace Inventors.ECP
     {
         public Function()
         {
-            request = new Packet(CODE, 0);
+            request = new Packet(functionCode, 0);
             ResponseLength = 0;
             RequestLength = 0;
         }
 
         public Function(byte code)
         {
-            CODE = code;
+            functionCode = code;
             ResponseLength = 0;
             RequestLength = 0;
             request = new Packet(code, 0);
@@ -27,7 +27,7 @@ namespace Inventors.ECP
 
         public Function(byte code, byte length)
         {
-            CODE = code;
+            functionCode = code;
             RequestLength = length;
             ResponseLength = 0;
             request = new Packet(code, length);
@@ -36,7 +36,7 @@ namespace Inventors.ECP
 
         public Function(byte code, byte requestLength, byte responseLength)
         {
-            CODE = code;
+            functionCode = code;
             RequestLength = requestLength;
             ResponseLength = responseLength;
             request = new Packet(code, requestLength);
@@ -78,7 +78,7 @@ namespace Inventors.ECP
         {
             request = packet;
 
-            if (request.Code != CODE)
+            if (request.Code != functionCode)
                 throw new InvalidMasterRequestException("Invalid function code");
 
             if (!IsRequestValid())
@@ -102,7 +102,7 @@ namespace Inventors.ECP
 
         }
 
-        public abstract void Dispatch(dynamic listener);
+        public abstract bool Dispatch(dynamic listener);
 
         [XmlIgnore]
         [Category("Statistics")]
@@ -111,7 +111,7 @@ namespace Inventors.ECP
 
         protected Packet request = null;
         protected Packet response = null;
-        protected readonly byte CODE = 0x00;
+        private readonly byte functionCode = 0x00;
         protected readonly byte ResponseLength = 0;
         protected readonly byte RequestLength = 0;
 

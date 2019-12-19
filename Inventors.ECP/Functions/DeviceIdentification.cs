@@ -11,14 +11,21 @@ namespace Inventors.ECP.Functions
     public class DeviceIdentification :
        Function
     {
+        public static readonly byte CODE = 0x01;
+
         public DeviceIdentification() : 
-            base(code: 0x01, requestLength: 0, responseLength: 64) 
+            base(code: CODE, requestLength: 0, responseLength: 64) 
         { 
         }
 
-        public override void Dispatch(dynamic listener)
+        public static FunctionDispatcher CreateDispatcher()
         {
-            listener.Accept(this);
+            return new FunctionDispatcher(CODE, (p) => new DeviceIdentification().SetRequest(p));
+        }
+
+        public override bool Dispatch(dynamic listener)
+        {
+            return listener.Accept(this);
         }
 
         [Category("Manufacturer")]
@@ -27,7 +34,11 @@ namespace Inventors.ECP.Functions
         {
             get
             {
-                return response != null ? response.GetUInt32(0) : 0;
+                return response.GetUInt32(0);
+            }
+            set
+            {
+                response.InsertUInt32(0, value);
             }
         }
 
@@ -37,7 +48,11 @@ namespace Inventors.ECP.Functions
         {
             get
             {
-                return response != null ? response.GetString(16, 24) : "";
+                return response.GetString(16, 24);
+            }
+            set
+            {
+                response.InsertString(16, 24, value);
             }
         }
 
@@ -47,7 +62,11 @@ namespace Inventors.ECP.Functions
         {
             get
             {
-                return response != null ? response.GetUInt16(4) : (UInt16) 0;
+                return response.GetUInt16(4);
+            }
+            set
+            {
+                response.InsertUInt16(4, value);
             }
         }
 
@@ -57,7 +76,11 @@ namespace Inventors.ECP.Functions
         {
             get
             {
-                return response != null ? response.GetString(40, 24) : "";
+                return response.GetString(40, 24);
+            }
+            set
+            {
+                response.InsertString(40, 24, value);
             }
         }
 
@@ -68,12 +91,11 @@ namespace Inventors.ECP.Functions
         {
             get
             {
-                if (response != null)
-                {
-                    return response.GetByte(10);
-                }
-                else
-                    return 0;
+                return response.GetByte(10);
+            }
+            set
+            {
+                response.InsertByte(10, value);
             }
         }
 
@@ -83,12 +105,11 @@ namespace Inventors.ECP.Functions
         {
             get
             {
-                if (response != null)
-                {
-                    return response.GetByte(11);
-                }
-                else
-                    return 0;
+                return response.GetByte(11);
+            }
+            set
+            {
+                response.InsertByte(11, value);
             }
         }
 
@@ -98,12 +119,11 @@ namespace Inventors.ECP.Functions
         {
             get
             {
-                if (response != null)
-                {
-                    return response.GetByte(12);
-                }
-                else
-                    return 0;
+                return response.GetByte(12);
+            }
+            set
+            {
+                response.InsertByte(12, value);
             }
         }
 
@@ -113,12 +133,11 @@ namespace Inventors.ECP.Functions
         {
             get
             {
-                if (response != null)
-                {
-                    return response.GetByte(13);
-                }
-                else
-                    return 0;
+                return response.GetByte(13);
+            }
+            set
+            {
+                response.InsertByte(13, value);
             }
         }
 
@@ -145,12 +164,11 @@ namespace Inventors.ECP.Functions
         {
             get
             {
-                if (response != null)
-                {
-                    return response.GetUInt32(6);
-                }
-                else
-                    return 0;
+                return response.GetUInt32(6);
+            }
+            set
+            {
+                response.InsertUInt32(6, value);
             }
         }
 
@@ -160,12 +178,11 @@ namespace Inventors.ECP.Functions
         {
             get
             {
-                if (response != null)
-                {
-                    return response.GetUInt16(14);
-                }
-                else
-                    return 0;
+                return response.GetUInt16(14);
+            }
+            set
+            {
+                response.InsertUInt32(14, value);
             }
         }
 

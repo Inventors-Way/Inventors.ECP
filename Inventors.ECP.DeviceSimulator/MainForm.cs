@@ -1,4 +1,6 @@
-﻿using Inventors.Logging;
+﻿using Inventors.ECP.Functions;
+using Inventors.ECP.Messages;
+using Inventors.Logging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,11 +21,13 @@ namespace Inventors.ECP.DeviceSimulator
         private SerialPortLayer serial = null;
         private MenuItemSet portMenuItems;
         private DeviceSlave slave;
+        private UInt32 pings = 0;
 
         public MainForm()
         {
             InitializeComponent();
             SetupLogging();
+            SetupSlave();
             SetupPorts();
             SetTitle();
         }
@@ -35,14 +39,24 @@ namespace Inventors.ECP.DeviceSimulator
             Log.Level = LogLevel.DEBUG;
         }
 
-        private void SetupPorts()
+        private void SetupSlave()
         {
-            var names = SerialPort.GetPortNames();
             serial = new SerialPortLayer()
             {
                 BaudRate = 115200
             };
             slave = new DeviceSlave(serial);
+            slave.FunctionListener = this;
+            slave.MessageListener = this;
+            slave.MessageDispatchers.Add(PrintfMessage.CreateDispatcher());
+            slave.FunctionDispatchers.Add(DeviceIdentification.CreateDispatcher());
+            slave.FunctionDispatchers.Add(Ping.CreateDispatcher());
+            slave.FunctionDispatchers.Add(GetEndianness.CreateDispatcher());
+        }
+
+        private void SetupPorts()
+        {
+            var names = SerialPort.GetPortNames();
             portMenuItems = new MenuItemSet((s) =>
             {
                 Log.Debug("Port changed to: {0}", s.Text);
@@ -84,12 +98,22 @@ namespace Inventors.ECP.DeviceSimulator
 
         private void connectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            if (!slave.IsOpen)
+            {
+                pings = 0;
+                slave.Open();
+                slave.Printf("Default Slave Device");
+                Log.Status("Connection opened");
+            }
         }
 
         private void disconnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            if (slave.IsOpen)
+            {
+                slave.Close();
+                Log.Status("Connection closed");
+            }
         }
 
         private void documentationToolStripMenuItem_Click(object sender, EventArgs e)
@@ -100,6 +124,39 @@ namespace Inventors.ECP.DeviceSimulator
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+        }
+
+        public bool Accept(DeviceIdentification func)
+        {
+            func.DeviceID = 1;
+            func.ManufactureID = 1;
+            func.Manufacture = "Inventors' Way";
+            func.Device = "Default Device";
+            func.MajorVersion = 1;
+            func.MinorVersion = 2;
+            func.PatchVersion = 3;
+            func.EngineeringVersion = 4;
+            func.Checksum = 5;
+            func.SerialNumber = 1001;
+
+            return true;
+        }
+
+        public bool Accept(Ping func)
+        {
+            func.Count = pings;
+            ++pings;
+            return true;
+        }
+
+        public bool Accept(GetEndianness func)
+        {
+            return true;
+        }
+
+        public void Accept(PrintfMessage msg)
+        {
+            Log.Status("PRINTF: {0}", msg.DebugMessage);
         }
     }
 }

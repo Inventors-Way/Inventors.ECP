@@ -18,6 +18,16 @@ namespace Inventors.ECP.Messages
         {
         }
 
+        public PrintfMessage() :
+            base(CODE)
+        {
+        }
+
+        public static MessageDispatcher CreateDispatcher()
+        {
+            return new MessageDispatcher(CODE, (p) => new PrintfMessage(p));
+        }
+
         public override void Dispatch(dynamic listener)
         {
             listener.Accept(this);
@@ -38,15 +48,22 @@ namespace Inventors.ECP.Messages
             }
             set
             {
-                if ((value.Length < 255) && (value.Length > 0))
+                var str = "";
+
+                if (value.Length <= 255)
                 {
-                    mPacket = new Packet(CODE, (byte) value.Length);
-                    mPacket.InsertString(0, value.Length, value);
+                    str = value;    
                 }
                 else
                 {
-                    mPacket = new Packet(CODE, 0);
+                    if (value.Length > 0)
+                    {
+                        str = value.Substring(0, 255);
+                    }
                 }
+
+                mPacket = new Packet(CODE, (byte)str.Length);
+                mPacket.InsertString(0, str.Length, str);
             }
         }
 

@@ -10,14 +10,21 @@ namespace Inventors.ECP.Functions
     public class Ping : 
         Function
     {
+        public static readonly byte CODE = 0x02;
+
         public Ping() : 
-            base(code: 0x02, requestLength: 0, responseLength: 4) 
+            base(code: CODE, requestLength: 0, responseLength: 4) 
         { 
         }
 
-        public override void Dispatch(dynamic listener)
+        public static FunctionDispatcher CreateDispatcher()
         {
-            listener.Accept(this);
+            return new FunctionDispatcher(CODE, (p) => new Ping().SetRequest(p));
+        }
+
+        public override bool Dispatch(dynamic listener)
+        {
+            return listener.Accept(this);
         }
 
         [Category("Ping")]

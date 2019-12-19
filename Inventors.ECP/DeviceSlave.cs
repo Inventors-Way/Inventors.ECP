@@ -1,4 +1,5 @@
-﻿using Inventors.Logging;
+﻿using Inventors.ECP.Messages;
+using Inventors.Logging;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,7 +12,9 @@ namespace Inventors.ECP
         public List<MessageDispatcher> MessageDispatchers { get; } = new List<MessageDispatcher>();
         public List<FunctionDispatcher> FunctionDispatchers { get; } = new List<FunctionDispatcher>();
 
-        public dynamic Listener { get; set; } = null;
+        public dynamic MessageListener { get; set; } = null;
+
+        public dynamic FunctionListener { get; set; } = null;
 
         public DeviceSlave(CommunicationLayer layer)
         {
@@ -27,6 +30,14 @@ namespace Inventors.ECP
         public void Close()
         {
             connection.Close();
+        }
+
+        public void Printf(string format, params object[] args)
+        {
+            Send(new PrintfMessage
+            {
+                DebugMessage = String.Format(format, args)
+            });
         }
 
         public bool IsOpen
@@ -65,13 +76,32 @@ namespace Inventors.ECP
 
                 if (response.Code != 0x00)
                 {
-                    if (response.IsFunction ? DispatchFunction(response) : DispatchMessage(response))
+                    if (response.IsFunction)
                     {
-                        Log.Debug("PACKET [0x{0:X}] Dispatched", response.Code);
+                        if (DispatchFunction(response, out Function function))
+                        {
+                            connection.Transmit(Frame.Encode(function.GetResponse()));
+                            Log.Debug("FUNCTION [{0:X}] Dispatched", response.Code);
+                        }
+                        else
+                        {
+                            Packet nack = new Packet(0, 1);
+                            nack.InsertByte(0, 0);
+
+                            connection.Transmit(Frame.Encode(nack.ToArray()));
+                            Log.Debug("FUNCTION [0x{0:X}] NACK", response.Code);
+                        }
                     }
                     else
                     {
-                        Log.Debug("PACKET [0x{0:X}] ERROR NO DISPATCHER FOUND", response.Code);
+                        if (DispatchMessage(response))
+                        {
+                            Log.Debug("MESSAGE [0x{0:X}] Dispatched", response.Code);
+                        }
+                        else
+                        {
+                            Log.Debug("MESSAGE [0x{0:X}] ERROR NO DISPATCHER FOUND", response.Code);
+                        }
                     }
                 }
                 else
@@ -92,9 +122,9 @@ namespace Inventors.ECP
             foreach (var displatcher in MessageDispatchers)
             {
                 if ((displatcher.Code == packet.Code) &&
-                    (Listener != null))
+                    (MessageListener != null))
                 {
-                    displatcher.Create(packet).Dispatch(Listener);
+                    displatcher.Create(packet).Dispatch(MessageListener);
                     retValue = true;
                 }
             }
@@ -102,17 +132,18 @@ namespace Inventors.ECP
             return retValue;
         }
 
-        public bool DispatchFunction(Packet packet)
+        public bool DispatchFunction(Packet packet, out Function function)
         {
             bool retValue = false;
+            function = null;
 
             foreach (var displatcher in FunctionDispatchers)
             {
                 if ((displatcher.Code == packet.Code) &&
-                    (Listener != null))
+                    (FunctionListener != null))
                 {
-                    displatcher.Create(packet).Dispatch(Listener);
-                    retValue = true;
+                    function = displatcher.Create(packet);
+                    retValue = function.Dispatch(FunctionListener);
                 }
             }
 

@@ -10,15 +10,22 @@ namespace Inventors.ECP.Functions
     public class GetEndianness :
         Function
     {
+        public static readonly byte CODE = 0x03;
+
         public GetEndianness() : 
-            base(code: 0x03, requestLength: 0, responseLength: 2) 
+            base(code: CODE, requestLength: 0, responseLength: 2) 
         {
             response.InsertUInt16(0, 1);
         }
 
-        public override void Dispatch(dynamic listener)
+        public static FunctionDispatcher CreateDispatcher()
         {
-            listener.Accept(this);
+            return new FunctionDispatcher(CODE, (p) => new GetEndianness().SetRequest(p));
+        }
+
+        public override bool Dispatch(dynamic listener)
+        {
+            return listener.Accept(this);
         }
 
         [Category("Endianness")]
