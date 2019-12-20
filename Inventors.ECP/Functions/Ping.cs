@@ -19,7 +19,7 @@ namespace Inventors.ECP.Functions
 
         public static FunctionDispatcher CreateDispatcher()
         {
-            return new FunctionDispatcher(CODE, (p) => new Ping().SetRequest(p));
+            return new FunctionDispatcher(CODE, () => new Ping());
         }
 
         public override bool Dispatch(dynamic listener)

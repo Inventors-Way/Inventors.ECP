@@ -64,6 +64,7 @@ namespace Inventors.ECP
         {
             if (connection.IsOpen)
             {
+                message.OnSend();
                 connection.Transmit(Frame.Encode(message.GetPacket()));
             }
         }
@@ -80,6 +81,7 @@ namespace Inventors.ECP
                     {
                         if (DispatchFunction(response, out Function function))
                         {
+                            function.OnSlaveSend();
                             connection.Transmit(Frame.Encode(function.GetResponse()));
                         }
                         else

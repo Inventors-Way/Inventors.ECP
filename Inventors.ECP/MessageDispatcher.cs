@@ -24,10 +24,12 @@ namespace Inventors.ECP
 
         public Message Create(Packet packet)
         {
-            return creator(packet);
+            var retValue = creator(packet);
+            retValue.OnReceived();
+            return retValue;
         }
 
         private readonly byte code;
-        private Func<Packet, Message> creator;
+        private readonly Func<Packet, Message> creator;
     }
 }

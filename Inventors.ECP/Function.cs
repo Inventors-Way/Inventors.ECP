@@ -102,6 +102,21 @@ namespace Inventors.ECP
 
         }
 
+        public virtual void OnReceived()
+        {
+
+        }
+
+        public virtual void OnSlaveReceived()
+        {
+
+        }
+
+        public virtual void OnSlaveSend()
+        {
+
+        }
+
         public abstract bool Dispatch(dynamic listener);
 
         [XmlIgnore]

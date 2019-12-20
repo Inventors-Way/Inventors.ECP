@@ -6,7 +6,7 @@ namespace Inventors.ECP
 {
     public class FunctionDispatcher
     {
-        public FunctionDispatcher(byte code, Func<Packet, Function> creator)
+        public FunctionDispatcher(byte code, Func<Function> creator)
         {
             this.code = code;
             this.creator = creator;
@@ -22,10 +22,13 @@ namespace Inventors.ECP
 
         public Function Create(Packet packet)
         {
-            return creator(packet);
+            var retValue = creator();
+            retValue.SetRequest(packet);
+            retValue.OnSlaveReceived();
+            return retValue;
         }
 
         private readonly byte code;
-        private Func<Packet, Function> creator;
+        private readonly Func<Function> creator;
     }
 }

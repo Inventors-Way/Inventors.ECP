@@ -20,7 +20,7 @@ namespace Inventors.ECP.Functions
 
         public static FunctionDispatcher CreateDispatcher()
         {
-            return new FunctionDispatcher(CODE, (p) => new DeviceIdentification().SetRequest(p));
+            return new FunctionDispatcher(CODE, () => new DeviceIdentification());
         }
 
         public override bool Dispatch(dynamic listener)

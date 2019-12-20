@@ -32,6 +32,16 @@ namespace Inventors.ECP
             return mPacket.ToArray();
         }
 
+        public virtual void OnSend()
+        {
+
+        }
+
+        public virtual void OnReceived()
+        {
+
+        }
+
         public abstract void Dispatch(dynamic listener);
 
         protected Packet mPacket;

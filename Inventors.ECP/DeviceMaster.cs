@@ -129,7 +129,10 @@ namespace Inventors.ECP
                         lock (lockObject)
                         {
                             if (current != null)
+                            {
                                 current.SetResponse(response);
+                                current.OnReceived();
+                            }
 
                             state = CommState.COMPLETED;
                         }
