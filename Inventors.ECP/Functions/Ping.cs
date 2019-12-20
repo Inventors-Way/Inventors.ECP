@@ -17,7 +17,7 @@ namespace Inventors.ECP.Functions
         { 
         }
 
-        public static FunctionDispatcher CreateDispatcher()
+        public override FunctionDispatcher CreateDispatcher()
         {
             return new FunctionDispatcher(CODE, () => new Ping());
         }

@@ -49,10 +49,10 @@ namespace Inventors.ECP.DeviceSimulator
             slave = new DeviceSlave(serial);
             slave.FunctionListener = this;
             slave.MessageListener = this;
-            slave.MessageDispatchers.Add(PrintfMessage.CreateDispatcher());
-            slave.FunctionDispatchers.Add(DeviceIdentification.CreateDispatcher());
-            slave.FunctionDispatchers.Add(Ping.CreateDispatcher());
-            slave.FunctionDispatchers.Add(GetEndianness.CreateDispatcher());
+            slave.Add(new PrintfMessage());
+            slave.Add(new DeviceIdentification());
+            slave.Add(new Ping());
+            slave.Add(new GetEndianness());
         }
 
         private void SetupPorts()

@@ -23,7 +23,7 @@ namespace Inventors.ECP.Messages
         {
         }
 
-        public static MessageDispatcher CreateDispatcher()
+        public override MessageDispatcher CreateDispatcher()
         {
             return new MessageDispatcher(CODE, (p) => new PrintfMessage(p));
         }

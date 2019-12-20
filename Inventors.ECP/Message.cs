@@ -42,6 +42,8 @@ namespace Inventors.ECP
 
         }
 
+        public abstract MessageDispatcher CreateDispatcher();
+
         public abstract void Dispatch(dynamic listener);
 
         protected Packet mPacket;

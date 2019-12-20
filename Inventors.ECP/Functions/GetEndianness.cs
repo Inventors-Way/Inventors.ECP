@@ -18,7 +18,7 @@ namespace Inventors.ECP.Functions
             response.InsertUInt16(0, 1);
         }
 
-        public static FunctionDispatcher CreateDispatcher()
+        public override FunctionDispatcher CreateDispatcher()
         {
             return new FunctionDispatcher(CODE, () => new GetEndianness());
         }

@@ -117,6 +117,8 @@ namespace Inventors.ECP
 
         }
 
+        public abstract FunctionDispatcher CreateDispatcher();
+
         public abstract bool Dispatch(dynamic listener);
 
         [XmlIgnore]

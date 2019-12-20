@@ -9,8 +9,8 @@ namespace Inventors.ECP
     public class DeviceSlave
     {
 
-        public List<MessageDispatcher> MessageDispatchers { get; } = new List<MessageDispatcher>();
-        public List<FunctionDispatcher> FunctionDispatchers { get; } = new List<FunctionDispatcher>();
+        private List<MessageDispatcher> MessageDispatchers { get; } = new List<MessageDispatcher>();
+        private List<FunctionDispatcher> FunctionDispatchers { get; } = new List<FunctionDispatcher>();
 
         public dynamic MessageListener { get; set; } = null;
 
@@ -109,6 +109,16 @@ namespace Inventors.ECP
             {
                 Log.Debug("Error in creating Packet: {0}", e.Message);
             }
+        }
+
+        public void Add(Function function)
+        {
+            FunctionDispatchers.Add(function.CreateDispatcher());
+        }
+
+        public void Add(Message message)
+        {
+            MessageDispatchers.Add(message.CreateDispatcher());
         }
 
         public bool DispatchMessage(Packet packet)

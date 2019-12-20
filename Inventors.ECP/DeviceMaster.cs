@@ -213,7 +213,12 @@ namespace Inventors.ECP
             }
         }
 
-        public List<MessageDispatcher> Dispatchers { get; } = new List<MessageDispatcher>();
+        public void Add(Message message)
+        {
+            Dispatchers.Add(message.CreateDispatcher());
+        }
+
+        private List<MessageDispatcher> Dispatchers { get; } = new List<MessageDispatcher>();
 
         public dynamic MessageListener { get; set; } = null;
 
