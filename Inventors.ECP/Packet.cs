@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Inventors.Logging;
 
 namespace Inventors.ECP
 {
@@ -19,10 +20,12 @@ namespace Inventors.ECP
         {
             if (frame.Length < 2)
             {
+                Log.Debug("The frame is less than 2 bytes long");
                 throw new PacketFormatException("The frame is less than 2 bytes long");
             }
             if (frame.Length != frame[1] + 2)
             {
+                Log.Debug("Unexpected length, expected [ {0} ] but it was [ {1} ]", frame[1] + 2, frame.Length);
                 throw new PacketFormatException(String.Format("Unexpected length, expected [ {0} ] but it was [ {1} ]", frame[1] + 2, frame.Length));
             }
 
@@ -31,7 +34,9 @@ namespace Inventors.ECP
             data = new byte[length];
 
             for (int i = 0; i < length; ++i)
+            {
                 data[i] = frame[i + 2];
+            }
         }
 
         public Packet CreateResponse(byte length)
@@ -80,7 +85,9 @@ namespace Inventors.ECP
             retValue[1] = length;
 
             for (int i = 0; i < length; ++i)
+            {
                 retValue[i + 2] = data[i];
+            }
 
             return retValue;
         }
@@ -205,10 +212,14 @@ namespace Inventors.ECP
             VerifyPosition(position, bytes.Length);
 
             if (ReverseEndianity)
+            {
                 Array.Reverse(bytes);
+            }
 
             for (int i = 0; i < bytes.Length; ++i)
+            {
                 data[position + i] = bytes[i];
+            }
         }
 
         private byte[] Deserialize(int position, int size)
