@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inventors.ECP.DefaultDevice
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventors.ECP.DeviceSimulator", "Inventors.ECP.DeviceSimulator\Inventors.ECP.DeviceSimulator.csproj", "{EC362F5F-6A43-41A6-8013-BF435B7ABEFA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventors.ECP.UnitTests", "Inventors.ECP.UnitTests\Inventors.ECP.UnitTests.csproj", "{5C5482CF-7A82-4F9B-B8E7-76E781F1B8BC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{EC362F5F-6A43-41A6-8013-BF435B7ABEFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC362F5F-6A43-41A6-8013-BF435B7ABEFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC362F5F-6A43-41A6-8013-BF435B7ABEFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C5482CF-7A82-4F9B-B8E7-76E781F1B8BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C5482CF-7A82-4F9B-B8E7-76E781F1B8BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C5482CF-7A82-4F9B-B8E7-76E781F1B8BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C5482CF-7A82-4F9B-B8E7-76E781F1B8BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
