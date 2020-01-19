@@ -93,22 +93,23 @@ namespace Inventors.ECP.UnitTests
 
             client.Send(Encoding.UTF8.GetBytes("Hello Server"));
 
+            WaitUntilTrue(() => !string.IsNullOrEmpty(ClientMessage), 100);
+
+            Assert.AreEqual("Hello Server", ClientMessage);
 
             for (int n = 0; n < 10; ++n)
             {
                 msgWatch.Restart();
+                ServerMessage = "";
                 server.Send(IpPort, Encoding.UTF8.GetBytes("Hello Client"));
+                WaitUntilTrue(() => !string.IsNullOrEmpty(ServerMessage), 100);
             }
-
-
 
             WaitUntilTrue(() => !string.IsNullOrEmpty(ServerMessage), 100);
 
             Assert.AreEqual("Hello Client", ServerMessage);
 
-            WaitUntilTrue(() => !string.IsNullOrEmpty(ClientMessage), 100);
-
-            Assert.AreEqual("Hello Server", ClientMessage);
+            Assert.IsTrue(times.TrueForAll((e) => e < 50));
         }
 
         private async Task ClientConnected(string ipPort)
