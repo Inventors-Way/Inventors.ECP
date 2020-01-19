@@ -3,6 +3,7 @@ using Inventors.ECP;
 using Inventors.ECP.Functions;
 using Inventors.ECP.DefaultDevice;
 using System.Net;
+using Inventors.Logging;
 
 namespace Inventors.ECP.UnitTests
 {
@@ -33,6 +34,9 @@ namespace Inventors.ECP.UnitTests
                 Address = layer.Address,
                 Port = layer.Port
             };
+
+            Log.Debug("Starting ping test");
+
             slave.Start();
             device.Open();
 
