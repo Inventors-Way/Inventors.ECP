@@ -9,7 +9,7 @@ namespace Inventors.ECP.UnitTests
         [TestMethod]
         public void GetAddress()
         {
-            var address = TcpServerLayer.GetIpAddress();
+            var address = TcpServerLayer.GetLocalAddress();
             Assert.IsFalse(string.IsNullOrEmpty(address));
         }
     }
