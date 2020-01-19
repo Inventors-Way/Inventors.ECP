@@ -3,86 +3,81 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading.Tasks;
+using WatsonTcp;
 
 namespace Inventors.ECP
 {
     public class TcpClientLayer :
         CommunicationLayer
     {
-        private readonly Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-        private bool _isopen = false;
-        private bool _isconnected = false;
-        private readonly byte[] rxBuffer = new byte[UInt16.MaxValue];
+        private WatsonTcpClient client;
+        private bool _open = false;
+        private bool _connected = false;
+        private int _port = 9000;
+        private string _address = IPAddress.Loopback.ToString();
 
         public override int BaudRate { get; set; } = 1;
 
-        public string Address { get; set; }
+        public int Port
+        {
+            get => _port;
+            set
+            {
+                if (!IsOpen)
+                {
+                    _port = value;
+                }
+                else
+                {
+                    throw new InvalidOperationException("Cannot change the port while the client is open");
+                }
+            }
+        }
 
-        public int Port { get; set; }
+        public string Address
+        {
+            get => _address;
+            set
+            {
+                if (!IsOpen)
+                {
+                    _address = value;
+                }
+                else
+                {
+                    throw new InvalidOperationException("Cannot change the address while the client is open");
+                }
+            }
+        }
 
-        public override bool IsOpen => _isopen;
+        public override bool IsOpen => _open;
 
         public bool IsConnected
         {
-            get { lock (this) { return _isconnected; } }
-            set { lock(this) { _isconnected = value; } }
+            get { lock (this) { return _connected; } }
+            set { lock(this) { _connected = value; } }
         }
+
+        private void SetOpen(bool open) { lock (this) { _open = open; } }
 
         public override void Transmit(byte[] frame)
         {
             if (IsConnected)
             {
-                socket.BeginSend(frame, 0, frame.Length, SocketFlags.None, delegate (IAsyncResult ar)
-                {
-                    socket.EndSend(ar);
-                }, null);
+                client.Send(frame);
             }            
         }
 
-        private void InitializeRead()
-        {
-            Action reader = null;
-            reader = delegate {
-                if (socket!= null)
-                {
-                    if (socket.Connected && IsOpen)
-                    {
-                        socket.BeginReceive(rxBuffer, 0, rxBuffer.Length, SocketFlags.None, delegate (IAsyncResult ar)
-                        {
-                            try
-                            {
-                                int bytesRead = socket.EndReceive(ar);
-                                byte[] received = new byte[bytesRead];
-                                Buffer.BlockCopy(rxBuffer, 0, received, 0, bytesRead);
-
-                                foreach (var b in received)
-                                {
-                                    Destuffer.Add(b);
-                                    ++bytesReceived;
-                                }
-                            }
-                            catch { }
-
-                            reader();
-                        }, null);
-                    }
-                }
-            };
-
-            reader();
-        }
 
         protected override void DoClose()
         {
             if (IsOpen)
             {
-                if (IsConnected)
-                {
-                    socket.Disconnect(true);
-                    IsConnected = false;
-                }
-
-                _isopen = false;
+                IsConnected = false;
+                client.Dispose();
+                client = null;
+                SetOpen(false);
             }
         }
 
@@ -90,20 +85,29 @@ namespace Inventors.ECP
         {
             if (!IsOpen)
             {
-                IPEndPoint ep = new IPEndPoint(IPAddress.Parse(Address), Port);
-                destuffer.Reset();
-                socket.Connect(ep);
-                //socket.BeginConnect(ep, OnConnect, null);
-                _isconnected = true;
-                _isopen = true;
-                InitializeRead();
+                IsConnected = false;
+                client = new WatsonTcpClient(Address, Port);
+                client.ServerConnected += OnConnected;
+                client.ServerDisconnected += OnDisconnected;
+                client.MessageReceived += MessageReceived;
+                client.Start();
+                SetOpen(true);
             }
         }
 
-        private void OnConnect(IAsyncResult ar)
+        private async Task MessageReceived(byte[] data)
         {
-            socket.EndConnect(ar);
-            IsConnected = true;
+            await Task.Run(() =>
+            {
+                foreach (var d in data)
+                {
+                    Destuffer.Add(d);
+                }
+            });
         }
+
+        private async Task OnConnected() => await Task.Run(() => IsConnected = true);
+
+        private async Task OnDisconnected() => await Task.Run(() => IsConnected = false);
     }
 }

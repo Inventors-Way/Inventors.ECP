@@ -13,11 +13,11 @@ namespace Inventors.ECP
         CommunicationLayer
     {
         private WatsonTcpServer server;
-        private bool _isOpen;
-        private bool _isConnected;
-        private string _IpPort;
+        private bool _isOpen = false;
+        private bool _isConnected = false;
+        private string _IpPort = null;
         private int _port = 9000;
-        private string _address = GetLocalAddress();
+        private string _address = IPAddress.Loopback.ToString();
 
         public override int BaudRate { get; set; } = int.MaxValue;
 
@@ -72,14 +72,7 @@ namespace Inventors.ECP
             set { lock (this) { _IpPort = value; } }
         }
 
-        private void SetOpen(bool open)
-        {
-            lock(this)
-            {
-                _isOpen = open;
-            }
-        }
-
+        private void SetOpen(bool open) { lock(this) { _isOpen = open; } }
 
         public override void Transmit(byte[] frame)
         {
@@ -117,15 +110,15 @@ namespace Inventors.ECP
                 IsConnected = false;
                 ClientPort = null;
                 server = new WatsonTcpServer(Address, Port);
-                server.ClientConnected += ClientConnected;
-                server.ClientDisconnected += ClientDisconnected;
+                server.ClientConnected += OnConnected;
+                server.ClientDisconnected += OnDisconnected;
                 server.MessageReceived += MessageReceived;
                 server.Start();
                 SetOpen(true);
             }
         }
 
-        private async Task ClientConnected(string ipPort)
+        private async Task OnConnected(string ipPort)
         {
             await Task.Run(() =>
             {
@@ -141,7 +134,7 @@ namespace Inventors.ECP
             });
         }
 
-        private async Task ClientDisconnected(string ipPort, DisconnectReason reason)
+        private async Task OnDisconnected(string ipPort, DisconnectReason reason)
         {
             await Task.Run(() =>
             {
