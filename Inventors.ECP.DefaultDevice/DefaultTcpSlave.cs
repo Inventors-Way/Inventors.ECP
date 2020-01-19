@@ -20,6 +20,16 @@ namespace Inventors.ECP.DefaultDevice
 
         public bool IsOpen { get; private set; }
 
+        public string Device { get; set; } = "Default Device";
+
+        public ushort DeviceID { get; set; } = 1;
+
+        public uint ManufactureID { get; set; } = 1;
+
+        public string Manufacturer { get; set; } = "Inventors' Way";
+
+        public UInt32 SerialNumber { get; set; } = 1001;
+
         public void Start()
         {
             if (!IsOpen)
@@ -57,16 +67,16 @@ namespace Inventors.ECP.DefaultDevice
 
         public bool Accept(DeviceIdentification func)
         {
-            func.DeviceID = 1;
-            func.ManufactureID = 1;
-            func.Manufacture = "Inventors' Way";
-            func.Device = "Default Device";
+            func.DeviceID = DeviceID;
+            func.ManufactureID = ManufactureID;
+            func.Manufacture = Manufacturer;
+            func.Device = Device;
             func.MajorVersion = 1;
             func.MinorVersion = 2;
             func.PatchVersion = 3;
             func.EngineeringVersion = 4;
             func.Checksum = 5;
-            func.SerialNumber = 1001;
+            func.SerialNumber = SerialNumber;
             Log.Status("Device Identification:");
             Log.Status("   Manufacturer: {0} [{1}]", func.Manufacture, func.ManufactureID);
             Log.Status("   Device      : {0} [{1}] (Checksum: {2})", func.Device, func.DeviceID, func.Checksum);
