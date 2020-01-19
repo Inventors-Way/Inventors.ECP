@@ -4,58 +4,90 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading.Tasks;
+using WatsonTcp;
 
 namespace Inventors.ECP
 {
     public class TcpServerLayer :
         CommunicationLayer
     {
-        private Socket _listener = null;
-        private Socket _socket = null;
+        private WatsonTcpServer server;
+        private bool _isOpen;
+        private bool _isConnected;
+        private string _IpPort;
+        private int _port = 9000;
+        private string _address = GetLocalAddress();
 
-        private bool _isopen = false;
-        private readonly byte[] buffer = new byte[UInt16.MaxValue];
+        public override int BaudRate { get; set; } = int.MaxValue;
 
-        public override int BaudRate { get; set; } = 1;
-
-        public int Port { get; set; } = 30001;
-
-        public string Address { get; set; } = GetLocalAddress();
-
-        public TcpServerLayer()
+        public int Port 
         {
-
-        }
-
-        public override bool IsOpen
-        {
-            get
+            get => _port;
+            set
             {
-                lock (this)
+                if (!IsOpen)
                 {
-                    return _isopen;
+                    _port = value;
+                }
+                else
+                {
+                    throw new InvalidOperationException("Cannot change the port while the server is open");
                 }
             }
         }
 
+        public string Address 
+        {
+            get => _address;
+            set
+            {
+                if (!IsOpen)
+                {
+                    _address = value;
+                }
+                else
+                {
+                    throw new InvalidOperationException("Cannot change the address while the server is open");
+                }
+            }
+        }
+
+        public TcpServerLayer() { }
+
+        public override bool IsOpen
+        {
+            get { lock (this) { return _isOpen; } }
+        }
+
+        private bool IsConnected
+        {
+            get { lock(this) { return _isConnected; }}
+            set { lock (this) { _isConnected = value; }}
+        }
+
+        private string ClientPort
+        {
+            get { lock (this) { return _IpPort; } }
+            set { lock (this) { _IpPort = value; } }
+        }
+
+        private void SetOpen(bool open)
+        {
+            lock(this)
+            {
+                _isOpen = open;
+            }
+        }
+
+
         public override void Transmit(byte[] frame)
         {
-            if (IsOpen && (_socket != null))
+            var port = ClientPort;
+
+            if (IsConnected)
             {
-                if (_socket.Connected)
-                {
-                    _socket.BeginSend(frame, 0, frame.Length, SocketFlags.None, delegate (IAsyncResult ar)
-                    {
-                        try
-                        {
-                            _listener.EndSend(ar);
-                        }
-                        catch (Exception e)
-                        {
-                            Log.Error(e.Message);
-                        }
-                    }, null);
-                }
+                server.Send(port, frame);
             }
         }
 
@@ -65,17 +97,15 @@ namespace Inventors.ECP
             {
                 lock (this)
                 {
-                    _listener.Close();
-                    _listener = null;
-
-                    if (_socket is object)
+                    foreach (var client in server.ListClients())
                     {
-                        _socket.Shutdown(SocketShutdown.Both);
-                        _socket.Close();
-                        _socket = null;
+                        server.DisconnectClient(client);
                     }
 
-                    _isopen = false;
+                    server.Dispose();
+                    server = null;
+                    IsConnected = false;
+                    SetOpen(false);
                 }
             }            
         }
@@ -83,70 +113,63 @@ namespace Inventors.ECP
         protected override void DoOpen()
         {
             if (!IsOpen)
-            {                
-                lock (this)
-                {
-                    _listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                    _listener.Bind(new IPEndPoint(IPAddress.Parse(Address), Port));
-                    _listener.Listen(10);
-                    _listener.BeginAccept(OnConnectionReady, null);
-
-                    _isopen = true;
-                    _socket = null;
-                }
+            {
+                IsConnected = false;
+                ClientPort = null;
+                server = new WatsonTcpServer(Address, Port);
+                server.ClientConnected += ClientConnected;
+                server.ClientDisconnected += ClientDisconnected;
+                server.MessageReceived += MessageReceived;
+                server.Start();
+                SetOpen(true);
             }
         }
 
-        private void OnConnectionReady(IAsyncResult ar)
+        private async Task ClientConnected(string ipPort)
         {
-            lock (this)
+            await Task.Run(() =>
             {
-                if (_listener == null) return;
-                Socket conn = _listener.EndAccept(ar);
-
-                lock (this)
+                if (!IsConnected)
                 {
-                    if (_socket != null)
-                    {
-                        conn.Shutdown(SocketShutdown.Both);
-                        conn.Close();
-
-                        Log.Debug("Connection attempted but we are allready connected");
-                    }
-                    else
-                    {
-                        _socket = conn;
-                        _socket.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, OnReceivedData, null);
-                    }
-
-                    _listener.BeginAccept(OnConnectionReady, null);
+                    ClientPort = ipPort;
+                    IsConnected = true;
                 }
-            }
+                else
+                {
+                    server.DisconnectClient(ipPort);
+                }
+            });
         }
 
-        private void OnReceivedData(IAsyncResult ar)
+        private async Task ClientDisconnected(string ipPort, DisconnectReason reason)
         {
-            if (_socket is object)
+            await Task.Run(() =>
             {
-                try
+                if (IsConnected)
                 {
-                    var bytesReceived = _socket.EndReceive(ar);
-                    byte[] received = new byte[bytesReceived];
-                    Buffer.BlockCopy(buffer, 0, received, 0, bytesReceived);
-
-                    foreach (var b in received)
+                    if (ClientPort == ipPort)
                     {
-                        Destuffer.Add(b);
-                        ++bytesReceived;
+                        IsConnected = false;
                     }
+                }
+            });
+        }
 
-                    _socket.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, OnReceivedData, null);
-                }
-                catch (SocketException se)
+        private async Task MessageReceived(string ipPort, byte[] data)
+        {
+            await Task.Run(() =>
+            {
+                if (IsConnected)
                 {
-                    Log.Debug(se.Message);
+                    if (ipPort == ClientPort)
+                    {
+                        foreach (var d in data)
+                        {
+                            Destuffer.Add(d);
+                        }
+                    }
                 }
-            }
+            });
         }
 
         public static string GetLocalAddress()
