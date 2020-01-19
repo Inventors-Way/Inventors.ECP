@@ -11,6 +11,7 @@ namespace Inventors.ECP
     {
         private readonly Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         private bool _isopen = false;
+        private bool _isconnected = false;
         private readonly byte[] rxBuffer = new byte[UInt16.MaxValue];
 
         public override int BaudRate { get; set; } = 1;
@@ -21,9 +22,15 @@ namespace Inventors.ECP
 
         public override bool IsOpen => _isopen;
 
+        public bool IsConnected
+        {
+            get { lock (this) { return _isconnected; } }
+            set { lock(this) { _isconnected = value; } }
+        }
+
         public override void Transmit(byte[] frame)
         {
-            if (IsOpen)
+            if (IsConnected)
             {
                 socket.BeginSend(frame, 0, frame.Length, SocketFlags.None, delegate (IAsyncResult ar)
                 {
@@ -69,7 +76,12 @@ namespace Inventors.ECP
         {
             if (IsOpen)
             {
-                socket.Disconnect(true);
+                if (IsConnected)
+                {
+                    socket.Disconnect(true);
+                    IsConnected = false;
+                }
+
                 _isopen = false;
             }
         }
@@ -78,11 +90,20 @@ namespace Inventors.ECP
         {
             if (!IsOpen)
             {
+                IPEndPoint ep = new IPEndPoint(IPAddress.Parse(Address), Port);
                 destuffer.Reset();
-                socket.Connect(IPAddress.Parse(Address), Port);
+                socket.Connect(ep);
+                //socket.BeginConnect(ep, OnConnect, null);
+                _isconnected = true;
                 _isopen = true;
                 InitializeRead();
             }
+        }
+
+        private void OnConnect(IAsyncResult ar)
+        {
+            socket.EndConnect(ar);
+            IsConnected = true;
         }
     }
 }
