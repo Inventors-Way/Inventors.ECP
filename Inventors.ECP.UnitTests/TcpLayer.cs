@@ -36,6 +36,5 @@ namespace Inventors.ECP.UnitTests
             Assert.AreEqual(TcpTestContext.Slave.Device, info.Device);
             Assert.AreEqual(TcpTestContext.Slave.DeviceID, info.DeviceID);
         }
-
     }
 }
