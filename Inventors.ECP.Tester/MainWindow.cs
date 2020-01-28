@@ -158,7 +158,6 @@ namespace Inventors.ECP.Tester
         {
             if (device != null)
             {
-                device.Dispatch();
                 UpdateStatus();
             }
         }

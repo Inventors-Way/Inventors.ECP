@@ -168,49 +168,6 @@ namespace Inventors.ECP
 
         public int Timeout { get; set; }
 
-        private bool IsMessagePending
-        {
-            get
-            {
-                lock (lockObject)
-                {
-                    return messages.Count > 0;
-                }
-            }
-        }
-
-        private Packet GetMessage()
-        {
-            Packet retValue = null;
-
-            if (IsMessagePending)
-            {
-                lock (lockObject)
-                {
-                    retValue = messages.Dequeue();
-                }
-            }
-
-            return retValue;
-        }
-
-        public void DispatchMessages()
-        {
-            while (IsMessagePending)
-            {
-                Packet packet = GetMessage();
-
-                foreach (var displatcher in Dispatchers)
-                {
-                    if ((displatcher.Code == packet.Code) &&
-                        (MessageListener != null))
-                    {
-                        displatcher.Create(packet).Dispatch(MessageListener);
-                    }
-                }
-            }
-        }
-
         private void Dispatch(Packet packet)
         {
             foreach (var displatcher in Dispatchers)

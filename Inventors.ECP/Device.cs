@@ -180,14 +180,6 @@ namespace Inventors.ECP
             }
         }
 
-        public void Dispatch()
-        {
-            if (Master.IsOpen)
-            {
-                Master.DispatchMessages();
-            }
-        }
-
         public void Execute(Function function)
         {
             for (int n = 0; n < Retries; ++n)
