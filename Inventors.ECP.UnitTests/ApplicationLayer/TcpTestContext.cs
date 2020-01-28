@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Net;
 
-namespace Inventors.ECP.UnitTests
+namespace Inventors.ECP.UnitTests.ApplicationLayer
 {
     public class TcpTestContext : 
         IDisposable

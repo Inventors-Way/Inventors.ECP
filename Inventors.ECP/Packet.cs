@@ -7,12 +7,20 @@ using Inventors.Logging;
 
 namespace Inventors.ECP
 {
+    public enum PacketType
+    {
+        NORMAL_LENGTH = 0,
+        EXTENDED_LENGTH
+    }
+
     public class Packet
     {
-        public Packet(byte code, byte length)
+
+        public Packet(byte code, int length)
         {
-            this.code = code;
-            this.length = length;
+            this._code = code;
+            this._length = length;
+            this._type = length >= 255 ? PacketType.EXTENDED_LENGTH : PacketType.NORMAL_LENGTH;            
             data = new byte[length];
         }
 
@@ -23,32 +31,70 @@ namespace Inventors.ECP
                 Log.Debug("The frame is less than 2 bytes long");
                 throw new PacketFormatException("The frame is less than 2 bytes long");
             }
-            if (frame.Length != frame[1] + 2)
+
+            _code = frame[0];
+            _length = DecodeLength(frame);
+            this._type = _length >= 255 ? PacketType.EXTENDED_LENGTH : PacketType.NORMAL_LENGTH;
+            int offset = _type == PacketType.NORMAL_LENGTH ? 2 : 6;
+            data = new byte[_length];
+
+            for (int i = 0; i < _length; ++i)
             {
-                Log.Debug("Unexpected length, expected [ {0} ] but it was [ {1} ]", frame[1] + 2, frame.Length);
-                throw new PacketFormatException(String.Format("Unexpected length, expected [ {0} ] but it was [ {1} ]", frame[1] + 2, frame.Length));
+                data[i] = frame[i + offset];
+            }
+        }
+
+        private int DecodeLength(byte[] frame)
+        {
+            int retValue = 0;
+            int overhead = 2;
+
+            if (frame[1] == 0xFF)
+            {
+                retValue = (int) BitConverter.ToUInt32(frame, 2);
+                overhead = 6;
+            }
+            else
+            {
+                retValue = (int)frame[1];
             }
 
-            code = frame[0];
-            length = frame[1];
-            data = new byte[length];
-
-            for (int i = 0; i < length; ++i)
+            if (retValue + overhead != frame.Length)
             {
-                data[i] = frame[i + 2];
+                Log.Debug("Unexpected length, expected [ {0} ] but it was [ {1} ]", retValue, frame.Length);
+                throw new PacketFormatException(String.Format("Unexpected length, expected [ {0} ] but it was [ {1} ]", retValue, frame.Length));
+            }
+
+            return retValue;
+        }
+
+        private void EncodeLength(byte[] frame)
+        {
+            if (_type == PacketType.NORMAL_LENGTH)
+            {
+                frame[1] = (byte)_length;
+            }
+            else if (_type == PacketType.EXTENDED_LENGTH)
+            {
+                frame[1] = 0xFF;
+                Serialize(frame, 2, BitConverter.GetBytes((UInt32)_length));
+            }
+            else
+            {
+                throw new InvalidOperationException("Invalid packet type");
             }
         }
 
         public Packet CreateResponse(byte length)
         {
-            return new Packet(code, length);
+            return new Packet(_code, length);
         }
 
         public byte Code
         {
             get
             {
-                return code;
+                return _code;
             }
         }
 
@@ -56,15 +102,15 @@ namespace Inventors.ECP
         {
             get
             {
-                return code < 128;
+                return _code < 128;
             }
         }
 
-        public byte Length
+        public int Length
         {
             get
             {
-                return length;
+                return _length;
             }
         }
 
@@ -72,7 +118,7 @@ namespace Inventors.ECP
         {
             get
             {
-                return length == 0;
+                return _length == 0;
             }
         }
 
@@ -80,13 +126,14 @@ namespace Inventors.ECP
 
         public byte[] ToArray()
         {
-            byte[] retValue = new byte[length + 2];
-            retValue[0] = code;
-            retValue[1] = length;
+            int offset = _type == PacketType.NORMAL_LENGTH ? 2 : 6;
+            byte[] retValue = new byte[_length + offset];
+            retValue[0] = _code;
+            EncodeLength(retValue);
 
-            for (int i = 0; i < length; ++i)
+            for (int i = 0; i < _length; ++i)
             {
-                retValue[i + 2] = data[i];
+                retValue[i + offset] = data[i];
             }
 
             return retValue;
@@ -113,42 +160,42 @@ namespace Inventors.ECP
 
         public void InsertByte(int position, byte value)
         {
-            VerifyPosition(position, 1);
+            VerifyPosition(data, position, 1);
             data[position] = value;
         }
 
         public void InsertSByte(int position, sbyte value)
         {
-            VerifyPosition(position, 1);
+            VerifyPosition(data, position, 1);
             data[position] = (byte) value;
         }
 
 
         public void InsertUInt16(int position, UInt16 value)
         {
-            Serialize(position, BitConverter.GetBytes(value));
+            Serialize(data, position, BitConverter.GetBytes(value));
         }
 
         public void InsertInt16(int position, Int16 value)
         {
-            Serialize(position, BitConverter.GetBytes(value));
+            Serialize(data, position, BitConverter.GetBytes(value));
         }
 
         public void InsertUInt32(int position, UInt32 value)
         {
-            Serialize(position, BitConverter.GetBytes(value));
+            Serialize(data, position, BitConverter.GetBytes(value));
         }
 
         public void InsertInt32(int position, Int32 value)
         {
-            Serialize(position, BitConverter.GetBytes(value));
+            Serialize(data, position, BitConverter.GetBytes(value));
         }
 
         public void InsertString(int position, int maxSize, String value)
         {
             System.Text.ASCIIEncoding encoding = new System.Text.ASCIIEncoding();
             var bytes = encoding.GetBytes(value);
-            VerifyPosition(position, maxSize);
+            VerifyPosition(data, position, maxSize);
 
             for (int i = 0; i < bytes.Length; ++i)
             {
@@ -164,7 +211,7 @@ namespace Inventors.ECP
 
         public byte GetByte(int position)
         {
-            VerifyPosition(position, 1);
+            VerifyPosition(data, position, 1);
             return data[position];
         }
 
@@ -175,27 +222,27 @@ namespace Inventors.ECP
 
         public UInt16 GetUInt16(int position)
         {
-            return BitConverter.ToUInt16(Deserialize(position, 2), 0);
+            return BitConverter.ToUInt16(Deserialize(position, 2, data), 0);
         }
 
         public Int16 GetInt16(int position)
         {
-            return BitConverter.ToInt16(Deserialize(position, 2), 0);
+            return BitConverter.ToInt16(Deserialize(position, 2, data), 0);
         }
 
         public UInt32 GetUInt32(int position)
         {
-            return BitConverter.ToUInt32(Deserialize(position, 4), 0);
+            return BitConverter.ToUInt32(Deserialize(position, 4, data), 0);
         }
 
         public Int32 GetInt32(int position)
         {
-            return BitConverter.ToInt32(Deserialize(position, 4), 0);
+            return BitConverter.ToInt32(Deserialize(position, 4, data), 0);
         }
 
         public String GetString(int position, int size)
         {
-            VerifyPosition(position, size);
+            VerifyPosition(data, position, size);
             var bytes = new List<byte>();
 
             for (int i = 0; i < size; ++i)
@@ -207,9 +254,9 @@ namespace Inventors.ECP
             return System.Text.Encoding.ASCII.GetString(bytes.ToArray());
         }
 
-        private void Serialize(int position, byte[] bytes)
+        private void Serialize(byte[] dest, int position, byte[] bytes)
         {
-            VerifyPosition(position, bytes.Length);
+            VerifyPosition(dest, position, bytes.Length);
 
             if (ReverseEndianity)
             {
@@ -218,38 +265,43 @@ namespace Inventors.ECP
 
             for (int i = 0; i < bytes.Length; ++i)
             {
-                data[position + i] = bytes[i];
+                dest[position + i] = bytes[i];
             }
         }
 
-        private byte[] Deserialize(int position, int size)
+        private byte[] Deserialize(int position, int size, byte[] src)
         {
-            VerifyPosition(position, size);
+            VerifyPosition(src, position, size);
             var retValue = new byte[size];
 
             for (int i = 0; i < size; ++i)
-                retValue[i] = data[position + i];
+            {
+                retValue[i] = src[position + i];
+            }
 
             if (ReverseEndianity)
+            {
                 Array.Reverse(retValue);
+            }
 
             return retValue;
         }
 
-        private void VerifyPosition(int position, int size)
+        private void VerifyPosition(byte[] data, int position, int size)
         {
-            if (!ValidPosition(position, size))
+            if (!ValidPosition(data, position, size))
                 throw new ArgumentOutOfRangeException();
         }
 
-        private bool ValidPosition(int position, int size)
+        private bool ValidPosition(byte[] data, int position, int size)
         {
-            return (position < length) &&
-                   (position + size <= length);
+            return (position < data.Length) &&
+                   (position + size <= data.Length);
         }
 
-        private readonly byte code;
-        private readonly byte length;
+        private readonly byte _code;
+        private readonly int _length;
+        private readonly PacketType _type;
         private readonly byte[] data;
     }
 }

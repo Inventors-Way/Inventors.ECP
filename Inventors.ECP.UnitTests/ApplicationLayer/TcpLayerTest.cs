@@ -9,10 +9,10 @@ using Inventors.ECP.Messages;
 using System.Net;
 using System.Threading;
 
-namespace Inventors.ECP.UnitTests
+namespace Inventors.ECP.UnitTests.ApplicationLayer
 {
     [TestClass]
-    public class TcpLayer
+    public class TcpLayerTest
     {
         [TestMethod]
         public void Ping()
@@ -33,8 +33,16 @@ namespace Inventors.ECP.UnitTests
         {
             var info = new DeviceIdentification();
             TcpTestContext.Device.Execute(info);
-            Assert.AreEqual(TcpTestContext.Slave.Device, info.Device);
-            Assert.AreEqual(TcpTestContext.Slave.DeviceID, info.DeviceID);
+            Assert.AreEqual(expected: TcpTestContext.Slave.Device, actual: info.Device);
+            Assert.AreEqual(expected: TcpTestContext.Slave.DeviceID, actual: info.DeviceID);
+        }
+
+        [TestMethod]
+        public void GetEndianity()
+        {
+            var endianity = new GetEndianness();
+            TcpTestContext.Device.Execute(endianity);
+            Assert.AreEqual(expected: true, actual: endianity.EqualEndianness);
         }
     }
 }
