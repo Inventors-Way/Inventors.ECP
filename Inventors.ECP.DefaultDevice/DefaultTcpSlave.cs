@@ -12,7 +12,8 @@ namespace Inventors.ECP.DefaultDevice
     {
         private TcpServerLayer commLayer = null;
         private DeviceSlave slave;
-        private uint pings;
+
+        public uint Pings { get; set; }
 
         public string Address { get; set; }
 
@@ -52,7 +53,7 @@ namespace Inventors.ECP.DefaultDevice
                 slave.Open();
 
                 IsOpen = true;
-                pings = 0;
+                Pings = 0;
             }
         }
 
@@ -87,8 +88,8 @@ namespace Inventors.ECP.DefaultDevice
 
         public bool Accept(Ping func)
         {
-            func.Count = pings;
-            ++pings;
+            func.Count = Pings;
+            ++Pings;
 
             return true;
         }

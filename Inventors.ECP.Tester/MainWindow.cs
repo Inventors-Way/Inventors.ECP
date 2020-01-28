@@ -374,6 +374,7 @@ namespace Inventors.ECP.Tester
         }
 
         private delegate void Updater();
+
         private void BeginUpdate(Updater updater)
         {
             if (this.InvokeRequired)
@@ -440,7 +441,7 @@ namespace Inventors.ECP.Tester
       
         public void OnPrintf(object sender, MessageEventArgs<PrintfMessage> e)
         {
-            Log.Status("Printf: {0}", e.Message.ToString());
+            BeginUpdate(() => Log.Status("Printf: {0}", e.Message.ToString()));
         }
 
         #endregion

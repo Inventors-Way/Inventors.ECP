@@ -17,62 +17,24 @@ namespace Inventors.ECP.UnitTests
         [TestMethod]
         public void Ping()
         {
-            var slave = new DefaultTcpSlave()
-            {
-                Address = IPAddress.Loopback.ToString(),
-                Port = 10000
-            };
-            var layer = new TcpClientLayer()
-            {
-                Address = slave.Address,
-                Port = slave.Port
-            };
-            var device = new DefaultDevice.DefaultDevice(layer);
-            var timer = new Timer((info) => device.Dispatch(), device, 100, 100);
             var ping = new Ping();
-            slave.Start();
-            device.Open();
 
-            //Thread.Sleep(100);
-
-            device.Execute(ping);
-            Assert.IsTrue(ping.Count == 0);            
-            device.Execute(ping);
+            TcpTestContext.Slave.Pings = 0;
+            TcpTestContext.Device.Execute(ping);
+            Assert.IsTrue(ping.Count == 0);
+            TcpTestContext.Device.Execute(ping);
             Assert.IsTrue(ping.Count == 1);
-            device.Execute(ping);
+            TcpTestContext.Device.Execute(ping);
             Assert.IsTrue(ping.Count == 2);
-
-            device.Close();
-            slave.Stop();
         }
 
         [TestMethod]
         public void DeviceIdentification()
         {
-            var slave = new DefaultTcpSlave()
-            {
-                Address = IPAddress.Loopback.ToString(),
-                Port = 10000
-            };
-            var layer = new TcpClientLayer()
-            {
-                Address = slave.Address,
-                Port = slave.Port
-            };
-            var device = new DefaultDevice.DefaultDevice(layer);
-            var timer = new Timer((info) => device.Dispatch(), device, 100, 100);
             var info = new DeviceIdentification();
-            slave.Start();
-            device.Open();
-
-            //Thread.Sleep(100);
-
-            device.Execute(info);
-            Assert.AreEqual(slave.Device, info.Device);
-            Assert.AreEqual(slave.DeviceID, info.DeviceID);
-
-            device.Close();
-            slave.Stop();
+            TcpTestContext.Device.Execute(info);
+            Assert.AreEqual(TcpTestContext.Slave.Device, info.Device);
+            Assert.AreEqual(TcpTestContext.Slave.DeviceID, info.DeviceID);
         }
 
     }

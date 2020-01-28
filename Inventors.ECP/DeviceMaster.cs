@@ -23,8 +23,9 @@ namespace Inventors.ECP
         {
             connection = layer;
             connection.Destuffer.OnReceive += HandleIncommingFrame;
-            Timeout = 500;
+            Timeout = 500;            
         }
+
 
         public void Open()
         {
@@ -141,10 +142,7 @@ namespace Inventors.ECP
                     {
                         try
                         {
-                            lock (lockObject)
-                            {
-                                messages.Enqueue(response);
-                            }
+                            Dispatch(response);
                         }
                         catch (Exception e)
                         {
@@ -209,6 +207,18 @@ namespace Inventors.ECP
                     {
                         displatcher.Create(packet).Dispatch(MessageListener);
                     }
+                }
+            }
+        }
+
+        private void Dispatch(Packet packet)
+        {
+            foreach (var displatcher in Dispatchers)
+            {
+                if ((displatcher.Code == packet.Code) &&
+                    (MessageListener != null))
+                {
+                    displatcher.Create(packet).Dispatch(MessageListener);
                 }
             }
         }
