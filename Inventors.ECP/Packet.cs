@@ -7,21 +7,52 @@ using Inventors.Logging;
 
 namespace Inventors.ECP
 {
-    public enum PacketType
+    public enum PacketType : byte
     {
-        NORMAL_LENGTH = 0,
-        EXTENDED_LENGTH
+        LENGTH_UINT8_ENCODED = 0,
+        LENGTH_UINT16_ENCODED = 0xFE,
+        LENGTH_UINT32_ENCODED = 0xFF
     }
 
     public class Packet
     {
+        #region Properties
+        public byte Code => _code;
+
+        public bool IsFunction => _code < 128;
+
+        public int Length => _length;
+
+        public bool Empty => _length == 0;
+
+        public bool ReverseEndianity { get; set; } = false;
+
+        public PacketType PacketType => _type;
+
+        #endregion
 
         public Packet(byte code, int length)
         {
             this._code = code;
             this._length = length;
-            this._type = length >= 255 ? PacketType.EXTENDED_LENGTH : PacketType.NORMAL_LENGTH;            
+            this._type = GetLengthEncoding(length);
             data = new byte[length];
+        }
+
+        private PacketType GetLengthEncoding(int length)
+        {
+            var retValue = PacketType.LENGTH_UINT8_ENCODED;
+
+            if (length > UInt16.MaxValue)
+            {
+                retValue = PacketType.LENGTH_UINT32_ENCODED;
+            }
+            else if (length >= 0xFE)
+            {
+                retValue = PacketType.LENGTH_UINT16_ENCODED;
+            }
+
+            return retValue;
         }
 
         public Packet(byte[] frame)
@@ -34,8 +65,8 @@ namespace Inventors.ECP
 
             _code = frame[0];
             _length = DecodeLength(frame);
-            this._type = _length >= 255 ? PacketType.EXTENDED_LENGTH : PacketType.NORMAL_LENGTH;
-            int offset = _type == PacketType.NORMAL_LENGTH ? 2 : 6;
+            _type = GetLengthEncoding(_length);
+            int offset = GetOverhead(_type);
             data = new byte[_length];
 
             for (int i = 0; i < _length; ++i)
@@ -44,22 +75,36 @@ namespace Inventors.ECP
             }
         }
 
+        private int GetOverhead(PacketType type)
+        {
+            switch (type)
+            {
+                case PacketType.LENGTH_UINT8_ENCODED: return 2;
+                case PacketType.LENGTH_UINT16_ENCODED: return 4;
+                case PacketType.LENGTH_UINT32_ENCODED: return 6;
+                default:
+                    throw new InvalidOperationException("Unknown type of length encoding: " + (byte) type);
+            }
+        }
+
         private int DecodeLength(byte[] frame)
         {
             int retValue = 0;
-            int overhead = 2;
 
-            if (frame[1] == 0xFF)
+            if (frame[1] == (byte) PacketType.LENGTH_UINT32_ENCODED)
             {
                 retValue = (int) BitConverter.ToUInt32(frame, 2);
-                overhead = 6;
+            }
+            else if (frame[1] == (byte) PacketType.LENGTH_UINT16_ENCODED)
+            {
+                retValue = (int)BitConverter.ToUInt16(frame, 2);
             }
             else
             {
                 retValue = (int)frame[1];
             }
 
-            if (retValue + overhead != frame.Length)
+            if (retValue + GetOverhead(GetLengthEncoding(retValue)) != frame.Length)
             {
                 Log.Debug("Unexpected length, expected [ {0} ] but it was [ {1} ]", retValue, frame.Length);
                 throw new PacketFormatException(String.Format("Unexpected length, expected [ {0} ] but it was [ {1} ]", retValue, frame.Length));
@@ -70,13 +115,18 @@ namespace Inventors.ECP
 
         private void EncodeLength(byte[] frame)
         {
-            if (_type == PacketType.NORMAL_LENGTH)
+            if (_type == PacketType.LENGTH_UINT8_ENCODED)
             {
                 frame[1] = (byte)_length;
             }
-            else if (_type == PacketType.EXTENDED_LENGTH)
+            else if (_type == PacketType.LENGTH_UINT16_ENCODED)
             {
-                frame[1] = 0xFF;
+                frame[1] = (byte)PacketType.LENGTH_UINT16_ENCODED;
+                Serialize(frame, 2, BitConverter.GetBytes((UInt16)_length));
+            }
+            else if (_type == PacketType.LENGTH_UINT32_ENCODED)
+            {
+                frame[1] = (byte) PacketType.LENGTH_UINT32_ENCODED;
                 Serialize(frame, 2, BitConverter.GetBytes((UInt32)_length));
             }
             else
@@ -90,43 +140,9 @@ namespace Inventors.ECP
             return new Packet(_code, length);
         }
 
-        public byte Code
-        {
-            get
-            {
-                return _code;
-            }
-        }
-
-        public bool IsFunction
-        {
-            get
-            {
-                return _code < 128;
-            }
-        }
-
-        public int Length
-        {
-            get
-            {
-                return _length;
-            }
-        }
-
-        public bool Empty
-        {
-            get
-            {
-                return _length == 0;
-            }
-        }
-
-        public bool ReverseEndianity { get; set; }
-
         public byte[] ToArray()
         {
-            int offset = _type == PacketType.NORMAL_LENGTH ? 2 : 6;
+            int offset = GetOverhead(_type);
             byte[] retValue = new byte[_length + offset];
             retValue[0] = _code;
             EncodeLength(retValue);
