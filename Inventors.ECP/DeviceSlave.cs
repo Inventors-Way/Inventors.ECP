@@ -1,4 +1,5 @@
-﻿using Inventors.ECP.Messages;
+﻿using Inventors.ECP.Functions;
+using Inventors.ECP.Messages;
 using Inventors.Logging;
 using System;
 using System.Collections.Generic;
@@ -16,20 +17,21 @@ namespace Inventors.ECP
 
         public dynamic FunctionListener { get; set; } = null;
 
-        public DeviceSlave(CommunicationLayer layer)
+        public DeviceSlave(CommunicationLayer layer, DeviceData deviceData)
         {
-            connection = layer;
-            connection.Destuffer.OnReceive += HandleIncommingFrame;
+            _connection = layer;
+            _deviceData = deviceData;
+            _connection.Destuffer.OnReceive += HandleIncommingFrame;
         }
 
         public void Open()
         {
-            connection.Open();
+            _connection.Open(_deviceData);
         }
 
         public void Close()
         {
-            connection.Close();
+            _connection.Close();
         }
 
         public void Printf(string format, params object[] args)
@@ -44,7 +46,7 @@ namespace Inventors.ECP
         {
             get
             {
-                return connection.IsOpen;
+                return _connection.IsOpen;
             }
         }
 
@@ -52,20 +54,20 @@ namespace Inventors.ECP
         {
             get
             {
-                return connection.ResetOnConnection;
+                return _connection.ResetOnConnection;
             }
             set
             {
-                connection.ResetOnConnection = value;
+                _connection.ResetOnConnection = value;
             }
         }
 
         public void Send(Message message)
         {
-            if (connection.IsOpen)
+            if (_connection.IsOpen)
             {
                 message.OnSend();
-                connection.Transmit(Frame.Encode(message.GetPacket()));
+                _connection.Transmit(Frame.Encode(message.GetPacket()));
             }
         }
 
@@ -82,14 +84,14 @@ namespace Inventors.ECP
                         if (DispatchFunction(response, out Function function))
                         {
                             function.OnSlaveSend();
-                            connection.Transmit(Frame.Encode(function.GetResponse()));
+                            _connection.Transmit(Frame.Encode(function.GetResponse()));
                         }
                         else
                         {
                             Packet nack = new Packet(0, 1);
                             nack.InsertByte(0, 0);
 
-                            connection.Transmit(Frame.Encode(nack.ToArray()));
+                            _connection.Transmit(Frame.Encode(nack.ToArray()));
                         }
                     }
                     else
@@ -156,6 +158,21 @@ namespace Inventors.ECP
             return retValue;
         }
 
-        private readonly CommunicationLayer connection;
+        public void Accept(DeviceIdentification func)
+        {
+            func.DeviceID = _deviceData.DeviceID;
+            func.ManufactureID = _deviceData.ManufactureID;
+            func.Manufacture = _deviceData.Manufacture;
+            func.Device = _deviceData.Device;
+            func.MajorVersion = _deviceData.MajorVersion;
+            func.MinorVersion = _deviceData.MinorVersion;
+            func.PatchVersion = _deviceData.PatchVersion;
+            func.EngineeringVersion = _deviceData.EngineeringVersion;
+            func.Checksum = _deviceData.Checksum;
+            func.SerialNumber = _deviceData.SerialNumber;
+        }
+
+        private readonly CommunicationLayer _connection;
+        private readonly DeviceData _deviceData;
     }
 }

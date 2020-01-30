@@ -19,9 +19,10 @@ namespace Inventors.ECP
             ERROR
         };
 
-        public DeviceMaster(CommunicationLayer layer)
+        public DeviceMaster(CommunicationLayer connection, DeviceData device)
         {
-            connection = layer;
+            this.connection = connection;
+            this.device = device;
             connection.Destuffer.OnReceive += HandleIncommingFrame;
             Timeout = 500;            
         }
@@ -29,7 +30,7 @@ namespace Inventors.ECP
 
         public void Open()
         {
-            connection.Open();
+            connection.Open(device);
         }
 
         public void Close()
@@ -196,5 +197,6 @@ namespace Inventors.ECP
         private readonly Stopwatch stopwatch = new Stopwatch();
         private CommState state = CommState.WAITING;
         private Queue<Packet> messages = new Queue<Packet>();
+        private DeviceData device;
     }
 }

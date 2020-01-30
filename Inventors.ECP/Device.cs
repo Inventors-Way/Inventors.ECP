@@ -37,10 +37,10 @@ namespace Inventors.ECP
         public event EventHandler<Exception> OnDisconnectFailed;
 
 
-        public Device(CommunicationLayer commLayer)
+        public Device(CommunicationLayer commLayer, DeviceData device)
         {
             CommLayer = commLayer;
-            this.Master = new DeviceMaster(commLayer);
+            this.Master = new DeviceMaster(commLayer, device);
             Master.MessageListener = this;
             Master.Add(new PrintfMessage());
         }

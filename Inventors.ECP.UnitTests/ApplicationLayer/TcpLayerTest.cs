@@ -33,8 +33,8 @@ namespace Inventors.ECP.UnitTests.ApplicationLayer
         {
             var info = new DeviceIdentification();
             TcpTestContext.Device.Execute(info);
-            Assert.AreEqual(expected: TcpTestContext.Slave.Device, actual: info.Device);
-            Assert.AreEqual(expected: TcpTestContext.Slave.DeviceID, actual: info.DeviceID);
+            Assert.AreEqual(expected: TcpTestContext.Slave.Identification.Device, actual: info.Device);
+            Assert.AreEqual(expected: TcpTestContext.Slave.Identification.DeviceID, actual: info.DeviceID);
         }
 
         [TestMethod]

@@ -11,7 +11,7 @@ namespace Inventors.ECP
     public class SerialPortLayer :
         CommunicationLayer
     {
-        protected override void DoOpen()
+        protected override void DoOpen(DeviceData device)
         {
             if (port != null)
             {

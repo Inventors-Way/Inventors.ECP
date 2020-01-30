@@ -81,7 +81,7 @@ namespace Inventors.ECP
             }
         }
 
-        protected override void DoOpen()
+        protected override void DoOpen(DeviceData device)
         {
             if (!IsOpen)
             {

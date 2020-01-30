@@ -21,15 +21,14 @@ namespace Inventors.ECP.DefaultDevice
 
         public bool IsOpen { get; private set; }
 
-        public string Device { get; set; } = "Default Device";
-
-        public ushort DeviceID { get; set; } = 1;
-
-        public uint ManufactureID { get; set; } = 1;
-
-        public string Manufacturer { get; set; } = "Inventors' Way";
-
-        public UInt32 SerialNumber { get; set; } = 1001;
+        public DeviceData Identification { get; } = new DeviceData()
+        {
+            DeviceID = 1,
+            Device = "Default Device",
+            ManufactureID = 1,
+            Manufacture = "Inventors' Way",
+            SerialNumber = 1001
+        };
 
         public void Start()
         {
@@ -40,7 +39,7 @@ namespace Inventors.ECP.DefaultDevice
                     Address = Address,
                     Port = Port
                 };
-                slave = new DeviceSlave(commLayer)
+                slave = new DeviceSlave(commLayer, Identification)
                 {
                     FunctionListener = this,
                     MessageListener = this
@@ -68,16 +67,7 @@ namespace Inventors.ECP.DefaultDevice
 
         public bool Accept(DeviceIdentification func)
         {
-            func.DeviceID = DeviceID;
-            func.ManufactureID = ManufactureID;
-            func.Manufacture = Manufacturer;
-            func.Device = Device;
-            func.MajorVersion = 1;
-            func.MinorVersion = 2;
-            func.PatchVersion = 3;
-            func.EngineeringVersion = 4;
-            func.Checksum = 5;
-            func.SerialNumber = SerialNumber;
+            slave.Accept(func);
             Log.Status("Device Identification:");
             Log.Status("   Manufacturer: {0} [{1}]", func.Manufacture, func.ManufactureID);
             Log.Status("   Device      : {0} [{1}] (Checksum: {2})", func.Device, func.DeviceID, func.Checksum);

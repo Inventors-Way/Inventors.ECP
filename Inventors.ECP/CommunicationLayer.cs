@@ -47,9 +47,9 @@ namespace Inventors.ECP
             bytesReceived = 0;
         }
 
-        public void Open()
+        public void Open(DeviceData device)
         {
-            DoOpen();
+            DoOpen(device);
             RestartStatistics();
         }
 
@@ -72,7 +72,7 @@ namespace Inventors.ECP
             };
         }
 
-        protected abstract void DoOpen();
+        protected abstract void DoOpen(DeviceData device);
 
         public void Close()
         {
