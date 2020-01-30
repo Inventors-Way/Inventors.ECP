@@ -14,12 +14,11 @@ namespace Inventors.ECP
         private WatsonTcpClient client;
         private bool _open = false;
         private bool _connected = false;
-        private int _port = 9000;
-        private string _address = IPAddress.Loopback.ToString();
+        private string _port = String.Format("{0}:{1}", IPAddress.Loopback.ToString(), 9000);
 
         public override int BaudRate { get; set; } = 1;
 
-        public int Port
+        public override string Port
         {
             get => _port;
             set
@@ -27,6 +26,11 @@ namespace Inventors.ECP
                 if (!IsOpen)
                 {
                     _port = value;
+
+                    if (!IPAddress.TryParse(Address, out IPAddress _))
+                        throw new ArgumentException(_port + " does not contain a valid IP Address");
+
+                    var ipPort = IPPort;
                 }
                 else
                 {
@@ -35,21 +39,9 @@ namespace Inventors.ECP
             }
         }
 
-        public string Address
-        {
-            get => _address;
-            set
-            {
-                if (!IsOpen)
-                {
-                    _address = value;
-                }
-                else
-                {
-                    throw new InvalidOperationException("Cannot change the address while the client is open");
-                }
-            }
-        }
+        public string Address => Port.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries)[0];
+
+        public int IPPort => int.Parse(Port.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries)[1]);
 
         public override bool IsOpen => _open;
 
@@ -86,7 +78,7 @@ namespace Inventors.ECP
             if (!IsOpen)
             {
                 IsConnected = false;
-                client = new WatsonTcpClient(Address, Port);
+                client = new WatsonTcpClient(Address, IPPort);
                 client.ServerConnected += OnConnected;
                 client.ServerDisconnected += OnDisconnected;
                 client.MessageReceived += MessageReceived;
@@ -109,5 +101,10 @@ namespace Inventors.ECP
         private async Task OnConnected() => await Task.Run(() => IsConnected = true);
 
         private async Task OnDisconnected() => await Task.Run(() => IsConnected = false);
+
+        public override List<string> GetAvailablePorts()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

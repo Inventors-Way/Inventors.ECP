@@ -39,6 +39,8 @@ namespace Inventors.ECP
 
         public abstract int BaudRate { get; set; }
 
+        public abstract string Port { get; set; }
+
         public bool ResetOnConnection { get; set; } = false;
 
         public CommunicationLayer()
@@ -59,6 +61,8 @@ namespace Inventors.ECP
             bytesTransmitted = 0;
             testWatch.Restart();
         }
+
+        public abstract List<string> GetAvailablePorts();
 
         public CommunicationLayerStatistics GetStatistics()
         {

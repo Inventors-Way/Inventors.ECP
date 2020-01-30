@@ -31,12 +31,10 @@ namespace Inventors.ECP.UnitTests.ApplicationLayer
         {
             _slave = new DefaultTcpSlave()
             {
-                Address = IPAddress.Loopback.ToString(),
-                Port = 10000
+                Port = String.Format("{0}:{1}", IPAddress.Loopback.ToString(), 9000)
             };
             var layer = new TcpClientLayer()
             {
-                Address = _slave.Address,
                 Port = _slave.Port
             };
             _device = new DefaultDevice.DefaultDevice(layer);

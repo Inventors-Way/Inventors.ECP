@@ -15,9 +15,7 @@ namespace Inventors.ECP.DefaultDevice
 
         public uint Pings { get; set; }
 
-        public string Address { get; set; }
-
-        public int Port { get; set; }
+        public string Port { get; set; }
 
         public bool IsOpen { get; private set; }
 
@@ -36,7 +34,6 @@ namespace Inventors.ECP.DefaultDevice
             {
                 commLayer = new TcpServerLayer()
                 {
-                    Address = Address,
                     Port = Port
                 };
                 slave = new DeviceSlave(commLayer, Identification)

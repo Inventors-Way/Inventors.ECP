@@ -20,7 +20,7 @@ namespace Inventors.ECP
 
             if (port == null)
             {
-                port = new SerialPort(PortName)
+                port = new SerialPort(Port)
                 {
                     BaudRate = BaudRate,
                     Parity = Parity.None,
@@ -36,7 +36,7 @@ namespace Inventors.ECP
                 InitializeRead();
             }
 
-            Log.Debug("Serial Port ({0}) opened [Baud = {1} ]", PortName, BaudRate);
+            Log.Debug("Serial Port ({0}) opened [Baud = {1} ]", Port, BaudRate);
         }
 
         private void InitializeRead()
@@ -102,6 +102,11 @@ namespace Inventors.ECP
             }
         }
 
+        public override List<string> GetAvailablePorts()
+        {
+            return SerialPort.GetPortNames().ToList();
+        }
+
         public override bool IsOpen
         {
             get
@@ -115,7 +120,8 @@ namespace Inventors.ECP
             }
         }
 
-        public string PortName { get; set; }
+        public override string Port { get; set; }
+
         public override int BaudRate { get; set; }
 
         private SerialPort port = null;

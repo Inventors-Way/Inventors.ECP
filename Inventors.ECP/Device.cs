@@ -45,6 +45,8 @@ namespace Inventors.ECP
             Master.Add(new PrintfMessage());
         }
 
+
+
         public virtual void Connect()
         {
             if (!Master.IsOpen)

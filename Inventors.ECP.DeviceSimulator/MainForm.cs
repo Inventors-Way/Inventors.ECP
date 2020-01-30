@@ -76,7 +76,7 @@ namespace Inventors.ECP.DeviceSimulator
             portMenuItems = new MenuItemSet((s) =>
             {
                 Log.Debug("Port changed to: {0}", s.Text);
-                serial.PortName = s.Text;
+                serial.Port = s.Text;
                 UpdateStatus();
             });
 
@@ -88,8 +88,8 @@ namespace Inventors.ECP.DeviceSimulator
 
                 if (n == 0)
                 {
-                    serial.PortName = names[n];
-                    Log.Status("Serial port: {0}", serial.PortName);
+                    serial.Port = names[n];
+                    Log.Status("Serial port: {0}", serial.Port);
                     item.Checked = true;
                 }
             }
@@ -147,11 +147,11 @@ namespace Inventors.ECP.DeviceSimulator
         {
             if (slave.IsOpen)
             {
-                statusText.Text = String.Format("Connected [ {0} (Ping: {1})]", serial.PortName, pings);
+                statusText.Text = String.Format("Connected [ {0} (Ping: {1})]", serial.Port, pings);
             }
             else
             {
-                statusText.Text = String.Format("Not connected [ {0} ]", serial.PortName);
+                statusText.Text = String.Format("Not connected [ {0} ]", serial.Port);
             }
         }
 

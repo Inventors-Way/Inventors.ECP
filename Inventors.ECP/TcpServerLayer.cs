@@ -16,12 +16,11 @@ namespace Inventors.ECP
         private bool _isOpen = false;
         private bool _isConnected = false;
         private string _IpPort = null;
-        private int _port = 9000;
-        private string _address = IPAddress.Loopback.ToString();
+        private string _port = String.Format("{0}:{1}", IPAddress.Loopback.ToString(), 9000);
 
         public override int BaudRate { get; set; } = int.MaxValue;
 
-        public int Port 
+        public override string Port
         {
             get => _port;
             set
@@ -29,28 +28,26 @@ namespace Inventors.ECP
                 if (!IsOpen)
                 {
                     _port = value;
+
+                    if (!IPAddress.TryParse(Address, out IPAddress _))
+                        throw new ArgumentException(_port + " does not contain a valid IP Address");
+
+                    var ipPort = IPPort;
                 }
                 else
                 {
-                    throw new InvalidOperationException("Cannot change the port while the server is open");
+                    throw new InvalidOperationException("Cannot change the port while the client is open");
                 }
             }
         }
 
-        public string Address 
+        public string Address => Port.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries)[0];
+
+        public int IPPort => int.Parse(Port.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries)[1]);
+
+        public override List<string> GetAvailablePorts()
         {
-            get => _address;
-            set
-            {
-                if (!IsOpen)
-                {
-                    _address = value;
-                }
-                else
-                {
-                    throw new InvalidOperationException("Cannot change the address while the server is open");
-                }
-            }
+            throw new NotImplementedException();
         }
 
         public TcpServerLayer() { }
@@ -109,7 +106,7 @@ namespace Inventors.ECP
             {
                 IsConnected = false;
                 ClientPort = null;
-                server = new WatsonTcpServer(Address, Port);
+                server = new WatsonTcpServer(Address, IPPort);
                 server.ClientConnected += OnConnected;
                 server.ClientDisconnected += OnDisconnected;
                 server.MessageReceived += MessageReceived;

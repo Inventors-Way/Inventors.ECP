@@ -89,8 +89,8 @@ namespace Inventors.ECP.Tester
 
                 if (n == 0)
                 {
-                    serial.PortName = names[n];
-                    Log.Status("Serial port: {0}", serial.PortName);
+                    serial.Port = names[n];
+                    Log.Status("Serial port: {0}", serial.Port);
                     item.Checked = true;
                 }
             }
@@ -99,7 +99,7 @@ namespace Inventors.ECP.Tester
         private void portMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             Log.Debug("Port changed to: {0}", e.ClickedItem.Text);
-            serial.PortName = e.ClickedItem.Text;
+            serial.Port = e.ClickedItem.Text;
 
             foreach (var item in portMenuItem.DropDownItems)
             {
@@ -122,14 +122,14 @@ namespace Inventors.ECP.Tester
                         if (tsItem.Text == loader.PortName)
                         {
                             selected = tsItem;
-                            serial.PortName = selected.Text;
+                            serial.Port = selected.Text;
                         }
                     }
                 }
 
                 if (selected != null)
                 {
-                    Log.Status("SELECTED PORT [ {0} ]", serial.PortName);
+                    Log.Status("SELECTED PORT [ {0} ]", serial.Port);
 
                     foreach (var item in portMenuItem.DropDownItems)
                     {
@@ -138,7 +138,7 @@ namespace Inventors.ECP.Tester
                 }
                 else
                 {
-                    Log.Status("DEFAULT PORT [ {0} ] not found, keeping port [ {1} ]", loader.PortName, serial.PortName);
+                    Log.Status("DEFAULT PORT [ {0} ] not found, keeping port [ {1} ]", loader.PortName, serial.Port);
                 }
             }
         }
@@ -282,7 +282,7 @@ namespace Inventors.ECP.Tester
 
         public void onConnected(object sender, bool success)
         {
-            Log.Status("Device Connected: {0} [{1}]", device.ToString(), serial.PortName);
+            Log.Status("Device Connected: {0} [{1}]", device.ToString(), serial.Port);
 
             BeginUpdate(() =>
             {
@@ -296,7 +296,7 @@ namespace Inventors.ECP.Tester
             {
                 UpdateAppStates(AppState.APP_STATE_INITIALIZED);
             });
-            Log.Status("Device disconnected: {0} [{1}]", device.ToString(), serial.PortName);
+            Log.Status("Device disconnected: {0} [{1}]", device.ToString(), serial.Port);
         }
 
         public void onConnectedFailed(object sender, Exception e)
