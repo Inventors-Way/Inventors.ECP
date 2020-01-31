@@ -96,7 +96,7 @@ namespace Inventors.ECP
                 {
                     Destuffer.Add(d);
                 }
-            });
+            }).ConfigureAwait(true);
         }
 
         private async Task OnConnected() => await Task.Run(() => IsConnected = true);

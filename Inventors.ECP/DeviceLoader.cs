@@ -82,7 +82,7 @@ namespace Inventors.ECP
             var assembly = Assembly.LoadFrom(fullAssemblyName);
             var type = assembly.GetType(Factory);
 
-            if (type != null)
+            if ((type is object) && (layer is object))
             {
                 retValue = (Device) Activator.CreateInstance(type, new object[] { layer });
 
