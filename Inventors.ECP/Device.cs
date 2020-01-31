@@ -184,21 +184,24 @@ namespace Inventors.ECP
 
         public void Execute(Function function)
         {
-            for (int n = 0; n < Retries; ++n)
+            if (function is object)
             {
-                try
+                for (int n = 0; n < Retries; ++n)
                 {
-                    watch.Restart();
-                    Master.Execute(function);
-                    watch.Stop();
-                    function.TransmissionTime = watch.ElapsedMilliseconds;
-                    break;
-                }
-                catch (Exception e)
-                {
-                    if (n == Retries - 1)
+                    try
                     {
-                        throw e;
+                        watch.Restart();
+                        Master.Execute(function);
+                        watch.Stop();
+                        function.TransmissionTime = watch.ElapsedMilliseconds;
+                        break;
+                    }
+                    catch (Exception e)
+                    {
+                        if (n == Retries - 1)
+                        {
+                            throw e;
+                        }
                     }
                 }
             }

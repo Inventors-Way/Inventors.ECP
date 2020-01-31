@@ -42,7 +42,7 @@ namespace Inventors.ECP
             data = new byte[length];
         }
 
-        private PacketType GetLengthEncoding(int length)
+        private static PacketType GetLengthEncoding(int length)
         {
             var retValue = PacketType.LENGTH_UINT8_ENCODED;
 
@@ -98,7 +98,7 @@ namespace Inventors.ECP
 
         private int DecodeLength(byte[] frame)
         {
-            int retValue = 0;
+            int retValue;
 
             if (frame[1] == (byte) PacketType.LENGTH_UINT32_ENCODED)
             {
@@ -312,13 +312,13 @@ namespace Inventors.ECP
             return retValue;
         }
 
-        private void VerifyPosition(byte[] data, int position, int size)
+        private static void VerifyPosition(byte[] data, int position, int size)
         {
             if (!ValidPosition(data, position, size))
-                throw new ArgumentOutOfRangeException();
+                throw new ArgumentOutOfRangeException(nameof(position));
         }
 
-        private bool ValidPosition(byte[] data, int position, int size)
+        private static bool ValidPosition(byte[] data, int position, int size)
         {
             return (position < data.Length) &&
                    (position + size <= data.Length);

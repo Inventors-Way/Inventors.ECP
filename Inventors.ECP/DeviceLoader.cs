@@ -1,6 +1,7 @@
 ﻿using Inventors.Logging;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -25,13 +26,11 @@ namespace Inventors.ECP
         {
             get
             {
-                return BaudRate.ToString();
+                return BaudRate.ToString(CultureInfo.CurrentCulture);
             }
             set
             {
-                int result; 
-
-                if (int.TryParse(value, out result))
+                if (int.TryParse(value, out int result))
                 {
                     BaudRate = result;
                 }

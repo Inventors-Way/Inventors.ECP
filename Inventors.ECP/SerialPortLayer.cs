@@ -64,11 +64,12 @@ namespace Inventors.ECP
             Log.Debug("Serial Port ({0}) opened [Baud = {1} ]", Port, BaudRate);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         private void InitializeRead()
         {
             byte[] buffer = new byte[BlockLimit];
-            Action reader = null;
-            reader = delegate {
+            void reader()
+            {
                 if (port != null)
                 {
                     if (port.IsOpen)
@@ -93,7 +94,7 @@ namespace Inventors.ECP
                         }, null);
                     }
                 }
-            };
+            }
 
             reader();
         }

@@ -10,9 +10,10 @@ namespace Inventors.ECP
 {
     public abstract class CommunicationLayer
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1034:Nested types should not be visible", Justification = "<Pending>")]
         public abstract class Statistics
         {
-            public string FormatRate(double rate, string unit = "B/s")
+            public static string FormatRate(double rate, string unit = "B/s")
             {
                 if (rate > 1048576)
                 {

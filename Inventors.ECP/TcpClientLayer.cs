@@ -30,8 +30,6 @@ namespace Inventors.ECP
 
                     if (!IPAddress.TryParse(Address, out IPAddress _))
                         throw new ArgumentException(_port + " does not contain a valid IP Address");
-
-                    var ipPort = IPPort;
                 }
                 else
                 {
@@ -96,12 +94,12 @@ namespace Inventors.ECP
                 {
                     Destuffer.Add(d);
                 }
-            }).ConfigureAwait(true);
+            }).ConfigureAwait(false);
         }
 
-        private async Task OnConnected() => await Task.Run(() => IsConnected = true);
+        private async Task OnConnected() => await Task.Run(() => IsConnected = true).ConfigureAwait(false);
 
-        private async Task OnDisconnected() => await Task.Run(() => IsConnected = false);
+        private async Task OnDisconnected() => await Task.Run(() => IsConnected = false).ConfigureAwait(false);
 
         public override List<string> GetAvailablePorts()
         {

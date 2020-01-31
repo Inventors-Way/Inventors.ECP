@@ -32,8 +32,6 @@ namespace Inventors.ECP
 
                     if (!IPAddress.TryParse(Address, out IPAddress _))
                         throw new ArgumentException(_port + " does not contain a valid IP Address");
-
-                    var ipPort = IPPort;
                 }
                 else
                 {
@@ -129,7 +127,7 @@ namespace Inventors.ECP
                 {
                     server.DisconnectClient(ipPort);
                 }
-            });
+            }).ConfigureAwait(false);
         }
 
         private async Task OnDisconnected(string ipPort, DisconnectReason reason)
@@ -143,7 +141,7 @@ namespace Inventors.ECP
                         IsConnected = false;
                     }
                 }
-            });
+            }).ConfigureAwait(false);
         }
 
         private async Task MessageReceived(string ipPort, byte[] data)
@@ -160,7 +158,7 @@ namespace Inventors.ECP
                         }
                     }
                 }
-            });
+            }).ConfigureAwait(false);
         }
 
         public static string GetLocalAddress()

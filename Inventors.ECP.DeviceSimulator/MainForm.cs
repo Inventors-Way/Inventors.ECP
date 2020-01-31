@@ -61,9 +61,11 @@ namespace Inventors.ECP.DeviceSimulator
             {
                 BaudRate = 115200
             };
-            slave = new DeviceSlave(serial, deviceData);
-            slave.FunctionListener = this;
-            slave.MessageListener = this;
+            slave = new DeviceSlave(serial, deviceData)
+            {
+                FunctionListener = this,
+                MessageListener = this
+            };
             slave.Add(new PrintfMessage());
             slave.Add(new DeviceIdentification());
             slave.Add(new Ping());

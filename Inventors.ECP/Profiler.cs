@@ -6,11 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using static Inventors.ECP.CommunicationLayer;
 
 namespace Inventors.ECP
 {
     public class Profiler
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1034:Nested types should not be visible", Justification = "<Pending>")]
         public class Report
         {
             public Report(List<double> time, 
@@ -50,9 +52,9 @@ namespace Inventors.ECP
                 builder.AppendLine("Test Report");
                 builder.AppendLine(String.Format(CultureInfo.CurrentCulture, "Success    : {0:0.00}%", Success));
                 builder.AppendLine(String.Format(CultureInfo.CurrentCulture, "Time       : {0:0.00} +/- {1:0.00}ms, ({2}ms - {3}ms)", Tavg, Tstd, Tmin, Tmax));
-                builder.AppendLine(String.Format(CultureInfo.CurrentCulture, "Data rate  : Rx: {0}, Tx: {1}", 
-                    Statistics.FormatRate(Statistics.RxRate),
-                    Statistics.FormatRate(Statistics.TxRate)));
+                builder.AppendLine(String.Format(CultureInfo.CurrentCulture, "Data rate  : Rx: {0}, Tx: {1}",
+                    CommunicationLayer.Statistics.FormatRate(Statistics.RxRate),
+                    CommunicationLayer.Statistics.FormatRate(Statistics.TxRate)));
                 builder.Append(String.Format(CultureInfo.CurrentCulture, "Run Time   : {0:0.00}s", RunTime/1000));
 
                 return builder.ToString();
@@ -171,6 +173,7 @@ namespace Inventors.ECP
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         private void HandleIncommingFrame(Destuffer caller, byte[] frame)
         {
             lock (framesReceived)
@@ -241,8 +244,8 @@ namespace Inventors.ECP
                     builder.AppendLine(String.Format(CultureInfo.CurrentCulture, fmtString2,
                         String.Format(CultureInfo.CurrentCulture, "0x{0:X2}", p.Code),
                         p.Count.ToString(CultureInfo.CurrentCulture),
-                        p.FormatRate(p.Bytes),
-                        p.FormatRate(p.Rate, "MSG/s")));
+                        CommunicationLayer.Statistics.FormatRate(p.Bytes),
+                        CommunicationLayer.Statistics.FormatRate(p.Rate, "MSG/s")));
                 }
 
             }
@@ -250,6 +253,7 @@ namespace Inventors.ECP
             return builder.ToString();
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         public void Test()
         {
             if (Device != null && Function != null)

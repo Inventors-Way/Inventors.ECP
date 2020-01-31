@@ -149,8 +149,8 @@ namespace Inventors.ECP.Tester
             {
                 var report = serial.GetStatistics();
                 statusText.Text = String.Format("DATA [Rx: {0}, Tx: {1}]", 
-                    report.FormatRate(report.RxRate),
-                    report.FormatRate(report.TxRate));
+                    CommunicationLayer.Statistics.FormatRate(report.RxRate),
+                    CommunicationLayer.Statistics.FormatRate(report.TxRate));
             });
         }
 
@@ -367,7 +367,7 @@ namespace Inventors.ECP.Tester
             }
         }
 
-        private void propertyGrid_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
+        private void PropertyGrid_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
         {
             propertyGrid.Refresh();
         }

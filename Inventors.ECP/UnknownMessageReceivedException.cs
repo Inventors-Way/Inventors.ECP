@@ -16,5 +16,9 @@ namespace Inventors.ECP
         protected UnknownMessageReceivedException(SerializationInfo info, StreamingContext context)
          : base(info, context) 
       { }
+
+        public UnknownMessageReceivedException()
+        {
+        }
     }
 }

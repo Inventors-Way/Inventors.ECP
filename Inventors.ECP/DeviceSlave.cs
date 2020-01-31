@@ -20,9 +20,14 @@ namespace Inventors.ECP
 
         public DeviceSlave(CommunicationLayer layer, DeviceData deviceData)
         {
-            _connection = layer;
-            _deviceData = deviceData;
-            _connection.Destuffer.OnReceive += HandleIncommingFrame;
+            if ((layer is object) && (deviceData is object))
+            {
+                _connection = layer;
+                _deviceData = deviceData;
+                _connection.Destuffer.OnReceive += HandleIncommingFrame;
+            }
+            else
+                throw new ArgumentException("Passed null values for layer or deviceData");
         }
 
         public void Open()
@@ -72,6 +77,7 @@ namespace Inventors.ECP
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         private void HandleIncommingFrame(Destuffer caller, byte[] frame)
         {
             try

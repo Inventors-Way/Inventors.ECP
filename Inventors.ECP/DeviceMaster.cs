@@ -127,7 +127,7 @@ namespace Inventors.ECP
             connection.Transmit(Frame.Encode(bytes));
         }
 
-
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         private void HandleIncommingFrame(Destuffer caller, byte[] frame)
         {
             try
@@ -193,7 +193,10 @@ namespace Inventors.ECP
 
         public void Add(Message message)
         {
-            Dispatchers.Add(message.CreateDispatcher());
+            if (message is object)
+            {
+                Dispatchers.Add(message.CreateDispatcher());
+            }
         }
 
         private List<MessageDispatcher> Dispatchers { get; } = new List<MessageDispatcher>();

@@ -16,5 +16,9 @@ namespace Inventors.ECP
       protected UnknownFunctionCallException(SerializationInfo info, StreamingContext context)
          : base(info, context) 
       { }
-   }
+
+        public UnknownFunctionCallException()
+        {
+        }
+    }
 }
