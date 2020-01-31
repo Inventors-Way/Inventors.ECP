@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -150,8 +151,8 @@ namespace Inventors.ECP.Functions
                 if (response != null)
                 {
                     return EngineeringVersion == 0 ?
-                           String.Format("{0}.{1}.{2}", MajorVersion, MinorVersion, PatchVersion) :
-                           String.Format("{0}.{1}.{2}.r{3}", MajorVersion, MinorVersion, PatchVersion, EngineeringVersion);
+                           String.Format(CultureInfo.CurrentCulture, "{0}.{1}.{2}", MajorVersion, MinorVersion, PatchVersion) :
+                           String.Format(CultureInfo.CurrentCulture, "{0}.{1}.{2}.r{3}", MajorVersion, MinorVersion, PatchVersion, EngineeringVersion);
                 }
                 else
                     return "";

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -17,6 +18,9 @@ namespace Inventors.ECP
                           CommunicationLayer.CommunicationLayerStatistics stats,
                           double RunTime)
             {
+                if (!(time is object))
+                    throw new ArgumentException("time is null");
+
                 Trials = trials;
                 this.RunTime = RunTime;
 
@@ -26,7 +30,7 @@ namespace Inventors.ECP
                     Tstd = Math.Sqrt(time.Sum((v) => (v - Tavg) * (v - Tavg)) / time.Count);
                     Tmin = time.Min();
                     Tmax = time.Max();
-                    Success = 100 * (((double)time.Count()) / ((double)trials));
+                    Success = 100 * (((double)time.Count) / ((double)trials));
                 }
                 else
                 {
@@ -44,12 +48,12 @@ namespace Inventors.ECP
             {
                 var builder = new StringBuilder();
                 builder.AppendLine("Test Report");
-                builder.AppendLine(String.Format("Success    : {0:0.00}%", Success));
-                builder.AppendLine(String.Format("Time       : {0:0.00} +/- {1:0.00}ms, ({2}ms - {3}ms)", Tavg, Tstd, Tmin, Tmax));
-                builder.AppendLine(String.Format("Data rate  : Rx: {0}, Tx: {1}", 
+                builder.AppendLine(String.Format(CultureInfo.CurrentCulture, "Success    : {0:0.00}%", Success));
+                builder.AppendLine(String.Format(CultureInfo.CurrentCulture, "Time       : {0:0.00} +/- {1:0.00}ms, ({2}ms - {3}ms)", Tavg, Tstd, Tmin, Tmax));
+                builder.AppendLine(String.Format(CultureInfo.CurrentCulture, "Data rate  : Rx: {0}, Tx: {1}", 
                     Statistics.FormatRate(Statistics.RxRate),
                     Statistics.FormatRate(Statistics.TxRate)));
-                builder.Append(String.Format("Run Time   : {0:0.00}s", RunTime/1000));
+                builder.Append(String.Format(CultureInfo.CurrentCulture, "Run Time   : {0:0.00}s", RunTime/1000));
 
                 return builder.ToString();
             }
@@ -67,7 +71,7 @@ namespace Inventors.ECP
             public CommunicationLayer.CommunicationLayerStatistics Statistics { get; private set; }
         }
 
-        public class Profile :
+        public class CommunicationProfile :
             CommunicationLayer.Statistics
         {
             public byte Code { get; set; } = 0;
@@ -101,7 +105,7 @@ namespace Inventors.ECP
                 {
                     device = value;
 
-                    if (profiling)
+                    if (profiling && (device is object))
                     {
                         device.CommLayer.Destuffer.OnReceive += HandleIncommingFrame;
                         profileWatch.Restart();
@@ -196,9 +200,9 @@ namespace Inventors.ECP
             }
         }
 
-        public List<Profile> GetProfile()
+        public List<CommunicationProfile> GetProfile()
         {
-            List<Profile> retValue = new List<Profile>();
+            List<CommunicationProfile> retValue = new List<CommunicationProfile>();
 
             lock (framesReceived)
             {
@@ -208,7 +212,7 @@ namespace Inventors.ECP
                 {
                     var stat = item.Value;
 
-                    retValue.Add(new Profile()
+                    retValue.Add(new CommunicationProfile()
                     {
                         Code = item.Key,
                         Bytes = ((double) stat.Bytes) / time,
@@ -221,21 +225,26 @@ namespace Inventors.ECP
             return retValue;
         }
 
-        public static string CreateProfileReport(List<Profile> profile)
+        public static string CreateProfileReport(List<CommunicationProfile> profile)
         {
-            string fmtString = " {0,-5} | {1,-12} | {2,-12} | {3,-12}";
-            string fmtString2 = " {0,-5} | {1,12} | {2,12} | {3,12}";
             var builder = new StringBuilder();
-            builder.AppendLine("PROFILE REPORT");
-            builder.AppendLine(String.Format(fmtString, "CODE", "COUNT", "DATA RATE", "FRAME RATE"));
 
-            foreach (var p in profile)
+            if (profile is object)
             {
-                builder.AppendLine(String.Format(fmtString2,
-                    String.Format("0x{0:X2}", p.Code), 
-                    p.Count.ToString(), 
-                    p.FormatRate(p.Bytes), 
-                    p.FormatRate(p.Rate,"MSG/s")));
+                string fmtString = " {0,-5} | {1,-12} | {2,-12} | {3,-12}";
+                string fmtString2 = " {0,-5} | {1,12} | {2,12} | {3,12}";
+                builder.AppendLine("PROFILE REPORT");
+                builder.AppendLine(String.Format(CultureInfo.CurrentCulture, fmtString, "CODE", "COUNT", "DATA RATE", "FRAME RATE"));
+
+                foreach (var p in profile)
+                {
+                    builder.AppendLine(String.Format(CultureInfo.CurrentCulture, fmtString2,
+                        String.Format(CultureInfo.CurrentCulture, "0x{0:X2}", p.Code),
+                        p.Count.ToString(CultureInfo.CurrentCulture),
+                        p.FormatRate(p.Bytes),
+                        p.FormatRate(p.Rate, "MSG/s")));
+                }
+
             }
 
             return builder.ToString();

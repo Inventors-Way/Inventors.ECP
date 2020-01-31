@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using System.Xml.Serialization;
 
@@ -34,8 +35,8 @@ namespace Inventors.ECP
 
         [XmlIgnore]
         public string Version => EngineeringVersion == 0 ?
-                                 String.Format("{0}.{1}.{2}", MajorVersion, MinorVersion, PatchVersion) :
-                                 String.Format("{0}.{1}.{2}.r{3}", MajorVersion, MinorVersion, PatchVersion, EngineeringVersion);
+                                 String.Format(CultureInfo.CurrentCulture, "{0}.{1}.{2}", MajorVersion, MinorVersion, PatchVersion) :
+                                 String.Format(CultureInfo.CurrentCulture, "{0}.{1}.{2}.r{3}", MajorVersion, MinorVersion, PatchVersion, EngineeringVersion);
 
         [XmlAttribute("serial-number")]
         public UInt32 SerialNumber { get; set; } = 1;
@@ -44,7 +45,7 @@ namespace Inventors.ECP
         public UInt16 Checksum { get; set; } = 0;
 
         [XmlIgnore]
-        public string BeaconName => String.Format("ECP-{0}-{1}", ManufactureID, DeviceID);
+        public string BeaconName => String.Format(CultureInfo.CurrentCulture, "ECP-{0}-{1}", ManufactureID, DeviceID);
 
         [XmlIgnore]
         public string Address { get; set; }

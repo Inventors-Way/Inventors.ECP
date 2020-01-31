@@ -9,8 +9,33 @@ using System.Threading.Tasks;
 namespace Inventors.ECP
 {
     public class SerialPortLayer :
-        CommunicationLayer
+        CommunicationLayer,
+        IDisposable
     {
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    port.Dispose();
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        #endregion
+
         protected override void DoOpen(DeviceData device)
         {
             if (port != null)

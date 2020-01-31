@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -14,7 +15,7 @@ namespace Inventors.ECP
         private WatsonTcpClient client;
         private bool _open = false;
         private bool _connected = false;
-        private string _port = String.Format("{0}:{1}", IPAddress.Loopback.ToString(), 9000);
+        private string _port = String.Format(CultureInfo.CurrentCulture, "{0}:{1}", IPAddress.Loopback.ToString(), 9000);
 
         public override int BaudRate { get; set; } = 1;
 
@@ -41,7 +42,7 @@ namespace Inventors.ECP
 
         public string Address => Port.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries)[0];
 
-        public int IPPort => int.Parse(Port.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries)[1]);
+        public int IPPort => int.Parse(Port.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries)[1], CultureInfo.CurrentCulture);
 
         public override bool IsOpen => _open;
 

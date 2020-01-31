@@ -1,6 +1,7 @@
 ﻿using Inventors.Logging;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -16,7 +17,7 @@ namespace Inventors.ECP
         private bool _isOpen = false;
         private bool _isConnected = false;
         private string _IpPort = null;
-        private string _port = String.Format("{0}:{1}", IPAddress.Loopback.ToString(), 9000);
+        private string _port = String.Format(CultureInfo.CurrentCulture, "{0}:{1}", IPAddress.Loopback.ToString(), 9000);
 
         public override int BaudRate { get; set; } = int.MaxValue;
 
@@ -43,7 +44,7 @@ namespace Inventors.ECP
 
         public string Address => Port.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries)[0];
 
-        public int IPPort => int.Parse(Port.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries)[1]);
+        public int IPPort => int.Parse(Port.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries)[1], CultureInfo.CurrentCulture, );
 
         public override List<string> GetAvailablePorts()
         {

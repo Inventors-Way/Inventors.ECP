@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Inventors.ECP
 {
-    public class CRC8CCITT
+    public static class CRC8CCITT
     {
 
         public static byte Calculate(byte[] data)

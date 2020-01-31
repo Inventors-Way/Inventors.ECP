@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,6 +8,8 @@ using Inventors.Logging;
 
 namespace Inventors.ECP
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores", Justification = "<Pending>")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1028:Enum Storage should be Int32", Justification = "<Pending>")]
     public enum PacketType : byte
     {
         LENGTH_UINT8_ENCODED = 0,
@@ -57,6 +60,12 @@ namespace Inventors.ECP
 
         public Packet(byte[] frame)
         {
+            if (!(frame is object))
+            {
+                Log.Debug("frame is null");
+                throw new ArgumentException("fame is null");
+            }
+
             if (frame.Length < 2)
             {
                 Log.Debug("The frame is less than 2 bytes long");
@@ -107,7 +116,7 @@ namespace Inventors.ECP
             if (retValue + GetOverhead(GetLengthEncoding(retValue)) != frame.Length)
             {
                 Log.Debug("Unexpected length, expected [ {0} ] but it was [ {1} ]", retValue, frame.Length);
-                throw new PacketFormatException(String.Format("Unexpected length, expected [ {0} ] but it was [ {1} ]", retValue, frame.Length));
+                throw new PacketFormatException(String.Format(CultureInfo.CurrentCulture, "Unexpected length, expected [ {0} ] but it was [ {1} ]", retValue, frame.Length));
             }
 
             return retValue;

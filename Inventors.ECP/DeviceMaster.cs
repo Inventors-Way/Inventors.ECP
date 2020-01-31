@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -21,6 +22,12 @@ namespace Inventors.ECP
 
         public DeviceMaster(CommunicationLayer connection, DeviceData device)
         {
+            if (!(connection is object))
+                throw new ArgumentException("connection is null");
+
+            if (!(connection is object))
+                throw new ArgumentException("device is null");
+
             this.connection = connection;
             this.device = device;
             connection.Destuffer.OnReceive += HandleIncommingFrame;
@@ -60,20 +67,23 @@ namespace Inventors.ECP
 
         public void Execute(Function function)
         {
-            function.OnSend();
-            Initiate(function);
+            if (function is object)
+            {
+                function.OnSend();
+                Initiate(function);
 
-            while (!IsCompleted());
+                while (!IsCompleted()) ;
 
-            state = CommState.WAITING;
+                state = CommState.WAITING;
 
-            if (currentException != null)
-                throw currentException;
+                if (currentException != null)
+                    throw currentException;
+            }
         }
 
         public void Send(Message message)
         {
-            if (connection.IsOpen)
+            if (connection.IsOpen && (message is object))
             {
                 connection.Transmit(Frame.Encode(message.GetPacket()));
             }
@@ -156,7 +166,7 @@ namespace Inventors.ECP
                     
                     lock (lockObject)
                     {
-                        currentException = new UnknownFunctionCallException(String.Format("{0}", response.GetByte(0)));
+                        currentException = new UnknownFunctionCallException(String.Format(CultureInfo.CurrentCulture, "{0}", response.GetByte(0)));
                         state = CommState.ERROR;
                     }
                 }
@@ -196,7 +206,6 @@ namespace Inventors.ECP
         private Exception currentException = null;
         private readonly Stopwatch stopwatch = new Stopwatch();
         private CommState state = CommState.WAITING;
-        private Queue<Packet> messages = new Queue<Packet>();
-        private DeviceData device;
+        private readonly DeviceData device;
     }
 }

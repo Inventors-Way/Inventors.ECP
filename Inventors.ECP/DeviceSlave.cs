@@ -3,6 +3,7 @@ using Inventors.ECP.Messages;
 using Inventors.Logging;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace Inventors.ECP
@@ -38,7 +39,7 @@ namespace Inventors.ECP
         {
             Send(new PrintfMessage
             {
-                DebugMessage = String.Format(format, args)
+                DebugMessage = String.Format(CultureInfo.CurrentCulture, format, args)
             });
         }
 
@@ -64,7 +65,7 @@ namespace Inventors.ECP
 
         public void Send(Message message)
         {
-            if (_connection.IsOpen)
+            if (_connection.IsOpen && (message is object))
             {
                 message.OnSend();
                 _connection.Transmit(Frame.Encode(message.GetPacket()));
@@ -115,12 +116,18 @@ namespace Inventors.ECP
 
         public void Add(Function function)
         {
-            FunctionDispatchers.Add(function.CreateDispatcher());
+            if (function is object)
+            {
+                FunctionDispatchers.Add(function.CreateDispatcher());
+            }
         }
 
         public void Add(Message message)
         {
-            MessageDispatchers.Add(message.CreateDispatcher());
+            if (message is object)
+            {
+                MessageDispatchers.Add(message.CreateDispatcher());
+            }
         }
 
         public bool DispatchMessage(Packet packet)
@@ -160,16 +167,19 @@ namespace Inventors.ECP
 
         public void Accept(DeviceIdentification func)
         {
-            func.DeviceID = _deviceData.DeviceID;
-            func.ManufactureID = _deviceData.ManufactureID;
-            func.Manufacture = _deviceData.Manufacture;
-            func.Device = _deviceData.Device;
-            func.MajorVersion = _deviceData.MajorVersion;
-            func.MinorVersion = _deviceData.MinorVersion;
-            func.PatchVersion = _deviceData.PatchVersion;
-            func.EngineeringVersion = _deviceData.EngineeringVersion;
-            func.Checksum = _deviceData.Checksum;
-            func.SerialNumber = _deviceData.SerialNumber;
+            if (func is object)
+            {
+                func.DeviceID = _deviceData.DeviceID;
+                func.ManufactureID = _deviceData.ManufactureID;
+                func.Manufacture = _deviceData.Manufacture;
+                func.Device = _deviceData.Device;
+                func.MajorVersion = _deviceData.MajorVersion;
+                func.MinorVersion = _deviceData.MinorVersion;
+                func.PatchVersion = _deviceData.PatchVersion;
+                func.EngineeringVersion = _deviceData.EngineeringVersion;
+                func.Checksum = _deviceData.Checksum;
+                func.SerialNumber = _deviceData.SerialNumber;
+            }
         }
 
         private readonly CommunicationLayer _connection;

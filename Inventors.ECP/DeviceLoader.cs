@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace Inventors.ECP
@@ -59,10 +60,14 @@ namespace Inventors.ECP
         {
             DeviceLoader retValue = null;
             XmlSerializer serializer = new XmlSerializer(typeof(DeviceLoader));
+            XmlReaderSettings settings = new XmlReaderSettings() { };
 
-            using (var reader = File.Open(filename, FileMode.Open, FileAccess.Read))
+            using (var file = File.Open(filename, FileMode.Open, FileAccess.Read))
             {
-                retValue = (DeviceLoader)serializer.Deserialize(reader);
+                using (var reader = XmlReader.Create(file, settings))
+                {
+                    retValue = (DeviceLoader)serializer.Deserialize(reader);
+                }
             }
             retValue.FileName = filename;
 
