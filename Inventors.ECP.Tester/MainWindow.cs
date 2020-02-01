@@ -489,12 +489,12 @@ namespace Inventors.ECP.Tester
 
         private void DocumentationToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("http://inventors.dk/ecp.html");
+            Process.Start("https://github.com/Inventors-Way/Inventors.ECP");
         }
 
         private void AboutECPTesterToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start(String.Format("http://inventors.dk/ecp_tester_about_{0}.html", VersionInformation));
+            Process.Start(String.Format("http://inventors.dk/ecp_tester_about_{0}.html", VersionInformation));
         }
 
         private void EnabledToolStripMenuItem_Click(object sender, EventArgs e)
