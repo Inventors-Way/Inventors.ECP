@@ -15,6 +15,7 @@
     <PackageReleaseNotes>Bugfix to failed connection</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageIconUrl></PackageIconUrl>
+    <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Functions\" />
