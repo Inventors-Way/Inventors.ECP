@@ -33,7 +33,7 @@ namespace Inventors.ECP.Tester
 
         private Logger logger;
         private Device device = null;
-        private SerialPortLayer serial = null;
+        private CommunicationLayer commLayer = null;
         private readonly Profiler profiler = new Profiler();
         private AppState state = AppState.APP_STATE_UNINITIALIZED;
 
@@ -78,7 +78,7 @@ namespace Inventors.ECP.Tester
         private void SetupPorts()
         {
             var names = SerialPort.GetPortNames();            
-            serial = new SerialPortLayer()
+            commLayer = new SerialPortLayer()
             {
                 BaudRate = 115200
             };
@@ -90,8 +90,8 @@ namespace Inventors.ECP.Tester
 
                 if (n == 0)
                 {
-                    serial.Port = names[n];
-                    Log.Status("Serial port: {0}", serial.Port);
+                    commLayer.Port = names[n];
+                    Log.Status("Serial port: {0}", commLayer.Port);
                     item.Checked = true;
                 }
             }
@@ -100,7 +100,7 @@ namespace Inventors.ECP.Tester
         private void PortMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             Log.Debug("Port changed to: {0}", e.ClickedItem.Text);
-            serial.Port = e.ClickedItem.Text;
+            commLayer.Port = e.ClickedItem.Text;
 
             foreach (var item in portMenuItem.DropDownItems)
             {
@@ -123,14 +123,14 @@ namespace Inventors.ECP.Tester
                         if (tsItem.Text == loader.PortName)
                         {
                             selected = tsItem;
-                            serial.Port = selected.Text;
+                            commLayer.Port = selected.Text;
                         }
                     }
                 }
 
                 if (selected != null)
                 {
-                    Log.Status("SELECTED PORT [ {0} ]", serial.Port);
+                    Log.Status("SELECTED PORT [ {0} ]", commLayer.Port);
 
                     foreach (var item in portMenuItem.DropDownItems)
                     {
@@ -139,20 +139,17 @@ namespace Inventors.ECP.Tester
                 }
                 else
                 {
-                    Log.Status("DEFAULT PORT [ {0} ] not found, keeping port [ {1} ]", loader.PortName, serial.Port);
+                    Log.Status("DEFAULT PORT [ {0} ] not found, keeping port [ {1} ]", loader.PortName, commLayer.Port);
                 }
             }
         }
 
         private void UpdateStatus()
         {
-            BeginUpdate(() =>
-            {
-                var report = serial.GetStatistics();
-                statusText.Text = String.Format("DATA [Rx: {0}, Tx: {1}]", 
-                    CommunicationLayer.Statistics.FormatRate(report.RxRate),
-                    CommunicationLayer.Statistics.FormatRate(report.TxRate));
-            });
+            var report = commLayer.GetStatistics();
+            statusText.Text = String.Format("DATA [Rx: {0}, Tx: {1}]",
+                CommunicationLayer.Statistics.FormatRate(report.RxRate),
+                CommunicationLayer.Statistics.FormatRate(report.TxRate));
         }
 
         private void MsgTimer_Tick(object sender, EventArgs e)
@@ -190,7 +187,7 @@ namespace Inventors.ECP.Tester
         {
             var loader = DeviceLoader.Load(fileName);
             Log.Status("Device: {0}", loader.AssemblyName);
-            device = loader.Create(serial);
+            device = loader.Create(commLayer);
             device.OnStateChanged += (sender, message) =>
             {
                 if (functionList.SelectedItem is Device.DeviceState)
@@ -268,14 +265,14 @@ namespace Inventors.ECP.Tester
                 Log.Status("Please connect first to a device");
         }
 
-        private void ConnectToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void ConnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (portMenuItem.DropDownItems.Count > 0)
             {
                 try
                 {
-                    device.Connect();
-                    Log.Status("Device Connected: {0} [{1}]", device.ToString(), serial.Port);
+                    await device.ConnectAsync();
+                    Log.Status("Device Connected: {0} [{1}]", device.ToString(), commLayer.Port);
                     UpdateAppStates(AppState.APP_STATE_CONNECTED);
                 }
                 catch (Exception ex)
@@ -290,13 +287,13 @@ namespace Inventors.ECP.Tester
             }
         }
 
-        private void DisconnectToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void DisconnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
-                device.Disconnect();
+                await device.DisconnectAsync();
                 UpdateAppStates(AppState.APP_STATE_INITIALIZED);
-                Log.Status("Device disconnected: {0} [{1}]", device.ToString(), serial.Port);
+                Log.Status("Device disconnected: {0} [{1}]", device.ToString(), commLayer.Port);
             }
             catch (Exception ex)
             {
@@ -420,12 +417,6 @@ namespace Inventors.ECP.Tester
         public void OnPrintf(object sender, MessageEventArgs<PrintfMessage> e) => Log.Status("Printf: {0}", e.Message.ToString());
 
         #endregion
-
-        class TestResult
-        {
-            public long Time { get; set; } = 0;
-            public bool Succes { get; set; } = false;
-        }
 
         private async void TestToolStripMenuItem_Click(object sender, EventArgs e)
         {

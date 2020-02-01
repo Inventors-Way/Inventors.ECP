@@ -60,7 +60,8 @@ namespace Inventors.ECP
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Client is notified by NotifyDisconnectFailed")]
+        public async Task ConnectAsync() => await Task.Run(() => Connect()).ConfigureAwait(false);
+
         public virtual void Disconnect()
         {
             if (Master.IsOpen)
@@ -69,6 +70,8 @@ namespace Inventors.ECP
                 Connected = false;
             }
         }
+
+        public async Task DisconnectAsync() => await Task.Run(() => Disconnect()).ConfigureAwait(false);
 
         [Browsable(false)]
         [XmlIgnore]
