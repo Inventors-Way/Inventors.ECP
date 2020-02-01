@@ -6,7 +6,7 @@ using System.Text;
 namespace Inventors.ECP.Profiling
 {
     public class CommunicationProfile :
-        CommunicationLayer.Statistics
+        Statistics
     {
         public byte Code { get; set; } = 0;
 

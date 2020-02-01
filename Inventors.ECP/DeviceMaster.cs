@@ -38,7 +38,7 @@ namespace Inventors.ECP
 
         public void Open()
         {
-            connection.Open(device);
+            connection.Open();
         }
 
         public void Close()

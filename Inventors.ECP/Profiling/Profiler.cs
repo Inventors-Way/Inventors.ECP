@@ -53,8 +53,8 @@ namespace Inventors.ECP.Profiling
                 builder.AppendLine(String.Format(CultureInfo.CurrentCulture, "Success    : {0:0.00}%", Success));
                 builder.AppendLine(String.Format(CultureInfo.CurrentCulture, "Time       : {0:0.00} +/- {1:0.00}ms, ({2}ms - {3}ms)", Tavg, Tstd, Tmin, Tmax));
                 builder.AppendLine(String.Format(CultureInfo.CurrentCulture, "Data rate  : Rx: {0}, Tx: {1}",
-                    CommunicationLayer.Statistics.FormatRate(Statistics.RxRate),
-                    CommunicationLayer.Statistics.FormatRate(Statistics.TxRate)));
+                    Inventors.ECP.Communication.Statistics.FormatRate(Statistics.RxRate),
+                    Inventors.ECP.Communication.Statistics.FormatRate(Statistics.TxRate)));
                 builder.Append(String.Format(CultureInfo.CurrentCulture, "Run Time   : {0:0.00}s", RunTime/1000));
 
                 return builder.ToString();
@@ -232,8 +232,8 @@ namespace Inventors.ECP.Profiling
                     builder.AppendLine(String.Format(CultureInfo.CurrentCulture, fmtString2,
                         String.Format(CultureInfo.CurrentCulture, "0x{0:X2}", p.Code),
                         p.Count.ToString(CultureInfo.CurrentCulture),
-                        CommunicationLayer.Statistics.FormatRate(p.Bytes),
-                        CommunicationLayer.Statistics.FormatRate(p.Rate, "MSG/s")));
+                        Statistics.FormatRate(p.Bytes),
+                        Statistics.FormatRate(p.Rate, "MSG/s")));
                 }
 
             }

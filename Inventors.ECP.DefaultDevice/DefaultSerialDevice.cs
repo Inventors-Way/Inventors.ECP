@@ -22,7 +22,7 @@ namespace Inventors.ECP.DefaultDevice
         private readonly DefaultState state = new DefaultState();
 
         public DefaultSerialDevice(DeviceData device) :
-            base(new SerialPortLayer(), device)
+            base(new SerialPortLayer(device), device)
         {
             FunctionList.Add(new DeviceIdentification());
             FunctionList.Add(new Ping());

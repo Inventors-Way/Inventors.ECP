@@ -35,7 +35,7 @@ namespace Inventors.ECP
 
         public void Open()
         {
-            _connection.Open(_deviceData);
+            _connection.Open();
         }
 
         public void Close()

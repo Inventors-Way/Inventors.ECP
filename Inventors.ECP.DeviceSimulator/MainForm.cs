@@ -58,7 +58,7 @@ namespace Inventors.ECP.DeviceSimulator
 
         private void SetupSlave()
         {
-            serial = new SerialPortLayer()
+            serial = new SerialPortLayer(deviceData)
             {
                 BaudRate = 115200
             };

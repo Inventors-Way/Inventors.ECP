@@ -33,7 +33,7 @@ namespace Inventors.ECP.DefaultDevice
         {
             if (!IsOpen)
             {
-                commLayer = new TcpServerLayer()
+                commLayer = new TcpServerLayer(Identification)
                 {
                     Port = Port
                 };

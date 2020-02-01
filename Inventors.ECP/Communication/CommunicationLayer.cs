@@ -10,43 +10,22 @@ namespace Inventors.ECP.Communication
 {
     public abstract class CommunicationLayer
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1034:Nested types should not be visible", Justification = "<Pending>")]
-        public abstract class Statistics
-        {
-            public static string FormatRate(double rate, string unit = "B/s")
-            {
-                if (rate > 1048576)
-                {
-                    return String.Format(CultureInfo.CurrentCulture, "{0:0.00}M{1}", rate / 1048576, unit);
-                }
-                else if (rate > 1024)
-                {
-                    return String.Format(CultureInfo.CurrentCulture, "{0:0.00}k{1}", rate / 1024, unit);
-                }
-                else
-                {
-                    return String.Format(CultureInfo.CurrentCulture, "{0:0.00}{1}", rate, unit);
-                }
-            }
-        }
-
         public abstract int BaudRate { get; set; }
 
         public abstract string Port { get; set; }
 
         public bool ResetOnConnection { get; set; } = false;
 
-        public CommunicationLayer()
+        public CommunicationLayer(DeviceData device)
         {
+            if (!(device is object))
+                throw new ArgumentNullException(nameof(device));
+
+            Identification = device;
             BytesTransmitted = 0;
             BytesReceived = 0;
         }
 
-        public void Open(DeviceData device)
-        {
-            DoOpen(device);
-            RestartStatistics();
-        }
 
         public void RestartStatistics()
         {
@@ -64,12 +43,18 @@ namespace Inventors.ECP.Communication
             {
                 BytesTransmitted = BytesTransmitted,
                 BytesReceived = BytesReceived,
-                RxRate = ((double) BytesReceived) / time,
-                TxRate = ((double) BytesTransmitted) / time
+                RxRate = ((double)BytesReceived) / time,
+                TxRate = ((double)BytesTransmitted) / time
             };
         }
 
-        protected abstract void DoOpen(DeviceData device);
+        public void Open()
+        {
+            DoOpen();
+            RestartStatistics();
+        }
+
+        protected abstract void DoOpen();
 
         public void Close()
         {
@@ -88,6 +73,8 @@ namespace Inventors.ECP.Communication
         protected long BytesReceived { get; set; }
 
         protected long BytesTransmitted { get; set; }
+
+        public DeviceData Identification { get; }
 
         private readonly Stopwatch testWatch = new Stopwatch();
     }

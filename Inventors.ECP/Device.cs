@@ -33,6 +33,22 @@ namespace Inventors.ECP
             Master.Add(new PrintfMessage());
         }
 
+        public List<DeviceData> GetAvailableDevices()
+        {
+            var retValue = new List<DeviceData>();
+            var ports = CommLayer.GetAvailablePorts();
+
+            foreach (var port in ports)
+            {
+                retValue.Add(new DeviceData()
+                {
+                    Port = port
+                });
+            }
+
+            return retValue;
+        }
+
         public virtual void Connect()
         {
             if (!Master.IsOpen)

@@ -19,7 +19,7 @@ namespace Inventors.ECP.DefaultDevice
         private readonly DefaultState state = new DefaultState();
 
         public DefaultTcpDevice(DeviceData device) :
-            base(new TcpClientLayer(), device)
+            base(new TcpClientLayer(device), device)
         {
             FunctionList.Add(new DeviceIdentification());
             FunctionList.Add(new Ping());

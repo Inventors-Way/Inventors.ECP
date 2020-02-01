@@ -34,7 +34,7 @@ namespace Inventors.ECP.Tester
 
         private Logger logger;
         private Device device = null;
-        private CommunicationLayer commLayer = null;
+        private readonly CommunicationLayer commLayer = null;
         private readonly Profiler profiler = new Profiler();
         private AppState state = AppState.APP_STATE_UNINITIALIZED;
 
@@ -78,8 +78,9 @@ namespace Inventors.ECP.Tester
 
         private void SetupPorts()
         {
+            /*
             var names = SerialPort.GetPortNames();            
-            commLayer = new SerialPortLayer()
+            commLayer = new SerialPortLayer(deviceData)
             {
                 BaudRate = 115200
             };
@@ -95,7 +96,7 @@ namespace Inventors.ECP.Tester
                     Log.Status("Serial port: {0}", commLayer.Port);
                     item.Checked = true;
                 }
-            }
+            }*/
         }
 
         private void PortMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -140,7 +141,7 @@ namespace Inventors.ECP.Tester
                 }
                 else
                 {
-                    Log.Status("DEFAULT PORT [ {0} ] not found, keeping port [ {1} ]", loader.PortName, commLayer.Port);
+                    //Log.Status("DEFAULT PORT [ {0} ] not found, keeping port [ {1} ]", loader.PortName, commLayer.Port);
                 }
             }
         }
@@ -151,8 +152,8 @@ namespace Inventors.ECP.Tester
             {
                 var report = device.CommLayer.GetStatistics();
                 statusText.Text = String.Format("DATA [Rx: {0}, Tx: {1}]",
-                    CommunicationLayer.Statistics.FormatRate(report.RxRate),
-                    CommunicationLayer.Statistics.FormatRate(report.TxRate));
+                    Statistics.FormatRate(report.RxRate),
+                    Statistics.FormatRate(report.TxRate));
             }
         }
 

@@ -36,7 +36,12 @@ namespace Inventors.ECP.Communication
 
         #endregion
 
-        protected override void DoOpen(DeviceData device)
+        public SerialPortLayer(DeviceData device) : 
+            base(device) 
+        { 
+        }
+
+        protected override void DoOpen()
         {
             if (port != null)
             {

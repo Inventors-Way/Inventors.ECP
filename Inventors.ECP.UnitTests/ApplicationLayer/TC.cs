@@ -7,16 +7,16 @@ using System.Net;
 
 namespace Inventors.ECP.UnitTests.ApplicationLayer
 {
-    public class TcpTestContext : 
+    public class TC : 
         IDisposable
     {
-        private static TcpTestContext Instance
+        private static TC Instance
         {
             get
             {
                 if (!(_instance is object))
                 {
-                    _instance = new TcpTestContext();
+                    _instance = new TC();
                 }
 
                 return _instance;
@@ -27,7 +27,7 @@ namespace Inventors.ECP.UnitTests.ApplicationLayer
 
         public static DefaultTcpDevice Device => Instance._device;
 
-        private TcpTestContext()
+        private TC()
         {
             _slave = new DefaultTcpSlave()
             {
@@ -36,10 +36,10 @@ namespace Inventors.ECP.UnitTests.ApplicationLayer
             _device = new DefaultTcpDevice();
             _device.CommLayer.Port = _slave.Port;
             _slave.Start();
-            _device.Open();
+            _device.Connect();
         }
 
-        private static TcpTestContext _instance;
+        private static TC _instance;
         private readonly DefaultTcpSlave _slave = null;
         private readonly DefaultTcpDevice _device = null;
 

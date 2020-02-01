@@ -52,7 +52,7 @@ namespace Inventors.ECP.Communication
             return null;
         }
 
-        public TcpServerLayer() { }
+        public TcpServerLayer(DeviceData device) : base(device) { }
 
         public override bool IsOpen
         {
@@ -105,26 +105,25 @@ namespace Inventors.ECP.Communication
             }            
         }
 
-        protected override void DoOpen(DeviceData device)
+        protected override void DoOpen()
         {
-            if (device is object)
+            if (!IsOpen)
             {
-                if (!IsOpen)
+                lock (this)
                 {
-                    lock (this)
+                    IsConnected = false;
+                    ClientPort = null;
+                    server = new WatsonTcpServer(Address, IPPort);
+                    server.ClientConnected += OnConnected;
+                    server.ClientDisconnected += OnDisconnected;
+                    server.MessageReceived += MessageReceived;
+                    server.Start();
+                    SetOpen(true);
+                    beacon = new Beacon(Identification.BeaconName, (ushort)IPPort)
                     {
-                        IsConnected = false;
-                        ClientPort = null;
-                        server = new WatsonTcpServer(Address, IPPort);
-                        server.ClientConnected += OnConnected;
-                        server.ClientDisconnected += OnDisconnected;
-                        server.MessageReceived += MessageReceived;
-                        server.Start();
-                        SetOpen(true);
-                        beacon = new Beacon(device.BeaconName, (ushort)IPPort);
-                        beacon.BeaconData = device.ToXML();
-                        beacon.Start();
-                    }
+                        BeaconData = Identification.ToXML()
+                    };
+                    beacon.Start();
                 }
             }
         }

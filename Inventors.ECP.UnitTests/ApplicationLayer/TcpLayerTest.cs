@@ -21,12 +21,12 @@ namespace Inventors.ECP.UnitTests.ApplicationLayer
         {
             var ping = new Ping();
 
-            TcpTestContext.Slave.Pings = 0;
-            TcpTestContext.Device.Execute(ping);
+            TC.Slave.Pings = 0;
+            TC.Device.Execute(ping);
             Assert.IsTrue(ping.Count == 0);
-            TcpTestContext.Device.Execute(ping);
+            TC.Device.Execute(ping);
             Assert.IsTrue(ping.Count == 1);
-            TcpTestContext.Device.Execute(ping);
+            TC.Device.Execute(ping);
             Assert.IsTrue(ping.Count == 2);
         }
 
@@ -34,16 +34,16 @@ namespace Inventors.ECP.UnitTests.ApplicationLayer
         public void DeviceIdentification()
         {
             var info = new DeviceIdentification();
-            TcpTestContext.Device.Execute(info);
-            Assert.AreEqual(expected: TcpTestContext.Slave.Identification.Device, actual: info.Device);
-            Assert.AreEqual(expected: TcpTestContext.Slave.Identification.DeviceID, actual: info.DeviceID);
+            TC.Device.Execute(info);
+            Assert.AreEqual(expected: TC.Slave.Identification.Device, actual: info.Device);
+            Assert.AreEqual(expected: TC.Slave.Identification.DeviceID, actual: info.DeviceID);
         }
 
         [TestMethod]
         public void GetEndianity()
         {
             var endianity = new GetEndianness();
-            TcpTestContext.Device.Execute(endianity);
+            TC.Device.Execute(endianity);
             Assert.AreEqual(expected: true, actual: endianity.EqualEndianness);
         }
 
@@ -51,7 +51,7 @@ namespace Inventors.ECP.UnitTests.ApplicationLayer
         public void BeaconTest()
         {
             List<BeaconLocation> locations = new List<BeaconLocation>();
-            var probe = new Probe(TcpTestContext.Slave.Identification.BeaconName);
+            var probe = new Probe(TC.Slave.Identification.BeaconName);
             probe.BeaconsUpdated += (beacons) => locations = beacons.ToList();
             probe.Start();
             Thread.Sleep(500);
@@ -59,7 +59,17 @@ namespace Inventors.ECP.UnitTests.ApplicationLayer
             Assert.AreEqual(expected: 1, actual: locations.Count);
             var beacon = locations[0];
             var data = DeviceData.Create(locations[0].Data);
-            Assert.AreEqual(expected: TcpTestContext.Slave.Identification.DeviceID, actual: data.DeviceID);
+            Assert.AreEqual(expected: TC.Slave.Identification.DeviceID, actual: data.DeviceID);
+        }
+
+        [TestMethod]
+        public void GetTcpPorts()
+        {
+            var device = TC.Device;
+
+            Thread.Sleep(500);
+            var devices = device.GetAvailableDevices();
+            Assert.AreEqual(expected: 1, actual: devices.Count);
         }
     }
 }

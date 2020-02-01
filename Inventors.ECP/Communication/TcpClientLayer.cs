@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BeaconLib;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
@@ -6,6 +7,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using WatsonTcp;
+using System.Linq;
 
 namespace Inventors.ECP.Communication
 {
@@ -13,12 +15,28 @@ namespace Inventors.ECP.Communication
         CommunicationLayer,
         IDisposable
     {
-        private WatsonTcpClient client;
+        private readonly Probe _probe;
+        private readonly List<BeaconLocation> _beacons = new List<BeaconLocation>();
+        private WatsonTcpClient _client;
         private bool _open = false;
         private bool _connected = false;
         private string _port = String.Format(CultureInfo.CurrentCulture, "{0}:{1}", IPAddress.Loopback.ToString(), 9000);
 
         public override int BaudRate { get; set; } = 1;
+
+        public TcpClientLayer(DeviceData device) : base(device) 
+        {
+            _probe = new Probe(device.BeaconName);
+            _probe.BeaconsUpdated += (beacons) =>
+            {
+                lock (_beacons)
+                {
+                    _beacons.Clear();
+                    _beacons.AddRange(beacons);
+                }
+            };
+            _probe.Start();
+        }
 
         public override string Port
         {
@@ -57,7 +75,7 @@ namespace Inventors.ECP.Communication
         {
             if (IsConnected)
             {
-                client.Send(frame);
+                _client.Send(frame);
             }            
         }
 
@@ -67,22 +85,22 @@ namespace Inventors.ECP.Communication
             if (IsOpen)
             {
                 IsConnected = false;
-                client.Dispose();
-                client = null;
+                _client.Dispose();
+                _client = null;
                 SetOpen(false);
             }
         }
 
-        protected override void DoOpen(DeviceData device)
+        protected override void DoOpen()
         {
             if (!IsOpen)
             {
                 IsConnected = false;
-                client = new WatsonTcpClient(Address, IPPort);
-                client.ServerConnected += OnConnected;
-                client.ServerDisconnected += OnDisconnected;
-                client.MessageReceived += MessageReceived;
-                client.Start();
+                _client = new WatsonTcpClient(Address, IPPort);
+                _client.ServerConnected += OnConnected;
+                _client.ServerDisconnected += OnDisconnected;
+                _client.MessageReceived += MessageReceived;
+                _client.Start();
                 SetOpen(true);
             }
         }
@@ -103,8 +121,12 @@ namespace Inventors.ECP.Communication
         private async Task OnDisconnected() => await Task.Run(() => IsConnected = false).ConfigureAwait(false);
 
         public override List<string> GetAvailablePorts()
-        {
-            throw new NotImplementedException();
+        {            
+            lock (_beacons)
+            {
+                return (from b in _beacons
+                        select b.Address.ToString()).ToList();
+            }
         }
 
         #region IDisposable Support
@@ -116,7 +138,8 @@ namespace Inventors.ECP.Communication
             {
                 if (disposing)
                 {
-                    client.Dispose();
+                    _client.Dispose();
+                    _probe.Dispose();
                 }
 
                 disposedValue = true;

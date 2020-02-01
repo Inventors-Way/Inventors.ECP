@@ -5,7 +5,7 @@ using System.Text;
 namespace Inventors.ECP.Communication
 {
     public class CommunicationLayerStatistics :
-        CommunicationLayer.Statistics
+        Statistics
     {
         public long BytesTransmitted { get; set; } = 0;
         public long BytesReceived { get; set; } = 0;
