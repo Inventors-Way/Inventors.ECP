@@ -21,7 +21,7 @@ namespace Inventors.ECP.DeviceSimulator
         private SerialPortLayer serial = null;
         private MenuItemSet portMenuItems;
         private DeviceSlave slave;
-        private DeviceData deviceData;
+        private readonly DeviceData deviceData;
         private UInt32 pings = 0;
 
         public MainForm()
@@ -110,12 +110,12 @@ namespace Inventors.ECP.DeviceSimulator
             }
         }
 
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
-        private void connectToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ConnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!slave.IsOpen)
             {
@@ -126,7 +126,7 @@ namespace Inventors.ECP.DeviceSimulator
             }
         }
 
-        private void disconnectToolStripMenuItem_Click(object sender, EventArgs e)
+        private void DisconnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (slave.IsOpen)
             {
@@ -135,12 +135,12 @@ namespace Inventors.ECP.DeviceSimulator
             }
         }
 
-        private void documentationToolStripMenuItem_Click(object sender, EventArgs e)
+        private void DocumentationToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
         }

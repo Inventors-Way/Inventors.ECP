@@ -149,7 +149,7 @@
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(202, 26);
             this.exitToolStripMenuItem.Text = "Exit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
             // connectMenuItem
             // 
@@ -171,7 +171,7 @@
             this.openDeviceToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
             this.openDeviceToolStripMenuItem.Size = new System.Drawing.Size(230, 26);
             this.openDeviceToolStripMenuItem.Text = "Open Device";
-            this.openDeviceToolStripMenuItem.Click += new System.EventHandler(this.openDeviceToolStripMenuItem_Click);
+            this.openDeviceToolStripMenuItem.Click += new System.EventHandler(this.OpenDeviceToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
@@ -184,7 +184,7 @@
             this.connectToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
             this.connectToolStripMenuItem.Size = new System.Drawing.Size(230, 26);
             this.connectToolStripMenuItem.Text = "Connect";
-            this.connectToolStripMenuItem.Click += new System.EventHandler(this.connectToolStripMenuItem_Click);
+            this.connectToolStripMenuItem.Click += new System.EventHandler(this.ConnectToolStripMenuItem_Click);
             // 
             // disconnectToolStripMenuItem
             // 
@@ -192,7 +192,7 @@
             this.disconnectToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
             this.disconnectToolStripMenuItem.Size = new System.Drawing.Size(230, 26);
             this.disconnectToolStripMenuItem.Text = "Disconnect";
-            this.disconnectToolStripMenuItem.Click += new System.EventHandler(this.disconnectToolStripMenuItem_Click);
+            this.disconnectToolStripMenuItem.Click += new System.EventHandler(this.DisconnectToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
@@ -204,7 +204,7 @@
             this.portMenuItem.Name = "portMenuItem";
             this.portMenuItem.Size = new System.Drawing.Size(230, 26);
             this.portMenuItem.Text = "Port";
-            this.portMenuItem.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.portMenuItem_DropDownItemClicked);
+            this.portMenuItem.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.PortMenuItem_DropDownItemClicked);
             // 
             // mTime
             // 
@@ -295,8 +295,8 @@
             this.functionList.Name = "functionList";
             this.functionList.Size = new System.Drawing.Size(326, 468);
             this.functionList.TabIndex = 0;
-            this.functionList.SelectedIndexChanged += new System.EventHandler(this.functionList_SelectedIndexChanged);
-            this.functionList.DoubleClick += new System.EventHandler(this.functionList_DoubleClick);
+            this.functionList.SelectedIndexChanged += new System.EventHandler(this.FunctionList_SelectedIndexChanged);
+            this.functionList.DoubleClick += new System.EventHandler(this.FunctionList_DoubleClick);
             // 
             // propertyGrid
             // 
@@ -343,7 +343,7 @@
             // msgTimer
             // 
             this.msgTimer.Enabled = true;
-            this.msgTimer.Tick += new System.EventHandler(this.msgTimer_Tick);
+            this.msgTimer.Tick += new System.EventHandler(this.MsgTimer_Tick);
             // 
             // profilerToolStripMenuItem
             // 

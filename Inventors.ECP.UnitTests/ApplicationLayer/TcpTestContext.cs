@@ -43,8 +43,8 @@ namespace Inventors.ECP.UnitTests.ApplicationLayer
         }
 
         private static TcpTestContext _instance;
-        private DefaultTcpSlave _slave = null;
-        private DefaultDevice.DefaultDevice _device = null;
+        private readonly DefaultTcpSlave _slave = null;
+        private readonly DefaultDevice.DefaultDevice _device = null;
 
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls

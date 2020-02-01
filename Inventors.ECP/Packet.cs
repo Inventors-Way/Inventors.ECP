@@ -84,7 +84,7 @@ namespace Inventors.ECP
             }
         }
 
-        private int GetOverhead(PacketType type)
+        private static int GetOverhead(PacketType type)
         {
             switch (type)
             {

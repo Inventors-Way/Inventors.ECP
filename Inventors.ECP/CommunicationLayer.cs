@@ -47,8 +47,8 @@ namespace Inventors.ECP
 
         public CommunicationLayer()
         {
-            bytesTransmitted = 0;
-            bytesReceived = 0;
+            BytesTransmitted = 0;
+            BytesReceived = 0;
         }
 
         public void Open(DeviceData device)
@@ -59,8 +59,8 @@ namespace Inventors.ECP
 
         public void RestartStatistics()
         {
-            bytesReceived = 0;
-            bytesTransmitted = 0;
+            BytesReceived = 0;
+            BytesTransmitted = 0;
             testWatch.Restart();
         }
 
@@ -71,10 +71,10 @@ namespace Inventors.ECP
             double time = ((double)testWatch.ElapsedMilliseconds) / 1000;
             return new CommunicationLayerStatistics()
             {
-                BytesTransmitted = bytesTransmitted,
-                BytesReceived = bytesReceived,
-                RxRate = ((double) bytesReceived) / time,
-                TxRate = ((double) bytesTransmitted) / time
+                BytesTransmitted = BytesTransmitted,
+                BytesReceived = BytesReceived,
+                RxRate = ((double) BytesReceived) / time,
+                TxRate = ((double) BytesTransmitted) / time
             };
         }
 
@@ -92,11 +92,12 @@ namespace Inventors.ECP
 
         public abstract void Transmit(byte[] frame);
 
-
         public Destuffer Destuffer { get; } = new Destuffer();
 
-        protected long bytesReceived;
-        protected long bytesTransmitted;
-        private Stopwatch testWatch = new Stopwatch();
+        protected long BytesReceived { get; set; }
+
+        protected long BytesTransmitted { get; set; }
+
+        private readonly Stopwatch testWatch = new Stopwatch();
     }
 }

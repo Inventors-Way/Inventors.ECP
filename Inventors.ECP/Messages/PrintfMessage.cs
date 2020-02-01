@@ -48,22 +48,25 @@ namespace Inventors.ECP.Messages
             }
             set
             {
-                var str = "";
+                if (value is object)
+                {
+                    var str = "";
 
-                if (value.Length <= 255)
-                {
-                    str = value;    
-                }
-                else
-                {
-                    if (value.Length > 0)
+                    if (value.Length <= 255)
                     {
-                        str = value.Substring(0, 255);
+                        str = value;
                     }
-                }
+                    else
+                    {
+                        if (value.Length > 0)
+                        {
+                            str = value.Substring(0, 255);
+                        }
+                    }
 
-                Packet = new Packet(CODE, (byte)str.Length);
-                Packet.InsertString(0, str.Length, str);
+                    Packet = new Packet(CODE, (byte)str.Length);
+                    Packet.InsertString(0, str.Length, str);
+                }
             }
         }
 

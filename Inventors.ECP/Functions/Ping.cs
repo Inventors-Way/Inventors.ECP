@@ -33,11 +33,11 @@ namespace Inventors.ECP.Functions
         {
             get
             {
-                return response.GetUInt32(0);
+                return Response.GetUInt32(0);
             }
             set
             {
-                response.InsertUInt32(0, value);
+                Response.InsertUInt32(0, value);
             }
         }
 

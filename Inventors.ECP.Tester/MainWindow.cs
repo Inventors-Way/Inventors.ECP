@@ -34,7 +34,7 @@ namespace Inventors.ECP.Tester
         private Logger logger;
         private Device device = null;
         private SerialPortLayer serial = null;
-        private Profiler profiler = new Profiler();
+        private readonly Profiler profiler = new Profiler();
         private AppState state = AppState.APP_STATE_UNINITIALIZED;
 
         public MainWindow()
@@ -97,7 +97,7 @@ namespace Inventors.ECP.Tester
             }
         }
 
-        private void portMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        private void PortMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             Log.Debug("Port changed to: {0}", e.ClickedItem.Text);
             serial.Port = e.ClickedItem.Text;
@@ -155,7 +155,7 @@ namespace Inventors.ECP.Tester
             });
         }
 
-        private void msgTimer_Tick(object sender, EventArgs e)
+        private void MsgTimer_Tick(object sender, EventArgs e)
         {
             if (device != null)
             {
@@ -164,7 +164,7 @@ namespace Inventors.ECP.Tester
         }
 
         #region GUI HANDLING
-        private void openDeviceToolStripMenuItem_Click(object sender, EventArgs e)
+        private void OpenDeviceToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog()
             {
@@ -198,10 +198,10 @@ namespace Inventors.ECP.Tester
                     BeginUpdate(() => { propertyGrid.Refresh(); });
                 }
             };
-            device.OnConnected += onConnected;
-            device.OnConnectFailed += onConnectedFailed;
-            device.OnDisconnected += onDisconnected;
-            device.OnDisconnectFailed += onDisconnecedFailed;
+            device.OnConnected += OnConnected;
+            device.OnConnectFailed += OnConnectedFailed;
+            device.OnDisconnected += OnDisconnected;
+            device.OnDisconnectFailed += OnDisconnecedFailed;
 
             profiler.Device = device;
             profiler.Profiling = loader.Profiling;
@@ -226,12 +226,12 @@ namespace Inventors.ECP.Tester
             device.OnPrintf += OnPrintf;
         }
 
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
-        private void functionList_SelectedIndexChanged(object sender, EventArgs e)
+        private void FunctionList_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateFunction();
         }
@@ -244,7 +244,7 @@ namespace Inventors.ECP.Tester
             }
         }
 
-        private void functionList_DoubleClick(object sender, EventArgs e)
+        private void FunctionList_DoubleClick(object sender, EventArgs e)
         {
             if (state == AppState.APP_STATE_CONNECTED)
             {
@@ -269,7 +269,7 @@ namespace Inventors.ECP.Tester
                 Log.Status("Please connect first to a device");
         }
 
-        private void connectToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ConnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (portMenuItem.DropDownItems.Count > 0)
             {
@@ -281,7 +281,7 @@ namespace Inventors.ECP.Tester
             }
         }
 
-        public void onConnected(object sender, bool success)
+        public void OnConnected(object sender, bool success)
         {
             Log.Status("Device Connected: {0} [{1}]", device.ToString(), serial.Port);
 
@@ -291,7 +291,7 @@ namespace Inventors.ECP.Tester
             });
         }
 
-        public void onDisconnected(object sender, bool success)
+        public void OnDisconnected(object sender, bool success)
         {
             BeginUpdate(() =>
             {
@@ -300,7 +300,7 @@ namespace Inventors.ECP.Tester
             Log.Status("Device disconnected: {0} [{1}]", device.ToString(), serial.Port);
         }
 
-        public void onConnectedFailed(object sender, Exception e)
+        public void OnConnectedFailed(object sender, Exception e)
         {
             Log.Error("Problem connecting to device: " + e.Message);
             BeginUpdate(() =>
@@ -309,7 +309,7 @@ namespace Inventors.ECP.Tester
             });
         }
 
-        public void onDisconnecedFailed(object sender, Exception e)
+        public void OnDisconnecedFailed(object sender, Exception e)
         {
             Log.Error("Problem disconnecting from device: " + e.Message);
             BeginUpdate(() =>
@@ -318,7 +318,7 @@ namespace Inventors.ECP.Tester
             });
         }
 
-        private void disconnectToolStripMenuItem_Click(object sender, EventArgs e)
+        private void DisconnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             device.Disconnect();
         }

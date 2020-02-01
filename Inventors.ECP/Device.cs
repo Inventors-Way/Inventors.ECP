@@ -24,7 +24,7 @@ namespace Inventors.ECP
         }
 
         private bool connected = false;
-        private object lockObject = new object();
+        private readonly object lockObject = new object();
 
         [Browsable(false)]
         public abstract DeviceState State { get; }
@@ -244,7 +244,7 @@ namespace Inventors.ECP
         {
             get
             {
-                return functions;
+                return FunctionList;
             }
         }
 
@@ -270,11 +270,18 @@ namespace Inventors.ECP
         [Category("Retries")]
         public int Retries { get; set; } = 1;
 
+        [XmlIgnore]
         [Browsable(false)]
         public CommunicationLayer CommLayer { get; private set; }
 
-        protected readonly List<Function> functions = new List<Function>();
-        protected readonly List<MessageDispatcher> dispatchers = new List<MessageDispatcher>();
-        private Stopwatch watch = new Stopwatch();
+        [XmlIgnore]
+        [Browsable(false)]
+        protected List<Function> FunctionList { get; } = new List<Function>();
+
+        [XmlIgnore]
+        [Browsable(false)]
+        protected List<MessageDispatcher> Dispatchers { get; } = new List<MessageDispatcher>();
+
+        private readonly Stopwatch watch = new Stopwatch();
     }
 }

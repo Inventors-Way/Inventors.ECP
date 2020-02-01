@@ -85,7 +85,7 @@ namespace Inventors.ECP
                                 foreach (var b in received)
                                 {
                                     Destuffer.Add(b);
-                                    ++bytesReceived;
+                                    ++BytesReceived;
                                 }
                             }
                             catch { }
@@ -118,12 +118,12 @@ namespace Inventors.ECP
 
         public override void Transmit(byte[] frame)
         {
-            if (port != null)
+            if ((port is object) && (frame is object))
             {
                 if (port.IsOpen)
                 {
                     port.Write(frame, 0, frame.Length);
-                    bytesTransmitted += frame.Length;
+                    BytesTransmitted += frame.Length;
                 }
             }
         }

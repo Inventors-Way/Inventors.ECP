@@ -23,9 +23,9 @@ namespace Inventors.ECP.DefaultDevice
         public DefaultDevice(CommunicationLayer layer, DeviceData device) :
             base(layer, device)
         {
-            functions.Add(new DeviceIdentification());
-            functions.Add(new Ping());
-            functions.Add(new GetEndianness());
+            FunctionList.Add(new DeviceIdentification());
+            FunctionList.Add(new Ping());
+            FunctionList.Add(new GetEndianness());
         }
 
         public DefaultDevice(CommunicationLayer layer) : this(layer, DefaultIdentification) { }

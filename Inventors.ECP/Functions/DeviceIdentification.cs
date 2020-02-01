@@ -35,11 +35,11 @@ namespace Inventors.ECP.Functions
         {
             get
             {
-                return response.GetUInt32(0);
+                return Response.GetUInt32(0);
             }
             set
             {
-                response.InsertUInt32(0, value);
+                Response.InsertUInt32(0, value);
             }
         }
 
@@ -49,11 +49,11 @@ namespace Inventors.ECP.Functions
         {
             get
             {
-                return response.GetString(16, 24);
+                return Response.GetString(16, 24);
             }
             set
             {
-                response.InsertString(16, 24, value);
+                Response.InsertString(16, 24, value);
             }
         }
 
@@ -63,11 +63,11 @@ namespace Inventors.ECP.Functions
         {
             get
             {
-                return response.GetUInt16(4);
+                return Response.GetUInt16(4);
             }
             set
             {
-                response.InsertUInt16(4, value);
+                Response.InsertUInt16(4, value);
             }
         }
 
@@ -77,11 +77,11 @@ namespace Inventors.ECP.Functions
         {
             get
             {
-                return response.GetString(40, 24);
+                return Response.GetString(40, 24);
             }
             set
             {
-                response.InsertString(40, 24, value);
+                Response.InsertString(40, 24, value);
             }
         }
 
@@ -92,11 +92,11 @@ namespace Inventors.ECP.Functions
         {
             get
             {
-                return response.GetByte(10);
+                return Response.GetByte(10);
             }
             set
             {
-                response.InsertByte(10, value);
+                Response.InsertByte(10, value);
             }
         }
 
@@ -106,11 +106,11 @@ namespace Inventors.ECP.Functions
         {
             get
             {
-                return response.GetByte(11);
+                return Response.GetByte(11);
             }
             set
             {
-                response.InsertByte(11, value);
+                Response.InsertByte(11, value);
             }
         }
 
@@ -120,11 +120,11 @@ namespace Inventors.ECP.Functions
         {
             get
             {
-                return response.GetByte(12);
+                return Response.GetByte(12);
             }
             set
             {
-                response.InsertByte(12, value);
+                Response.InsertByte(12, value);
             }
         }
 
@@ -134,11 +134,11 @@ namespace Inventors.ECP.Functions
         {
             get
             {
-                return response.GetByte(13);
+                return Response.GetByte(13);
             }
             set
             {
-                response.InsertByte(13, value);
+                Response.InsertByte(13, value);
             }
         }
 
@@ -148,7 +148,7 @@ namespace Inventors.ECP.Functions
         {
             get
             {
-                if (response != null)
+                if (Response != null)
                 {
                     return EngineeringVersion == 0 ?
                            String.Format(CultureInfo.CurrentCulture, "{0}.{1}.{2}", MajorVersion, MinorVersion, PatchVersion) :
@@ -165,11 +165,11 @@ namespace Inventors.ECP.Functions
         {
             get
             {
-                return response.GetUInt32(6);
+                return Response.GetUInt32(6);
             }
             set
             {
-                response.InsertUInt32(6, value);
+                Response.InsertUInt32(6, value);
             }
         }
 
@@ -179,11 +179,11 @@ namespace Inventors.ECP.Functions
         {
             get
             {
-                return response.GetUInt16(14);
+                return Response.GetUInt16(14);
             }
             set
             {
-                response.InsertUInt16(14, value);
+                Response.InsertUInt16(14, value);
             }
         }
 

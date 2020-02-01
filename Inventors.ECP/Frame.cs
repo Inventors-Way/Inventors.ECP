@@ -14,8 +14,11 @@ namespace Inventors.ECP
 
         public static byte[] Encode(byte[] packet)
         {
-            var frame = new Frame();
+            if (!(packet is object))
+                throw new ArgumentNullException(nameof(packet));
 
+            var frame = new Frame();
+            
             frame.AddStartOfText();
 
             foreach (var x in packet)
@@ -63,7 +66,7 @@ namespace Inventors.ECP
             return buffer.ToArray();
         }
 
-        private List<byte> buffer;
+        private readonly List<byte> buffer;
 
         #endregion
     }

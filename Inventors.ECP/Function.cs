@@ -12,7 +12,7 @@ namespace Inventors.ECP
     {
         public Function()
         {
-            request = new Packet(functionCode, 0);
+            Request = new Packet(functionCode, 0);
             ResponseLength = 0;
             RequestLength = 0;
         }
@@ -22,7 +22,7 @@ namespace Inventors.ECP
             functionCode = code;
             ResponseLength = 0;
             RequestLength = 0;
-            request = new Packet(code, 0);
+            Request = new Packet(code, 0);
         }
 
         public Function(byte code, byte length)
@@ -30,8 +30,8 @@ namespace Inventors.ECP
             functionCode = code;
             RequestLength = length;
             ResponseLength = 0;
-            request = new Packet(code, length);
-            response = new Packet(code, 0);
+            Request = new Packet(code, length);
+            Response = new Packet(code, 0);
         }
 
         public Function(byte code, byte requestLength, byte responseLength)
@@ -39,8 +39,8 @@ namespace Inventors.ECP
             functionCode = code;
             RequestLength = requestLength;
             ResponseLength = responseLength;
-            request = new Packet(code, requestLength);
-            response = new Packet(code, responseLength);
+            Request = new Packet(code, requestLength);
+            Response = new Packet(code, responseLength);
         }
 
         internal byte[] GetRequest()
@@ -55,19 +55,19 @@ namespace Inventors.ECP
 
         internal virtual Packet GetRequestPacket()
         {
-            return request;
+            return Request;
         }
 
         internal virtual Packet GetResponsePacket()
         {
-            return response;
+            return Response;
         }
 
         internal void SetResponse(Packet packet)
         {
-            response = packet;
+            Response = packet;
 
-            if (response.Code != GetRequestPacket().Code)
+            if (Response.Code != GetRequestPacket().Code)
                 throw new InvalidSlaveResponseException(Resources.INVALID_FUNCTION_CODE);
 
             if (!IsResponseValid())
@@ -76,9 +76,9 @@ namespace Inventors.ECP
 
         internal Function SetRequest(Packet packet)
         {
-            request = packet;
+            Request = packet;
 
-            if (request.Code != functionCode)
+            if (Request.Code != functionCode)
                 throw new InvalidMasterRequestException(Resources.INVALID_FUNCTION_CODE);
 
             if (!IsRequestValid())
@@ -89,12 +89,12 @@ namespace Inventors.ECP
 
         protected virtual bool IsResponseValid()
         {
-            return response.Length == ResponseLength;
+            return Response.Length == ResponseLength;
         }
 
         protected virtual bool IsRequestValid()
         {
-            return request.Length == RequestLength;
+            return Request.Length == RequestLength;
         }
 
         public virtual void OnSend()
@@ -126,11 +126,15 @@ namespace Inventors.ECP
         [Description("The time it took to transmit the function and get a response from the slave")]
         public long TransmissionTime { get; internal set; } = 0;
 
-        protected Packet request = null;
-        protected Packet response = null;
+        protected Packet Request { get; set; } = null;
+
+        protected Packet Response { get; set; } = null;
+
         private readonly byte functionCode = 0x00;
-        protected readonly byte ResponseLength = 0;
-        protected readonly byte RequestLength = 0;
+
+        protected byte ResponseLength { get; } = 0;
+
+        protected byte RequestLength { get; } = 0;
 
     }
 }

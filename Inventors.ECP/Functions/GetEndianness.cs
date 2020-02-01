@@ -15,7 +15,7 @@ namespace Inventors.ECP.Functions
         public GetEndianness() : 
             base(code: CODE, requestLength: 0, responseLength: 2) 
         {
-            response.InsertUInt16(0, 1);
+            Response.InsertUInt16(0, 1);
         }
 
         public override FunctionDispatcher CreateDispatcher()
@@ -34,7 +34,7 @@ namespace Inventors.ECP.Functions
         {
             get
             {
-                return response != null ? response.GetUInt16(0) == 1 : true;
+                return Response != null ? Response.GetUInt16(0) == 1 : true;
             }
         }
 

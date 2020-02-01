@@ -291,7 +291,7 @@ namespace Inventors.ECP.Profiling
         }
 
 
-        private Stopwatch watch = new Stopwatch();
-        private Stopwatch profileWatch = new Stopwatch();
+        private readonly Stopwatch watch = new Stopwatch();
+        private readonly Stopwatch profileWatch = new Stopwatch();
     }
 }

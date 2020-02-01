@@ -21,7 +21,7 @@ namespace Inventors.ECP.UnitTests
         public void Initialize() { }
 
         [AssemblyInitialize]
-        public static void InitializeLog(TestContext context)
+        public void OnAssemblyInitialize()
         {
             Log.SetLogger(log);
         }
