@@ -62,14 +62,14 @@ namespace Inventors.ECP
         {
             if (!(frame is object))
             {
-                Log.Debug("frame is null");
-                throw new ArgumentException("fame is null");
+                Log.Debug(Resources.FRAME_IS_NULL);
+                throw new ArgumentException(Resources.FRAME_IS_NULL);
             }
 
             if (frame.Length < 2)
             {
-                Log.Debug("The frame is less than 2 bytes long");
-                throw new PacketFormatException("The frame is less than 2 bytes long");
+                Log.Debug(Resources.INVALID_FRAME_TOO_SHORT);
+                throw new PacketFormatException(Resources.INVALID_FRAME_TOO_SHORT);
             }
 
             _code = frame[0];
@@ -92,7 +92,7 @@ namespace Inventors.ECP
                 case PacketType.LENGTH_UINT16_ENCODED: return 4;
                 case PacketType.LENGTH_UINT32_ENCODED: return 6;
                 default:
-                    throw new InvalidOperationException("Unknown type of length encoding: " + (byte) type);
+                    throw new InvalidOperationException(Resources.UNKNOWN_PACKET_ENCODING + (byte) type);
             }
         }
 
@@ -115,8 +115,13 @@ namespace Inventors.ECP
 
             if (retValue + GetOverhead(GetLengthEncoding(retValue)) != frame.Length)
             {
-                Log.Debug("Unexpected length, expected [ {0} ] but it was [ {1} ]", retValue, frame.Length);
-                throw new PacketFormatException(String.Format(CultureInfo.CurrentCulture, "Unexpected length, expected [ {0} ] but it was [ {1} ]", retValue, frame.Length));
+                var msg = String.Format(CultureInfo.CurrentCulture, 
+                                        Resources.INVALID_PACKET_LENGTH, 
+                                        retValue, 
+                                        frame.Length);
+
+                Log.Debug(msg);
+                throw new PacketFormatException(msg);
             }
 
             return retValue;
@@ -140,7 +145,7 @@ namespace Inventors.ECP
             }
             else
             {
-                throw new InvalidOperationException("Invalid packet type");
+                throw new InvalidOperationException(Resources.INVALID_PACKET_TYPE);
             }
         }
 

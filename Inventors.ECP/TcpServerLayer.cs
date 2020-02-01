@@ -31,11 +31,11 @@ namespace Inventors.ECP
                     _port = value;
 
                     if (!IPAddress.TryParse(Address, out IPAddress _))
-                        throw new ArgumentException(_port + " does not contain a valid IP Address");
+                        throw new ArgumentException(Resources.INVALID_IP_ADDRESS);
                 }
                 else
                 {
-                    throw new InvalidOperationException("Cannot change the port while the client is open");
+                    throw new InvalidOperationException(Resources.INVALID_OPERATION_WHILE_OPEN);
                 }
             }
         }

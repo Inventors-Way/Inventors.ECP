@@ -14,22 +14,22 @@ namespace Inventors.ECP
 
         public Message(Packet response)
         {
-            mPacket = response;
+            Packet = response;
         }
 
         public Message(byte code)
         {
-            mPacket = new Packet(code, 0);
+            Packet = new Packet(code, 0);
         }
 
         public Message(byte code, byte length)
         {
-            mPacket = new Packet(code, length);
+            Packet = new Packet(code, length);
         }
 
         internal byte[] GetPacket()
         {
-            return mPacket.ToArray();
+            return Packet.ToArray();
         }
 
         public virtual void OnSend()
@@ -42,10 +42,10 @@ namespace Inventors.ECP
 
         }
 
+        protected Packet Packet { get; set; }
+
         public abstract MessageDispatcher CreateDispatcher();
 
         public abstract void Dispatch(dynamic listener);
-
-        protected Packet mPacket;
     }
 }

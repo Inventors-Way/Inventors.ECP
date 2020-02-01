@@ -93,15 +93,8 @@ namespace Inventors.ECP
         public abstract void Transmit(byte[] frame);
 
 
-        public Destuffer Destuffer
-        {
-            get
-            {
-                return destuffer;
-            }
-        }
+        public Destuffer Destuffer { get; } = new Destuffer();
 
-        protected Destuffer destuffer = new Destuffer();
         protected long bytesReceived;
         protected long bytesTransmitted;
         private Stopwatch testWatch = new Stopwatch();

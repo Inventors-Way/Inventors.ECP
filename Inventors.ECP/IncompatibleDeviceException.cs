@@ -13,5 +13,7 @@ namespace Inventors.ECP
         public IncompatibleDeviceException(String message) : base(message) { }
         public IncompatibleDeviceException(String message, Exception inner) : base(message, inner) { }
         protected IncompatibleDeviceException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+
+        public IncompatibleDeviceException() { }
     }
 }

@@ -12,5 +12,7 @@ namespace Inventors.ECP
         protected InvalidMasterRequestException(SerializationInfo info, StreamingContext context)
            : base(info, context)
         { }
+
+        public InvalidMasterRequestException() { }
     }
 }

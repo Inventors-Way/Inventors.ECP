@@ -14,7 +14,9 @@ namespace Inventors.ECP
         public InvalidMessageException(String message) : base(message) { }
         public InvalidMessageException(String message, Exception inner) : base(message, inner) { }
         protected InvalidMessageException(SerializationInfo info, StreamingContext context)
-         : base(info, context) 
-      { }
+         : base(info, context)
+        { }
+
+        public InvalidMessageException() { }
     }
 }

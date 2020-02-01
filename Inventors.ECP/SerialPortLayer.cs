@@ -56,7 +56,7 @@ namespace Inventors.ECP
                     ReadTimeout = 10
                 };
 
-                destuffer.Reset();
+                Destuffer.Reset();
                 port.Open();
                 InitializeRead();
             }

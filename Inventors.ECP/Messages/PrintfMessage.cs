@@ -37,9 +37,9 @@ namespace Inventors.ECP.Messages
         {
             get
             {
-                if (mPacket.Length > 0)
+                if (Packet.Length > 0)
                 {
-                    return mPacket.GetString(0, mPacket.Length);
+                    return Packet.GetString(0, Packet.Length);
                 }
                 else
                 {
@@ -62,8 +62,8 @@ namespace Inventors.ECP.Messages
                     }
                 }
 
-                mPacket = new Packet(CODE, (byte)str.Length);
-                mPacket.InsertString(0, str.Length, str);
+                Packet = new Packet(CODE, (byte)str.Length);
+                Packet.InsertString(0, str.Length, str);
             }
         }
 

@@ -45,8 +45,7 @@ namespace Inventors.ECP
             Master.Add(new PrintfMessage());
         }
 
-
-
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Client is notified by event")]
         public virtual void Connect()
         {
             if (!Master.IsOpen)
@@ -83,6 +82,7 @@ namespace Inventors.ECP
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Client is notified by NotifyDisconnectFailed")]
         public virtual void Disconnect()
         {
             if (Master.IsOpen)
@@ -196,13 +196,7 @@ namespace Inventors.ECP
                         function.TransmissionTime = watch.ElapsedMilliseconds;
                         break;
                     }
-                    catch (Exception e)
-                    {
-                        if (n == Retries - 1)
-                        {
-                            throw e;
-                        }
-                    }
+                    catch { if (n == Retries - 1) { throw; } }
                 }
             }
         }

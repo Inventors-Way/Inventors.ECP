@@ -8,13 +8,15 @@ using System.Threading.Tasks;
 namespace Inventors.ECP
 {
     [Serializable]
-   public class PacketFormatException :
+    public class PacketFormatException :
       Exception
-   {
-      public PacketFormatException(String message) : base(message) { }
-      public PacketFormatException(String message, Exception inner) : base(message, inner) { }
-      protected PacketFormatException(SerializationInfo info, StreamingContext context)
-         : base(info, context) 
-      { }
-   }
+    {
+        public PacketFormatException(String message) : base(message) { }
+        public PacketFormatException(String message, Exception inner) : base(message, inner) { }
+        protected PacketFormatException(SerializationInfo info, StreamingContext context)
+           : base(info, context)
+        { }
+
+        public PacketFormatException() {}
+    }
 }

@@ -105,7 +105,7 @@ namespace Inventors.ECP
             }
             else
             {
-                currentException = new SlaveNotRespondingException("No response from the slave");
+                currentException = new SlaveNotRespondingException(Resources.NO_RESPONSE);
                 retValue = true;
             }
 

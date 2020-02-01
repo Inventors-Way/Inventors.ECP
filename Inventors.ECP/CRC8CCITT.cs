@@ -13,9 +13,12 @@ namespace Inventors.ECP
         {
             byte retValue = 0;
 
-            foreach (byte d in data)
+            if (data is object)
             {
-                retValue = Update(retValue, d);
+                foreach (byte d in data)
+                {
+                    retValue = Update(retValue, d);
+                }
             }
 
             return retValue;

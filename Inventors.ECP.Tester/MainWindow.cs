@@ -16,6 +16,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.IO;
 using System.Reflection;
+using Inventors.ECP.Profiling;
 
 namespace Inventors.ECP.Tester
 {

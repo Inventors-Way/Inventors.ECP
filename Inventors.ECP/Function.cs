@@ -68,10 +68,10 @@ namespace Inventors.ECP
             response = packet;
 
             if (response.Code != GetRequestPacket().Code)
-                throw new InvalidSlaveResponseException("Invalid function code");
+                throw new InvalidSlaveResponseException(Resources.INVALID_FUNCTION_CODE);
 
             if (!IsResponseValid())
-                throw new InvalidSlaveResponseException("Response content invalid");
+                throw new InvalidSlaveResponseException(Resources.INVALID_RESPONSE_CONTENT);
         }
 
         internal Function SetRequest(Packet packet)
@@ -79,10 +79,10 @@ namespace Inventors.ECP
             request = packet;
 
             if (request.Code != functionCode)
-                throw new InvalidMasterRequestException("Invalid function code");
+                throw new InvalidMasterRequestException(Resources.INVALID_FUNCTION_CODE);
 
             if (!IsRequestValid())
-                throw new InvalidMasterRequestException("Request content invalid");
+                throw new InvalidMasterRequestException(Resources.INVALID_RESPONSE_CONTENT);
 
             return this;
         }

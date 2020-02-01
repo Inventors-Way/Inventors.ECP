@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using static Inventors.ECP.CommunicationLayer;
 
-namespace Inventors.ECP
+namespace Inventors.ECP.Profiling
 {
     public class Profiler
     {
@@ -21,7 +21,7 @@ namespace Inventors.ECP
                           double RunTime)
             {
                 if (!(time is object))
-                    throw new ArgumentException("time is null");
+                    throw new ArgumentException(Resources.INVALID_TIME_NULL);
 
                 Trials = trials;
                 this.RunTime = RunTime;
