@@ -198,10 +198,6 @@ namespace Inventors.ECP.Tester
                     BeginUpdate(() => { propertyGrid.Refresh(); });
                 }
             };
-            device.OnConnected += OnConnected;
-            device.OnConnectFailed += OnConnectedFailed;
-            device.OnDisconnected += OnDisconnected;
-            device.OnDisconnectFailed += OnDisconnecedFailed;
 
             profiler.Device = device;
             profiler.Profiling = loader.Profiling;
@@ -250,15 +246,18 @@ namespace Inventors.ECP.Tester
             {
                 if (functionList.SelectedItem is Function)
                 {
-                    functionList.Enabled = false;
-                    testToolStripMenuItem.Enabled = false;
-                    UpdateAppStates(AppState.APP_STATE_ACTIVE);
-                    Execute(functionList.SelectedItem as Function, true, (r) =>
+                    try
                     {
-                        functionList.Enabled = true;
-                        testToolStripMenuItem.Enabled = true;
-                        UpdateAppStates(AppState.APP_STATE_CONNECTED);
-                    });
+                        functionList.Enabled = false;
+                        testToolStripMenuItem.Enabled = false;
+                        UpdateAppStates(AppState.APP_STATE_ACTIVE);
+                        Execute(functionList.SelectedItem as Function, true);
+                    }
+                    catch { }
+
+                    functionList.Enabled = true;
+                    testToolStripMenuItem.Enabled = true;
+                    UpdateAppStates(AppState.APP_STATE_CONNECTED);
                 }
                 else
                 {
@@ -273,7 +272,17 @@ namespace Inventors.ECP.Tester
         {
             if (portMenuItem.DropDownItems.Count > 0)
             {
-                device.Connect();
+                try
+                {
+                    device.Connect();
+                    Log.Status("Device Connected: {0} [{1}]", device.ToString(), serial.Port);
+                    UpdateAppStates(AppState.APP_STATE_CONNECTED);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error("Problem connecting to device: " + ex.Message);
+                    UpdateAppStates(AppState.APP_STATE_INITIALIZED);
+                }
             }
             else
             {
@@ -281,46 +290,19 @@ namespace Inventors.ECP.Tester
             }
         }
 
-        public void OnConnected(object sender, bool success)
-        {
-            Log.Status("Device Connected: {0} [{1}]", device.ToString(), serial.Port);
-
-            BeginUpdate(() =>
-            {
-                UpdateAppStates(AppState.APP_STATE_CONNECTED);
-            });
-        }
-
-        public void OnDisconnected(object sender, bool success)
-        {
-            BeginUpdate(() =>
-            {
-                UpdateAppStates(AppState.APP_STATE_INITIALIZED);
-            });
-            Log.Status("Device disconnected: {0} [{1}]", device.ToString(), serial.Port);
-        }
-
-        public void OnConnectedFailed(object sender, Exception e)
-        {
-            Log.Error("Problem connecting to device: " + e.Message);
-            BeginUpdate(() =>
-            {
-                UpdateAppStates(AppState.APP_STATE_INITIALIZED);
-            });
-        }
-
-        public void OnDisconnecedFailed(object sender, Exception e)
-        {
-            Log.Error("Problem disconnecting from device: " + e.Message);
-            BeginUpdate(() =>
-            {
-                UpdateAppStates(AppState.APP_STATE_INITIALIZED);
-            });
-        }
-
         private void DisconnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            device.Disconnect();
+            try
+            {
+                device.Disconnect();
+                UpdateAppStates(AppState.APP_STATE_INITIALIZED);
+                Log.Status("Device disconnected: {0} [{1}]", device.ToString(), serial.Port);
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Problem disconnecting from device: " + ex.Message);
+                UpdateAppStates(AppState.APP_STATE_INITIALIZED);
+            }
         }
 
         private void UpdateAppStates(AppState newState)
@@ -389,53 +371,49 @@ namespace Inventors.ECP.Tester
 
         #endregion
         #region Functions and message handling
-        private void Execute(Function function, bool doLogging = false, Action<bool> onCompletion = null)
+        private async void Execute(Function function, bool doLogging = false)
         {
             if (device != null)
             {
-                device.BeginExecute(function,
-                    (f) => 
+                try
+                {
+                    await device.ExecuteAsync(function);
+
+                    if (doLogging)
                     {
-                        BeginUpdate(() =>
+                        Log.Status(String.Format("Complete [{0}] ({1}ms)", function.ToString(), function.TransmissionTime));
+
+                        if (function is DeviceIdentification)
                         {
-                            if (doLogging)
+                            DeviceIdentification identification = function as DeviceIdentification;
+                            if (!device.IsCompatible(identification))
                             {
-                                Log.Status(String.Format("Complete [{0}] ({1}ms)", function.ToString(), function.TransmissionTime));
-
-                                if (function is DeviceIdentification)
-                                {
-                                    DeviceIdentification identification = function as DeviceIdentification;
-                                    if (!device.IsCompatible(identification))
-                                    {
-                                        Log.Error("Incompatible device: {0} [{1}:{2}]", 
-                                            identification.Device,
-                                            identification.ManufactureID, 
-                                            identification.DeviceID);
-                                    }
-                                    else
-                                    {
-                                        Log.Status("Compatible device: {0} [{1}:{2}]",
-                                            identification.Device,
-                                            identification.ManufactureID,
-                                            identification.DeviceID);
-                                    }
-                                }
+                                Log.Error("Incompatible device: {0} [{1}:{2}]",
+                                    identification.Device,
+                                    identification.ManufactureID,
+                                    identification.DeviceID);
                             }
-                           
-                            propertyGrid.Refresh();
-                            onCompletion?.Invoke(true);
-                        });
-                    },
-                    (f, e) => 
-                    {
-                        BeginUpdate(() =>
-                        {
-                            if (doLogging)
-                                Log.Error("EXCEPTION:" + function.ToString() + " [" + e.Message + " ] ");
+                            else
+                            {
+                                Log.Status("Compatible device: {0} [{1}:{2}]",
+                                    identification.Device,
+                                    identification.ManufactureID,
+                                    identification.DeviceID);
+                            }
+                        }
+                    }
 
-                            onCompletion?.Invoke(false);
-                        });
-                    });
+                    propertyGrid.Refresh();
+                }
+                catch (Exception e)
+                {
+                    if (doLogging)
+                    {
+                        Log.Error("EXCEPTION:" + function.ToString() + " [" + e.Message + " ] ");
+                    }
+
+                    throw;
+                }
             }
         }
       

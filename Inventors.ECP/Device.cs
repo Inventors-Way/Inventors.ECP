@@ -31,11 +31,6 @@ namespace Inventors.ECP
 
         public event EventHandler<MessageEventArgs<PrintfMessage>> OnPrintf;
         public event EventHandler<DeviceState> OnStateChanged;
-        public event EventHandler<bool> OnConnected;
-        public event EventHandler<Exception> OnConnectFailed;
-        public event EventHandler<bool> OnDisconnected;
-        public event EventHandler<Exception> OnDisconnectFailed;
-
 
         public Device(CommunicationLayer commLayer, DeviceData device)
         {
@@ -45,39 +40,22 @@ namespace Inventors.ECP
             Master.Add(new PrintfMessage());
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Client is notified by event")]
         public virtual void Connect()
         {
             if (!Master.IsOpen)
             {
-                try
-                {
-                    Master.Open();
-                    BeginExecute(new DeviceIdentification(),
-                        (f) =>
-                        {
-                            var devId = f as DeviceIdentification;
+                var devId = new DeviceIdentification();
+                Master.Open();
+                Execute(devId);
 
-                            if (IsCompatible(devId))
-                            {
-                                Connected = true;
-                                NotifyConnection(true);
-                            }
-                            else
-                            {
-                                NotifyConnectionFailed(new IncompatibleDeviceException(devId.ToString()));
-                                Master.Close();
-                            }
-                        },
-                        (f, e) =>
-                        {
-                            NotifyConnectionFailed(e);
-                            Master.Close();
-                        });
-                }
-                catch (Exception e)
+                if (IsCompatible(devId))
                 {
-                    NotifyConnectionFailed(e);
+                    Connected = true;
+                }
+                else
+                {
+                    Master.Close();    
+                    throw new IncompatibleDeviceException(devId.ToString());
                 }
             }
         }
@@ -87,16 +65,8 @@ namespace Inventors.ECP
         {
             if (Master.IsOpen)
             {
-                try
-                {
-                    Master.Close();
-                    Connected = false;
-                    NotifyDisconnected(true);
-                }
-                catch (Exception e)
-                {
-                    NotifyDisconnectFailed(e);
-                }
+                Master.Close();
+                Connected = false;
             }
         }
 
@@ -121,26 +91,6 @@ namespace Inventors.ECP
                     }
                 }
             }
-        }
-
-        protected void NotifyConnection(bool success)
-        {
-            OnConnected?.Invoke(this, success);
-        }
-
-        protected void NotifyConnectionFailed(Exception e)
-        {
-            OnConnectFailed?.Invoke(this, e);
-        }
-
-        protected void NotifyDisconnected(bool success)
-        {
-            OnDisconnected?.Invoke(this, success);
-        }
-
-        protected void NotifyDisconnectFailed(Exception e)
-        {
-            OnDisconnectFailed?.Invoke(this, e);
         }
 
         [Category("Communication Layer")]
@@ -201,23 +151,8 @@ namespace Inventors.ECP
             }
         }
 
-        public Task BeginExecute(Function function, 
-                                 Action<Function> onSuccess, 
-                                 Action<Function, Exception> onFailure)
-        {
-            return Task.Run(() =>
-            {
-                try
-                {
-                    Execute(function);
-                    onSuccess(function);
-                }
-                catch (Exception e)
-                {
-                    onFailure(function, e);
-                }
-            });
-        }
+        public async Task ExecuteAsync(Function function) =>
+            await Task.Run(() => { Execute(function); }).ConfigureAwait(false);
 
         public void Send(Message message)
         {
