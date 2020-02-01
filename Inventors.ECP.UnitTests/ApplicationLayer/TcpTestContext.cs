@@ -25,7 +25,7 @@ namespace Inventors.ECP.UnitTests.ApplicationLayer
 
         public static DefaultTcpSlave Slave => Instance._slave;
 
-        public static DefaultDevice.DefaultDevice Device => Instance._device;
+        public static DefaultTcpDevice Device => Instance._device;
 
         private TcpTestContext()
         {
@@ -33,18 +33,15 @@ namespace Inventors.ECP.UnitTests.ApplicationLayer
             {
                 Port = String.Format("{0}:{1}", IPAddress.Loopback.ToString(), 9000)
             };
-            var layer = new TcpClientLayer()
-            {
-                Port = _slave.Port
-            };
-            _device = new DefaultDevice.DefaultDevice(layer);
+            _device = new DefaultTcpDevice();
+            _device.CommLayer.Port = _slave.Port;
             _slave.Start();
             _device.Open();
         }
 
         private static TcpTestContext _instance;
         private readonly DefaultTcpSlave _slave = null;
-        private readonly DefaultDevice.DefaultDevice _device = null;
+        private readonly DefaultTcpDevice _device = null;
 
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls

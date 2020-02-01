@@ -73,7 +73,7 @@ namespace Inventors.ECP
             return retValue;
         }
 
-        public Device Create(CommunicationLayer layer)
+        public Device Create()
         {
             Device retValue = null;
             string basePath = Path.GetDirectoryName(FileName);
@@ -81,13 +81,13 @@ namespace Inventors.ECP
             var assembly = Assembly.LoadFrom(fullAssemblyName);
             var type = assembly.GetType(Factory);
 
-            if ((type is object) && (layer is object))
+            if ((type is object))
             {
-                retValue = (Device) Activator.CreateInstance(type, new object[] { layer });
+                retValue = (Device) Activator.CreateInstance(type);
 
                 if (BaudRate > 0)
                 {
-                    layer.BaudRate = BaudRate;
+                    retValue.CommLayer.BaudRate = BaudRate;
                     Log.Debug("Baudrate set to: {0}", BaudRate);
                 }
             }

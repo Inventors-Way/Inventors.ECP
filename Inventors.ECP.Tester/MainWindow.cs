@@ -123,14 +123,14 @@ namespace Inventors.ECP.Tester
                         if (tsItem.Text == loader.PortName)
                         {
                             selected = tsItem;
-                            commLayer.Port = selected.Text;
+                            device.CommLayer.Port = selected.Text;
                         }
                     }
                 }
 
                 if (selected != null)
                 {
-                    Log.Status("SELECTED PORT [ {0} ]", commLayer.Port);
+                    Log.Status("SELECTED PORT [ {0} ]", device.CommLayer.Port);
 
                     foreach (var item in portMenuItem.DropDownItems)
                     {
@@ -146,10 +146,13 @@ namespace Inventors.ECP.Tester
 
         private void UpdateStatus()
         {
-            var report = commLayer.GetStatistics();
-            statusText.Text = String.Format("DATA [Rx: {0}, Tx: {1}]",
-                CommunicationLayer.Statistics.FormatRate(report.RxRate),
-                CommunicationLayer.Statistics.FormatRate(report.TxRate));
+            if (device is object)
+            {
+                var report = device.CommLayer.GetStatistics();
+                statusText.Text = String.Format("DATA [Rx: {0}, Tx: {1}]",
+                    CommunicationLayer.Statistics.FormatRate(report.RxRate),
+                    CommunicationLayer.Statistics.FormatRate(report.TxRate));
+            }
         }
 
         private void MsgTimer_Tick(object sender, EventArgs e)
@@ -187,7 +190,7 @@ namespace Inventors.ECP.Tester
         {
             var loader = DeviceLoader.Load(fileName);
             Log.Status("Device: {0}", loader.AssemblyName);
-            device = loader.Create(commLayer);
+            device = loader.Create();
             device.OnStateChanged += (sender, message) =>
             {
                 if (functionList.SelectedItem is Device.DeviceState)

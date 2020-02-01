@@ -1,14 +1,11 @@
 ﻿using Inventors.ECP.Functions;
-using Inventors.ECP.Messages;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Inventors.ECP.DefaultDevice
 {
-    public class DefaultDevice :
+    public class DefaultTcpDevice :
         Device
     {
         public class DefaultState :
@@ -20,15 +17,15 @@ namespace Inventors.ECP.DefaultDevice
 
         private readonly DefaultState state = new DefaultState();
 
-        public DefaultDevice(CommunicationLayer layer, DeviceData device) :
-            base(layer, device)
+        public DefaultTcpDevice(DeviceData device) :
+            base(new TcpClientLayer(), device)
         {
             FunctionList.Add(new DeviceIdentification());
             FunctionList.Add(new Ping());
             FunctionList.Add(new GetEndianness());
         }
 
-        public DefaultDevice(CommunicationLayer layer) : this(layer, DefaultIdentification) { }
+        public DefaultTcpDevice() : this(DefaultIdentification) { }
 
         private static DeviceData DefaultIdentification => new DeviceData()
         {
