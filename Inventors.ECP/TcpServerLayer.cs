@@ -11,7 +11,8 @@ using WatsonTcp;
 namespace Inventors.ECP
 {
     public class TcpServerLayer :
-        CommunicationLayer
+        CommunicationLayer,
+        IDisposable
     {
         private WatsonTcpServer server;
         private bool _isOpen = false;
@@ -177,5 +178,28 @@ namespace Inventors.ECP
 
             return null;
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false; 
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    server.Dispose();
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }
