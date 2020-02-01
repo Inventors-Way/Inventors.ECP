@@ -28,8 +28,6 @@ namespace Inventors.ECP
 
         public void Add(byte data)
         {
-            State oldState = state;
-
             switch (state)
             {
                 case State.WAITING_FOR_DLE:
@@ -112,6 +110,6 @@ namespace Inventors.ECP
         }
 
         private State state = State.WAITING_FOR_DLE;
-        private List<byte> buffer = new List<byte>();
+        private readonly List<byte> buffer = new List<byte>();
     }
 }

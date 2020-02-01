@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Inventors.ECP.Messages
 {
     public class PrintfMessage :
-        Message
+        DeviceMessage
     {
         public static readonly byte CODE = 0xFF;
 

@@ -8,16 +8,16 @@ using System.Xml.Serialization;
 
 namespace Inventors.ECP
 {
-    public abstract class Function
+    public abstract class DeviceFunction
     {
-        public Function()
+        public DeviceFunction()
         {
             Request = new Packet(functionCode, 0);
             ResponseLength = 0;
             RequestLength = 0;
         }
 
-        public Function(byte code)
+        public DeviceFunction(byte code)
         {
             functionCode = code;
             ResponseLength = 0;
@@ -25,7 +25,7 @@ namespace Inventors.ECP
             Request = new Packet(code, 0);
         }
 
-        public Function(byte code, byte length)
+        public DeviceFunction(byte code, byte length)
         {
             functionCode = code;
             RequestLength = length;
@@ -34,7 +34,7 @@ namespace Inventors.ECP
             Response = new Packet(code, 0);
         }
 
-        public Function(byte code, byte requestLength, byte responseLength)
+        public DeviceFunction(byte code, byte requestLength, byte responseLength)
         {
             functionCode = code;
             RequestLength = requestLength;
@@ -74,7 +74,7 @@ namespace Inventors.ECP
                 throw new InvalidSlaveResponseException(Resources.INVALID_RESPONSE_CONTENT);
         }
 
-        internal Function SetRequest(Packet packet)
+        internal DeviceFunction SetRequest(Packet packet)
         {
             Request = packet;
 

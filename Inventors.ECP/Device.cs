@@ -127,7 +127,7 @@ namespace Inventors.ECP
             }
         }
 
-        public void Execute(Function function)
+        public void Execute(DeviceFunction function)
         {
             if (function is object)
             {
@@ -146,10 +146,10 @@ namespace Inventors.ECP
             }
         }
 
-        public async Task ExecuteAsync(Function function) =>
+        public async Task ExecuteAsync(DeviceFunction function) =>
             await Task.Run(() => { Execute(function); }).ConfigureAwait(false);
 
-        public void Send(Message message)
+        public void Send(DeviceMessage message)
         {
             Master.Send(message);
         }
@@ -170,7 +170,7 @@ namespace Inventors.ECP
         }
 
         [Browsable(false)]
-        public List<Function> Functions
+        public List<DeviceFunction> Functions
         {
             get
             {
@@ -206,7 +206,7 @@ namespace Inventors.ECP
 
         [XmlIgnore]
         [Browsable(false)]
-        protected List<Function> FunctionList { get; } = new List<Function>();
+        protected List<DeviceFunction> FunctionList { get; } = new List<DeviceFunction>();
 
         [XmlIgnore]
         [Browsable(false)]

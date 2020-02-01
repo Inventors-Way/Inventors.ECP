@@ -8,21 +8,21 @@ using Inventors.ECP.Messages;
 
 namespace Inventors.ECP
 {
-    public abstract class Message
+    public abstract class DeviceMessage
     {
         public abstract byte Code { get; }
 
-        public Message(Packet response)
+        public DeviceMessage(Packet response)
         {
             Packet = response;
         }
 
-        public Message(byte code)
+        public DeviceMessage(byte code)
         {
             Packet = new Packet(code, 0);
         }
 
-        public Message(byte code, byte length)
+        public DeviceMessage(byte code, byte length)
         {
             Packet = new Packet(code, length);
         }

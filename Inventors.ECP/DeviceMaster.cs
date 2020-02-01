@@ -65,7 +65,7 @@ namespace Inventors.ECP
             }
         }
 
-        public void Execute(Function function)
+        public void Execute(DeviceFunction function)
         {
             if (function is object)
             {
@@ -81,7 +81,7 @@ namespace Inventors.ECP
             }
         }
 
-        public void Send(Message message)
+        public void Send(DeviceMessage message)
         {
             if (connection.IsOpen && (message is object))
             {
@@ -112,7 +112,7 @@ namespace Inventors.ECP
             return retValue;
         }
 
-        private void Initiate(Function function)
+        private void Initiate(DeviceFunction function)
         {
             var bytes = function.GetRequest();
 
@@ -191,7 +191,7 @@ namespace Inventors.ECP
             }
         }
 
-        public void Add(Message message)
+        public void Add(DeviceMessage message)
         {
             if (message is object)
             {
@@ -204,7 +204,7 @@ namespace Inventors.ECP
         public dynamic MessageListener { get; set; } = null;
 
         private readonly CommunicationLayer connection;
-        private Function current = null;
+        private DeviceFunction current = null;
         private readonly object lockObject = new object();
         private Exception currentException = null;
         private readonly Stopwatch stopwatch = new Stopwatch();

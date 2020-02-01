@@ -83,7 +83,7 @@ namespace Inventors.ECP
 
         public abstract void Transmit(byte[] frame);
 
-        public Destuffer Destuffer { get; } = new Destuffer();
+        internal Destuffer Destuffer { get; } = new Destuffer();
 
         protected long BytesReceived { get; set; }
 

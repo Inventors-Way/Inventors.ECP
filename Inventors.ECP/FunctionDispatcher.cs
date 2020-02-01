@@ -6,7 +6,7 @@ namespace Inventors.ECP
 {
     public class FunctionDispatcher
     {
-        public FunctionDispatcher(byte code, Func<Function> creator)
+        public FunctionDispatcher(byte code, Func<DeviceFunction> creator)
         {
             this.code = code;
             this.creator = creator;
@@ -20,7 +20,7 @@ namespace Inventors.ECP
             }
         }
 
-        public Function Create(Packet packet)
+        public DeviceFunction Create(Packet packet)
         {
             var retValue = creator();
             retValue.SetRequest(packet);
@@ -29,6 +29,6 @@ namespace Inventors.ECP
         }
 
         private readonly byte code;
-        private readonly Func<Function> creator;
+        private readonly Func<DeviceFunction> creator;
     }
 }

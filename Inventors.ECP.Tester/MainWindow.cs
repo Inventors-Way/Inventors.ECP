@@ -244,14 +244,14 @@ namespace Inventors.ECP.Tester
         {
             if (state == AppState.APP_STATE_CONNECTED)
             {
-                if (functionList.SelectedItem is Function)
+                if (functionList.SelectedItem is DeviceFunction)
                 {
                     try
                     {
                         functionList.Enabled = false;
                         testToolStripMenuItem.Enabled = false;
                         UpdateAppStates(AppState.APP_STATE_ACTIVE);
-                        Execute(functionList.SelectedItem as Function, true);
+                        Execute(functionList.SelectedItem as DeviceFunction, true);
                     }
                     catch { }
 
@@ -371,7 +371,7 @@ namespace Inventors.ECP.Tester
 
         #endregion
         #region Functions and message handling
-        private async void Execute(Function function, bool doLogging = false)
+        private async void Execute(DeviceFunction function, bool doLogging = false)
         {
             if (device != null)
             {
@@ -425,7 +425,7 @@ namespace Inventors.ECP.Tester
         {
             if (state == AppState.APP_STATE_CONNECTED)
             {
-                profiler.Function = functionList.SelectedItem as Function;
+                profiler.Function = functionList.SelectedItem as DeviceFunction;
 
                 if (profiler.Function != null)
                 {

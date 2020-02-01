@@ -104,7 +104,7 @@ namespace Inventors.ECP.Profiling
             }
         }
 
-        public Function Function { get; set; } = null;
+        public DeviceFunction Function { get; set; } = null;
 
         private CommunicationLayerStatistics statistics = new CommunicationLayerStatistics();
 

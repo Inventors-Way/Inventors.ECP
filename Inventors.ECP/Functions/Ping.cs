@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Inventors.ECP.Functions
 {
     public class Ping : 
-        Function
+        DeviceFunction
     {
         public static readonly byte CODE = 0x02;
 

@@ -68,7 +68,7 @@ namespace Inventors.ECP
             }
         }
 
-        public void Send(Message message)
+        public void Send(DeviceMessage message)
         {
             if (_connection.IsOpen && (message is object))
             {
@@ -88,7 +88,7 @@ namespace Inventors.ECP
                 {
                     if (response.IsFunction)
                     {
-                        if (DispatchFunction(response, out Function function))
+                        if (DispatchFunction(response, out DeviceFunction function))
                         {
                             function.OnSlaveSend();
                             _connection.Transmit(Frame.Encode(function.GetResponse()));
@@ -120,7 +120,7 @@ namespace Inventors.ECP
             }
         }
 
-        public void Add(Function function)
+        public void Add(DeviceFunction function)
         {
             if (function is object)
             {
@@ -128,7 +128,7 @@ namespace Inventors.ECP
             }
         }
 
-        public void Add(Message message)
+        public void Add(DeviceMessage message)
         {
             if (message is object)
             {
@@ -153,7 +153,7 @@ namespace Inventors.ECP
             return retValue;
         }
 
-        public bool DispatchFunction(Packet packet, out Function function)
+        public bool DispatchFunction(Packet packet, out DeviceFunction function)
         {
             bool retValue = false;
             function = null;

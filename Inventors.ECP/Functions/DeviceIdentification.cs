@@ -10,7 +10,7 @@ using Inventors.ECP;
 namespace Inventors.ECP.Functions
 {
     public class DeviceIdentification :
-       Function
+       DeviceFunction
     {
         public static readonly byte CODE = 0x01;
 

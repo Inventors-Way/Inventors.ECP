@@ -8,7 +8,7 @@ namespace Inventors.ECP
 {
     public class MessageDispatcher
     {
-        public MessageDispatcher(byte code, Func<Packet, Message> creator)
+        public MessageDispatcher(byte code, Func<Packet, DeviceMessage> creator)
         {
             this.code = code;
             this.creator = creator;
@@ -22,7 +22,7 @@ namespace Inventors.ECP
             }
         }
 
-        public Message Create(Packet packet)
+        public DeviceMessage Create(Packet packet)
         {
             var retValue = creator(packet);
             retValue.OnReceived();
@@ -30,6 +30,6 @@ namespace Inventors.ECP
         }
 
         private readonly byte code;
-        private readonly Func<Packet, Message> creator;
+        private readonly Func<Packet, DeviceMessage> creator;
     }
 }
