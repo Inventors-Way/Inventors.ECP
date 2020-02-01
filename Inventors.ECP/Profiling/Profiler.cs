@@ -285,6 +285,9 @@ namespace Inventors.ECP.Profiling
             }
         }
 
+        public async Task TestAsync() => await Task.Run(() => Test()).ConfigureAwait(false);
+
+
         public Report Compile()
         {
             return new Report(Time, Trials, statistics, RunTime);

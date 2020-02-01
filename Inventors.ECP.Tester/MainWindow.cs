@@ -417,10 +417,7 @@ namespace Inventors.ECP.Tester
             }
         }
       
-        public void OnPrintf(object sender, MessageEventArgs<PrintfMessage> e)
-        {
-            BeginUpdate(() => Log.Status("Printf: {0}", e.Message.ToString()));
-        }
+        public void OnPrintf(object sender, MessageEventArgs<PrintfMessage> e) => Log.Status("Printf: {0}", e.Message.ToString());
 
         #endregion
 
@@ -430,7 +427,7 @@ namespace Inventors.ECP.Tester
             public bool Succes { get; set; } = false;
         }
 
-        private void TestToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void TestToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (state == AppState.APP_STATE_CONNECTED)
             {
@@ -442,18 +439,12 @@ namespace Inventors.ECP.Tester
                     testToolStripMenuItem.Enabled = false;
                     UpdateAppStates(AppState.APP_STATE_ACTIVE);
 
-                    Task.Run(() =>
-                    {
-                        profiler.Test();
+                    await profiler.TestAsync();
 
-                        BeginUpdate(() =>
-                        {
-                            Log.Status("TEST COMPLETED [ {0}ms ]", profiler.RunTime);
-                            Log.Status(profiler.Compile().ToString());
-                            UpdateAppStates(AppState.APP_STATE_CONNECTED);
-                            UpdateProfiling();
-                        });
-                    });
+                    Log.Status("TEST COMPLETED [ {0}ms ]", profiler.RunTime);
+                    Log.Status(profiler.Compile().ToString());
+                    UpdateAppStates(AppState.APP_STATE_CONNECTED);
+                    UpdateProfiling();
                 }
                 else
                     Log.Status("Please select a function");
