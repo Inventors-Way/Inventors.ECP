@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Text;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace Inventors.ECP
@@ -48,9 +50,33 @@ namespace Inventors.ECP
         public string BeaconName => String.Format(CultureInfo.CurrentCulture, "ECP-{0}-{1}", ManufactureID, DeviceID);
 
         [XmlIgnore]
-        public string Address { get; set; }
-
-        [XmlIgnore]
         public string Port { get; set; }
+
+        public static DeviceData Create(string xml)
+        {
+            DeviceData retValue = null;
+            XmlSerializer serializer = new XmlSerializer(typeof(DeviceData));
+            XmlReaderSettings settings = new XmlReaderSettings() { };
+
+            using (var stream = new StringReader(xml))
+            {
+                using (var reader = XmlReader.Create(stream, settings))
+                {
+                    retValue = (DeviceData)serializer.Deserialize(reader);
+                }
+            }
+
+            return retValue;
+        }
+
+        public string ToXML()
+        {
+            using (var writer = new StringWriter())
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(DeviceData));
+                serializer.Serialize(writer, this);
+                return writer.ToString();
+            }
+        }
     }
 }

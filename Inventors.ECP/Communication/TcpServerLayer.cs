@@ -1,4 +1,5 @@
-﻿using Inventors.Logging;
+﻿using BeaconLib;
+using Inventors.Logging;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -15,6 +16,7 @@ namespace Inventors.ECP.Communication
         IDisposable
     {
         private WatsonTcpServer server;
+        private Beacon beacon;
         private bool _isOpen = false;
         private bool _isConnected = false;
         private string _IpPort = null;
@@ -47,7 +49,7 @@ namespace Inventors.ECP.Communication
 
         public override List<string> GetAvailablePorts()
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public TcpServerLayer() { }
@@ -96,22 +98,34 @@ namespace Inventors.ECP.Communication
                     server = null;
                     IsConnected = false;
                     SetOpen(false);
+                    beacon.Stop();
+                    beacon.Dispose();
+                    beacon = null;
                 }
             }            
         }
 
         protected override void DoOpen(DeviceData device)
         {
-            if (!IsOpen)
+            if (device is object)
             {
-                IsConnected = false;
-                ClientPort = null;
-                server = new WatsonTcpServer(Address, IPPort);
-                server.ClientConnected += OnConnected;
-                server.ClientDisconnected += OnDisconnected;
-                server.MessageReceived += MessageReceived;
-                server.Start();
-                SetOpen(true);
+                if (!IsOpen)
+                {
+                    lock (this)
+                    {
+                        IsConnected = false;
+                        ClientPort = null;
+                        server = new WatsonTcpServer(Address, IPPort);
+                        server.ClientConnected += OnConnected;
+                        server.ClientDisconnected += OnDisconnected;
+                        server.MessageReceived += MessageReceived;
+                        server.Start();
+                        SetOpen(true);
+                        beacon = new Beacon(device.BeaconName, (ushort)IPPort);
+                        beacon.BeaconData = device.ToXML();
+                        beacon.Start();
+                    }
+                }
             }
         }
 
@@ -188,7 +202,13 @@ namespace Inventors.ECP.Communication
             {
                 if (disposing)
                 {
+                    Close();
                     server.Dispose();
+
+                    if (beacon is object)
+                    {
+                        beacon.Dispose();
+                    }
                 }
 
                 disposedValue = true;

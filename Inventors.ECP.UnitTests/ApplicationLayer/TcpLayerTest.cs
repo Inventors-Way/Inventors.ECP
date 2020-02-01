@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,6 +9,7 @@ using Inventors.ECP.Functions;
 using Inventors.ECP.Messages;
 using System.Net;
 using System.Threading;
+using BeaconLib;
 
 namespace Inventors.ECP.UnitTests.ApplicationLayer
 {
@@ -43,6 +45,21 @@ namespace Inventors.ECP.UnitTests.ApplicationLayer
             var endianity = new GetEndianness();
             TcpTestContext.Device.Execute(endianity);
             Assert.AreEqual(expected: true, actual: endianity.EqualEndianness);
+        }
+
+        [TestMethod]
+        public void BeaconTest()
+        {
+            List<BeaconLocation> locations = new List<BeaconLocation>();
+            var probe = new Probe(TcpTestContext.Slave.Identification.BeaconName);
+            probe.BeaconsUpdated += (beacons) => locations = beacons.ToList();
+            probe.Start();
+            Thread.Sleep(500);
+            probe.Stop();
+            Assert.AreEqual(expected: 1, actual: locations.Count);
+            var beacon = locations[0];
+            var data = DeviceData.Create(locations[0].Data);
+            Assert.AreEqual(expected: TcpTestContext.Slave.Identification.DeviceID, actual: data.DeviceID);
         }
     }
 }

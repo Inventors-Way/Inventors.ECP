@@ -19,6 +19,8 @@ namespace Inventors.ECP
 
         public dynamic FunctionListener { get; set; } = null;
 
+        public DeviceData Identification => _deviceData;
+
         public DeviceSlave(CommunicationLayer layer, DeviceData deviceData)
         {
             if ((layer is object) && (deviceData is object))
