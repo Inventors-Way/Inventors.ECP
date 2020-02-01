@@ -1,4 +1,5 @@
-﻿using Inventors.ECP.Functions;
+﻿using Inventors.ECP.Communication;
+using Inventors.ECP.Functions;
 using Inventors.ECP.Messages;
 using System;
 using System.Collections.Generic;

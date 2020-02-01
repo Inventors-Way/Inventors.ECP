@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Inventors.ECP;
+using Inventors.ECP.Communication;
 using Inventors.ECP.Functions;
 using Inventors.ECP.Messages;
 using Inventors.Logging;

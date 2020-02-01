@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WatsonTcp;
 
-namespace Inventors.ECP
+namespace Inventors.ECP.Communication
 {
     public class TcpServerLayer :
         CommunicationLayer,
