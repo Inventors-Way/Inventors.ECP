@@ -23,10 +23,10 @@ namespace Inventors.ECP
         public DeviceMaster(CommunicationLayer connection, DeviceData device)
         {
             if (!(connection is object))
-                throw new ArgumentException("connection is null");
+                throw new ArgumentException(Resources.CONNECTION_NULL);
 
             if (!(connection is object))
-                throw new ArgumentException("device is null");
+                throw new ArgumentException(Resources.DEVICE_NULL);
 
             this.connection = connection;
             this.device = device;

@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CONNECTION_NULL" xml:space="preserve">
+    <value>Connection is null</value>
+  </data>
+  <data name="DEVICE_NULL" xml:space="preserve">
+    <value>Device is null</value>
+  </data>
   <data name="FRAME_IS_NULL" xml:space="preserve">
     <value>Frame is null</value>
   </data>
@@ -144,8 +150,14 @@
   <data name="INVALID_TIME_NULL" xml:space="preserve">
     <value>Invalid argument, time is null</value>
   </data>
+  <data name="LAYER_OR_DEVICE_DATA_IS_NULL" xml:space="preserve">
+    <value>Passed null values for layer or deviceData</value>
+  </data>
   <data name="NO_RESPONSE" xml:space="preserve">
     <value>No response from the slave</value>
+  </data>
+  <data name="PORT_CHANGE_WHILE_OPEN" xml:space="preserve">
+    <value>Cannot change the port while the client is open</value>
   </data>
   <data name="UNKNOWN_PACKET_ENCODING" xml:space="preserve">
     <value>Unknown type of length encoding:</value>

@@ -27,7 +27,7 @@ namespace Inventors.ECP
                 _connection.Destuffer.OnReceive += HandleIncommingFrame;
             }
             else
-                throw new ArgumentException("Passed null values for layer or deviceData");
+                throw new ArgumentException(Resources.LAYER_OR_DEVICE_DATA_IS_NULL);
         }
 
         public void Open()

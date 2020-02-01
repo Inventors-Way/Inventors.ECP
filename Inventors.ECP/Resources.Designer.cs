@@ -61,6 +61,24 @@ namespace Inventors.ECP {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Connection is null.
+        /// </summary>
+        internal static string CONNECTION_NULL {
+            get {
+                return ResourceManager.GetString("CONNECTION_NULL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Device is null.
+        /// </summary>
+        internal static string DEVICE_NULL {
+            get {
+                return ResourceManager.GetString("DEVICE_NULL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Frame is null.
         /// </summary>
         internal static string FRAME_IS_NULL {
@@ -142,11 +160,29 @@ namespace Inventors.ECP {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Passed null values for layer or deviceData.
+        /// </summary>
+        internal static string LAYER_OR_DEVICE_DATA_IS_NULL {
+            get {
+                return ResourceManager.GetString("LAYER_OR_DEVICE_DATA_IS_NULL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No response from the slave.
         /// </summary>
         internal static string NO_RESPONSE {
             get {
                 return ResourceManager.GetString("NO_RESPONSE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot change the port while the client is open.
+        /// </summary>
+        internal static string PORT_CHANGE_WHILE_OPEN {
+            get {
+                return ResourceManager.GetString("PORT_CHANGE_WHILE_OPEN", resourceCulture);
             }
         }
         

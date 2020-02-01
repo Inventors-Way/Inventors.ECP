@@ -34,7 +34,7 @@ namespace Inventors.ECP
                 }
                 else
                 {
-                    throw new InvalidOperationException("Cannot change the port while the client is open");
+                    throw new InvalidOperationException(Resources.PORT_CHANGE_WHILE_OPEN);
                 }
             }
         }
