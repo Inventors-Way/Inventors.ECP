@@ -17,7 +17,7 @@ namespace Inventors.ECP.Profiling
         {
             public Report(List<double> time, 
                           int trials,
-                          CommunicationLayer.CommunicationLayerStatistics stats,
+                          CommunicationLayerStatistics stats,
                           double RunTime)
             {
                 if (!(time is object))
@@ -70,19 +70,7 @@ namespace Inventors.ECP.Profiling
 
             public double RunTime { get; private set; }
 
-            public CommunicationLayer.CommunicationLayerStatistics Statistics { get; private set; }
-        }
-
-        public class CommunicationProfile :
-            CommunicationLayer.Statistics
-        {
-            public byte Code { get; set; } = 0;
-
-            public double Rate { get; set; } = 0;
-
-            public long Count { get; set; } = 0;
-
-            public double Bytes { get; set; } = 0;
+            public CommunicationLayerStatistics Statistics { get; private set; }
         }
 
         private class FrameStat
@@ -118,7 +106,7 @@ namespace Inventors.ECP.Profiling
 
         public Function Function { get; set; } = null;
 
-        private CommunicationLayer.CommunicationLayerStatistics statistics = new CommunicationLayer.CommunicationLayerStatistics();
+        private CommunicationLayerStatistics statistics = new CommunicationLayerStatistics();
 
         public int Trials { get; set; } = 100;
 

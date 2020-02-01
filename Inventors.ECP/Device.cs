@@ -15,14 +15,6 @@ namespace Inventors.ECP
 {
     public abstract class Device
     {
-        public abstract class DeviceState
-        {
-            public override sealed string ToString()
-            {
-                return "- DEVICE STATE";
-            }
-        }
-
         private bool connected = false;
         private readonly object lockObject = new object();
 

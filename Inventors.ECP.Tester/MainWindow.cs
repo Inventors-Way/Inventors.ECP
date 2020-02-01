@@ -193,7 +193,7 @@ namespace Inventors.ECP.Tester
             device = loader.Create();
             device.OnStateChanged += (sender, message) =>
             {
-                if (functionList.SelectedItem is Device.DeviceState)
+                if (functionList.SelectedItem is DeviceState)
                 {
                     BeginUpdate(() => { propertyGrid.Refresh(); });
                 }

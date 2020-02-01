@@ -30,15 +30,6 @@ namespace Inventors.ECP
             }
         }
 
-        public class CommunicationLayerStatistics :
-            Statistics
-        {
-            public long BytesTransmitted { get; set; } = 0;
-            public long BytesReceived { get; set; } = 0;
-            public double RxRate { get; set; } = 0;
-            public double TxRate { get; set; } = 0;
-        }
-
         public abstract int BaudRate { get; set; }
 
         public abstract string Port { get; set; }
