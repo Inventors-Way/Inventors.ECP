@@ -21,7 +21,7 @@ namespace Inventors.ECP
             ERROR
         };
 
-        public DeviceMaster(CommunicationLayer connection, DeviceData device)
+        public DeviceMaster(CommunicationLayer connection, DeviceType device)
         {
             if (!(connection is object))
                 throw new ArgumentException(Resources.CONNECTION_NULL);
@@ -210,6 +210,6 @@ namespace Inventors.ECP
         private Exception currentException = null;
         private readonly Stopwatch stopwatch = new Stopwatch();
         private CommState state = CommState.WAITING;
-        private readonly DeviceData device;
+        private readonly DeviceType device;
     }
 }

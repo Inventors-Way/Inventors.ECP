@@ -58,7 +58,7 @@ namespace Inventors.ECP.UnitTests.ApplicationLayer
             probe.Stop();
             Assert.AreEqual(expected: 1, actual: locations.Count);
             var beacon = locations[0];
-            var data = DeviceData.Create(locations[0].Data);
+            var data = DeviceType.Create(locations[0].Data);
             Assert.AreEqual(expected: TC.Slave.Identification.DeviceID, actual: data.DeviceID);
         }
 
@@ -67,7 +67,7 @@ namespace Inventors.ECP.UnitTests.ApplicationLayer
         {
             var device = TC.Device;
 
-            Thread.Sleep(500);
+            Thread.Sleep(2500);
             var devices = device.GetAvailableDevices();
             Assert.AreEqual(expected: 1, actual: devices.Count);
         }

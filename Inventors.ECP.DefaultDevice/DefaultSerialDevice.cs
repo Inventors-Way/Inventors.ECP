@@ -21,7 +21,7 @@ namespace Inventors.ECP.DefaultDevice
 
         private readonly DefaultState state = new DefaultState();
 
-        public DefaultSerialDevice(DeviceData device) :
+        public DefaultSerialDevice(DeviceType device) :
             base(new SerialPortLayer(device), device)
         {
             FunctionList.Add(new DeviceIdentification());
@@ -31,7 +31,7 @@ namespace Inventors.ECP.DefaultDevice
 
         public DefaultSerialDevice() : this(DefaultIdentification) { }
 
-        private static DeviceData DefaultIdentification => new DeviceData()
+        private static DeviceType DefaultIdentification => new DeviceType()
         {
             DeviceID = 1,
             Device = "Default Device",

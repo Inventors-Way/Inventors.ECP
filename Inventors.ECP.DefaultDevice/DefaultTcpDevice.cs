@@ -18,7 +18,7 @@ namespace Inventors.ECP.DefaultDevice
 
         private readonly DefaultState state = new DefaultState();
 
-        public DefaultTcpDevice(DeviceData device) :
+        public DefaultTcpDevice(DeviceType device) :
             base(new TcpClientLayer(device), device)
         {
             FunctionList.Add(new DeviceIdentification());
@@ -28,7 +28,7 @@ namespace Inventors.ECP.DefaultDevice
 
         public DefaultTcpDevice() : this(DefaultIdentification) { }
 
-        private static DeviceData DefaultIdentification => new DeviceData()
+        private static DeviceType DefaultIdentification => new DeviceType()
         {
             DeviceID = 1,
             Device = "Default Device",

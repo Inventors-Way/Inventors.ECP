@@ -36,7 +36,7 @@ namespace Inventors.ECP.Communication
 
         #endregion
 
-        public SerialPortLayer(DeviceData device) : 
+        public SerialPortLayer(DeviceType device) : 
             base(device) 
         { 
         }

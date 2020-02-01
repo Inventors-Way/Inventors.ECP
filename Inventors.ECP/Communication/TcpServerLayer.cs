@@ -52,7 +52,7 @@ namespace Inventors.ECP.Communication
             return null;
         }
 
-        public TcpServerLayer(DeviceData device) : base(device) { }
+        public TcpServerLayer(DeviceType device) : base(device) { }
 
         public override bool IsOpen
         {

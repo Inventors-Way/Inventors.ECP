@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 namespace Inventors.ECP
 {
     [XmlRoot("device-id")]
-    public class DeviceData
+    public class DeviceType
     {
         [XmlAttribute("manufacturer-id")]
         public UInt32 ManufactureID { get; set; } = 1;
@@ -52,17 +52,17 @@ namespace Inventors.ECP
         [XmlIgnore]
         public string Port { get; set; }
 
-        public static DeviceData Create(string xml)
+        public static DeviceType Create(string xml)
         {
-            DeviceData retValue = null;
-            XmlSerializer serializer = new XmlSerializer(typeof(DeviceData));
+            DeviceType retValue = null;
+            XmlSerializer serializer = new XmlSerializer(typeof(DeviceType));
             XmlReaderSettings settings = new XmlReaderSettings() { };
 
             using (var stream = new StringReader(xml))
             {
                 using (var reader = XmlReader.Create(stream, settings))
                 {
-                    retValue = (DeviceData)serializer.Deserialize(reader);
+                    retValue = (DeviceType)serializer.Deserialize(reader);
                 }
             }
 
@@ -73,7 +73,7 @@ namespace Inventors.ECP
         {
             using (var writer = new StringWriter())
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(DeviceData));
+                XmlSerializer serializer = new XmlSerializer(typeof(DeviceType));
                 serializer.Serialize(writer, this);
                 return writer.ToString();
             }

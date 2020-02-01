@@ -25,7 +25,7 @@ namespace Inventors.ECP
         public event EventHandler<MessageEventArgs<PrintfMessage>> OnPrintf;
         public event EventHandler<DeviceState> OnStateChanged;
 
-        public Device(CommunicationLayer commLayer, DeviceData device)
+        public Device(CommunicationLayer commLayer, DeviceType device)
         {
             CommLayer = commLayer;
             this.Master = new DeviceMaster(commLayer, device);
@@ -33,14 +33,14 @@ namespace Inventors.ECP
             Master.Add(new PrintfMessage());
         }
 
-        public List<DeviceData> GetAvailableDevices()
+        public List<DeviceType> GetAvailableDevices()
         {
-            var retValue = new List<DeviceData>();
+            var retValue = new List<DeviceType>();
             var ports = CommLayer.GetAvailablePorts();
 
             foreach (var port in ports)
             {
-                retValue.Add(new DeviceData()
+                retValue.Add(new DeviceType()
                 {
                     Port = port
                 });

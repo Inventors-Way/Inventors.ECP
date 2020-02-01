@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Net;
+using System.Threading;
 
 namespace Inventors.ECP.UnitTests.ApplicationLayer
 {
@@ -36,6 +37,7 @@ namespace Inventors.ECP.UnitTests.ApplicationLayer
             _device = new DefaultTcpDevice();
             _device.CommLayer.Port = _slave.Port;
             _slave.Start();
+            Thread.Sleep(100);
             _device.Connect();
         }
 

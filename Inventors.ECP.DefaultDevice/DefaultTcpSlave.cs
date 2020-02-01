@@ -20,7 +20,7 @@ namespace Inventors.ECP.DefaultDevice
 
         public bool IsOpen { get; private set; }
 
-        public DeviceData Identification { get; } = new DeviceData()
+        public DeviceType Identification { get; } = new DeviceType()
         {
             DeviceID = 1,
             Device = "Default Device",
@@ -66,19 +66,12 @@ namespace Inventors.ECP.DefaultDevice
         public bool Accept(DeviceIdentification func)
         {
             slave.Accept(func);
-            Log.Status("Device Identification:");
-            Log.Status("   Manufacturer: {0} [{1}]", func.Manufacture, func.ManufactureID);
-            Log.Status("   Device      : {0} [{1}] (Checksum: {2})", func.Device, func.DeviceID, func.Checksum);
-            Log.Status("   Firmware    : {0}", func.Version);
-
             return true;
         }
 
         public bool Accept(Ping func)
         {
-            func.Count = Pings;
-            ++Pings;
-
+            func.Count = Pings++;
             return true;
         }
 

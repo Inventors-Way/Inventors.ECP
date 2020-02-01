@@ -24,7 +24,7 @@ namespace Inventors.ECP.Communication
 
         public override int BaudRate { get; set; } = 1;
 
-        public TcpClientLayer(DeviceData device) : base(device) 
+        public TcpClientLayer(DeviceType device) : base(device) 
         {
             _probe = new Probe(device.BeaconName);
             _probe.BeaconsUpdated += (beacons) =>

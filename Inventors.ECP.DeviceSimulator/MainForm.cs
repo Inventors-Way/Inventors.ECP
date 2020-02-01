@@ -22,12 +22,12 @@ namespace Inventors.ECP.DeviceSimulator
         private SerialPortLayer serial = null;
         private MenuItemSet portMenuItems;
         private DeviceSlave slave;
-        private readonly DeviceData deviceData;
+        private readonly DeviceType deviceData;
         private UInt32 pings = 0;
 
         public MainForm()
         {
-            deviceData = new DeviceData()
+            deviceData = new DeviceType()
             {
                 DeviceID = 1,
                 ManufactureID = 1,
