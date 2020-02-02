@@ -101,6 +101,6 @@ namespace Inventors.ECP
         }
 
         public override string ToString() =>
-            string.Format(CultureInfo.CurrentCulture, "{0}.{1} {2} [SN: {3}]", DeviceID, ManufactureID, Device, SerialNumber);
+            string.Format(CultureInfo.CurrentCulture, "{0}.{1} {2} [{3}]", DeviceID, ManufactureID, Device, SerialNumber);
     }
 }

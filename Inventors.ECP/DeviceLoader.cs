@@ -40,9 +40,6 @@ namespace Inventors.ECP
         [XmlIgnore]
         public int BaudRate { get; set; } = -1;
 
-        [XmlAttribute("port")]
-        public string PortName { get; set; }
-
         [XmlAttribute("profiling")]
         public bool Profiling { get; set; }
 
