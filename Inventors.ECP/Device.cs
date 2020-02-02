@@ -36,10 +36,13 @@ namespace Inventors.ECP
         public List<DeviceType> GetAvailableDevices()
         {
             if (CommLayer.IsOpen)
+            {
                 throw new InvalidOperationException();
+            }
 
             var retValue = new List<DeviceType>();
             var ports = CommLayer.GetAvailablePorts();
+            var currentPort = CommLayer.Port;
 
             foreach (var port in ports)
             {
@@ -69,6 +72,8 @@ namespace Inventors.ECP
                     Log.Debug("[ {0} ]: No compatible device found", port);
                 }
             }
+
+            CommLayer.Port = currentPort;
 
             return retValue;
         }

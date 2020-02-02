@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<device assembly="Inventors.ECP.DefaultDevice"
+        factory="Inventors.ECP.DefaultDevice.DefaultTcpDevice"
+        baudrate="38400"
+        profiling="true"
+        number-of-trials="200"
+        test-delay="20" />

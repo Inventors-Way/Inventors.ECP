@@ -26,6 +26,7 @@ Major refactoring of the code with breaking changes:
   <ItemGroup>
     <Folder Include="Functions\" />
     <Folder Include="Messages\" />
+    <Folder Include="Discovery\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,7 +36,6 @@ Major refactoring of the code with breaking changes:
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.CSharp" Version="4.6.0" />
-    <PackageReference Include="rix0rrr.BeaconLib" Version="1.0.2" />
     <PackageReference Include="System.IO.Ports" Version="4.6.0" />
     <PackageReference Include="WatsonTcp" Version="2.2.0" />
   </ItemGroup>

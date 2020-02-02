@@ -9,7 +9,7 @@ using Inventors.ECP.Functions;
 using Inventors.ECP.Messages;
 using System.Net;
 using System.Threading;
-using BeaconLib;
+using Inventors.ECP.Discovery;
 
 namespace Inventors.ECP.UnitTests.ApplicationLayer
 {
@@ -68,7 +68,9 @@ namespace Inventors.ECP.UnitTests.ApplicationLayer
             var device = TC.Device;
 
             Thread.Sleep(2500);
+            device.Disconnect();
             var devices = device.GetAvailableDevices();
+            device.Open();
             Assert.AreEqual(expected: 1, actual: devices.Count);
         }
     }

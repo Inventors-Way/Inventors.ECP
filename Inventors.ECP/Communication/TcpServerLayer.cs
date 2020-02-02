@@ -1,4 +1,4 @@
-﻿using BeaconLib;
+﻿using Inventors.ECP.Discovery;
 using Inventors.Logging;
 using System;
 using System.Collections.Generic;
