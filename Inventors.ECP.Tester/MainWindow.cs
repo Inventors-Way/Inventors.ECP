@@ -34,6 +34,7 @@ namespace Inventors.ECP.Tester
 
         private Logger logger;
         private Device device = null;
+        private DeviceType selectedDevice = null;
         private readonly CommunicationLayer commLayer = null;
         private readonly Profiler profiler = new Profiler();
         private AppState state = AppState.APP_STATE_UNINITIALIZED;
@@ -42,7 +43,6 @@ namespace Inventors.ECP.Tester
         {
             InitializeComponent();
             SetupLogging();
-            SetupPorts();
             UpdateAppStates(AppState.APP_STATE_UNINITIALIZED);
             UpdateStatus();
             SetTitle();
@@ -74,76 +74,6 @@ namespace Inventors.ECP.Tester
             logger = new Logger() { Box = logBox };
             Log.SetLogger(logger);
             Log.Level = LogLevel.DEBUG;
-        }
-
-        private void SetupPorts()
-        {
-            /*
-            var names = SerialPort.GetPortNames();            
-            commLayer = new SerialPortLayer(deviceData)
-            {
-                BaudRate = 115200
-            };
-
-            for (int n = 0; n < names.Length; ++n)
-            {
-                var item = new ToolStripMenuItem(names[n]);
-                portMenuItem.DropDownItems.Add(item);
-
-                if (n == 0)
-                {
-                    commLayer.Port = names[n];
-                    Log.Status("Serial port: {0}", commLayer.Port);
-                    item.Checked = true;
-                }
-            }*/
-        }
-
-        private void PortMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-            Log.Debug("Port changed to: {0}", e.ClickedItem.Text);
-            commLayer.Port = e.ClickedItem.Text;
-
-            foreach (var item in portMenuItem.DropDownItems)
-            {
-                ((ToolStripMenuItem)item).Checked = item != e.ClickedItem ? false : true;
-            }
-        }
-
-        private void SetPort(DeviceLoader loader)
-        {
-            if (loader.PortName != null)
-            {
-                ToolStripMenuItem selected = null;
-
-                foreach (var item in portMenuItem.DropDownItems)
-                {
-                    if (item is ToolStripMenuItem)
-                    {
-                        var tsItem = item as ToolStripMenuItem;
-
-                        if (tsItem.Text == loader.PortName)
-                        {
-                            selected = tsItem;
-                            device.CommLayer.Port = selected.Text;
-                        }
-                    }
-                }
-
-                if (selected != null)
-                {
-                    Log.Status("SELECTED PORT [ {0} ]", device.CommLayer.Port);
-
-                    foreach (var item in portMenuItem.DropDownItems)
-                    {
-                        ((ToolStripMenuItem)item).Checked = item != selected ? false : true;
-                    }
-                }
-                else
-                {
-                    //Log.Status("DEFAULT PORT [ {0} ] not found, keeping port [ {1} ]", loader.PortName, commLayer.Port);
-                }
-            }
         }
 
         private void UpdateStatus()
@@ -189,7 +119,7 @@ namespace Inventors.ECP.Tester
         }
 
         private void LoadDevice(string fileName)
-        {
+        {            
             var loader = DeviceLoader.Load(fileName);
             Log.Status("Device: {0}", loader.AssemblyName);
             device = loader.Create();
@@ -211,8 +141,132 @@ namespace Inventors.ECP.Tester
                 profiler.TestDelay);
             UpdateProfiling();
             InitializeFunctions();
-            SetPort(loader);
+            UpdatePorts();
             UpdateAppStates(AppState.APP_STATE_INITIALIZED);
+        }
+
+        private bool CheckDevicesChanged(List<DeviceType> devices)
+        {
+            if (devices.Count != portMenuItem.DropDownItems.Count)
+                return true;
+
+            if (devices.Count == portMenuItem.DropDownItems.Count)
+            {
+                for (int n = 0; n < devices.Count; ++n)
+                {
+                    if (portMenuItem.DropDownItems[n].Tag is DeviceType menuDevice)
+                    {
+                        if (menuDevice.ToString() != devices[n].ToString())
+                        {
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private async void UpdatePorts()
+        {
+            if (!device.IsOpen)
+            {
+                var devices = await device.GetAvailableDevicesAsync();
+
+                if (CheckDevicesChanged(devices))
+                {
+                    portMenuItem.DropDownItems.Clear();
+
+                    for (int n = 0; n < devices.Count; ++n)
+                    {
+                        var item = new ToolStripMenuItem(devices[n].ToString()) { Tag = devices[n] };
+                        portMenuItem.DropDownItems.Add(item);
+
+                        if (selectedDevice is object)
+                        {
+                            if (selectedDevice.ToString() == devices[n].ToString())
+                            {
+                                selectedDevice = devices[n];
+                                item.Checked = true;
+                            }
+                        }
+                        else
+                        {
+                            if (n == 1)
+                            {
+                                selectedDevice = devices[n];
+                                item.Checked = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void PortMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            if (!device.IsOpen)
+            {
+                if (e.ClickedItem.Tag is DeviceType current)
+                {
+                    Log.Debug("Port changed to: {0}", e.ClickedItem.Text);
+                    commLayer.Port = current.Port;
+                    selectedDevice = current;
+
+                    foreach (var item in portMenuItem.DropDownItems)
+                    {
+                        ((ToolStripMenuItem)item).Checked = item != e.ClickedItem ? false : true;
+                    }
+                }
+                else
+                {
+                    Log.Error("Clicked item did not have a DeviceType as its tag");
+                }
+            }
+            else
+            {
+                Log.Error("Attempted to change device while the device is open");
+            }
+        }
+
+        private void SetPort(DeviceLoader loader)
+        {
+            if (loader.PortName != null)
+            {
+                ToolStripMenuItem selected = null;
+
+                foreach (var item in portMenuItem.DropDownItems)
+                {
+                    if (item is ToolStripMenuItem)
+                    {
+                        var tsItem = item as ToolStripMenuItem;
+
+                        if (tsItem.Text == loader.PortName)
+                        {
+                            selected = tsItem;
+                            device.CommLayer.Port = selected.Text;
+                        }
+                    }
+                }
+
+                if (selected != null)
+                {
+                    Log.Status("SELECTED PORT [ {0} ]", device.CommLayer.Port);
+
+                    foreach (var item in portMenuItem.DropDownItems)
+                    {
+                        ((ToolStripMenuItem)item).Checked = item != selected ? false : true;
+                    }
+                }
+                else
+                {
+                    //Log.Status("DEFAULT PORT [ {0} ] not found, keeping port [ {1} ]", loader.PortName, commLayer.Port);
+                }
+            }
         }
 
         private void InitializeFunctions()
