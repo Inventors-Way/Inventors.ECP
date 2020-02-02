@@ -59,10 +59,14 @@ namespace Inventors.ECP.Communication
             get { lock (this) { return _isOpen; } }
         }
 
-        private bool IsConnected
+        public override bool IsConnected
         {
             get { lock(this) { return _isConnected; }}
-            set { lock (this) { _isConnected = value; }}
+        }
+
+        private void SetConnected(bool value)
+        {
+            lock (this) { _isConnected = value; } 
         }
 
         private string ClientPort
@@ -96,7 +100,7 @@ namespace Inventors.ECP.Communication
 
                     server.Dispose();
                     server = null;
-                    IsConnected = false;
+                    SetConnected(false);
                     SetOpen(false);
                     beacon.Stop();
                     beacon.Dispose();
@@ -111,7 +115,7 @@ namespace Inventors.ECP.Communication
             {
                 lock (this)
                 {
-                    IsConnected = false;
+                    SetConnected(false);
                     ClientPort = null;
                     server = new WatsonTcpServer(Address, IPPort);
                     server.ClientConnected += OnConnected;
@@ -135,11 +139,13 @@ namespace Inventors.ECP.Communication
                 if (!IsConnected)
                 {
                     ClientPort = ipPort;
-                    IsConnected = true;
+                    SetConnected(true);
+                    Log.Debug("TcpServerLayer: Client [{0}] connected", ipPort);
                 }
                 else
                 {
                     server.DisconnectClient(ipPort);
+                    Log.Debug("TcpServerLayer: Client [{0}] disconnected as a client is allready connected", ipPort);
                 }
             }).ConfigureAwait(false);
         }
@@ -152,8 +158,8 @@ namespace Inventors.ECP.Communication
                 {
                     if (ClientPort == ipPort)
                     {
-                        IsConnected = false;
-                        Log.Debug("TCP SERVER DISCONNECT");
+                        SetConnected(false);
+                        Log.Debug("TcpServerLayer: Client disconnected: {0}", ipPort);
                     }
                 }
             }).ConfigureAwait(false);

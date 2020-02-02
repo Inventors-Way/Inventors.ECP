@@ -66,6 +66,8 @@ namespace Inventors.ECP.Communication
 
         public abstract bool IsOpen { get; }
 
+        public abstract bool IsConnected { get; }
+
         public abstract void Transmit(byte[] frame);
 
         internal Destuffer Destuffer { get; } = new Destuffer();

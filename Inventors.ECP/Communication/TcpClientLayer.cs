@@ -63,10 +63,14 @@ namespace Inventors.ECP.Communication
 
         public override bool IsOpen => _open;
 
-        public bool IsConnected
+        public override bool IsConnected
         {
             get { lock (this) { return _connected; } }
-            set { lock(this) { _connected = value; } }
+        }
+
+        private void SetConnected(bool value)
+        {
+            lock (this) { _connected = value; }
         }
 
         private void SetOpen(bool open) { lock (this) { _open = open; } }
@@ -84,7 +88,7 @@ namespace Inventors.ECP.Communication
         {
             if (IsOpen)
             {
-                IsConnected = false;
+                SetConnected(false);
                 _client.Dispose();
                 _client = null;
                 SetOpen(false);
@@ -95,7 +99,7 @@ namespace Inventors.ECP.Communication
         {
             if (!IsOpen)
             {
-                IsConnected = false;
+                SetConnected(false);
                 _client = new WatsonTcpClient(Address, IPPort);
                 _client.ServerConnected += OnConnected;
                 _client.ServerDisconnected += OnDisconnected;
@@ -116,9 +120,9 @@ namespace Inventors.ECP.Communication
             }).ConfigureAwait(false);
         }
 
-        private async Task OnConnected() => await Task.Run(() => IsConnected = true).ConfigureAwait(false);
+        private async Task OnConnected() => await Task.Run(() => SetConnected(true)).ConfigureAwait(false);
 
-        private async Task OnDisconnected() => await Task.Run(() => IsConnected = false).ConfigureAwait(false);
+        private async Task OnDisconnected() => await Task.Run(() => SetConnected(false)).ConfigureAwait(false);
 
         public override List<string> GetAvailablePorts()
         {            

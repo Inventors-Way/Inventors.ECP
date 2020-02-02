@@ -151,6 +151,8 @@ namespace Inventors.ECP.Communication
             }
         }
 
+        public override bool IsConnected => IsOpen;
+
         public override string Port { get; set; }
 
         public override int BaudRate { get; set; }

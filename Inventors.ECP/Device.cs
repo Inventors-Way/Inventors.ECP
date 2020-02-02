@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -63,10 +64,10 @@ namespace Inventors.ECP
 
                     Close();
                 }
-                catch 
+                catch (Exception ex)
                 {
                     Close();
-                    Log.Debug("[ {0} ]: No compatible device found", port);
+                    Log.Debug("[ {0} ]: No compatible device found ({1})", port, ex.Message);
                 }
             }
 
@@ -86,6 +87,7 @@ namespace Inventors.ECP
             {
                 retValue = new DeviceIdentification();
                 Master.Open();
+                WaitOnConnected(200);
                 Execute(retValue);
 
                 if (IsCompatible(retValue))
@@ -101,6 +103,23 @@ namespace Inventors.ECP
 
             return retValue;
         }
+
+        private void WaitOnConnected(int timeout)
+        {
+            var watch = new Stopwatch();
+            watch.Restart();
+
+            while (!CommLayer.IsConnected)
+            {
+                if (watch.ElapsedMilliseconds > timeout)
+                {
+                    throw new SlaveNotRespondingException(string.Format(CultureInfo.CurrentCulture, "Could not connect to: {0}", CommLayer.Port));
+                }
+            }
+            watch.Stop();
+            Log.Debug("Time to connect: {0}", watch.ElapsedMilliseconds);
+        }
+
 
         public async Task ConnectAsync() => await Task.Run(() => Connect()).ConfigureAwait(false);
 

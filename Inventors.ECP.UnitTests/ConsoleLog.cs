@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Inventors.ECP.UnitTests
 {
+    [TestClass]
     public class ConsoleLog :
         ILogger
     {
@@ -21,7 +22,7 @@ namespace Inventors.ECP.UnitTests
         public void Initialize() { }
 
         [AssemblyInitialize]
-        public void OnAssemblyInitialize()
+        public static void OnAssemblyInitialize(TestContext tc)
         {
             Log.SetLogger(log);
         }
