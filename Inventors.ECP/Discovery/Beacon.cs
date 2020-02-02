@@ -14,7 +14,7 @@ namespace Inventors.ECP.Discovery
     /// <remarks>
     /// The advertisement consists of the beacon's application type and a short beacon-specific string.
     /// </remarks>
-    public class Beacon : IDisposable
+    public sealed class Beacon : IDisposable
     {
         internal const int DiscoveryPort = 35891;
         private readonly UdpClient udp;

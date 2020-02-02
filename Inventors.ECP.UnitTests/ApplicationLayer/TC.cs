@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Net;
 using System.Threading;
+using Inventors.ECP.Communication;
 
 namespace Inventors.ECP.UnitTests.ApplicationLayer
 {
@@ -32,7 +33,7 @@ namespace Inventors.ECP.UnitTests.ApplicationLayer
         {
             _slave = new DefaultTcpSlave()
             {
-                Port = String.Format("{0}:{1}", IPAddress.Loopback.ToString(), 9000)
+                Port = String.Format("{0}:{1}", TcpServerLayer.GetLocalAddress(), 9000)
             };
             _device = new DefaultTcpDevice();
             _device.CommLayer.Port = _slave.Port;

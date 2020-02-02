@@ -41,17 +41,14 @@ namespace Inventors.ECP
             }
 
             var retValue = new List<DeviceType>();
-            var ports = CommLayer.GetAvailablePorts();
             var currentPort = CommLayer.Port;
 
-            foreach (var port in ports)
+            foreach (var port in CommLayer.GetAvailablePorts())
             {
                 try
                 {
-                    DeviceIdentification devId = new DeviceIdentification();
                     CommLayer.Port = port;
-                    Open();
-                    Execute(devId);
+                    var devId = Connect();
                     var devType = new DeviceType(port, devId);
 
                     if (IsCompatible(devId))
@@ -81,24 +78,28 @@ namespace Inventors.ECP
         public async Task<List<DeviceType>> GetAvailableDevicesAsync() =>
             await Task.Run(() => GetAvailableDevices()).ConfigureAwait(false);
 
-        public virtual void Connect()
+        public virtual DeviceIdentification Connect()
         {
+            DeviceIdentification retValue = null;
+
             if (!Master.IsOpen)
             {
-                var devId = new DeviceIdentification();
+                retValue = new DeviceIdentification();
                 Master.Open();
-                Execute(devId);
+                Execute(retValue);
 
-                if (IsCompatible(devId))
+                if (IsCompatible(retValue))
                 {
                     Connected = true;
                 }
                 else
                 {
                     Master.Close();    
-                    throw new IncompatibleDeviceException(devId.ToString());
+                    throw new IncompatibleDeviceException(retValue.ToString());
                 }
             }
+
+            return retValue;
         }
 
         public async Task ConnectAsync() => await Task.Run(() => Connect()).ConfigureAwait(false);

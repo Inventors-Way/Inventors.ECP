@@ -153,6 +153,7 @@ namespace Inventors.ECP.Communication
                     if (ClientPort == ipPort)
                     {
                         IsConnected = false;
+                        Log.Debug("TCP SERVER DISCONNECT");
                     }
                 }
             }).ConfigureAwait(false);

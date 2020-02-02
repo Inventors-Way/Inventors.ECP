@@ -10,6 +10,7 @@ using Inventors.ECP.Messages;
 using System.Net;
 using System.Threading;
 using Inventors.ECP.Discovery;
+using Inventors.Logging;
 
 namespace Inventors.ECP.UnitTests.ApplicationLayer
 {
@@ -66,9 +67,9 @@ namespace Inventors.ECP.UnitTests.ApplicationLayer
         public void GetTcpPorts()
         {
             var device = TC.Device;
-
-            Thread.Sleep(2500);
+            Log.Debug("TESTING GET TCP PORTS");
             device.Close();
+            Thread.Sleep(2500);
             var devices = device.GetAvailableDevices();
             device.Open();
             Assert.AreEqual(expected: 1, actual: devices.Count);
