@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Inventors.ECP.Functions;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -11,6 +12,26 @@ namespace Inventors.ECP
     [XmlRoot("device-id")]
     public class DeviceType
     {
+        public DeviceType() { }
+
+        public DeviceType(string port, DeviceIdentification id)
+        {
+            if (!(id is object))
+                throw new ArgumentNullException(nameof(id));
+
+            Port = port;
+            ManufactureID = id.ManufactureID;
+            Manufacture = id.Manufacture;
+            DeviceID = id.DeviceID;
+            Device = id.Device;
+            MajorVersion = id.MajorVersion;
+            MinorVersion = id.MinorVersion;
+            PatchVersion = id.PatchVersion;
+            EngineeringVersion = id.EngineeringVersion;
+            Checksum = id.Checksum;
+            SerialNumber = id.SerialNumber;
+        }
+
         [XmlAttribute("manufacturer-id")]
         public UInt32 ManufactureID { get; set; } = 1;
 
@@ -73,10 +94,13 @@ namespace Inventors.ECP
         {
             using (var writer = new StringWriter())
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(DeviceType));
+                var serializer = new XmlSerializer(typeof(DeviceType));
                 serializer.Serialize(writer, this);
                 return writer.ToString();
             }
         }
+
+        public override string ToString() =>
+            string.Format(CultureInfo.CurrentCulture, "{0}.{1} {2} [SN: {3}]", DeviceID, ManufactureID, Device, SerialNumber);
     }
 }

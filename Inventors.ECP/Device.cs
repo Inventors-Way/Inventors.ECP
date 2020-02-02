@@ -35,19 +35,39 @@ namespace Inventors.ECP
 
         public List<DeviceType> GetAvailableDevices()
         {
+            if (!CommLayer.IsOpen)
+                throw new InvalidOperationException();
+
             var retValue = new List<DeviceType>();
             var ports = CommLayer.GetAvailablePorts();
 
             foreach (var port in ports)
             {
-                retValue.Add(new DeviceType()
+                try
                 {
-                    Port = port
-                });
+                    DeviceIdentification devId = new DeviceIdentification();
+                    CommLayer.Port = port;
+                    Open();
+                    Execute(devId);
+
+                    if (IsCompatible(devId))
+                    {
+                        retValue.Add(new DeviceType(port, devId));
+                    }
+
+                    Close();
+                }
+                catch 
+                {
+                    Close();
+                }
             }
 
             return retValue;
         }
+
+        public async Task<List<DeviceType>> GetAvailableDevicesAsync() =>
+            await Task.Run(() => GetAvailableDevices()).ConfigureAwait(false);
 
         public virtual void Connect()
         {
