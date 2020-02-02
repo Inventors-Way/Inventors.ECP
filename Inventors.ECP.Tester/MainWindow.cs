@@ -35,7 +35,6 @@ namespace Inventors.ECP.Tester
         private Logger logger;
         private Device device = null;
         private DeviceType selectedDevice = null;
-        private readonly CommunicationLayer commLayer = null;
         private readonly Profiler profiler = new Profiler();
         private AppState state = AppState.APP_STATE_UNINITIALIZED;
 
@@ -196,7 +195,7 @@ namespace Inventors.ECP.Tester
                         }
                         else
                         {
-                            if (n == 1)
+                            if (n == 0)
                             {
                                 selectedDevice = devices[n];
                                 item.Checked = true;
@@ -209,62 +208,29 @@ namespace Inventors.ECP.Tester
 
         private void PortMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            if (!device.IsOpen)
+            if (device is object)
             {
-                if (e.ClickedItem.Tag is DeviceType current)
+                if (!device.IsOpen)
                 {
-                    Log.Debug("Port changed to: {0}", e.ClickedItem.Text);
-                    commLayer.Port = current.Port;
-                    selectedDevice = current;
-
-                    foreach (var item in portMenuItem.DropDownItems)
+                    if (e.ClickedItem.Tag is DeviceType current)
                     {
-                        ((ToolStripMenuItem)item).Checked = item != e.ClickedItem ? false : true;
-                    }
-                }
-                else
-                {
-                    Log.Error("Clicked item did not have a DeviceType as its tag");
-                }
-            }
-            else
-            {
-                Log.Error("Attempted to change device while the device is open");
-            }
-        }
+                        Log.Debug("Port changed to: {0}", e.ClickedItem.Text);
+                        device.CommLayer.Port = current.Port;
+                        selectedDevice = current;
 
-        private void SetPort(DeviceLoader loader)
-        {
-            if (loader.PortName != null)
-            {
-                ToolStripMenuItem selected = null;
-
-                foreach (var item in portMenuItem.DropDownItems)
-                {
-                    if (item is ToolStripMenuItem)
-                    {
-                        var tsItem = item as ToolStripMenuItem;
-
-                        if (tsItem.Text == loader.PortName)
+                        foreach (var item in portMenuItem.DropDownItems)
                         {
-                            selected = tsItem;
-                            device.CommLayer.Port = selected.Text;
+                            ((ToolStripMenuItem)item).Checked = item != e.ClickedItem ? false : true;
                         }
                     }
-                }
-
-                if (selected != null)
-                {
-                    Log.Status("SELECTED PORT [ {0} ]", device.CommLayer.Port);
-
-                    foreach (var item in portMenuItem.DropDownItems)
+                    else
                     {
-                        ((ToolStripMenuItem)item).Checked = item != selected ? false : true;
+                        Log.Error("Clicked item did not have a DeviceType as its tag");
                     }
                 }
                 else
                 {
-                    //Log.Status("DEFAULT PORT [ {0} ] not found, keeping port [ {1} ]", loader.PortName, commLayer.Port);
+                    Log.Error("Attempted to change device while the device is open");
                 }
             }
         }
@@ -321,17 +287,20 @@ namespace Inventors.ECP.Tester
                 }
             }
             else
+            {
                 Log.Status("Please connect first to a device");
+            }
         }
 
         private async void ConnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (portMenuItem.DropDownItems.Count > 0)
+            if (selectedDevice is object)
             {
                 try
                 {
+                    device.CommLayer.Port = selectedDevice.Port;
                     await device.ConnectAsync();
-                    Log.Status("Device Connected: {0} [{1}]", device.ToString(), commLayer.Port);
+                    Log.Status("Device Connected: {0} [{1}]", device.ToString(), device.CommLayer.Port);
                     UpdateAppStates(AppState.APP_STATE_CONNECTED);
                 }
                 catch (Exception ex)
@@ -352,7 +321,7 @@ namespace Inventors.ECP.Tester
             {
                 await device.DisconnectAsync();
                 UpdateAppStates(AppState.APP_STATE_INITIALIZED);
-                Log.Status("Device disconnected: {0} [{1}]", device.ToString(), commLayer.Port);
+                Log.Status("Device disconnected: {0} [{1}]", device.ToString(), device.CommLayer.Port);
             }
             catch (Exception ex)
             {
