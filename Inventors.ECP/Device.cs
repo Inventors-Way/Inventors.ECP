@@ -58,7 +58,7 @@ namespace Inventors.ECP
                     }
                     else
                     {
-                        Log.Debug("[ {0} ]: No incompatible device found [ {1} ]", port, devType.ToString());
+                        Log.Debug("[ {0} ]: Incompatible device found [ {1} ]", port, devType.ToString());
                     }
 
                     Close();
