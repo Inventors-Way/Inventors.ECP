@@ -68,7 +68,7 @@ namespace Inventors.ECP.UnitTests.ApplicationLayer
             var device = TC.Device;
 
             Thread.Sleep(2500);
-            device.Disconnect();
+            device.Close();
             var devices = device.GetAvailableDevices();
             device.Open();
             Assert.AreEqual(expected: 1, actual: devices.Count);
