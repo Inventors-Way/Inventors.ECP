@@ -43,7 +43,7 @@ namespace Inventors.ECP.DeviceSimulator
 
             InitializeComponent();
             SetupLogging();
-            SetupSlave();
+            SetupSerialSlave();
             SetupPorts();
             SetTitle();
             UpdateStatus();
@@ -56,11 +56,17 @@ namespace Inventors.ECP.DeviceSimulator
             Log.Level = LogLevel.DEBUG;
         }
 
-        private void SetupSlave()
+        private void SetupSerialSlave()
         {
+            if (slave is object)
+            {
+                slave.Close();
+                slave = null;
+            }
+
             serial = new SerialPortLayer(deviceData)
             {
-                BaudRate = 115200
+                BaudRate = 38400
             };
             slave = new DeviceSlave(serial, deviceData)
             {
@@ -71,6 +77,9 @@ namespace Inventors.ECP.DeviceSimulator
             slave.Add(new DeviceIdentification());
             slave.Add(new Ping());
             slave.Add(new GetEndianness());
+
+            serialToolStripMenuItem.Checked = true;
+            networkToolStripMenuItem.Checked = false;
         }
 
         private void SetupPorts()
@@ -135,6 +144,27 @@ namespace Inventors.ECP.DeviceSimulator
                 UpdateStatus();
             }
         }
+
+        private void SerialToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!slave.IsOpen)
+            {
+
+                serialToolStripMenuItem.Checked = true;
+                networkToolStripMenuItem.Checked = false;
+            }
+        }
+
+        private void NetworkToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!slave.IsOpen)
+            {
+
+                serialToolStripMenuItem.Checked = false;
+                networkToolStripMenuItem.Checked = true;
+            }
+        }
+
 
         private void DocumentationToolStripMenuItem_Click(object sender, EventArgs e)
         {

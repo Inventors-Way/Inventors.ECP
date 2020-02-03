@@ -250,6 +250,9 @@ namespace Inventors.ECP.Profiling
                 Time.Clear();
                 watch.Restart();
                 Device.CommLayer.RestartStatistics();
+                var retries = Device.Retries;
+                Device.Retries = 1;
+
                 for (int n = 0; n < Trials; ++n)
                 {
                     try
@@ -264,6 +267,7 @@ namespace Inventors.ECP.Profiling
                         Thread.Sleep(TestDelay);
                     }
                 }
+                Device.Retries = retries;
                 watch.Stop();
                 RunTime = watch.ElapsedMilliseconds;
                 statistics = Device.CommLayer.GetStatistics();

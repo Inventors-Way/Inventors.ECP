@@ -65,6 +65,12 @@
             this.logBox = new System.Windows.Forms.TextBox();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.msgTimer = new System.Windows.Forms.Timer(this.components);
+            this.deviceTimer = new System.Windows.Forms.Timer(this.components);
+            this.logLevelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.statusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.errorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.hSplitContainer)).BeginInit();
@@ -115,6 +121,8 @@
             this.fileMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.clearLogToolStripMenuItem,
             this.saveLogToolStripMenuItem,
+            this.toolStripSeparator6,
+            this.logLevelToolStripMenuItem,
             this.toolStripSeparator1,
             this.exitToolStripMenuItem});
             this.fileMenuItem.Name = "fileMenuItem";
@@ -168,20 +176,20 @@
             this.openDeviceToolStripMenuItem.Image = global::Inventors.ECP.Tester.Properties.Resources._216173___device_phone;
             this.openDeviceToolStripMenuItem.Name = "openDeviceToolStripMenuItem";
             this.openDeviceToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openDeviceToolStripMenuItem.Size = new System.Drawing.Size(188, 26);
+            this.openDeviceToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.openDeviceToolStripMenuItem.Text = "Open Device";
             this.openDeviceToolStripMenuItem.Click += new System.EventHandler(this.OpenDeviceToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(185, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(181, 6);
             // 
             // connectToolStripMenuItem
             // 
             this.connectToolStripMenuItem.Name = "connectToolStripMenuItem";
             this.connectToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.connectToolStripMenuItem.Size = new System.Drawing.Size(188, 26);
+            this.connectToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.connectToolStripMenuItem.Text = "Connect";
             this.connectToolStripMenuItem.Click += new System.EventHandler(this.ConnectToolStripMenuItem_Click);
             // 
@@ -189,19 +197,19 @@
             // 
             this.disconnectToolStripMenuItem.Name = "disconnectToolStripMenuItem";
             this.disconnectToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
-            this.disconnectToolStripMenuItem.Size = new System.Drawing.Size(188, 26);
+            this.disconnectToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.disconnectToolStripMenuItem.Text = "Disconnect";
             this.disconnectToolStripMenuItem.Click += new System.EventHandler(this.DisconnectToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(185, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(181, 6);
             // 
             // portMenuItem
             // 
             this.portMenuItem.Name = "portMenuItem";
-            this.portMenuItem.Size = new System.Drawing.Size(188, 26);
+            this.portMenuItem.Size = new System.Drawing.Size(184, 22);
             this.portMenuItem.Text = "Device";
             this.portMenuItem.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.PortMenuItem_DropDownItemClicked);
             // 
@@ -398,6 +406,47 @@
             this.msgTimer.Enabled = true;
             this.msgTimer.Tick += new System.EventHandler(this.MsgTimer_Tick);
             // 
+            // deviceTimer
+            // 
+            this.deviceTimer.Interval = 1000;
+            this.deviceTimer.Tick += new System.EventHandler(this.DeviceTimer_Tick);
+            // 
+            // logLevelToolStripMenuItem
+            // 
+            this.logLevelToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.debugToolStripMenuItem,
+            this.statusToolStripMenuItem,
+            this.errorToolStripMenuItem});
+            this.logLevelToolStripMenuItem.Name = "logLevelToolStripMenuItem";
+            this.logLevelToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.logLevelToolStripMenuItem.Text = "Log Level";
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(181, 6);
+            // 
+            // debugToolStripMenuItem
+            // 
+            this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
+            this.debugToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.debugToolStripMenuItem.Text = "Debug";
+            this.debugToolStripMenuItem.Click += new System.EventHandler(this.DebugToolStripMenuItem_Click);
+            // 
+            // statusToolStripMenuItem
+            // 
+            this.statusToolStripMenuItem.Name = "statusToolStripMenuItem";
+            this.statusToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.statusToolStripMenuItem.Text = "Status";
+            this.statusToolStripMenuItem.Click += new System.EventHandler(this.StatusToolStripMenuItem_Click);
+            // 
+            // errorToolStripMenuItem
+            // 
+            this.errorToolStripMenuItem.Name = "errorToolStripMenuItem";
+            this.errorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.errorToolStripMenuItem.Text = "Error";
+            this.errorToolStripMenuItem.Click += new System.EventHandler(this.ErrorToolStripMenuItem_Click);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -466,6 +515,12 @@
         private System.Windows.Forms.ToolStripMenuItem enabledToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem disabledToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem reportToolStripMenuItem;
+        private System.Windows.Forms.Timer deviceTimer;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
+        private System.Windows.Forms.ToolStripMenuItem logLevelToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem debugToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem statusToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem errorToolStripMenuItem;
     }
 }
 

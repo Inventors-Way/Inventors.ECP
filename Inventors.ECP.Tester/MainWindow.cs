@@ -170,7 +170,7 @@ namespace Inventors.ECP.Tester
             return false;
         }
 
-        private async void UpdatePorts()
+        private async Task UpdatePorts()
         {
             if (!device.IsOpen)
             {
@@ -202,6 +202,17 @@ namespace Inventors.ECP.Tester
                             }
                         }
                     }
+                }
+            }
+        }
+
+        private async void DeviceTimer_Tick(object sender, EventArgs e)
+        {
+            if (device is object)
+            {
+                if (!device.IsOpen)
+                {
+                    await UpdatePorts();
                 }
             }
         }
@@ -396,7 +407,7 @@ namespace Inventors.ECP.Tester
 
         #endregion
         #region Functions and message handling
-        private async void Execute(DeviceFunction function, bool doLogging = false)
+        private async Task Execute(DeviceFunction function, bool doLogging = false)
         {
             if (device != null)
             {
@@ -538,6 +549,20 @@ namespace Inventors.ECP.Tester
         {
             enabledToolStripMenuItem.Checked = profiler.Profiling;
             disabledToolStripMenuItem.Checked = !profiler.Profiling;
+        }
+
+        private void DebugToolStripMenuItem_Click(object sender, EventArgs e) => SetLoggingLevel(LogLevel.DEBUG);
+
+        private void StatusToolStripMenuItem_Click(object sender, EventArgs e) => SetLoggingLevel(LogLevel.STATUS);
+
+        private void ErrorToolStripMenuItem_Click(object sender, EventArgs e) => SetLoggingLevel(LogLevel.ERROR);
+
+        private void SetLoggingLevel(LogLevel level)
+        {
+            debugToolStripMenuItem.Checked = level == LogLevel.DEBUG;
+            statusToolStripMenuItem.Checked = level == LogLevel.STATUS;
+            errorToolStripMenuItem.Checked = level == LogLevel.ERROR;
+            Log.Level = level;
         }
     }
 }

@@ -55,19 +55,13 @@ namespace Inventors.ECP
                     if (IsCompatible(devId))
                     {
                         retValue.Add(devType);
-                        Log.Debug("[ {0} ]: {1}", port, devType.ToString());
-                    }
-                    else
-                    {
-                        Log.Debug("[ {0} ]: Incompatible device found [ {1} ]", port, devType.ToString());
                     }
 
                     Close();
                 }
-                catch (Exception ex)
+                catch 
                 {
                     Close();
-                    Log.Debug("[ {0} ]: No compatible device found ({1})", port, ex.Message);
                 }
             }
 
@@ -117,7 +111,6 @@ namespace Inventors.ECP
                 }
             }
             watch.Stop();
-            Log.Debug("Time to connect: {0}", watch.ElapsedMilliseconds);
         }
 
 
