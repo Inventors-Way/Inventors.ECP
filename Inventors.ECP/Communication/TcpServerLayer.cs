@@ -183,21 +183,24 @@ namespace Inventors.ECP.Communication
             }).ConfigureAwait(false);
         }
 
-        public static IPAddress GetLocalAddress()
+        public static IPAddress LocalAddress
         {
-            IPHostEntry localhost = Dns.GetHostEntry(Dns.GetHostName());
- 
-            foreach (IPAddress address in localhost.AddressList)
+            get
             {
-                // Look for the IPv4 address of the local machine
-                if (address.AddressFamily.ToString() == "InterNetwork")
-                {
-                    // Convert the IP address to a string and return it
-                    return address;
-                }
-            }
+                IPHostEntry localhost = Dns.GetHostEntry(Dns.GetHostName());
 
-            return null;
+                foreach (IPAddress address in localhost.AddressList)
+                {
+                    // Look for the IPv4 address of the local machine
+                    if (address.AddressFamily.ToString() == "InterNetwork")
+                    {
+                        // Convert the IP address to a string and return it
+                        return address;
+                    }
+                }
+
+                return null;
+            }
         }
 
         #region IDisposable Support

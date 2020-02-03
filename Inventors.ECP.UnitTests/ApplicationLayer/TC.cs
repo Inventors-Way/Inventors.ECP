@@ -33,7 +33,7 @@ namespace Inventors.ECP.UnitTests.ApplicationLayer
         {
             _slave = new DefaultTcpSlave()
             {
-                Port = new IPEndPoint(TcpServerLayer.GetLocalAddress(), 9000).ToString()
+                Port = new IPEndPoint(TcpServerLayer.LocalAddress, 9000).ToString()
             };
             _device = new DefaultTcpDevice();
             _device.CommLayer.Port = _slave.Port;
