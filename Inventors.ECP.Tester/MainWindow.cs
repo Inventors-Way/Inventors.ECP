@@ -46,6 +46,7 @@ namespace Inventors.ECP.Tester
             UpdateStatus();
             SetTitle();
             UpdateProfiling();
+            SetLoggingLevel(Settings.Level);
         }
 
         public MainWindow(string deviceFileName) :
@@ -524,7 +525,7 @@ namespace Inventors.ECP.Tester
 
         private void AboutECPTesterToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Process.Start(String.Format("http://inventors.dk/ecp_tester_about_{0}.html", VersionInformation));
+            MessageBox.Show("ECP Tester\nInventors' Way ApS\nMorten Nielsens Vej 6\n9200 Aalborg SV\n", "About", MessageBoxButtons.OK);
         }
 
         private void EnabledToolStripMenuItem_Click(object sender, EventArgs e)
@@ -563,6 +564,7 @@ namespace Inventors.ECP.Tester
             statusToolStripMenuItem.Checked = level == LogLevel.STATUS;
             errorToolStripMenuItem.Checked = level == LogLevel.ERROR;
             Log.Level = level;
+            Settings.Level = level;
         }
     }
 }
