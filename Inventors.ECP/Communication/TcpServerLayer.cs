@@ -47,7 +47,7 @@ namespace Inventors.ECP.Communication
 
         public override List<string> GetAvailablePorts()
         {
-            return null;
+            return new List<string>();
         }
 
         public TcpServerLayer(string name) 
