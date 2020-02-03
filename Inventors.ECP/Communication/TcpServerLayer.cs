@@ -20,7 +20,8 @@ namespace Inventors.ECP.Communication
         private bool _isOpen = false;
         private bool _isConnected = false;
         private string _IpPort = null;
-        private string _port = String.Format(CultureInfo.CurrentCulture, "{0}:{1}", IPAddress.Loopback.ToString(), 9000);
+        private string _port = new IPEndPoint(IPAddress.Loopback, 9000).ToString();
+        private readonly string _beaconName;
 
         public override int BaudRate { get; set; } = int.MaxValue;
 
@@ -32,9 +33,6 @@ namespace Inventors.ECP.Communication
                 if (!IsOpen)
                 {
                     _port = value;
-
-                    if (!IPAddress.TryParse(Address, out IPAddress _))
-                        throw new ArgumentException(Resources.INVALID_IP_ADDRESS);
                 }
                 else
                 {
@@ -52,7 +50,10 @@ namespace Inventors.ECP.Communication
             return null;
         }
 
-        public TcpServerLayer(DeviceType device) : base(device) { }
+        public TcpServerLayer(string name) 
+        {
+            _beaconName = name;
+        }
 
         public override bool IsOpen
         {
@@ -123,9 +124,9 @@ namespace Inventors.ECP.Communication
                     server.MessageReceived += MessageReceived;
                     server.Start();
                     SetOpen(true);
-                    beacon = new Beacon(Identification.BeaconName, (ushort)IPPort)
+                    beacon = new Beacon(_beaconName, (ushort)IPPort)
                     {
-                        BeaconData = Identification.ToXML()
+                        BeaconData = "ECP Beacon"
                     };
                     beacon.Start();
                 }
@@ -182,7 +183,7 @@ namespace Inventors.ECP.Communication
             }).ConfigureAwait(false);
         }
 
-        public static string GetLocalAddress()
+        public static IPAddress GetLocalAddress()
         {
             IPHostEntry localhost = Dns.GetHostEntry(Dns.GetHostName());
  
@@ -192,7 +193,7 @@ namespace Inventors.ECP.Communication
                 if (address.AddressFamily.ToString() == "InterNetwork")
                 {
                     // Convert the IP address to a string and return it
-                    return address.ToString();
+                    return address;
                 }
             }
 

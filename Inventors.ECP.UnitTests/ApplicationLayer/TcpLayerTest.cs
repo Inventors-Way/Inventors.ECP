@@ -59,8 +59,7 @@ namespace Inventors.ECP.UnitTests.ApplicationLayer
             probe.Stop();
             Assert.AreEqual(expected: 1, actual: locations.Count);
             var beacon = locations[0];
-            var data = DeviceType.Create(locations[0].Data);
-            Assert.AreEqual(expected: TC.Slave.Identification.DeviceID, actual: data.DeviceID);
+            Assert.AreEqual(expected: "ECP Beacon", actual: beacon.Data);
         }
 
         [TestMethod]

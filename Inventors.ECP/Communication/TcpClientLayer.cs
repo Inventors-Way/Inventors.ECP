@@ -20,13 +20,13 @@ namespace Inventors.ECP.Communication
         private WatsonTcpClient _client;
         private bool _open = false;
         private bool _connected = false;
-        private string _port = String.Format(CultureInfo.CurrentCulture, "{0}:{1}", IPAddress.Loopback.ToString(), 9000);
+        private string _port = new IPEndPoint(IPAddress.Loopback, 9000).ToString();
 
         public override int BaudRate { get; set; } = 1;
 
-        public TcpClientLayer(DeviceType device) : base(device) 
+        public TcpClientLayer(string device) 
         {
-            _probe = new Probe(device.BeaconName);
+            _probe = new Probe(device);
             _probe.BeaconsUpdated += (beacons) =>
             {
                 lock (_beacons)
@@ -46,9 +46,6 @@ namespace Inventors.ECP.Communication
                 if (!IsOpen)
                 {
                     _port = value;
-
-                    if (!IPAddress.TryParse(Address, out IPAddress _))
-                        throw new ArgumentException(_port + " does not contain a valid IP Address");
                 }
                 else
                 {

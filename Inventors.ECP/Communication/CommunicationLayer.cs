@@ -16,12 +16,8 @@ namespace Inventors.ECP.Communication
 
         public bool ResetOnConnection { get; set; } = false;
 
-        public CommunicationLayer(DeviceType device)
+        public CommunicationLayer()
         {
-            if (!(device is object))
-                throw new ArgumentNullException(nameof(device));
-
-            Identification = device;
             BytesTransmitted = 0;
             BytesReceived = 0;
         }
@@ -75,8 +71,6 @@ namespace Inventors.ECP.Communication
         protected long BytesReceived { get; set; }
 
         protected long BytesTransmitted { get; set; }
-
-        public DeviceType Identification { get; }
 
         private readonly Stopwatch testWatch = new Stopwatch();
     }
