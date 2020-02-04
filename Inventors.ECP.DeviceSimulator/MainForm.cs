@@ -18,8 +18,13 @@ namespace Inventors.ECP.DeviceSimulator
 {
     public partial class MainForm : Form
     {
+        private enum AppState
+        {
+
+        }
+
         private Logger logger;
-        private SerialPortLayer serial = null;
+        private CommunicationLayer layer = null;
         private MenuItemSet portMenuItems;
         private DeviceSlave slave;
         private UInt32 pings = 0;
@@ -38,7 +43,7 @@ namespace Inventors.ECP.DeviceSimulator
         {
             logger = new Logger() { Box = logBox };
             Log.SetLogger(logger);
-            Log.Level = LogLevel.DEBUG;
+            SetLoggingLevel(Settings.Level);
         }
 
         private void SetupSerialSlave()
@@ -49,11 +54,11 @@ namespace Inventors.ECP.DeviceSimulator
                 slave = null;
             }
 
-            serial = new SerialPortLayer()
+            layer = new SerialPortLayer()
             {
                 BaudRate = 38400
             };
-            slave = new DeviceSlave(serial)
+            slave = new DeviceSlave(layer)
             {
                 FunctionListener = this,
                 MessageListener = this
@@ -73,7 +78,7 @@ namespace Inventors.ECP.DeviceSimulator
             portMenuItems = new MenuItemSet((s) =>
             {
                 Log.Debug("Port changed to: {0}", s.Text);
-                serial.Port = s.Text;
+                layer.Port = s.Text;
                 UpdateStatus();
             });
 
@@ -85,8 +90,8 @@ namespace Inventors.ECP.DeviceSimulator
 
                 if (n == 0)
                 {
-                    serial.Port = names[n];
-                    Log.Status("Serial port: {0}", serial.Port);
+                    layer.Port = names[n];
+                    Log.Status("Serial port: {0}", layer.Port);
                     item.Checked = true;
                 }
             }
@@ -165,11 +170,11 @@ namespace Inventors.ECP.DeviceSimulator
         {
             if (slave.IsOpen)
             {
-                statusText.Text = String.Format("Connected [ {0} (Ping: {1})]", serial.Port, pings);
+                statusText.Text = String.Format("Connected [ {0} (Ping: {1})]", layer.Port, pings);
             }
             else
             {
-                statusText.Text = String.Format("Not connected [ {0} ]", serial.Port);
+                statusText.Text = String.Format("Not connected [ {0} ]", layer.Port);
             }
         }
 
@@ -211,6 +216,21 @@ namespace Inventors.ECP.DeviceSimulator
         public void Accept(PrintfMessage msg)
         {
             Log.Status("PRINTF: {0}", msg.DebugMessage);
+        }
+
+        private void DebugToolStripMenuItem_Click(object sender, EventArgs e) => SetLoggingLevel(LogLevel.DEBUG);
+
+        private void StatusToolStripMenuItem_Click(object sender, EventArgs e) => SetLoggingLevel(LogLevel.STATUS);
+
+        private void ErrorToolStripMenuItem_Click(object sender, EventArgs e) => SetLoggingLevel(LogLevel.ERROR);
+
+        private void SetLoggingLevel(LogLevel level)
+        {
+            debugToolStripMenuItem.Checked = level == LogLevel.DEBUG;
+            statusToolStripMenuItem.Checked = level == LogLevel.STATUS;
+            errorToolStripMenuItem.Checked = level == LogLevel.ERROR;
+            Log.Level = level;
+            Settings.Level = level;
         }
     }
 }
