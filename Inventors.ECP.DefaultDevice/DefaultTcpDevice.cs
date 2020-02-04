@@ -1,4 +1,5 @@
 ﻿using Inventors.ECP.Communication;
+using Inventors.ECP.Discovery;
 using Inventors.ECP.Functions;
 using System;
 using System.Collections.Generic;
@@ -9,8 +10,8 @@ namespace Inventors.ECP.DefaultDevice
     public class DefaultTcpDevice :
         Device
     {
-        public DefaultTcpDevice(string beaconName) :
-            base(new TcpClientLayer(beaconName))
+        public DefaultTcpDevice(BeaconID id) :
+            base(new TcpClientLayer(id))
         {
             FunctionList.Add(new DeviceIdentification());
             FunctionList.Add(new Ping());

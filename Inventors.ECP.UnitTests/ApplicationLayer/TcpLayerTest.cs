@@ -36,8 +36,8 @@ namespace Inventors.ECP.UnitTests.ApplicationLayer
         {
             var info = new DeviceIdentification();
             TC.Device.Execute(info);
-            Assert.AreEqual(expected: TC.Slave.Identification.Device, actual: info.Device);
-            Assert.AreEqual(expected: TC.Slave.Identification.DeviceID, actual: info.DeviceID);
+            Assert.AreEqual(expected: TC.Slave.Beacon.Device, actual: info.Device);
+            Assert.AreEqual(expected: TC.Slave.Beacon.DeviceID, actual: info.DeviceID);
         }
 
         [TestMethod]
@@ -52,14 +52,14 @@ namespace Inventors.ECP.UnitTests.ApplicationLayer
         public void BeaconTest()
         {
             List<BeaconLocation> locations = new List<BeaconLocation>();
-            var probe = new Probe(TC.Slave.Identification.BeaconName);
+            var probe = new Probe(TC.Slave.Beacon);
             probe.BeaconsUpdated += (beacons) => locations = beacons.ToList();
             probe.Start();
             Thread.Sleep(500);
             probe.Stop();
             Assert.AreEqual(expected: 1, actual: locations.Count);
             var beacon = locations[0];
-            Assert.AreEqual(expected: "[1.1] Default Device", actual: beacon.Data);
+            Assert.AreEqual(expected: TC.Slave.Beacon.Data, actual: beacon.Data);
         }
 
         [TestMethod]

@@ -22,14 +22,7 @@ namespace Inventors.ECP.DefaultDevice
 
         public bool IsOpen { get; private set; }
 
-        public DeviceType Identification { get; } = new DeviceType()
-        {
-            DeviceID = 1,
-            Device = "Default Device",
-            ManufactureID = 1,
-            Manufacture = "Inventors' Way",
-            SerialNumber = 1001
-        };
+        public BeaconID Beacon { get; private set; } = new BeaconID(1, 1, "Default Device");
 
         public DefaultTcpSlave SetPort(IPAddress localAddress, ushort port) 
         {
@@ -41,7 +34,7 @@ namespace Inventors.ECP.DefaultDevice
         {
             if (!IsOpen)
             {
-                commLayer = new TcpServerLayer(new BeaconID(Identification.ManufactureID, Identification.DeviceID, Identification.Device), Port);
+                commLayer = new TcpServerLayer(Beacon, Port);
                 slave = new DeviceSlave(commLayer)
                 {
                     FunctionListener = this,

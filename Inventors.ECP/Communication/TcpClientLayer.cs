@@ -24,9 +24,12 @@ namespace Inventors.ECP.Communication
 
         public override int BaudRate { get; set; } = 1;
 
-        public TcpClientLayer(string device) 
+        public TcpClientLayer(BeaconID id) 
         {
-            _probe = new Probe(device);
+            if (id is null)
+                throw new ArgumentNullException(nameof(id));
+
+            _probe = new Probe(id);
             _probe.BeaconsUpdated += (beacons) =>
             {
                 lock (_beacons)

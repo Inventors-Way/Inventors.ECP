@@ -43,37 +43,7 @@ namespace Inventors.ECP
         public UInt32 SerialNumber { get; set; } = 1;
 
         [XmlIgnore]
-        public string BeaconName => String.Format(CultureInfo.CurrentCulture, "ECP-{0}-{1}", ManufactureID, DeviceID);
-
-        [XmlIgnore]
         public string Port { get; set; }
-
-        public static DeviceType Create(string xml)
-        {
-            DeviceType retValue = null;
-            XmlSerializer serializer = new XmlSerializer(typeof(DeviceType));
-            XmlReaderSettings settings = new XmlReaderSettings() { };
-
-            using (var stream = new StringReader(xml))
-            {
-                using (var reader = XmlReader.Create(stream, settings))
-                {
-                    retValue = (DeviceType)serializer.Deserialize(reader);
-                }
-            }
-
-            return retValue;
-        }
-
-        public string ToXML()
-        {
-            using (var writer = new StringWriter())
-            {
-                var serializer = new XmlSerializer(typeof(DeviceType));
-                serializer.Serialize(writer, this);
-                return writer.ToString();
-            }
-        }
 
         public override string ToString() =>
             string.Format(CultureInfo.CurrentCulture, "{0}.{1} {2} [{3}]", ManufactureID, DeviceID, Device, SerialNumber);

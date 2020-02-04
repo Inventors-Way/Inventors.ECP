@@ -31,11 +31,14 @@ namespace Inventors.ECP.Discovery
 
         private bool running = true;
 
-        public Probe(string beaconType)
+        public Probe(BeaconID beaconType)
         {
+            if (beaconType is null)
+                throw new ArgumentNullException(nameof(beaconType));
+
             udp.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
 
-            BeaconType = beaconType;
+            BeaconType = beaconType.ID;
             thread = new Thread(BackgroundLoop) { IsBackground = true };
 
             udp.Client.Bind(new IPEndPoint(IPAddress.Any, 0));
