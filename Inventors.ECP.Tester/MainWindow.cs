@@ -443,9 +443,7 @@ namespace Inventors.ECP.Tester
                     throw;
                 }
             }
-        }
-      
-        public void OnPrintf(object sender, MessageEventArgs<PrintfMessage> e) => Log.Status("Printf: {0}", e.Message.ToString());
+        }      
 
         #endregion
 

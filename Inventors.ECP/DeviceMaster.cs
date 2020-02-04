@@ -21,12 +21,26 @@ namespace Inventors.ECP
             ERROR
         };
 
+        public int Timeout { get; set; }
+
+        public string Port
+        {
+            get => connection.Port;
+            set => connection.Port = value;
+        }
+
+        public int BaudRate
+        {
+            get => connection.BaudRate;
+            set => connection.BaudRate = value;
+        }
+
         public DeviceMaster(CommunicationLayer connection, DeviceType device)
         {
-            if (!(connection is object))
+            if (connection is null)
                 throw new ArgumentException(Resources.CONNECTION_NULL);
 
-            if (!(connection is object))
+            if (device is null)
                 throw new ArgumentException(Resources.DEVICE_NULL);
 
             this.connection = connection;
@@ -34,7 +48,6 @@ namespace Inventors.ECP
             connection.Destuffer.OnReceive += HandleIncommingFrame;
             Timeout = 500;            
         }
-
 
         public void Open()
         {
@@ -177,8 +190,6 @@ namespace Inventors.ECP
                 Log.Debug("Error in creating Packet: {0}", e.Message);
             }
         }
-
-        public int Timeout { get; set; }
 
         private void Dispatch(Packet packet)
         {

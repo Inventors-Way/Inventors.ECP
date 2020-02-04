@@ -137,6 +137,15 @@ namespace Inventors.ECP
         [Browsable(false)]
         public bool IsOpen => Master.IsOpen;
         #endregion
+        #region Port
+        public string Port
+        {
+            get => CommLayer.Port;
+            set => CommLayer.Port = NotifyIfChanged(CommLayer.Port, value);
+        }
+        #endregion
+
+
         #endregion
 
         public Device(CommunicationLayer commLayer, DeviceType device)
