@@ -9,6 +9,22 @@ using System.Xml.Serialization;
 
 namespace Inventors.ECP.DeviceSimulator
 {
+    public enum SimulatorType
+    {
+        SERIAL = 0,
+        TCP
+    }
+
+    public enum BaudRate
+    {
+        _9600,
+        _14400,
+        _19200,
+        _38400,
+        _57600,
+        _115200
+    }
+
     public class Settings
     {
         private SettingsFile _file = null;
@@ -37,13 +53,20 @@ namespace Inventors.ECP.DeviceSimulator
             Load();
         }
 
-
-
         [XmlRoot("settings")]
         public class SettingsFile
         {
             [XmlAttribute("level")]
             public LogLevel Level { get; set; } = LogLevel.STATUS;
+
+            [XmlAttribute("simulator-type")]
+            public SimulatorType Simulator { get; set; } = SimulatorType.SERIAL;
+
+            [XmlAttribute("port")]
+            public string Port { get; set; }
+
+            [XmlAttribute("baudrate")]
+            public BaudRate BaudRate { get; set; }
         }
 
         private static string SystemDirectory
@@ -75,6 +98,44 @@ namespace Inventors.ECP.DeviceSimulator
             }
         }
 
+        public static SimulatorType Simulator
+        {
+            get => Instance.Load().Simulator;
+            set
+            {
+                if (value != Instance.Load().Simulator)
+                {
+                    Instance.Load().Simulator = value;
+                    Instance.Save();
+                }
+            }
+        }
+
+        public static string Port
+        {
+            get => Instance.Load().Port;
+            set
+            {
+                if (value != Instance.Load().Port)
+                {
+                    Instance.Load().Port = value;
+                    Instance.Save();
+                }
+            }
+        }
+
+        public static BaudRate BaudRate
+        {
+            get => Instance.Load().BaudRate;
+            set
+            {
+                if (value != Instance.Load().BaudRate)
+                {
+                    Instance.Load().BaudRate = value;
+                    Instance.Save();
+                }
+            }
+        }
 
         private SettingsFile Load()
         {

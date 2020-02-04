@@ -37,6 +37,8 @@ namespace Inventors.ECP.DeviceSimulator
             SetupPorts();
             SetTitle();
             UpdateStatus();
+
+            SetSimulatorType(Settings.Simulator);
         }
 
         private void SetupLogging()
@@ -67,9 +69,6 @@ namespace Inventors.ECP.DeviceSimulator
             slave.Add(new DeviceIdentification());
             slave.Add(new Ping());
             slave.Add(new GetEndianness());
-
-            serialToolStripMenuItem.Checked = true;
-            networkToolStripMenuItem.Checked = false;
         }
 
         private void SetupPorts()
@@ -135,25 +134,9 @@ namespace Inventors.ECP.DeviceSimulator
             }
         }
 
-        private void SerialToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (!slave.IsOpen)
-            {
+        private void SerialToolStripMenuItem_Click(object sender, EventArgs e) => SetSimulatorType(SimulatorType.SERIAL);
 
-                serialToolStripMenuItem.Checked = true;
-                networkToolStripMenuItem.Checked = false;
-            }
-        }
-
-        private void NetworkToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (!slave.IsOpen)
-            {
-
-                serialToolStripMenuItem.Checked = false;
-                networkToolStripMenuItem.Checked = true;
-            }
-        }
+        private void NetworkToolStripMenuItem_Click(object sender, EventArgs e) => SetSimulatorType(SimulatorType.TCP);
 
 
         private void DocumentationToolStripMenuItem_Click(object sender, EventArgs e)
@@ -231,6 +214,16 @@ namespace Inventors.ECP.DeviceSimulator
             errorToolStripMenuItem.Checked = level == LogLevel.ERROR;
             Log.Level = level;
             Settings.Level = level;
+        }
+
+        private void SetSimulatorType(SimulatorType simulator)
+        {
+            if (!slave.IsOpen)
+            {
+                Settings.Simulator = simulator;
+                networkToolStripMenuItem.Checked = Settings.Simulator == SimulatorType.TCP;
+                serialToolStripMenuItem.Checked = Settings.Simulator == SimulatorType.SERIAL;
+            }
         }
     }
 }
