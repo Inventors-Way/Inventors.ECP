@@ -220,7 +220,7 @@ namespace Inventors.ECP.Profiling
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
-        public void Test()
+        public Report Test()
         {
             if (Function is object)
             {
@@ -252,12 +252,13 @@ namespace Inventors.ECP.Profiling
 
                 Profiling = false;
             }
+
+            return Compile();
         }
 
-        public async Task TestAsync() => await Task.Run((Action)(() => Test())).ConfigureAwait(false);
+        public async Task<Report> TestAsync() => await Task.Run((Func<Report>)(() => Test())).ConfigureAwait(false);
 
-
-        public Report Compile()
+        private Report Compile()
         {
             return new Report(Time, Trials, statistics, RunTime);
         }

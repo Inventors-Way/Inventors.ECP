@@ -440,8 +440,8 @@ namespace Inventors.ECP.Tester
                 if (device.Profiler.Function != null)
                 {
                     UpdateAppStates(AppState.APP_STATE_ACTIVE);
-                    await device.Profiler.TestAsync();
-                    Log.Status(device.Profiler.Compile().ToString());
+                    var report = await device.Profiler.TestAsync();
+                    Log.Status(report.ToString());
                     UpdateAppStates(AppState.APP_STATE_CONNECTED);
                     UpdateProfiling();
                 }
