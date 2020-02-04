@@ -24,6 +24,8 @@ namespace Inventors.ECP
         #region Properties
         #region PrintLevel
         private LogLevel _printLevel = LogLevel.DEBUG;
+        [Category("Debug")]
+        [XmlIgnore]
         public LogLevel PrintLevel
         {
             get => _printLevel;
@@ -49,6 +51,7 @@ namespace Inventors.ECP
         #endregion
         #region DeviceMaster
         [Browsable(false)]
+        [XmlIgnore]
         public DeviceMaster Master { get; }
         #endregion
         #region ResetOnConnected
@@ -71,14 +74,17 @@ namespace Inventors.ECP
         #endregion
         #region IsOpen
         [Browsable(false)]
+        [XmlIgnore]
         public bool IsOpen => Master.IsOpen;
         #endregion
         #region IsConnected
         [Browsable(false)]
-        public bool IsConnected => Master.IsConnected;        
+        public bool IsConnected => Master.IsConnected;
 
         #endregion
         #region Port
+        [Browsable(false)]
+        [XmlIgnore]
         public string Port
         {
             get => Master.Port;
@@ -86,6 +92,8 @@ namespace Inventors.ECP
         }
         #endregion
         #region BaudRate
+        [Browsable(false)]
+        [XmlIgnore]
         public int BaudRate
         {
             get => Master.BaudRate;
@@ -93,6 +101,8 @@ namespace Inventors.ECP
         }
         #endregion
         #region Profiler
+        [Browsable(false)]
+        [XmlIgnore]
         public Profiler Profiler => Master.Profiler;
         #endregion
         #endregion
