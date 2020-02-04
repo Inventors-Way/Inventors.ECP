@@ -8,6 +8,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,16 +17,127 @@ using System.Xml.Serialization;
 
 namespace Inventors.ECP
 {
-    public abstract class Device
+    public abstract class Device :
+        INotifyPropertyChanged
     {
-        private bool connected = false;
+        #region INotifyPropertyChanged
         private readonly object lockObject = new object();
+        public event PropertyChangedEventHandler PropertyChanged;
+        private readonly Dictionary<string, PropertyChangedEventArgs> eventArgs = new Dictionary<string, PropertyChangedEventArgs>();
+
+        private PropertyChangedEventArgs GetEventArgs(string propertyName)
+        {
+            if (!eventArgs.ContainsKey(propertyName))
+            {
+                eventArgs.Add(propertyName, new PropertyChangedEventArgs(propertyName));
+            }
+
+            return eventArgs[propertyName];
+        }
+
+        protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName]string propertyName = null)
+        {
+            Debug.Assert(string.IsNullOrEmpty(propertyName) ||
+                         (this.GetType().GetRuntimeProperty(propertyName) != null),
+                         "Check that the property name exists for this instance.");
+
+            if (!EqualityComparer<T>.Default.Equals(field, newValue))
+            {
+                field = newValue;
+                PropertyChanged?.Invoke(this, GetEventArgs(propertyName));
+
+                return true;
+            }
+
+            return false;
+        }
+
+        protected bool SetPropertyLocked<T>(ref T field, T newValue, [CallerMemberName]string propertyName = null)
+        {
+            Debug.Assert(string.IsNullOrEmpty(propertyName) ||
+                         (this.GetType().GetRuntimeProperty(propertyName) != null),
+                         "Check that the property name exists for this instance.");
+
+            lock (lockObject)
+            {
+                if (!EqualityComparer<T>.Default.Equals(field, newValue))
+                {
+                    field = newValue;
+                    PropertyChanged?.Invoke(this, GetEventArgs(propertyName));
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+
+        protected T NotifyIfChanged<T>(T current, T newValue, [CallerMemberName]string propertyName = null)
+        {
+            Debug.Assert(string.IsNullOrEmpty(propertyName) ||
+                         (this.GetType().GetRuntimeProperty(propertyName) != null),
+                         "Check that the property name exists for this instance.");
+
+            if (!EqualityComparer<T>.Default.Equals(current, newValue))
+            {
+                PropertyChanged?.Invoke(this, GetEventArgs(propertyName));
+            }
+
+            return newValue;
+        }
+
+        protected void Notify(string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, GetEventArgs(propertyName));
+        }
+
+        #endregion
+        #region Properties
+        #region Connected
+        private bool _connected = false;
 
         [Browsable(false)]
-        public abstract DeviceState State { get; }
-
-        public event EventHandler<MessageEventArgs<PrintfMessage>> OnPrintf;
-        public event EventHandler<DeviceState> OnStateChanged;
+        [XmlIgnore]
+        public bool Connected
+        {
+            get
+            {
+                lock (lockObject)
+                {
+                    return _connected;
+                }
+            }
+            set => SetPropertyLocked(ref _connected, value);
+        }
+        #endregion
+        #region DeviceMaster
+        [Browsable(false)]
+        public DeviceMaster Master { get; }
+        #endregion
+        #region ResetOnConnected
+        [Category("Communication Layer")]
+        [XmlIgnore]
+        public bool ResetOnConnection
+        {
+            get => Master.ResetOnConnection;
+            set => Master.ResetOnConnection = NotifyIfChanged(Master.ResetOnConnection, value);
+        }
+        #endregion
+        #region Timeout
+        [Category("Communication Layer")]
+        [XmlIgnore]
+        public int Timeout
+        {
+            get => Master.Timeout;
+            set => Master.Timeout = NotifyIfChanged(Master.Timeout, value);
+        }
+        #endregion
+        #region IsOpen
+        [Browsable(false)]
+        public bool IsOpen => Master.IsOpen;
+        #endregion
+        #endregion
 
         public Device(CommunicationLayer commLayer, DeviceType device)
         {
@@ -127,43 +240,6 @@ namespace Inventors.ECP
 
         public async Task DisconnectAsync() => await Task.Run(() => Disconnect()).ConfigureAwait(false);
 
-        [Browsable(false)]
-        [XmlIgnore]
-        public bool Connected
-        {
-            get
-            {
-                lock (lockObject)
-                {
-                    return connected;
-                }
-            }
-            set
-            {
-                lock (lockObject)
-                {
-                    if (connected != value)
-                    {
-                        connected = value;
-                    }
-                }
-            }
-        }
-
-        [Category("Communication Layer")]
-        [XmlIgnore]
-        public bool ResetOnConnection
-        {
-            get
-            {
-                return Master.ResetOnConnection;
-            }
-            set
-            {
-                Master.ResetOnConnection = value;
-            }
-        } 
-
         public void Open()
         {
             if (!Master.IsOpen)
@@ -177,15 +253,6 @@ namespace Inventors.ECP
             if (Master.IsOpen)
             {
                 Master.Close();
-            }
-        }
-
-        [Browsable(false)]
-        public bool IsOpen
-        {
-            get
-            {
-                return Master.IsOpen;
             }
         }
 
@@ -218,12 +285,7 @@ namespace Inventors.ECP
 
         public void Accept(PrintfMessage message)
         {
-            OnPrintf?.Invoke(this, new MessageEventArgs<PrintfMessage>(message));
-        }
-
-        protected void NotifyPropertyListeners()
-        {
-            OnStateChanged?.Invoke(this, State);
+            Log.Debug(message.DebugMessage);
         }
 
         public override string ToString()
@@ -242,25 +304,14 @@ namespace Inventors.ECP
 
         public abstract bool IsCompatible(DeviceIdentification identification);
 
-        [Browsable(false)]
-        public DeviceMaster Master { get; }
-
-        [Category("Communication Layer")]
-        [XmlIgnore]
-        public int Timeout
-        {
-            get
-            {
-                return Master.Timeout;
-            }
-            set
-            {
-                Master.Timeout = value;
-            }
-        }
+        private int _retries = 1;
 
         [Category("Retries")]
-        public int Retries { get; set; } = 1;
+        public int Retries 
+        {
+            get => _retries;
+            set => SetProperty(ref _retries, value);
+        }
 
         [XmlIgnore]
         [Browsable(false)]

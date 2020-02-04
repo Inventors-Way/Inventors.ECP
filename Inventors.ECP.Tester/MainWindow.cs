@@ -118,18 +118,11 @@ namespace Inventors.ECP.Tester
             }
         }
 
-        private void LoadDevice(string fileName)
+        private async void LoadDevice(string fileName)
         {            
             var loader = DeviceLoader.Load(fileName);
             Log.Status("Device: {0}", loader.AssemblyName);
             device = loader.Create();
-            device.OnStateChanged += (sender, message) =>
-            {
-                if (functionList.SelectedItem is DeviceState)
-                {
-                    BeginUpdate(() => { propertyGrid.Refresh(); });
-                }
-            };
 
             profiler.Device = device;
             profiler.Profiling = loader.Profiling;
@@ -141,7 +134,7 @@ namespace Inventors.ECP.Tester
                 profiler.TestDelay);
             UpdateProfiling();
             InitializeFunctions();
-            UpdatePorts();
+            await UpdatePorts();
             UpdateAppStates(AppState.APP_STATE_INITIALIZED);
         }
 
@@ -251,9 +244,7 @@ namespace Inventors.ECP.Tester
         {
             functionList.Items.Clear();
             functionList.Items.Add(device);
-            functionList.Items.Add(device.State);
             device.Functions.ForEach((f) => functionList.Items.Add(f));
-            device.OnPrintf += OnPrintf;
         }
 
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)

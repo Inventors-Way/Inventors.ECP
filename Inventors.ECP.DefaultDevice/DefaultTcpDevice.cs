@@ -9,15 +9,6 @@ namespace Inventors.ECP.DefaultDevice
     public class DefaultTcpDevice :
         Device
     {
-        public class DefaultState :
-            DeviceState
-        {
-        }
-
-        public override DeviceState State { get { return state; } }
-
-        private readonly DefaultState state = new DefaultState();
-
         public DefaultTcpDevice(DeviceType device) :
             base(new TcpClientLayer(device.BeaconName), device)
         {

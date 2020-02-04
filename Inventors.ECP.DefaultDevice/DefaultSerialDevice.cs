@@ -12,15 +12,6 @@ namespace Inventors.ECP.DefaultDevice
     public class DefaultSerialDevice :
         Device
     {
-        public class DefaultState :
-            DeviceState
-        {
-        }
-
-        public override DeviceState State { get { return state; } }
-
-        private readonly DefaultState state = new DefaultState();
-
         public DefaultSerialDevice(DeviceType device) :
             base(new SerialPortLayer(), device)
         {
