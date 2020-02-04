@@ -439,22 +439,21 @@ namespace Inventors.ECP.Tester
 
                 if (device.Profiler.Function != null)
                 {
-                    functionList.Enabled = false;
-                    testToolStripMenuItem.Enabled = false;
                     UpdateAppStates(AppState.APP_STATE_ACTIVE);
-
                     await device.Profiler.TestAsync();
-
-                    Log.Status("TEST COMPLETED [ {0}ms ]", device.Profiler.RunTime);
                     Log.Status(device.Profiler.Compile().ToString());
                     UpdateAppStates(AppState.APP_STATE_CONNECTED);
                     UpdateProfiling();
                 }
                 else
+                {
                     Log.Status("Please select a function");
+                }
             }
             else
+            {
                 Log.Status("Please connect first to a device");
+            }
         }
 
         private void TrialsToolStripMenuItem_Click(object sender, EventArgs e)

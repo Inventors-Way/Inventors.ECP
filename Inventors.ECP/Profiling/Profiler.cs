@@ -222,7 +222,7 @@ namespace Inventors.ECP.Profiling
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         public void Test()
         {
-            if (Function is null)
+            if (Function is object)
             {
                 ClearProfile();
                 Time.Clear();
@@ -236,7 +236,9 @@ namespace Inventors.ECP.Profiling
                         master.Execute(Function);
                         Time.Add(Function.TransmissionTime);
                     }
-                    catch { }
+                    catch 
+                    { 
+                    }
 
                     if (TestDelay > 0)
                     {
