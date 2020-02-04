@@ -22,25 +22,10 @@ namespace Inventors.ECP.DeviceSimulator
         private SerialPortLayer serial = null;
         private MenuItemSet portMenuItems;
         private DeviceSlave slave;
-        private readonly DeviceType deviceData;
         private UInt32 pings = 0;
 
         public MainForm()
         {
-            deviceData = new DeviceType()
-            {
-                DeviceID = 1,
-                ManufactureID = 1,
-                Manufacture = "Inventors' Way",
-                Device = "Default Device",
-                MajorVersion = 1,
-                MinorVersion = 2,
-                PatchVersion = 3,
-                EngineeringVersion = 4,
-                Checksum = 5,
-                SerialNumber = 1001
-            };
-
             InitializeComponent();
             SetupLogging();
             SetupSerialSlave();
@@ -68,7 +53,7 @@ namespace Inventors.ECP.DeviceSimulator
             {
                 BaudRate = 38400
             };
-            slave = new DeviceSlave(serial, deviceData)
+            slave = new DeviceSlave(serial)
             {
                 FunctionListener = this,
                 MessageListener = this
@@ -190,7 +175,17 @@ namespace Inventors.ECP.DeviceSimulator
 
         public bool Accept(DeviceIdentification func)
         {
-            slave.Accept(func);
+            func.DeviceID = 1;
+            func.ManufactureID = 1;
+            func.Manufacture = "Inventors' Way";
+            func.Device = "Default Device";
+            func.MajorVersion = 1;
+            func.MinorVersion = 2;
+            func.PatchVersion = 3;
+            func.EngineeringVersion = 4;
+            func.Checksum = 5;
+            func.SerialNumber = 1000;
+
             Log.Status("Device Identification:");
             Log.Status("   Manufacturer: {0} [{1}]", func.Manufacture, func.ManufactureID);
             Log.Status("   Device      : {0} [{1}] (Checksum: {2})", func.Device, func.DeviceID, func.Checksum);

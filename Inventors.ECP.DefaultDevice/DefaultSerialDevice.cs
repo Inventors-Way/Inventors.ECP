@@ -12,24 +12,13 @@ namespace Inventors.ECP.DefaultDevice
     public class DefaultSerialDevice :
         Device
     {
-        public DefaultSerialDevice(DeviceType device) :
-            base(new SerialPortLayer(), device)
+        public DefaultSerialDevice() :
+            base(new SerialPortLayer())
         {
             FunctionList.Add(new DeviceIdentification());
             FunctionList.Add(new Ping());
             FunctionList.Add(new GetEndianness());
         }
-
-        public DefaultSerialDevice() : this(DefaultIdentification) { }
-
-        private static DeviceType DefaultIdentification => new DeviceType()
-        {
-            DeviceID = 1,
-            Device = "Default Device",
-            ManufactureID = 1,
-            Manufacture = "Inventors' Way",
-            SerialNumber = 1001
-        };
 
         public override bool IsCompatible(DeviceIdentification identification)
         {

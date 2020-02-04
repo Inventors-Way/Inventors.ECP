@@ -48,16 +48,12 @@ namespace Inventors.ECP
 
         public Profiler Profiler { get; }
 
-        public DeviceMaster(CommunicationLayer connection, DeviceType device)
+        public DeviceMaster(CommunicationLayer connection)
         {
             if (connection is null)
                 throw new ArgumentException(Resources.CONNECTION_NULL);
 
-            if (device is null)
-                throw new ArgumentException(Resources.DEVICE_NULL);
-
             this.connection = connection;
-            this.device = device;
             connection.Destuffer.OnReceive += HandleIncommingFrame;
             Timeout = 500;
             Profiler = new Profiler(connection, this);
@@ -215,6 +211,5 @@ namespace Inventors.ECP
         private Exception currentException = null;
         private readonly Stopwatch stopwatch = new Stopwatch();
         private CommState state = CommState.WAITING;
-        private readonly DeviceType device;
     }
 }

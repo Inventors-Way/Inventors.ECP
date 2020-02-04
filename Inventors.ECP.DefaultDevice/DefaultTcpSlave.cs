@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 using Inventors.ECP;
 using Inventors.ECP.Communication;
@@ -29,15 +30,18 @@ namespace Inventors.ECP.DefaultDevice
             SerialNumber = 1001
         };
 
+        public DefaultTcpSlave SetPort(IPAddress localAddress, ushort port) 
+        {
+            Port = CommunicationLayer.FormatTcpPort(localAddress, port);
+            return this;
+        }
+
         public void Start()
         {
             if (!IsOpen)
             {
-                commLayer = new TcpServerLayer(Identification.BeaconName)
-                {
-                    Port = Port
-                };
-                slave = new DeviceSlave(commLayer, Identification)
+                commLayer = new TcpServerLayer(Identification.BeaconName, Port);
+                slave = new DeviceSlave(commLayer)
                 {
                     FunctionListener = this,
                     MessageListener = this
@@ -65,7 +69,17 @@ namespace Inventors.ECP.DefaultDevice
 
         public bool Accept(DeviceIdentification func)
         {
-            slave.Accept(func);
+            func.DeviceID = 1;
+            func.ManufactureID = 1;
+            func.Manufacture = "Inventors' Way";
+            func.Device = "Default Device";
+            func.MajorVersion = 1;
+            func.MinorVersion = 2;
+            func.PatchVersion = 3;
+            func.EngineeringVersion = 4;
+            func.Checksum = 5;
+            func.SerialNumber = 1000;
+
             return true;
         }
 

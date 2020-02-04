@@ -19,14 +19,11 @@ namespace Inventors.ECP
 
         public dynamic FunctionListener { get; set; } = null;
 
-        public DeviceType Identification => _deviceData;
-
-        public DeviceSlave(CommunicationLayer layer, DeviceType deviceData)
+        public DeviceSlave(CommunicationLayer layer)
         {
-            if ((layer is object) && (deviceData is object))
+            if (layer is object)
             {
                 _connection = layer;
-                _deviceData = deviceData;
                 _connection.Destuffer.OnReceive += HandleIncommingFrame;
             }
             else
@@ -174,24 +171,6 @@ namespace Inventors.ECP
             return retValue;
         }
 
-        public void Accept(DeviceIdentification func)
-        {
-            if (func is object)
-            {
-                func.DeviceID = _deviceData.DeviceID;
-                func.ManufactureID = _deviceData.ManufactureID;
-                func.Manufacture = _deviceData.Manufacture;
-                func.Device = _deviceData.Device;
-                func.MajorVersion = _deviceData.MajorVersion;
-                func.MinorVersion = _deviceData.MinorVersion;
-                func.PatchVersion = _deviceData.PatchVersion;
-                func.EngineeringVersion = _deviceData.EngineeringVersion;
-                func.Checksum = _deviceData.Checksum;
-                func.SerialNumber = _deviceData.SerialNumber;
-            }
-        }
-
         private readonly CommunicationLayer _connection;
-        private readonly DeviceType _deviceData;
     }
 }

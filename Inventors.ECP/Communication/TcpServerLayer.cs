@@ -41,6 +41,24 @@ namespace Inventors.ECP.Communication
             }
         }
 
+        public TcpServerLayer(string name, string port)
+        {
+            _beaconName = name;
+            Port = port;
+        }
+
+        public TcpServerLayer(string name, long address, ushort port)
+        {
+            _beaconName = name;
+            SetTcpPort(address, port);
+        }
+
+        public TcpServerLayer(string name, IPAddress address, ushort port)
+        {
+            _beaconName = name;
+            SetTcpPort(address, port);
+        }
+
         public string Address => Port.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries)[0];
 
         public int IPPort => int.Parse(Port.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries)[1], CultureInfo.CurrentCulture);
@@ -48,11 +66,6 @@ namespace Inventors.ECP.Communication
         public override List<string> GetAvailablePorts()
         {
             return new List<string>();
-        }
-
-        public TcpServerLayer(string name) 
-        {
-            _beaconName = name;
         }
 
         public override bool IsOpen

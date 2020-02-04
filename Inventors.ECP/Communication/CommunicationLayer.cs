@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -42,6 +43,22 @@ namespace Inventors.ECP.Communication
                 RxRate = ((double)BytesReceived) / time,
                 TxRate = ((double)BytesTransmitted) / time
             };
+        }
+
+        public static string FormatTcpPort(IPAddress localAddress, ushort port) => new IPEndPoint(localAddress, port).ToString();
+
+        public static string FormatTcpPort(long localAddress, ushort port) => new IPEndPoint(localAddress, port).ToString();
+
+        public CommunicationLayer SetTcpPort(long address, ushort port)
+        {
+            Port = FormatTcpPort(address, port);
+            return this;
+        }
+
+        public CommunicationLayer SetTcpPort(IPAddress address, ushort port)
+        {
+            Port = FormatTcpPort(address, port);
+            return this;
         }
 
         public void Open()

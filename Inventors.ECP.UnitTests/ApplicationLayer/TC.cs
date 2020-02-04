@@ -31,14 +31,8 @@ namespace Inventors.ECP.UnitTests.ApplicationLayer
 
         private TC()
         {
-            _slave = new DefaultTcpSlave()
-            {
-                Port = new IPEndPoint(TcpServerLayer.LocalAddress, 9000).ToString()
-            };
-            _device = new DefaultTcpDevice
-            {
-                Port = _slave.Port
-            };
+            _slave = new DefaultTcpSlave().SetPort(TcpServerLayer.LocalAddress, 9000);
+            _device = new DefaultTcpDevice(_slave.Identification.BeaconName) { Port = _slave.Port };
             _slave.Start();
             Thread.Sleep(100);
             _device.Connect();

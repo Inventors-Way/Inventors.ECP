@@ -107,9 +107,9 @@ namespace Inventors.ECP
         #endregion
         #endregion
 
-        protected Device(CommunicationLayer commLayer, DeviceType device)
+        protected Device(CommunicationLayer commLayer)
         {
-            this.Master = new DeviceMaster(commLayer, device);
+            this.Master = new DeviceMaster(commLayer);
             Master.MessageListener = this;
             Master.Add(new PrintfMessage());
         }

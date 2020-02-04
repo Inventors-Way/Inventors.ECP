@@ -54,6 +54,12 @@ namespace Inventors.ECP.Communication
             }
         }
 
+        public TcpClientLayer() { }
+
+        public TcpClientLayer(long address, ushort port) => SetTcpPort(address, port);
+
+        public TcpClientLayer(IPAddress address, ushort port) => SetTcpPort(address, port);
+
         public string Address => Port.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries)[0];
 
         public int IPPort => int.Parse(Port.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries)[1], CultureInfo.CurrentCulture);
