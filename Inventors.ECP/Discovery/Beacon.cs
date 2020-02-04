@@ -92,8 +92,8 @@ namespace Inventors.ECP.Discovery
         internal static string Decode(IEnumerable<byte> data)
         {
             var listData = data as IList<byte> ?? data.ToList();
-
             var len = IPAddress.NetworkToHostOrder(BitConverter.ToInt16(listData.Take(2).ToArray(), 0));
+
             if (listData.Count < 2 + len) throw new ArgumentException("Too few bytes in packet");
 
             return Encoding.UTF8.GetString(listData.Skip(2).Take(len).ToArray());

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Inventors.ECP.Communication;
+using Inventors.ECP.Profiling;
 using Inventors.Logging;
 
 namespace Inventors.ECP
@@ -35,6 +36,18 @@ namespace Inventors.ECP
             set => connection.BaudRate = value;
         }
 
+        public bool IsConnected => connection.IsConnected;
+
+        public bool IsOpen => connection.IsOpen;
+
+        public bool ResetOnConnection
+        {
+            get => connection.ResetOnConnection;
+            set => connection.ResetOnConnection = value;
+        }
+
+        public Profiler Profiler { get; }
+
         public DeviceMaster(CommunicationLayer connection, DeviceType device)
         {
             if (connection is null)
@@ -46,38 +59,13 @@ namespace Inventors.ECP
             this.connection = connection;
             this.device = device;
             connection.Destuffer.OnReceive += HandleIncommingFrame;
-            Timeout = 500;            
+            Timeout = 500;
+            Profiler = new Profiler(connection, this);
         }
 
-        public void Open()
-        {
-            connection.Open();
-        }
+        public void Open() => connection.Open();
 
-        public void Close()
-        {
-            connection.Close();
-        }
-
-        public bool IsOpen
-        {
-            get
-            {
-                return connection.IsOpen;
-            }
-        }
-
-        public bool ResetOnConnection
-        {
-            get
-            {
-                return connection.ResetOnConnection;
-            }
-            set
-            {
-                connection.ResetOnConnection = value;
-            }
-        }
+        public void Close() => connection.Close();        
 
         public void Execute(DeviceFunction function)
         {
@@ -125,6 +113,10 @@ namespace Inventors.ECP
 
             return retValue;
         }
+
+        public CommunicationLayerStatistics GetStatistics() => connection.GetStatistics();
+
+        public void RestartStatistics() => connection.RestartStatistics();
 
         private void Initiate(DeviceFunction function)
         {
@@ -212,6 +204,8 @@ namespace Inventors.ECP
         }
 
         private List<MessageDispatcher> Dispatchers { get; } = new List<MessageDispatcher>();
+
+        public List<string> GetAvailablePorts() => connection.GetAvailablePorts();
 
         public dynamic MessageListener { get; set; } = null;
 

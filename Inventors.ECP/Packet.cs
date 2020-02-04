@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Inventors.ECP.Utility;
 using Inventors.Logging;
 
 namespace Inventors.ECP

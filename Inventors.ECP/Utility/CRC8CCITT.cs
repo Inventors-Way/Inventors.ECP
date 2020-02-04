@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Inventors.ECP
+namespace Inventors.ECP.Utility
 {
     public static class CRC8CCITT
     {
@@ -26,12 +26,9 @@ namespace Inventors.ECP
 
         public static byte Update(byte inCrc, byte inData)
         {
-            byte i;
-            byte data;
+            byte data = (byte) (inCrc ^ inData);
 
-            data = (byte) (inCrc ^ inData);
-
-            for (i = 0; i < 8; i++)
+            for (byte i = 0; i < 8; i++)
             {
                 if ((data & 0x80) != 0)
                 {

@@ -35,7 +35,6 @@ namespace Inventors.ECP.Tester
         private Logger logger;
         private Device device = null;
         private DeviceType selectedDevice = null;
-        private readonly Profiler profiler = new Profiler();
         private AppState state = AppState.APP_STATE_UNINITIALIZED;
 
         public MainWindow()
@@ -80,7 +79,7 @@ namespace Inventors.ECP.Tester
         {
             if (device is object)
             {
-                var report = device.CommLayer.GetStatistics();
+                var report = device.GetStatistics();
                 statusText.Text = String.Format("DATA [Rx: {0}, Tx: {1}]",
                     Statistics.FormatRate(report.RxRate),
                     Statistics.FormatRate(report.TxRate));
@@ -124,14 +123,13 @@ namespace Inventors.ECP.Tester
             Log.Status("Device: {0}", loader.AssemblyName);
             device = loader.Create();
 
-            profiler.Device = device;
-            profiler.Profiling = loader.Profiling;
-            profiler.Trials = loader.Trials;
-            profiler.TestDelay = loader.TestDelay;
+            device.Profiler.Profiling = loader.Profiling;
+            device.Profiler.Trials = loader.Trials;
+            device.Profiler.TestDelay = loader.TestDelay;
             Log.Status("Profiler: {0} (Test Trials: {1}, Test Delay: {2})", 
                 loader.Profiling ? "ENABLED" : "DISABLED", 
-                profiler.Trials,
-                profiler.TestDelay);
+                device.Profiler.Trials,
+                device.Profiler.TestDelay);
             UpdateProfiling();
             InitializeFunctions();
             await UpdatePorts();
@@ -220,7 +218,7 @@ namespace Inventors.ECP.Tester
                     if (e.ClickedItem.Tag is DeviceType current)
                     {
                         Log.Debug("Port changed to: {0}", e.ClickedItem.Text);
-                        device.CommLayer.Port = current.Port;
+                        device.Port = current.Port;
                         selectedDevice = current;
 
                         foreach (var item in portMenuItem.DropDownItems)
@@ -301,9 +299,9 @@ namespace Inventors.ECP.Tester
             {
                 try
                 {
-                    device.CommLayer.Port = selectedDevice.Port;
+                    device.Port = selectedDevice.Port;
                     await device.ConnectAsync();
-                    Log.Status("Device Connected: {0} [{1}]", device.ToString(), device.CommLayer.Port);
+                    Log.Status("Device Connected: {0} [{1}]", device.ToString(), device.Port);
                     UpdateAppStates(AppState.APP_STATE_CONNECTED);
                 }
                 catch (Exception ex)
@@ -324,7 +322,7 @@ namespace Inventors.ECP.Tester
             {
                 await device.DisconnectAsync();
                 UpdateAppStates(AppState.APP_STATE_INITIALIZED);
-                Log.Status("Device disconnected: {0} [{1}]", device.ToString(), device.CommLayer.Port);
+                Log.Status("Device disconnected: {0} [{1}]", device.ToString(), device.Port);
             }
             catch (Exception ex)
             {
@@ -451,18 +449,18 @@ namespace Inventors.ECP.Tester
         {
             if (state == AppState.APP_STATE_CONNECTED)
             {
-                profiler.Function = functionList.SelectedItem as DeviceFunction;
+                device.Profiler.Function = functionList.SelectedItem as DeviceFunction;
 
-                if (profiler.Function != null)
+                if (device.Profiler.Function != null)
                 {
                     functionList.Enabled = false;
                     testToolStripMenuItem.Enabled = false;
                     UpdateAppStates(AppState.APP_STATE_ACTIVE);
 
-                    await profiler.TestAsync();
+                    await device.Profiler.TestAsync();
 
-                    Log.Status("TEST COMPLETED [ {0}ms ]", profiler.RunTime);
-                    Log.Status(profiler.Compile().ToString());
+                    Log.Status("TEST COMPLETED [ {0}ms ]", device.Profiler.RunTime);
+                    Log.Status(device.Profiler.Compile().ToString());
                     UpdateAppStates(AppState.APP_STATE_CONNECTED);
                     UpdateProfiling();
                 }
@@ -477,12 +475,12 @@ namespace Inventors.ECP.Tester
         {
             using (var dialog = new TrialsDialog())
             {
-                dialog.Trials = profiler.Trials;
+                dialog.Trials = device.Profiler.Trials;
 
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    profiler.Trials = dialog.Trials;
-                    Log.Debug("Number of test trials set to {0}", profiler.Trials);
+                    device.Profiler.Trials = dialog.Trials;
+                    Log.Debug("Number of test trials set to {0}", device.Profiler.Trials);
                 }
             }
         }
@@ -519,26 +517,42 @@ namespace Inventors.ECP.Tester
 
         private void EnabledToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            profiler.Profiling = true;
-            UpdateProfiling();
+            if (device is object)
+            {
+                device.Profiler.Profiling = true;
+                UpdateProfiling();
+            }
         }
 
         private void DisabledToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            profiler.Profiling = false;
-            UpdateProfiling();
+            if (device is object)
+            {
+                device.Profiler.Profiling = false;
+                UpdateProfiling();
+            }
         }
 
         private void ReportToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var profile = profiler.GetProfile();
-            Log.Status(Profiler.CreateProfileReport(profile));
+            if (device is object)
+            {
+                var profile = device.Profiler.GetProfile();
+                Log.Status(Profiler.CreateProfileReport(profile));
+            }
         }
 
         private void UpdateProfiling()
         {
-            enabledToolStripMenuItem.Checked = profiler.Profiling;
-            disabledToolStripMenuItem.Checked = !profiler.Profiling;
+            if (device is object)
+            {
+                enabledToolStripMenuItem.Checked = device.Profiler.Profiling;
+                disabledToolStripMenuItem.Checked = !device.Profiler.Profiling;
+            }
+            else
+            {
+                enabledToolStripMenuItem.Enabled = disabledToolStripMenuItem.Enabled = false;
+            }
         }
 
         private void DebugToolStripMenuItem_Click(object sender, EventArgs e) => SetLoggingLevel(LogLevel.DEBUG);

@@ -81,28 +81,7 @@ namespace Inventors.ECP.Profiling
 
         private bool profiling = false;
         private readonly Dictionary<byte, FrameStat> framesReceived = new Dictionary<byte, FrameStat>();
-        private Device device = null;
 
-        public Device Device
-        {
-            get
-            {
-                return device;
-            }
-            set
-            {
-                if (device == null)
-                {
-                    device = value;
-
-                    if (profiling && (device is object))
-                    {
-                        device.CommLayer.Destuffer.OnReceive += HandleIncommingFrame;
-                        profileWatch.Restart();
-                    }
-                }
-            }
-        }
 
         public DeviceFunction Function { get; set; } = null;
 
@@ -115,6 +94,12 @@ namespace Inventors.ECP.Profiling
         public List<double> Time { get; private set; } = new List<double>();
 
         public long RunTime { get; private set; } = 0;
+
+        public Profiler(CommunicationLayer layer, DeviceMaster master)
+        {
+            this.commLayer = layer;
+            this.master = master;
+        }
 
         private void ClearProfile()
         {
@@ -139,19 +124,12 @@ namespace Inventors.ECP.Profiling
                     {
                         if (value)
                         {
-                            if (device != null)
-                            {
-                                device.CommLayer.Destuffer.OnReceive += HandleIncommingFrame;
-                            }
+                            commLayer.Destuffer.OnReceive += HandleIncommingFrame;
                             ClearProfile();
-                            
                         }
                         else
                         {
-                            if (device != null)
-                            {
-                                device.CommLayer.Destuffer.OnReceive -= HandleIncommingFrame;
-                            }
+                            commLayer.Destuffer.OnReceive -= HandleIncommingFrame;
                             profileWatch.Stop();
                         }
 
@@ -242,22 +220,20 @@ namespace Inventors.ECP.Profiling
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
-        public void Test()
+        public async void Test()
         {
-            if (Device != null && Function != null)
+            if (Function is null)
             {
                 ClearProfile();
                 Time.Clear();
                 watch.Restart();
-                Device.CommLayer.RestartStatistics();
-                var retries = Device.Retries;
-                Device.Retries = 1;
+                commLayer.RestartStatistics();
 
                 for (int n = 0; n < Trials; ++n)
                 {
                     try
                     {
-                        Device.Execute(Function);
+                        master.Execute(Function);
                         Time.Add(Function.TransmissionTime);
                     }
                     catch { }
@@ -267,17 +243,16 @@ namespace Inventors.ECP.Profiling
                         Thread.Sleep(TestDelay);
                     }
                 }
-                Device.Retries = retries;
                 watch.Stop();
                 RunTime = watch.ElapsedMilliseconds;
-                statistics = Device.CommLayer.GetStatistics();
-                Device.CommLayer.RestartStatistics();
+                statistics = commLayer.GetStatistics();
+                commLayer.RestartStatistics();
 
                 Profiling = false;
             }
         }
 
-        public async Task TestAsync() => await Task.Run(() => Test()).ConfigureAwait(false);
+        public async Task TestAsync() => await Task.Run((Action)(() => Test())).ConfigureAwait(false);
 
 
         public Report Compile()
@@ -288,5 +263,7 @@ namespace Inventors.ECP.Profiling
 
         private readonly Stopwatch watch = new Stopwatch();
         private readonly Stopwatch profileWatch = new Stopwatch();
+        private readonly CommunicationLayer commLayer;
+        private readonly DeviceMaster master;
     }
 }

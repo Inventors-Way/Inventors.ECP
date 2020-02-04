@@ -84,7 +84,7 @@ namespace Inventors.ECP
 
                 if (BaudRate > 0)
                 {
-                    retValue.CommLayer.BaudRate = BaudRate;
+                    retValue.BaudRate = BaudRate;
                     Log.Debug("Baudrate set to: {0}", BaudRate);
                 }
             }

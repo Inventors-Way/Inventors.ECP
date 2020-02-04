@@ -1,6 +1,7 @@
 ﻿using Inventors.ECP.Communication;
 using Inventors.ECP.Functions;
 using Inventors.ECP.Messages;
+using Inventors.ECP.Profiling;
 using Inventors.Logging;
 using System;
 using System.Collections.Generic;
@@ -72,7 +73,6 @@ namespace Inventors.ECP
             return false;
         }
 
-
         protected T NotifyIfChanged<T>(T current, T newValue, [CallerMemberName]string propertyName = null)
         {
             Debug.Assert(string.IsNullOrEmpty(propertyName) ||
@@ -137,20 +137,32 @@ namespace Inventors.ECP
         [Browsable(false)]
         public bool IsOpen => Master.IsOpen;
         #endregion
+        #region IsConnected
+        [Browsable(false)]
+        public bool IsConnected => Master.IsConnected;        
+
+        #endregion
         #region Port
         public string Port
         {
-            get => CommLayer.Port;
-            set => CommLayer.Port = NotifyIfChanged(CommLayer.Port, value);
+            get => Master.Port;
+            set => Master.Port = NotifyIfChanged(Master.Port, value);
         }
         #endregion
-
-
+        #region BaudRate
+        public int BaudRate
+        {
+            get => Master.BaudRate;
+            set => Master.BaudRate = NotifyIfChanged(Master.BaudRate, value);
+        }
+        #endregion
+        #region Profiler
+        public Profiler Profiler => Master.Profiler;
+        #endregion
         #endregion
 
-        public Device(CommunicationLayer commLayer, DeviceType device)
+        protected Device(CommunicationLayer commLayer, DeviceType device)
         {
-            CommLayer = commLayer;
             this.Master = new DeviceMaster(commLayer, device);
             Master.MessageListener = this;
             Master.Add(new PrintfMessage());
@@ -158,19 +170,19 @@ namespace Inventors.ECP
 
         public List<DeviceType> GetAvailableDevices()
         {
-            if (CommLayer.IsOpen)
+            if (Master.IsOpen)
             {
                 throw new InvalidOperationException();
             }
 
             var retValue = new List<DeviceType>();
-            var currentPort = CommLayer.Port;
+            var currentPort = Master.Port;
 
-            foreach (var port in CommLayer.GetAvailablePorts())
+            foreach (var port in Master.GetAvailablePorts())
             {
                 try
                 {
-                    CommLayer.Port = port;
+                    Master.Port = port;
                     var devId = Connect();
                     var devType = new DeviceType(port, devId);
 
@@ -187,10 +199,12 @@ namespace Inventors.ECP
                 }
             }
 
-            CommLayer.Port = currentPort;
+            Master.Port = currentPort;
 
             return retValue;
         }
+
+        public CommunicationLayerStatistics GetStatistics() => Master.GetStatistics();
 
         public async Task<List<DeviceType>> GetAvailableDevicesAsync() =>
             await Task.Run(() => GetAvailableDevices()).ConfigureAwait(false);
@@ -225,11 +239,11 @@ namespace Inventors.ECP
             var watch = new Stopwatch();
             watch.Restart();
 
-            while (!CommLayer.IsConnected)
+            while (!Master.IsConnected)
             {
                 if (watch.ElapsedMilliseconds > timeout)
                 {
-                    throw new SlaveNotRespondingException(string.Format(CultureInfo.CurrentCulture, "Could not connect to: {0}", CommLayer.Port));
+                    throw new SlaveNotRespondingException(string.Format(CultureInfo.CurrentCulture, "Could not connect to: {0}", Port));
                 }
             }
             watch.Stop();
@@ -321,10 +335,6 @@ namespace Inventors.ECP
             get => _retries;
             set => SetProperty(ref _retries, value);
         }
-
-        [XmlIgnore]
-        [Browsable(false)]
-        public CommunicationLayer CommLayer { get; private set; }
 
         [XmlIgnore]
         [Browsable(false)]
