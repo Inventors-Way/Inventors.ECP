@@ -59,7 +59,7 @@ namespace Inventors.ECP.UnitTests.ApplicationLayer
             probe.Stop();
             Assert.AreEqual(expected: 1, actual: locations.Count);
             var beacon = locations[0];
-            Assert.AreEqual(expected: "ECP Beacon", actual: beacon.Data);
+            Assert.AreEqual(expected: "[1.1] Default Device", actual: beacon.Data);
         }
 
         [TestMethod]

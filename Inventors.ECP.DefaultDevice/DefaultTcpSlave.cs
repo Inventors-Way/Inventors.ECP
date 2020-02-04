@@ -4,6 +4,7 @@ using System.Net;
 using System.Text;
 using Inventors.ECP;
 using Inventors.ECP.Communication;
+using Inventors.ECP.Discovery;
 using Inventors.ECP.Functions;
 using Inventors.ECP.Messages;
 using Inventors.Logging;
@@ -40,7 +41,7 @@ namespace Inventors.ECP.DefaultDevice
         {
             if (!IsOpen)
             {
-                commLayer = new TcpServerLayer(Identification.BeaconName, Port);
+                commLayer = new TcpServerLayer(new BeaconID(Identification.ManufactureID, Identification.DeviceID, Identification.Device), Port);
                 slave = new DeviceSlave(commLayer)
                 {
                     FunctionListener = this,

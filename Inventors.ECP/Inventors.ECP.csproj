@@ -20,7 +20,6 @@
   <ItemGroup>
     <Folder Include="Functions\" />
     <Folder Include="Messages\" />
-    <Folder Include="Discovery\" />
   </ItemGroup>
 
   <ItemGroup>

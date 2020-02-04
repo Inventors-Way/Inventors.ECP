@@ -21,7 +21,7 @@ namespace Inventors.ECP.Communication
         private bool _isConnected = false;
         private string _IpPort = null;
         private string _port = new IPEndPoint(IPAddress.Loopback, 9000).ToString();
-        private readonly string _beaconName;
+        private readonly BeaconID _beaconId;
 
         public override int BaudRate { get; set; } = int.MaxValue;
 
@@ -41,21 +41,21 @@ namespace Inventors.ECP.Communication
             }
         }
 
-        public TcpServerLayer(string name, string port)
+        public TcpServerLayer(BeaconID id, string port)
         {
-            _beaconName = name;
+            _beaconId = id;
             Port = port;
         }
 
-        public TcpServerLayer(string name, long address, ushort port)
+        public TcpServerLayer(BeaconID id, long address, ushort port)
         {
-            _beaconName = name;
+            _beaconId = id;
             SetTcpPort(address, port);
         }
 
-        public TcpServerLayer(string name, IPAddress address, ushort port)
+        public TcpServerLayer(BeaconID id, IPAddress address, ushort port)
         {
-            _beaconName = name;
+            _beaconId = id;
             SetTcpPort(address, port);
         }
 
@@ -137,10 +137,7 @@ namespace Inventors.ECP.Communication
                     server.MessageReceived += MessageReceived;
                     server.Start();
                     SetOpen(true);
-                    beacon = new Beacon(_beaconName, (ushort)IPPort)
-                    {
-                        BeaconData = "ECP Beacon"
-                    };
+                    beacon = new Beacon(_beaconId, (ushort)IPPort);
                     beacon.Start();
                 }
             }

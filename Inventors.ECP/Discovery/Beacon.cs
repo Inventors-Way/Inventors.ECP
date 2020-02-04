@@ -19,11 +19,14 @@ namespace Inventors.ECP.Discovery
         internal const int DiscoveryPort = 35891;
         private readonly UdpClient udp;
  
-        public Beacon(string beaconType, ushort advertisedPort)
+        public Beacon(BeaconID id, ushort advertisedPort)
         {
-            BeaconType     = beaconType;
+            if (id is null)
+                throw new ArgumentNullException(nameof(id));
+
+            BeaconType     = id.ID;
             AdvertisedPort = advertisedPort;
-            BeaconData     = "";
+            BeaconData     = id.Data;
 
             udp = new UdpClient();
             udp.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
@@ -111,7 +114,7 @@ namespace Inventors.ECP.Discovery
         public ushort AdvertisedPort { get; private set; }
         public bool Stopped { get; private set; }
 
-        public string BeaconData { get; set; }
+        public string BeaconData { get; private set; }
 
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
