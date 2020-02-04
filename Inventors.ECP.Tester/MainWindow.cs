@@ -263,7 +263,7 @@ namespace Inventors.ECP.Tester
             }
         }
 
-        private void FunctionList_DoubleClick(object sender, EventArgs e)
+        private async void FunctionList_DoubleClick(object sender, EventArgs e)
         {
             if (state == AppState.APP_STATE_CONNECTED)
             {
@@ -274,7 +274,7 @@ namespace Inventors.ECP.Tester
                         functionList.Enabled = false;
                         testToolStripMenuItem.Enabled = false;
                         UpdateAppStates(AppState.APP_STATE_ACTIVE);
-                        Execute(functionList.SelectedItem as DeviceFunction, true);
+                        await Execute(functionList.SelectedItem as DeviceFunction, true);
                     }
                     catch { }
 
@@ -379,20 +379,6 @@ namespace Inventors.ECP.Tester
         private void PropertyGrid_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
         {
             propertyGrid.Refresh();
-        }
-
-        private delegate void Updater();
-
-        private void BeginUpdate(Updater updater)
-        {
-            if (this.InvokeRequired)
-            {
-                this.Invoke(updater);
-            }
-            else
-            {
-                updater();
-            }
         }
 
         #endregion

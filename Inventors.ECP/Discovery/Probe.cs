@@ -155,6 +155,7 @@ namespace Inventors.ECP.Discovery
                     {
                         Stop();
                         waitHandle.Dispose();
+                        udp.Dispose();
                     }
                     catch (Exception ex)
                     {

@@ -19,81 +19,17 @@ using System.Xml.Serialization;
 namespace Inventors.ECP
 {
     public abstract class Device :
-        INotifyPropertyChanged
+        NotifyPropertyChanged
     {
-        #region INotifyPropertyChanged
-        private readonly object lockObject = new object();
-        public event PropertyChangedEventHandler PropertyChanged;
-        private readonly Dictionary<string, PropertyChangedEventArgs> eventArgs = new Dictionary<string, PropertyChangedEventArgs>();
-
-        private PropertyChangedEventArgs GetEventArgs(string propertyName)
-        {
-            if (!eventArgs.ContainsKey(propertyName))
-            {
-                eventArgs.Add(propertyName, new PropertyChangedEventArgs(propertyName));
-            }
-
-            return eventArgs[propertyName];
-        }
-
-        protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName]string propertyName = null)
-        {
-            Debug.Assert(string.IsNullOrEmpty(propertyName) ||
-                         (this.GetType().GetRuntimeProperty(propertyName) != null),
-                         "Check that the property name exists for this instance.");
-
-            if (!EqualityComparer<T>.Default.Equals(field, newValue))
-            {
-                field = newValue;
-                PropertyChanged?.Invoke(this, GetEventArgs(propertyName));
-
-                return true;
-            }
-
-            return false;
-        }
-
-        protected bool SetPropertyLocked<T>(ref T field, T newValue, [CallerMemberName]string propertyName = null)
-        {
-            Debug.Assert(string.IsNullOrEmpty(propertyName) ||
-                         (this.GetType().GetRuntimeProperty(propertyName) != null),
-                         "Check that the property name exists for this instance.");
-
-            lock (lockObject)
-            {
-                if (!EqualityComparer<T>.Default.Equals(field, newValue))
-                {
-                    field = newValue;
-                    PropertyChanged?.Invoke(this, GetEventArgs(propertyName));
-
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        protected T NotifyIfChanged<T>(T current, T newValue, [CallerMemberName]string propertyName = null)
-        {
-            Debug.Assert(string.IsNullOrEmpty(propertyName) ||
-                         (this.GetType().GetRuntimeProperty(propertyName) != null),
-                         "Check that the property name exists for this instance.");
-
-            if (!EqualityComparer<T>.Default.Equals(current, newValue))
-            {
-                PropertyChanged?.Invoke(this, GetEventArgs(propertyName));
-            }
-
-            return newValue;
-        }
-
-        protected void Notify(string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, GetEventArgs(propertyName));
-        }
-
-        #endregion
         #region Properties
+        #region PrintLevel
+        private LogLevel _printLevel = LogLevel.DEBUG;
+        public LogLevel PrintLevel
+        {
+            get => _printLevel;
+            set => SetProperty(ref _printLevel, value);
+        }
+        #endregion
         #region Connected
         private bool _connected = false;
 
@@ -103,7 +39,7 @@ namespace Inventors.ECP
         {
             get
             {
-                lock (lockObject)
+                lock (LockObject)
                 {
                     return _connected;
                 }
@@ -308,7 +244,17 @@ namespace Inventors.ECP
 
         public void Accept(PrintfMessage message)
         {
-            Log.Debug(message.DebugMessage);
+            if (message is object)
+            {
+                switch (PrintLevel)
+                {
+                    case LogLevel.DEBUG: Log.Debug(message.DebugMessage); break;
+                    case LogLevel.STATUS: Log.Status(message.DebugMessage); break;
+                    case LogLevel.ERROR: Log.Error(message.DebugMessage); break;
+                    default:
+                        break;
+                }
+            }
         }
 
         public override string ToString()

@@ -35,8 +35,10 @@ namespace Inventors.ECP.UnitTests.ApplicationLayer
             {
                 Port = new IPEndPoint(TcpServerLayer.LocalAddress, 9000).ToString()
             };
-            _device = new DefaultTcpDevice();
-            _device.Port = _slave.Port;
+            _device = new DefaultTcpDevice
+            {
+                Port = _slave.Port
+            };
             _slave.Start();
             Thread.Sleep(100);
             _device.Connect();

@@ -94,7 +94,7 @@ namespace Inventors.ECP.Discovery
             var listData = data as IList<byte> ?? data.ToList();
             var len = IPAddress.NetworkToHostOrder(BitConverter.ToInt16(listData.Take(2).ToArray(), 0));
 
-            if (listData.Count < 2 + len) throw new ArgumentException("Too few bytes in packet");
+            if (listData.Count < 2 + len) throw new ArgumentException(Resources.BEACON_PACKET_DATA_ERROR);
 
             return Encoding.UTF8.GetString(listData.Skip(2).Take(len).ToArray());
         }
@@ -113,9 +113,28 @@ namespace Inventors.ECP.Discovery
 
         public string BeaconData { get; set; }
 
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    Stop();
+                    udp.Dispose();
+                }
+
+                disposedValue = true;
+            }
+        }
+
         public void Dispose()
         {
-            Stop();
+            Dispose(true);
+            // GC.SuppressFinalize(this);
         }
+        #endregion
     }
 }

@@ -61,6 +61,15 @@ namespace Inventors.ECP {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Too few bytes in beacon packet.
+        /// </summary>
+        internal static string BEACON_PACKET_DATA_ERROR {
+            get {
+                return ResourceManager.GetString("BEACON_PACKET_DATA_ERROR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Connection is null.
         /// </summary>
         internal static string CONNECTION_NULL {
