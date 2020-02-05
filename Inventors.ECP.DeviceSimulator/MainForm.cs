@@ -140,15 +140,9 @@ namespace Inventors.ECP.DeviceSimulator
         private void NetworkToolStripMenuItem_Click(object sender, EventArgs e) => SetSimulatorType(SimulatorType.TCP);
 
 
-        private void DocumentationToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void DocumentationToolStripMenuItem_Click(object sender, EventArgs e) { }
 
-        }
-
-        private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
+        private void AboutToolStripMenuItem_Click(object sender, EventArgs e) => MessageBox.Show("ECP Default Simulator, Inventors' Way ApS", "About", MessageBoxButtons.OK);
 
         private void UpdateStatus()
         {

@@ -11,7 +11,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inventors.ECP.DefaultDevice
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventors.ECP.DeviceSimulator", "Inventors.ECP.DeviceSimulator\Inventors.ECP.DeviceSimulator.csproj", "{EC362F5F-6A43-41A6-8013-BF435B7ABEFA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventors.ECP.UnitTests", "Inventors.ECP.UnitTests\Inventors.ECP.UnitTests.csproj", "{5C5482CF-7A82-4F9B-B8E7-76E781F1B8BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inventors.ECP.UnitTests", "Inventors.ECP.UnitTests\Inventors.ECP.UnitTests.csproj", "{5C5482CF-7A82-4F9B-B8E7-76E781F1B8BC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4895BB9C-F18D-4005-9EED-A1529F9C1D21}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
