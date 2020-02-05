@@ -40,6 +40,13 @@
             this.serialToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.networkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.baudrateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.b9600MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.b14400MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.b19200MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.b38400MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.b57600MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.b115200MenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.portMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.connectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -50,13 +57,6 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.statusText = new System.Windows.Forms.ToolStripStatusLabel();
             this.logBox = new System.Windows.Forms.TextBox();
-            this.baudrateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -162,6 +162,61 @@
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
             // 
+            // baudrateToolStripMenuItem
+            // 
+            this.baudrateToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.b9600MenuItem,
+            this.b14400MenuItem,
+            this.b19200MenuItem,
+            this.b38400MenuItem,
+            this.b57600MenuItem,
+            this.b115200MenuItem});
+            this.baudrateToolStripMenuItem.Name = "baudrateToolStripMenuItem";
+            this.baudrateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.baudrateToolStripMenuItem.Text = "Baudrate";
+            // 
+            // b9600MenuItem
+            // 
+            this.b9600MenuItem.Name = "b9600MenuItem";
+            this.b9600MenuItem.Size = new System.Drawing.Size(180, 22);
+            this.b9600MenuItem.Text = "9600";
+            this.b9600MenuItem.Click += new System.EventHandler(this.B9600MenuItem_Click);
+            // 
+            // b14400MenuItem
+            // 
+            this.b14400MenuItem.Name = "b14400MenuItem";
+            this.b14400MenuItem.Size = new System.Drawing.Size(180, 22);
+            this.b14400MenuItem.Text = "14400";
+            this.b14400MenuItem.Click += new System.EventHandler(this.B14400MenuItem_Click);
+            // 
+            // b19200MenuItem
+            // 
+            this.b19200MenuItem.Name = "b19200MenuItem";
+            this.b19200MenuItem.Size = new System.Drawing.Size(180, 22);
+            this.b19200MenuItem.Text = "19200";
+            this.b19200MenuItem.Click += new System.EventHandler(this.B19200MenuItem_Click);
+            // 
+            // b38400MenuItem
+            // 
+            this.b38400MenuItem.Name = "b38400MenuItem";
+            this.b38400MenuItem.Size = new System.Drawing.Size(180, 22);
+            this.b38400MenuItem.Text = "38400";
+            this.b38400MenuItem.Click += new System.EventHandler(this.B38400MenuItem_Click);
+            // 
+            // b57600MenuItem
+            // 
+            this.b57600MenuItem.Name = "b57600MenuItem";
+            this.b57600MenuItem.Size = new System.Drawing.Size(180, 22);
+            this.b57600MenuItem.Text = "57600";
+            this.b57600MenuItem.Click += new System.EventHandler(this.B57600MenuItem_Click);
+            // 
+            // b115200MenuItem
+            // 
+            this.b115200MenuItem.Name = "b115200MenuItem";
+            this.b115200MenuItem.Size = new System.Drawing.Size(180, 22);
+            this.b115200MenuItem.Text = "115200";
+            this.b115200MenuItem.Click += new System.EventHandler(this.B115200MenuItem_Click);
+            // 
             // portMenuItem
             // 
             this.portMenuItem.Name = "portMenuItem";
@@ -242,55 +297,6 @@
             this.logBox.Size = new System.Drawing.Size(600, 320);
             this.logBox.TabIndex = 2;
             // 
-            // baudrateToolStripMenuItem
-            // 
-            this.baudrateToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem2,
-            this.toolStripMenuItem3,
-            this.toolStripMenuItem4,
-            this.toolStripMenuItem5,
-            this.toolStripMenuItem6,
-            this.toolStripMenuItem7});
-            this.baudrateToolStripMenuItem.Name = "baudrateToolStripMenuItem";
-            this.baudrateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.baudrateToolStripMenuItem.Text = "Baudrate";
-            // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
-            this.toolStripMenuItem2.Text = "9600";
-            // 
-            // toolStripMenuItem3
-            // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(180, 22);
-            this.toolStripMenuItem3.Text = "14400";
-            // 
-            // toolStripMenuItem4
-            // 
-            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(180, 22);
-            this.toolStripMenuItem4.Text = "19200";
-            // 
-            // toolStripMenuItem5
-            // 
-            this.toolStripMenuItem5.Name = "toolStripMenuItem5";
-            this.toolStripMenuItem5.Size = new System.Drawing.Size(180, 22);
-            this.toolStripMenuItem5.Text = "38400";
-            // 
-            // toolStripMenuItem6
-            // 
-            this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-            this.toolStripMenuItem6.Size = new System.Drawing.Size(180, 22);
-            this.toolStripMenuItem6.Text = "57600";
-            // 
-            // toolStripMenuItem7
-            // 
-            this.toolStripMenuItem7.Name = "toolStripMenuItem7";
-            this.toolStripMenuItem7.Size = new System.Drawing.Size(180, 22);
-            this.toolStripMenuItem7.Text = "115200";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -337,12 +343,12 @@
         private System.Windows.Forms.ToolStripMenuItem errorToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem baudrateToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem5;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem6;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem7;
+        private System.Windows.Forms.ToolStripMenuItem b9600MenuItem;
+        private System.Windows.Forms.ToolStripMenuItem b14400MenuItem;
+        private System.Windows.Forms.ToolStripMenuItem b19200MenuItem;
+        private System.Windows.Forms.ToolStripMenuItem b38400MenuItem;
+        private System.Windows.Forms.ToolStripMenuItem b57600MenuItem;
+        private System.Windows.Forms.ToolStripMenuItem b115200MenuItem;
     }
 }
 

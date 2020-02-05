@@ -39,6 +39,7 @@ namespace Inventors.ECP.DeviceSimulator
             UpdateStatus();
 
             SetSimulatorType(Settings.Simulator);
+            SetBaudRate(Settings.BaudRate);
         }
 
         private void SetupLogging()
@@ -225,5 +226,26 @@ namespace Inventors.ECP.DeviceSimulator
                 serialToolStripMenuItem.Checked = Settings.Simulator == SimulatorType.SERIAL;
             }
         }
+
+        private void SetBaudRate(BaudRate rate)
+        {
+            if (!slave.IsOpen)
+            {
+                Settings.BaudRate = rate;
+                b9600MenuItem.Checked = Settings.BaudRate == BaudRate._9600;
+                b14400MenuItem.Checked = Settings.BaudRate == BaudRate._14400;
+                b19200MenuItem.Checked = Settings.BaudRate == BaudRate._19200;
+                b38400MenuItem.Checked = Settings.BaudRate == BaudRate._38400;
+                b57600MenuItem.Checked = Settings.BaudRate == BaudRate._57600;
+                b115200MenuItem.Checked = Settings.BaudRate == BaudRate._115200;
+            }
+        }
+
+        private void B9600MenuItem_Click(object sender, EventArgs e) => SetBaudRate(BaudRate._9600);
+        private void B14400MenuItem_Click(object sender, EventArgs e) => SetBaudRate(BaudRate._14400);
+        private void B19200MenuItem_Click(object sender, EventArgs e) => SetBaudRate(BaudRate._19200);
+        private void B38400MenuItem_Click(object sender, EventArgs e) => SetBaudRate(BaudRate._38400);
+        private void B57600MenuItem_Click(object sender, EventArgs e) => SetBaudRate(BaudRate._57600);
+        private void B115200MenuItem_Click(object sender, EventArgs e) => SetBaudRate(BaudRate._115200);
     }
 }
