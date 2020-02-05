@@ -69,7 +69,10 @@ namespace Inventors.ECP.Discovery
                 udp.Send(responseData, responseData.Length, remote);
             }
 
-            if (!Stopped) udp.BeginReceive(ProbeReceived, null);
+            if (!Stopped)
+            {
+                udp.BeginReceive(ProbeReceived, null);
+            }
         }
 
         internal static bool HasPrefix<T>(IEnumerable<T> haystack, IEnumerable<T> prefix)
