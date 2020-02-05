@@ -1,4 +1,5 @@
 ﻿using Inventors.ECP.Communication.Discovery;
+using Inventors.ECP.Communication.Tcp;
 using Inventors.Logging;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,6 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using WatsonTcp;
 
 namespace Inventors.ECP.Communication
 {

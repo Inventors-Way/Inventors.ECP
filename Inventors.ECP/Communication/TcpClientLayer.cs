@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using WatsonTcp;
+using Inventors.ECP.Communication.Tcp;
 using System.Linq;
 using Inventors.ECP.Communication.Discovery;
 
