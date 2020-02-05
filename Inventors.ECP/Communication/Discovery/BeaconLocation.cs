@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace Inventors.ECP.Discovery
+namespace Inventors.ECP.Communication.Discovery
 {
     /// <summary>
     /// Class that represents a discovered beacon

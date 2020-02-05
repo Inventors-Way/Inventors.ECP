@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WatsonTcp;
 using System.Linq;
-using Inventors.ECP.Discovery;
+using Inventors.ECP.Communication.Discovery;
 
 namespace Inventors.ECP.Communication
 {

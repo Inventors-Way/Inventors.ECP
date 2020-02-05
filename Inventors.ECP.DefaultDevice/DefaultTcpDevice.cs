@@ -1,5 +1,5 @@
 ﻿using Inventors.ECP.Communication;
-using Inventors.ECP.Discovery;
+using Inventors.ECP.Communication.Discovery;
 using Inventors.ECP.Functions;
 using System;
 using System.Collections.Generic;

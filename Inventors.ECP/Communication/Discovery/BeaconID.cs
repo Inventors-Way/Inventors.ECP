@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace Inventors.ECP.Discovery
+namespace Inventors.ECP.Communication.Discovery
 {
     public class BeaconID
     {

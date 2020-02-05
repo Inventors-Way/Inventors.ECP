@@ -7,7 +7,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 
-namespace Inventors.ECP.Discovery
+namespace Inventors.ECP.Communication.Discovery
 {
     /// <summary>
     /// Counterpart of the beacon, searches for beacons

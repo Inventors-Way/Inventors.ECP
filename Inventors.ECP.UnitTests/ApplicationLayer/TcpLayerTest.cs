@@ -9,7 +9,7 @@ using Inventors.ECP.Functions;
 using Inventors.ECP.Messages;
 using System.Net;
 using System.Threading;
-using Inventors.ECP.Discovery;
+using Inventors.ECP.Communication.Discovery;
 using Inventors.Logging;
 
 namespace Inventors.ECP.UnitTests.ApplicationLayer

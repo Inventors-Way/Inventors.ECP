@@ -1,4 +1,4 @@
-﻿using Inventors.ECP.Discovery;
+﻿using Inventors.ECP.Communication.Discovery;
 using Inventors.Logging;
 using System;
 using System.Collections.Generic;

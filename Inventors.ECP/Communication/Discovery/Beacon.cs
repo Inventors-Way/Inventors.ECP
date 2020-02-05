@@ -6,7 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
-namespace Inventors.ECP.Discovery
+namespace Inventors.ECP.Communication.Discovery
 {
     /// <summary>
     /// Instances of this class can be autodiscovered on the local network through UDP broadcasts

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 
-namespace Inventors.ECP.Discovery
+namespace Inventors.ECP.Communication.Discovery
 {
     class IPEndPointComparer : IComparer<IPEndPoint>
     {

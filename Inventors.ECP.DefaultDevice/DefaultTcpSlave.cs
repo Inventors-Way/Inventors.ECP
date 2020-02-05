@@ -4,7 +4,7 @@ using System.Net;
 using System.Text;
 using Inventors.ECP;
 using Inventors.ECP.Communication;
-using Inventors.ECP.Discovery;
+using Inventors.ECP.Communication.Discovery;
 using Inventors.ECP.Functions;
 using Inventors.ECP.Messages;
 using Inventors.Logging;
