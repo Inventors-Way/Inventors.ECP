@@ -17,7 +17,10 @@ namespace Inventors.ECP.DeviceHost
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new HostingForm());
+            Application.Run(new HostingForm()
+            {
+                NotifyIcon = Resource.hammer
+            });
         }
     }
 }
