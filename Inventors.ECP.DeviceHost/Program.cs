@@ -19,7 +19,9 @@ namespace Inventors.ECP.DeviceHost
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new HostingForm()
             {
-                NotifyIcon = Resource.hammer
+                NotifyIcon = Resource.hammer,
+                Icon = Resource.hammer,
+                Text = "Device Manager"
             });
         }
     }

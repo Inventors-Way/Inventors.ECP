@@ -65,5 +65,20 @@ namespace Inventors.ECP.Hosting
         }
 
         private bool _exitAllowed = false;
+
+        private void Run_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Stop_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void DeviceList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
