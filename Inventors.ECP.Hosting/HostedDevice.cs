@@ -28,16 +28,17 @@ namespace Inventors.ECP.Hosting
         [XmlIgnore]
         public uint Pings { get; private set; }
 
+        [XmlAttribute("port")]
         public string Port { get; set; }
 
         [XmlIgnore]
-        public BeaconID Beacon { get; private set; } = new BeaconID(1, 1, "Default Device");
+        public BeaconID Beacon { get; protected set; } = new BeaconID(1, 1, "Default Device");
 
         private string GetPort()
         {
             if (string.IsNullOrEmpty(Port))
             {
-
+                Port = CommunicationLayer.FormatTcpPort(TcpServerLayer.LocalAddress, 10001); 
             }
 
             return Port;

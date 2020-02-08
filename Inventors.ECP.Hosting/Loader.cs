@@ -11,7 +11,7 @@ using System.Xml.Serialization;
 namespace Inventors.ECP.Hosting
 {
     [XmlRoot("device")]
-    public class HostedDeviceLoader
+    public class Loader
     {
         [XmlAttribute("assembly")]
         public string AssemblyName { get; set; }
@@ -25,17 +25,17 @@ namespace Inventors.ECP.Hosting
         [XmlIgnore]
         public string FileName { get; private set; }
 
-        public static HostedDeviceLoader Load(string filename)
+        public static Loader Load(string filename)
         {
-            HostedDeviceLoader retValue = null;
-            XmlSerializer serializer = new XmlSerializer(typeof(HostedDeviceLoader));
+            Loader retValue = null;
+            XmlSerializer serializer = new XmlSerializer(typeof(Loader));
             XmlReaderSettings settings = new XmlReaderSettings() { };
 
             using (var file = File.Open(filename, FileMode.Open, FileAccess.Read))
             {
                 using (var reader = XmlReader.Create(file, settings))
                 {
-                    retValue = (HostedDeviceLoader)serializer.Deserialize(reader);
+                    retValue = (Loader)serializer.Deserialize(reader);
                     retValue.FileName = filename;
                 }
             }
@@ -53,7 +53,7 @@ namespace Inventors.ECP.Hosting
 
             if (type is object)
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(HostedDeviceLoader));
+                XmlSerializer serializer = new XmlSerializer(typeof(Loader));
                 XmlReaderSettings settings = new XmlReaderSettings() { };
                 var deviceFile = Path.Combine(basePath, Device);
 

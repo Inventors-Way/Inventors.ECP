@@ -45,7 +45,7 @@
   <ItemGroup>
     <Compile Include="DeviceState.cs" />
     <Compile Include="HostedDevice.cs" />
-    <Compile Include="HostedDeviceLoader.cs" />
+    <Compile Include="Loader.cs" />
     <Compile Include="HostingForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -60,6 +60,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs" />
+    <Compile Include="SettingsFile.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="HostingForm.resx">
