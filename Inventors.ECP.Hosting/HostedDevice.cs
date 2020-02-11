@@ -20,6 +20,9 @@ namespace Inventors.ECP.Hosting
         private DeviceSlave slave;
 
         [XmlIgnore]
+        public string ID { get; set; }
+
+        [XmlIgnore]
         public DeviceState State { get; private set; }
 
         [XmlIgnore]

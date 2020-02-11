@@ -13,5 +13,9 @@ namespace Inventors.ECP.Hosting
     {
         [XmlAttribute("level")]
         public LogLevel Level { get; set; } = LogLevel.STATUS;
+
+        [XmlArray("devices")]
+        [XmlArrayItem("device")]
+        public List<Loader> Devices { get; } = new List<Loader>();
     }
 }

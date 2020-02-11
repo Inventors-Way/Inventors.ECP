@@ -13,17 +13,29 @@ namespace Inventors.ECP.Hosting
     [XmlRoot("device")]
     public class Loader
     {
+        [XmlAttribute("id")]
+        public string ID { get; set; }
+
         [XmlAttribute("assembly")]
         public string AssemblyName { get; set; }
 
         [XmlAttribute("device-type")]
         public string DeviceType { get; set; }
 
-        [XmlAttribute("device")]
-        public string Device { get; set; }
+        [XmlIgnore]
+        public string Device => "device.xml";
+
+        [XmlAttribute("state")]
+        public DeviceState State { get; set; }
+
+        [XmlAttribute("basepath")]
+        public string BasePath { get; set; }
 
         [XmlIgnore]
-        public string FileName { get; private set; }
+        public string AssemblyPath => Path.Combine(BasePath, AssemblyName) + ".dll";
+
+        [XmlIgnore]
+        public string DevicePath => Path.Combine(BasePath, Device);
 
         public static Loader Load(string filename)
         {
@@ -36,7 +48,7 @@ namespace Inventors.ECP.Hosting
                 using (var reader = XmlReader.Create(file, settings))
                 {
                     retValue = (Loader)serializer.Deserialize(reader);
-                    retValue.FileName = filename;
+                    retValue.BasePath = Path.GetDirectoryName(filename);
                 }
             }
 
@@ -46,23 +58,21 @@ namespace Inventors.ECP.Hosting
         public IHostedDevice Create()
         {
             IHostedDevice retValue = null;
-            string basePath = Path.GetDirectoryName(FileName);
-            string fullAssemblyName = Path.Combine(basePath, AssemblyName) + ".dll";
-            var assembly = Assembly.LoadFrom(fullAssemblyName);
+            var assembly = Assembly.LoadFrom(AssemblyPath);
             var type = assembly.GetType(DeviceType);
 
             if (type is object)
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(Loader));
                 XmlReaderSettings settings = new XmlReaderSettings() { };
-                var deviceFile = Path.Combine(basePath, Device);
 
-                using (var file = File.Open(deviceFile, FileMode.Open, FileAccess.Read))
+                using (var file = File.Open(DevicePath, FileMode.Open, FileAccess.Read))
                 {
                     using (var reader = XmlReader.Create(file, settings))
                     {
                         retValue = (IHostedDevice) serializer.Deserialize(reader);
-                        retValue.DeviceFile = deviceFile;
+                        retValue.DeviceFile = DevicePath;
+                        retValue.ID = ID;
                     }
                 }
             }

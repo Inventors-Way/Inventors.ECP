@@ -65,6 +65,10 @@ namespace Inventors.ECP.Hosting
             }
         }
 
+        public static List<Loader> Devices
+        {
+            get => Instance.Load().Devices;
+        }
 
         private SettingsFile Load()
         {

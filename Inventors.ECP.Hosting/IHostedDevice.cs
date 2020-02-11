@@ -8,6 +8,8 @@ namespace Inventors.ECP.Hosting
 {
     public interface IHostedDevice
     {
+        string ID { get; set; }
+
         DeviceState State { get; }
 
         string DeviceFile { get; set; }

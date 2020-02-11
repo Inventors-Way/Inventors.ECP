@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Inventors.Logging;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,6 +13,8 @@ namespace Inventors.ECP.Hosting
 {
     public partial class HostingForm : Form
     {
+        private Logger logger;
+
         public Icon NotifyIcon
         {
             get => notifyIcon.Icon;
@@ -21,6 +24,46 @@ namespace Inventors.ECP.Hosting
         public HostingForm()
         {
             InitializeComponent();
+            SetupLogging();
+            SetLoggingLevel(Settings.Level);
+        }
+
+        private void SetupLogging()
+        {
+            logger = new Logger() { Box = logBox };
+            Log.SetLogger(logger);
+            Log.Level = Settings.Level;
+        }
+
+        private void InstallDeviceMenuItem_Click(object sender, EventArgs e)
+        {
+            var dialog = new OpenFileDialog()
+            {
+                Title = "Select device package",
+                Filter = "Device Package Files|*.devx"
+            };
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                var package = new DevicePackage(dialog.FileName);
+
+                try
+                {
+                    var loader = package.Install();
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex.Message);
+                }
+            }
+        }
+
+        private void RemoveDeviceMenuItem_Click(object sender, EventArgs e)
+        {
+            if (deviceList.SelectedItem is IHostedDevice device)
+            {
+
+            }
         }
 
         private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
@@ -64,7 +107,7 @@ namespace Inventors.ECP.Hosting
             }
         }
 
-        private bool _exitAllowed = false;
+        private bool _exitAllowed = true; // Change for when released
 
         private void Run_Click(object sender, EventArgs e)
         {
@@ -78,7 +121,29 @@ namespace Inventors.ECP.Hosting
 
         private void DeviceList_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            UpdateDevice();
         }
+
+        private void UpdateDevice()
+        {
+            if (deviceList.SelectedIndex >= 0)
+            {
+                propertyGrid.SelectedObject = deviceList.SelectedItem;
+            }
+        }
+
+
+        private void SetLoggingLevel(LogLevel level)
+        {
+            debugToolStripMenuItem.Checked = level == LogLevel.DEBUG;
+            statusToolStripMenuItem.Checked = level == LogLevel.STATUS;
+            errorToolStripMenuItem.Checked = level == LogLevel.ERROR;
+            Log.Level = level;
+            Settings.Level = level;
+        }
+
+        private void DebugToolStripMenuItem_Click(object sender, EventArgs e) => SetLoggingLevel(LogLevel.DEBUG);
+        private void StatusToolStripMenuItem_Click(object sender, EventArgs e) => SetLoggingLevel(LogLevel.STATUS);
+        private void ErrorToolStripMenuItem_Click(object sender, EventArgs e) => SetLoggingLevel(LogLevel.ERROR);
     }
 }
