@@ -3,7 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,6 +28,8 @@ namespace Inventors.ECP.Hosting
             InitializeComponent();
             SetupLogging();
             SetLoggingLevel(Settings.Level);
+            SetupDevices();
+            UpdateDeviceState(null);
         }
 
         private void SetupLogging()
@@ -33,6 +37,48 @@ namespace Inventors.ECP.Hosting
             logger = new Logger() { Box = logBox };
             Log.SetLogger(logger);
             Log.Level = Settings.Level;
+        }
+
+        private void SetupDevices()
+        {
+            foreach (var dev in Settings.Devices)
+            {
+                if (!dev.RemoveAtStart)
+                {
+                    try
+                    {
+                        if (dev.Create() is IHostedDevice device)
+                        {
+                            if (dev.State == DeviceState.RUNNING)
+                            {
+                                device.Run();
+                            }
+
+                            deviceList.Items.Add(device);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error(e.Message);
+                        Log.Status("Please remove the directory [ {0} ] manually", dev.BasePath);
+                        Settings.Devices.Remove(dev);
+                        Settings.Save();
+                        Process.Start(dev.BasePath);
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        DevicePackage.Remove(dev);
+                        Log.Status("Removed device: {0}", dev.DeviceType);
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error(e.Message);
+                    }
+                }
+            }
         }
 
         private void InstallDeviceMenuItem_Click(object sender, EventArgs e)
@@ -47,13 +93,24 @@ namespace Inventors.ECP.Hosting
             {
                 var package = new DevicePackage(dialog.FileName);
 
-                try
+                if (package.Install())
                 {
-                    var loader = package.Install();
-                }
-                catch (Exception ex)
-                {
-                    Log.Error(ex.Message);
+                    try
+                    {
+                        deviceList.Items.Add(package.Device);
+
+                        if (package.Device.State == DeviceState.RUNNING)
+                        {
+                            package.Device.Run();
+                        }
+
+                        Settings.Devices.Add(package.Loader);
+                        Settings.Save();
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error(ex.Message);
+                    }
                 }
             }
         }
@@ -62,7 +119,18 @@ namespace Inventors.ECP.Hosting
         {
             if (deviceList.SelectedItem is IHostedDevice device)
             {
-
+                if (device.State == DeviceState.RUNNING)
+                {
+                    device.Stop();
+                }
+                deviceList.Items.Remove(device);
+                var loader = Settings.Devices.Find((l) => l.ID == device.ID);
+                loader.RemoveAtStart = true;
+                Settings.Save();
+            }
+            else
+            {
+                Log.Debug("No device selected");
             }
         }
 
@@ -86,9 +154,6 @@ namespace Inventors.ECP.Hosting
 
         private void HostingForm_Resize(object sender, EventArgs e)
         {
-            //if the form is minimized  
-            //hide it from the task bar  
-            //and show the system tray icon (represented by the NotifyIcon control)  
             if (this.WindowState == FormWindowState.Minimized)
             {
                 Hide();
@@ -111,13 +176,31 @@ namespace Inventors.ECP.Hosting
 
         private void Run_Click(object sender, EventArgs e)
         {
-
+            if (deviceList.SelectedItem is IHostedDevice device)
+            {
+                if (device.State == DeviceState.STOPPED)
+                {
+                    device.Run();
+                    UpdateDeviceState(device);
+                    Log.Debug("Device {0} started", device.ToString());
+                }
+            }
         }
 
         private void Stop_Click(object sender, EventArgs e)
         {
+            if (deviceList.SelectedItem is IHostedDevice device)
+            {
+                if (device.State == DeviceState.RUNNING)
+                {
+                    device.Stop();
+                    UpdateDeviceState(device);
+                    Log.Debug("Device {0} stopped", device.ToString());
+                }
+            }
 
         }
+
 
         private void DeviceList_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -126,12 +209,38 @@ namespace Inventors.ECP.Hosting
 
         private void UpdateDevice()
         {
-            if (deviceList.SelectedIndex >= 0)
+            if (deviceList.SelectedItem is IHostedDevice device)
             {
-                propertyGrid.SelectedObject = deviceList.SelectedItem;
+                propertyGrid.SelectedObject = device;
+                UpdateDeviceState(device);
+            }
+            else
+            {
+                UpdateDeviceState(null);
             }
         }
 
+        private void UpdateDeviceState(IHostedDevice device)
+        {
+            if (device is object)
+            {
+                var loader = Settings.Devices.Find((l) => l.ID == device.ID);
+
+                if (loader.State != device.State)
+                {
+                    loader.State = device.State;
+                    Settings.Save();
+                }
+
+                runMenuItem.Enabled = runButton.Enabled = device.State == DeviceState.STOPPED;
+                stopMenuItem.Enabled = stopButton.Enabled = device.State == DeviceState.RUNNING;
+            }
+            else
+            {
+                runMenuItem.Enabled = runButton.Enabled = false;
+                stopMenuItem.Enabled = stopButton.Enabled = false;
+            }
+        }
 
         private void SetLoggingLevel(LogLevel level)
         {

@@ -56,21 +56,22 @@ namespace Inventors.ECP.Communication.Discovery
         private void ProbeReceived(IAsyncResult ar)
         {
             var remote = new IPEndPoint(IPAddress.Any, 0);
-            var bytes  = udp.EndReceive(ar, ref remote);
-
-            // Compare beacon type to probe type
-            var typeBytes = Encode(BeaconType);
-            if (HasPrefix(bytes, typeBytes))
-            {
-                // If true, respond again with our type, port and payload
-                var responseData = Encode(BeaconType)
-                    .Concat(BitConverter.GetBytes((ushort)IPAddress.HostToNetworkOrder((short)AdvertisedPort)))
-                    .Concat(Encode(BeaconData)).ToArray();
-                udp.Send(responseData, responseData.Length, remote);
-            }
 
             if (!Stopped)
             {
+                var bytes = udp.EndReceive(ar, ref remote);
+
+                // Compare beacon type to probe type
+                var typeBytes = Encode(BeaconType);
+                if (HasPrefix(bytes, typeBytes))
+                {
+                    // If true, respond again with our type, port and payload
+                    var responseData = Encode(BeaconType)
+                        .Concat(BitConverter.GetBytes((ushort)IPAddress.HostToNetworkOrder((short)AdvertisedPort)))
+                        .Concat(Encode(BeaconData)).ToArray();
+                    udp.Send(responseData, responseData.Length, remote);
+                }
+
                 udp.BeginReceive(ProbeReceived, null);
             }
         }

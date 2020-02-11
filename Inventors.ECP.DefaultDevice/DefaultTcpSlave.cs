@@ -2,27 +2,49 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
+using System.Xml.Serialization;
 using Inventors.ECP;
 using Inventors.ECP.Communication;
 using Inventors.ECP.Communication.Discovery;
 using Inventors.ECP.Functions;
+using Inventors.ECP.Hosting;
 using Inventors.ECP.Messages;
 using Inventors.Logging;
 
 namespace Inventors.ECP.DefaultDevice
 {
-    public class DefaultTcpSlave
+    [XmlRoot("default-tcp-slave")]
+    public class DefaultTcpSlave :
+        IHostedDevice
     {
         private TcpServerLayer commLayer = null;
         private DeviceSlave slave;
 
+        [XmlIgnore]
         public uint Pings { get; set; }
 
+        [XmlIgnore]
         public string Port { get; set; }
 
+        [XmlAttribute("port")]
+        public ushort IPPort { get; set; }
+
+        [XmlAttribute("loopback")]
+        public bool Loopback { get; set; }
+
+        [XmlIgnore]
         public bool IsOpen { get; private set; }
 
+        [XmlIgnore]
         public BeaconID Beacon { get; private set; } = new BeaconID(1, 1, "Default Device");
+
+        [XmlIgnore]
+        public string ID { get; set; }
+
+        [XmlIgnore]
+        public DeviceState State { get; private set; } = DeviceState.STOPPED;
+
+        public string DeviceFile { get; set; }
 
         public DefaultTcpSlave SetPort(IPAddress localAddress, ushort port) 
         {
@@ -30,10 +52,17 @@ namespace Inventors.ECP.DefaultDevice
             return this;
         }
 
+        public void Run() => Start();
+
         public void Start()
         {
             if (!IsOpen)
             {
+                if (string.IsNullOrEmpty(Port))
+                {
+                    SetPort(Loopback ? IPAddress.Loopback : TcpServerLayer.LocalAddress, IPPort);
+                }
+
                 commLayer = new TcpServerLayer(Beacon, Port);
                 slave = new DeviceSlave(commLayer)
                 {
@@ -49,6 +78,7 @@ namespace Inventors.ECP.DefaultDevice
 
                 IsOpen = true;
                 Pings = 0;
+                State = DeviceState.RUNNING;
             }
         }
 
@@ -58,6 +88,7 @@ namespace Inventors.ECP.DefaultDevice
             {
                 slave.Close();
                 IsOpen = false;
+                State = DeviceState.STOPPED;
             }
         }
 
@@ -93,5 +124,11 @@ namespace Inventors.ECP.DefaultDevice
         {
             Log.Status("PRINTF: {0}", msg.DebugMessage);
         }
+
+        public override string ToString()
+        {
+            return String.Format("DEFAULT TCP SLAVE [ {0} ]", State.ToString());
+        }
+
     }
 }

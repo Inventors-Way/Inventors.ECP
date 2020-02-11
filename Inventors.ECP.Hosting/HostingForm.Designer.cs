@@ -108,7 +108,7 @@
             this.statusToolStripMenuItem,
             this.errorToolStripMenuItem});
             this.loggingToolStripMenuItem.Name = "loggingToolStripMenuItem";
-            this.loggingToolStripMenuItem.Size = new System.Drawing.Size(188, 30);
+            this.loggingToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
             this.loggingToolStripMenuItem.Text = "Logging";
             // 
             // debugToolStripMenuItem
@@ -135,13 +135,13 @@
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(185, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(115, 6);
             // 
             // installDeviceMenuItem
             // 
             this.installDeviceMenuItem.Image = global::Inventors.ECP.Hosting.Properties.Resources.install;
             this.installDeviceMenuItem.Name = "installDeviceMenuItem";
-            this.installDeviceMenuItem.Size = new System.Drawing.Size(188, 30);
+            this.installDeviceMenuItem.Size = new System.Drawing.Size(118, 22);
             this.installDeviceMenuItem.Text = "Install";
             this.installDeviceMenuItem.Click += new System.EventHandler(this.InstallDeviceMenuItem_Click);
             // 
@@ -149,19 +149,19 @@
             // 
             this.removeDeviceMenuItem.Image = global::Inventors.ECP.Hosting.Properties.Resources.remove;
             this.removeDeviceMenuItem.Name = "removeDeviceMenuItem";
-            this.removeDeviceMenuItem.Size = new System.Drawing.Size(188, 30);
+            this.removeDeviceMenuItem.Size = new System.Drawing.Size(118, 22);
             this.removeDeviceMenuItem.Text = "Remove";
             this.removeDeviceMenuItem.Click += new System.EventHandler(this.RemoveDeviceMenuItem_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(185, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(115, 6);
             // 
             // exitMenuItem
             // 
             this.exitMenuItem.Name = "exitMenuItem";
-            this.exitMenuItem.Size = new System.Drawing.Size(188, 30);
+            this.exitMenuItem.Size = new System.Drawing.Size(118, 22);
             this.exitMenuItem.Text = "Exit";
             this.exitMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
@@ -300,6 +300,7 @@
             this.deviceList.Name = "deviceList";
             this.deviceList.Size = new System.Drawing.Size(172, 263);
             this.deviceList.TabIndex = 0;
+            this.deviceList.SelectedIndexChanged += new System.EventHandler(this.DeviceList_SelectedIndexChanged);
             // 
             // propertyGrid
             // 

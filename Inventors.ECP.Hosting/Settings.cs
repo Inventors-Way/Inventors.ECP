@@ -60,7 +60,7 @@ namespace Inventors.ECP.Hosting
                 if (value != Instance.Load().Level)
                 {
                     Instance.Load().Level = value;
-                    Instance.Save();
+                    Save();
                 }
             }
         }
@@ -80,14 +80,10 @@ namespace Inventors.ECP.Hosting
             return _file;
         }
 
-        private void Save()
+        public static void Save()
         {
-            if (_file is null)
-            {
-                Load();
-            }
-
-            SaveXML<SettingsFile>(StateFile, _file);
+            Instance.Load();
+            SaveXML<SettingsFile>(StateFile, Instance._file);
         }
 
         #region Handling of saving and loading xml data

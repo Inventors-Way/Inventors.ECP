@@ -10,6 +10,8 @@ namespace Inventors.ECP.DefaultDevice
     public class DefaultTcpDevice :
         Device
     {
+        public DefaultTcpDevice() : this(new BeaconID(1, 1, "Default Device")) { }
+
         public DefaultTcpDevice(BeaconID id) :
             base(new TcpClientLayer(id))
         {

@@ -10,7 +10,7 @@ using System.Xml.Serialization;
 
 namespace Inventors.ECP.Hosting
 {
-    [XmlRoot("device")]
+    [XmlRoot("loader")]
     public class Loader
     {
         [XmlAttribute("id")]
@@ -31,6 +31,9 @@ namespace Inventors.ECP.Hosting
         [XmlAttribute("basepath")]
         public string BasePath { get; set; }
 
+        [XmlAttribute("marked-for-removal")]
+        public bool RemoveAtStart { get; set; }
+
         [XmlIgnore]
         public string AssemblyPath => Path.Combine(BasePath, AssemblyName) + ".dll";
 
@@ -48,7 +51,8 @@ namespace Inventors.ECP.Hosting
                 using (var reader = XmlReader.Create(file, settings))
                 {
                     retValue = (Loader)serializer.Deserialize(reader);
-                    retValue.BasePath = Path.GetDirectoryName(filename);                    
+                    retValue.BasePath = Path.GetDirectoryName(filename);
+                    retValue.ID = Guid.NewGuid().ToString();
                 }
             }
 
