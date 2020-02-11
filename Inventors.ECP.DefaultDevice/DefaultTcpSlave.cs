@@ -62,7 +62,7 @@ namespace Inventors.ECP.DefaultDevice
                 {
                     SetPort(Loopback ? IPAddress.Loopback : TcpServerLayer.LocalAddress, IPPort);
                 }
-
+                Log.Debug("Port: {0} (Beacon: {1})", Port, Beacon.ToString());
                 commLayer = new TcpServerLayer(Beacon, Port);
                 slave = new DeviceSlave(commLayer)
                 {

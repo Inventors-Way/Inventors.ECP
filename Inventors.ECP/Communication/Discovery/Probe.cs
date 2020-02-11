@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading;
 
 namespace Inventors.ECP.Communication.Discovery
@@ -65,7 +66,8 @@ namespace Inventors.ECP.Communication.Discovery
             var bytes = udp.EndReceive(ar, ref remote);
 
             var typeBytes = Beacon.Encode(BeaconType).ToList();
-            Debug.WriteLine(string.Join(", ", typeBytes.Select(_ => (char)_)));
+            Log.Debug("Probe received: {0}/{1}", Encoding.Default.GetString(bytes), Encoding.Default.GetString(typeBytes.ToArray()));
+
             if (Beacon.HasPrefix(bytes, typeBytes))
             {
                 try

@@ -25,7 +25,7 @@ namespace Inventors.ECP.Communication.Discovery
         public UInt16 DeviceID { get; set; } = 1;
 
         [XmlAttribute("device")]
-        public string Device { get; set; } = "";
+        public string Device { get; set; } = "Default Device";
 
         [XmlIgnore]
         public string ID => String.Format(CultureInfo.CurrentCulture, "ECP-{0}-{1}", ManufactureID, DeviceID);
@@ -33,5 +33,6 @@ namespace Inventors.ECP.Communication.Discovery
         [XmlIgnore]
         public string Data => String.Format(CultureInfo.CurrentCulture, "[{0}.{1}] {2}", ManufactureID, DeviceID, Device);
 
+        public override string ToString() => ID;
     }
 }

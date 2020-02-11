@@ -43,6 +43,7 @@ namespace Inventors.ECP.Communication
 
         public TcpServerLayer(BeaconID id, string port)
         {
+            Log.Debug("TCP SERVER [ {0} ]", id);
             _beaconId = id;
             Port = port;
         }

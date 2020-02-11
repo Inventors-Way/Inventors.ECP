@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Inventors.Logging;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -63,6 +64,7 @@ namespace Inventors.ECP.Communication.Discovery
 
                 // Compare beacon type to probe type
                 var typeBytes = Encode(BeaconType);
+
                 if (HasPrefix(bytes, typeBytes))
                 {
                     // If true, respond again with our type, port and payload
@@ -71,6 +73,8 @@ namespace Inventors.ECP.Communication.Discovery
                         .Concat(Encode(BeaconData)).ToArray();
                     udp.Send(responseData, responseData.Length, remote);
                 }
+
+                Log.Debug("Probe: {0}/{1}", Encoding.Default.GetString(bytes), Encoding.Default.GetString(typeBytes.ToArray()));
 
                 udp.BeginReceive(ProbeReceived, null);
             }
@@ -104,6 +108,11 @@ namespace Inventors.ECP.Communication.Discovery
             if (listData.Count < 2 + len) throw new ArgumentException(Resources.BEACON_PACKET_DATA_ERROR);
 
             return Encoding.UTF8.GetString(listData.Skip(2).Take(len).ToArray());
+        }
+
+        public override string ToString()
+        {
+            return BeaconType;
         }
 
         /// <summary>

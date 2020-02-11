@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Inventors.ECP.Communication.Tcp;
 using System.Linq;
 using Inventors.ECP.Communication.Discovery;
+using Inventors.Logging;
 
 namespace Inventors.ECP.Communication
 {
@@ -28,7 +29,8 @@ namespace Inventors.ECP.Communication
         {
             if (id is null)
                 throw new ArgumentNullException(nameof(id));
-
+            
+            Log.Debug("TCP CLIENT [ {0} ]", id);
             _probe = new Probe(id);
             _probe.BeaconsUpdated += (beacons) =>
             {
