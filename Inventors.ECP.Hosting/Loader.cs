@@ -48,7 +48,7 @@ namespace Inventors.ECP.Hosting
                 using (var reader = XmlReader.Create(file, settings))
                 {
                     retValue = (Loader)serializer.Deserialize(reader);
-                    retValue.BasePath = Path.GetDirectoryName(filename);
+                    retValue.BasePath = Path.GetDirectoryName(filename);                    
                 }
             }
 
@@ -63,7 +63,7 @@ namespace Inventors.ECP.Hosting
 
             if (type is object)
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(Loader));
+                XmlSerializer serializer = new XmlSerializer(type);
                 XmlReaderSettings settings = new XmlReaderSettings() { };
 
                 using (var file = File.Open(DevicePath, FileMode.Open, FileAccess.Read))
