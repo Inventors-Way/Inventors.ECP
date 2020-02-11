@@ -74,8 +74,6 @@ namespace Inventors.ECP.Communication.Discovery
                     udp.Send(responseData, responseData.Length, remote);
                 }
 
-                Log.Debug("Probe: {0}/{1}", Encoding.Default.GetString(bytes), Encoding.Default.GetString(typeBytes.ToArray()));
-
                 udp.BeginReceive(ProbeReceived, null);
             }
         }

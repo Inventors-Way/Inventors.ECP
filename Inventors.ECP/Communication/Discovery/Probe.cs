@@ -66,7 +66,6 @@ namespace Inventors.ECP.Communication.Discovery
             var bytes = udp.EndReceive(ar, ref remote);
 
             var typeBytes = Beacon.Encode(BeaconType).ToList();
-            Log.Debug("Probe received: {0}/{1}", Encoding.Default.GetString(bytes), Encoding.Default.GetString(typeBytes.ToArray()));
 
             if (Beacon.HasPrefix(bytes, typeBytes))
             {
