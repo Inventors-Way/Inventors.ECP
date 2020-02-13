@@ -128,6 +128,12 @@ namespace Inventors.ECP.Hosting
                 var loader = Settings.Devices.Find((l) => l.ID == device.ID);
                 loader.RemoveAtStart = true;
                 Settings.Save();
+
+                if (MessageBox.Show("Please restart the application to complete the removal of the device.", "Restart application", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    _exitAllowed = true;
+                    Application.Exit();
+                }
             }
             else
             {
@@ -173,8 +179,6 @@ namespace Inventors.ECP.Hosting
             }
         }
 
-        private bool _exitAllowed = true; // Change for when released
-
         private void Run_Click(object sender, EventArgs e)
         {
             if (deviceList.SelectedItem is IHostedDevice device)
@@ -183,7 +187,7 @@ namespace Inventors.ECP.Hosting
                 {
                     device.Run();
                     UpdateDeviceState(device);
-                    Log.Debug("Device {0} started", device.ToString());
+                    Log.Status("Device {0} started", device.ToString());
                 }
             }
         }
@@ -196,7 +200,7 @@ namespace Inventors.ECP.Hosting
                 {
                     device.Stop();
                     UpdateDeviceState(device);
-                    Log.Debug("Device {0} stopped", device.ToString());
+                    Log.Status("Device {0} stopped", device.ToString());
                 }
             }
 
@@ -235,11 +239,13 @@ namespace Inventors.ECP.Hosting
 
                 runMenuItem.Enabled = runButton.Enabled = device.State == DeviceState.STOPPED;
                 stopMenuItem.Enabled = stopButton.Enabled = device.State == DeviceState.RUNNING;
+                removeDeviceMenuItem.Enabled = true;
             }
             else
             {
                 runMenuItem.Enabled = runButton.Enabled = false;
                 stopMenuItem.Enabled = stopButton.Enabled = false;
+                removeDeviceMenuItem.Enabled = false;
             }
         }
 
@@ -255,5 +261,6 @@ namespace Inventors.ECP.Hosting
         private void DebugToolStripMenuItem_Click(object sender, EventArgs e) => SetLoggingLevel(LogLevel.DEBUG);
         private void StatusToolStripMenuItem_Click(object sender, EventArgs e) => SetLoggingLevel(LogLevel.STATUS);
         private void ErrorToolStripMenuItem_Click(object sender, EventArgs e) => SetLoggingLevel(LogLevel.ERROR);
+        private bool _exitAllowed = true; // Change for when released
     }
 }
