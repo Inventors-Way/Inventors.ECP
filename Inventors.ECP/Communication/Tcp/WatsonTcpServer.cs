@@ -220,7 +220,9 @@ namespace Inventors.ECP.Communication.Tcp
         /// <returns>Boolean indicating if the message was sent successfully.</returns>
         public bool Send(string ipPort, byte[] data)
         {
-            if (String.IsNullOrEmpty(ipPort)) throw new ArgumentNullException(nameof(ipPort));
+            if (String.IsNullOrEmpty(ipPort)) 
+                throw new ArgumentNullException(nameof(ipPort));
+
             if (!_Clients.TryGetValue(ipPort, out ClientMetadata client))
             {
                 Log("*** Send unable to find client " + ipPort);
@@ -256,8 +258,10 @@ namespace Inventors.ECP.Communication.Tcp
         /// <returns>Boolean indicating if the client is connected to the server.</returns>
         public bool IsClientConnected(string ipPort)
         {
-            if (String.IsNullOrEmpty(ipPort)) throw new ArgumentNullException(nameof(ipPort));
-            return (_Clients.TryGetValue(ipPort, out ClientMetadata client));
+            if (String.IsNullOrEmpty(ipPort)) 
+                throw new ArgumentNullException(nameof(ipPort));
+
+            return (_Clients.TryGetValue(ipPort, out _));
         }
 
         /// <summary>
