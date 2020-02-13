@@ -55,6 +55,7 @@ namespace Inventors.ECP.Hosting
                             }
 
                             deviceList.Items.Add(device);
+                            Log.Status("Loaded device: {0} [{1}]", device.ToString(), device.State);
                         }
                     }
                     catch (Exception e)

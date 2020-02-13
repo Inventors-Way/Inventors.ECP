@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Net;
 using System.Text;
 using System.Xml.Serialization;
@@ -20,30 +21,39 @@ namespace Inventors.ECP.DefaultDevice
         private TcpServerLayer commLayer = null;
         private DeviceSlave slave;
 
+        [Browsable(false)]
         [XmlIgnore]
         public uint Pings { get; set; }
 
+        [Browsable(false)]
         [XmlIgnore]
         public string Port { get; set; }
 
+        [Browsable(false)]
         [XmlAttribute("port")]
         public ushort IPPort { get; set; }
 
+        [Browsable(false)]
         [XmlAttribute("loopback")]
         public bool Loopback { get; set; }
 
+        [Browsable(false)]
         [XmlIgnore]
         public bool IsOpen { get; private set; }
 
+        [Browsable(false)]
         [XmlIgnore]
         public BeaconID Beacon { get; private set; } = new BeaconID(1, 1, "Default Device");
 
+        [Browsable(false)]
         [XmlIgnore]
         public string ID { get; set; }
 
+        [Browsable(false)]
         [XmlIgnore]
         public DeviceState State { get; private set; } = DeviceState.STOPPED;
 
+        [Browsable(false)]
         public string DeviceFile { get; set; }
 
         public DefaultTcpSlave SetPort(IPAddress localAddress, ushort port) 
@@ -127,7 +137,7 @@ namespace Inventors.ECP.DefaultDevice
 
         public override string ToString()
         {
-            return String.Format("DEFAULT TCP SLAVE [ {0} ]", State.ToString());
+            return String.Format("DEFAULT TCP SLAVE", State.ToString());
         }
 
     }
