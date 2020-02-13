@@ -1,4 +1,4 @@
-﻿namespace Inventors.ECP.Hosting
+﻿namespace Inventors.ECP.DeviceHost
 {
     partial class HostingForm
     {
@@ -51,6 +51,7 @@
             this.runButton = new System.Windows.Forms.ToolStripButton();
             this.stopButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.deviceStatus = new System.Windows.Forms.ToolStripLabel();
             this.hSplitContainer = new System.Windows.Forms.SplitContainer();
             this.vSplitContainer = new System.Windows.Forms.SplitContainer();
             this.deviceList = new System.Windows.Forms.ListBox();
@@ -61,7 +62,6 @@
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.deviceStatus = new System.Windows.Forms.ToolStripLabel();
             this.menuStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.hSplitContainer)).BeginInit();
@@ -84,8 +84,8 @@
             this.helpToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
-            this.menuStrip.Size = new System.Drawing.Size(1029, 24);
+            this.menuStrip.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
+            this.menuStrip.Size = new System.Drawing.Size(772, 24);
             this.menuStrip.TabIndex = 0;
             this.menuStrip.Text = "menuStrip1";
             // 
@@ -109,7 +109,7 @@
             this.statusToolStripMenuItem,
             this.errorToolStripMenuItem});
             this.loggingToolStripMenuItem.Name = "loggingToolStripMenuItem";
-            this.loggingToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
+            this.loggingToolStripMenuItem.Size = new System.Drawing.Size(188, 30);
             this.loggingToolStripMenuItem.Text = "Logging";
             // 
             // debugToolStripMenuItem
@@ -136,33 +136,33 @@
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(115, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(185, 6);
             // 
             // installDeviceMenuItem
             // 
-            this.installDeviceMenuItem.Image = global::Inventors.ECP.Hosting.Properties.Resources.install;
+            this.installDeviceMenuItem.Image = global::Inventors.ECP.DeviceHost.Resource.install;
             this.installDeviceMenuItem.Name = "installDeviceMenuItem";
-            this.installDeviceMenuItem.Size = new System.Drawing.Size(118, 22);
+            this.installDeviceMenuItem.Size = new System.Drawing.Size(188, 30);
             this.installDeviceMenuItem.Text = "Install";
             this.installDeviceMenuItem.Click += new System.EventHandler(this.InstallDeviceMenuItem_Click);
             // 
             // removeDeviceMenuItem
             // 
-            this.removeDeviceMenuItem.Image = global::Inventors.ECP.Hosting.Properties.Resources.remove;
+            this.removeDeviceMenuItem.Image = global::Inventors.ECP.DeviceHost.Resource.remove;
             this.removeDeviceMenuItem.Name = "removeDeviceMenuItem";
-            this.removeDeviceMenuItem.Size = new System.Drawing.Size(118, 22);
+            this.removeDeviceMenuItem.Size = new System.Drawing.Size(188, 30);
             this.removeDeviceMenuItem.Text = "Remove";
             this.removeDeviceMenuItem.Click += new System.EventHandler(this.RemoveDeviceMenuItem_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(115, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(185, 6);
             // 
             // exitMenuItem
             // 
             this.exitMenuItem.Name = "exitMenuItem";
-            this.exitMenuItem.Size = new System.Drawing.Size(118, 22);
+            this.exitMenuItem.Size = new System.Drawing.Size(188, 30);
             this.exitMenuItem.Text = "Exit";
             this.exitMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
@@ -177,17 +177,17 @@
             // 
             // runMenuItem
             // 
-            this.runMenuItem.Image = global::Inventors.ECP.Hosting.Properties.Resources.play;
+            this.runMenuItem.Image = global::Inventors.ECP.DeviceHost.Resource.play;
             this.runMenuItem.Name = "runMenuItem";
-            this.runMenuItem.Size = new System.Drawing.Size(98, 22);
+            this.runMenuItem.Size = new System.Drawing.Size(188, 30);
             this.runMenuItem.Text = "Run";
             this.runMenuItem.Click += new System.EventHandler(this.Run_Click);
             // 
             // stopMenuItem
             // 
-            this.stopMenuItem.Image = global::Inventors.ECP.Hosting.Properties.Resources.stop;
+            this.stopMenuItem.Image = global::Inventors.ECP.DeviceHost.Resource.stop;
             this.stopMenuItem.Name = "stopMenuItem";
-            this.stopMenuItem.Size = new System.Drawing.Size(98, 22);
+            this.stopMenuItem.Size = new System.Drawing.Size(188, 30);
             this.stopMenuItem.Text = "Stop";
             this.stopMenuItem.Click += new System.EventHandler(this.Stop_Click);
             // 
@@ -228,14 +228,14 @@
             this.deviceStatus});
             this.toolStrip.Location = new System.Drawing.Point(0, 24);
             this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Size = new System.Drawing.Size(1029, 31);
+            this.toolStrip.Size = new System.Drawing.Size(772, 31);
             this.toolStrip.TabIndex = 1;
             this.toolStrip.Text = "toolStrip1";
             // 
             // runButton
             // 
             this.runButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.runButton.Image = global::Inventors.ECP.Hosting.Properties.Resources.play;
+            this.runButton.Image = global::Inventors.ECP.DeviceHost.Resource.play;
             this.runButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.runButton.Name = "runButton";
             this.runButton.Size = new System.Drawing.Size(28, 28);
@@ -245,7 +245,7 @@
             // stopButton
             // 
             this.stopButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.stopButton.Image = global::Inventors.ECP.Hosting.Properties.Resources.stop;
+            this.stopButton.Image = global::Inventors.ECP.DeviceHost.Resource.stop;
             this.stopButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.stopButton.Name = "stopButton";
             this.stopButton.Size = new System.Drawing.Size(28, 28);
@@ -257,11 +257,18 @@
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(6, 31);
             // 
+            // deviceStatus
+            // 
+            this.deviceStatus.Name = "deviceStatus";
+            this.deviceStatus.Size = new System.Drawing.Size(109, 28);
+            this.deviceStatus.Text = "No device selected.";
+            this.deviceStatus.ToolTipText = "Device status";
+            // 
             // hSplitContainer
             // 
             this.hSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.hSplitContainer.Location = new System.Drawing.Point(0, 55);
-            this.hSplitContainer.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.hSplitContainer.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.hSplitContainer.Name = "hSplitContainer";
             this.hSplitContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -272,15 +279,15 @@
             // hSplitContainer.Panel2
             // 
             this.hSplitContainer.Panel2.Controls.Add(this.logBox);
-            this.hSplitContainer.Size = new System.Drawing.Size(1029, 626);
-            this.hSplitContainer.SplitterDistance = 432;
+            this.hSplitContainer.Size = new System.Drawing.Size(772, 498);
+            this.hSplitContainer.SplitterDistance = 343;
+            this.hSplitContainer.SplitterWidth = 3;
             this.hSplitContainer.TabIndex = 3;
             // 
             // vSplitContainer
             // 
             this.vSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.vSplitContainer.Location = new System.Drawing.Point(0, 0);
-            this.vSplitContainer.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.vSplitContainer.Name = "vSplitContainer";
             // 
             // vSplitContainer.Panel1
@@ -290,20 +297,17 @@
             // vSplitContainer.Panel2
             // 
             this.vSplitContainer.Panel2.Controls.Add(this.propertyGrid);
-            this.vSplitContainer.Size = new System.Drawing.Size(1029, 432);
-            this.vSplitContainer.SplitterDistance = 265;
-            this.vSplitContainer.SplitterWidth = 5;
+            this.vSplitContainer.Size = new System.Drawing.Size(772, 343);
+            this.vSplitContainer.SplitterDistance = 198;
             this.vSplitContainer.TabIndex = 0;
             // 
             // deviceList
             // 
             this.deviceList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.deviceList.FormattingEnabled = true;
-            this.deviceList.ItemHeight = 16;
             this.deviceList.Location = new System.Drawing.Point(0, 0);
-            this.deviceList.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.deviceList.Name = "deviceList";
-            this.deviceList.Size = new System.Drawing.Size(265, 432);
+            this.deviceList.Size = new System.Drawing.Size(198, 343);
             this.deviceList.TabIndex = 0;
             this.deviceList.SelectedIndexChanged += new System.EventHandler(this.DeviceList_SelectedIndexChanged);
             // 
@@ -311,9 +315,8 @@
             // 
             this.propertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.propertyGrid.Location = new System.Drawing.Point(0, 0);
-            this.propertyGrid.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.propertyGrid.Name = "propertyGrid";
-            this.propertyGrid.Size = new System.Drawing.Size(759, 432);
+            this.propertyGrid.Size = new System.Drawing.Size(570, 343);
             this.propertyGrid.TabIndex = 0;
             // 
             // logBox
@@ -321,12 +324,11 @@
             this.logBox.BackColor = System.Drawing.SystemColors.Window;
             this.logBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.logBox.Location = new System.Drawing.Point(0, 0);
-            this.logBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.logBox.Multiline = true;
             this.logBox.Name = "logBox";
             this.logBox.ReadOnly = true;
             this.logBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.logBox.Size = new System.Drawing.Size(1029, 190);
+            this.logBox.Size = new System.Drawing.Size(772, 152);
             this.logBox.TabIndex = 0;
             // 
             // notifyIcon
@@ -365,23 +367,16 @@
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
-            // deviceStatus
-            // 
-            this.deviceStatus.Name = "deviceStatus";
-            this.deviceStatus.Size = new System.Drawing.Size(109, 28);
-            this.deviceStatus.Text = "No device selected.";
-            this.deviceStatus.ToolTipText = "Device status";
-            // 
             // HostingForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1029, 681);
+            this.ClientSize = new System.Drawing.Size(772, 553);
             this.Controls.Add(this.hSplitContainer);
             this.Controls.Add(this.toolStrip);
             this.Controls.Add(this.menuStrip);
             this.MainMenuStrip = this.menuStrip;
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "HostingForm";
             this.Text = "HostingForm";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.HostingForm_FormClosing);

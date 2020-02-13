@@ -9,7 +9,7 @@ using Inventors.Logging;
 using System.IO.Compression;
 using System.Reflection;
 
-namespace Inventors.ECP.Hosting
+namespace Inventors.ECP.DeviceHost
 {
     public class DevicePackage
     {

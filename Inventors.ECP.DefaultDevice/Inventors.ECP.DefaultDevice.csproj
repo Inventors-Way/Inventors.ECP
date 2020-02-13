@@ -6,7 +6,6 @@
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Inventors.ECP.Hosting\Inventors.ECP.Hosting.csproj" />
     <ProjectReference Include="..\Inventors.ECP\Inventors.ECP.csproj" />
   </ItemGroup>
 

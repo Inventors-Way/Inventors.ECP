@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Inventors.ECP.Hosting
+namespace Inventors.ECP.DeviceHost
 {
     [XmlRoot("loader")]
     public class Loader

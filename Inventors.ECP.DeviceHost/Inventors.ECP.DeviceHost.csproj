@@ -35,6 +35,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,6 +47,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DevicePackage.cs" />
+    <Compile Include="HostingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HostingForm.Designer.cs">
+      <DependentUpon>HostingForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Loader.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resource.Designer.cs">
@@ -53,6 +63,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resource.resx</DependentUpon>
     </Compile>
+    <Compile Include="Settings.cs" />
+    <Compile Include="SettingsFile.cs" />
+    <EmbeddedResource Include="HostingForm.resx">
+      <DependentUpon>HostingForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -83,10 +98,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Inventors.ECP.Hosting\Inventors.ECP.Hosting.csproj">
-      <Project>{67007234-338d-41fe-88c4-edebf3c2685e}</Project>
-      <Name>Inventors.ECP.Hosting</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Inventors.ECP\Inventors.ECP.csproj">
       <Project>{fe314a70-db7c-469b-b403-e1737bdadda1}</Project>
       <Name>Inventors.ECP</Name>
@@ -110,6 +121,10 @@
     <Content Include="HostedDevice.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="icons\stop.png" />
+    <None Include="icons\remove.png" />
+    <None Include="icons\play.png" />
+    <None Include="icons\install.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

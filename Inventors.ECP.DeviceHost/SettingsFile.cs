@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace Inventors.ECP.Hosting
+namespace Inventors.ECP.DeviceHost
 {
     [XmlRoot("settings")]
     public class SettingsFile

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Inventors.ECP.Hosting
+namespace Inventors.ECP.DeviceHost
 {
     public class Logger : ILogger
     {
