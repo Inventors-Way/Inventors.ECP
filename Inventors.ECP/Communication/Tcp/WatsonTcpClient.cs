@@ -115,6 +115,7 @@ namespace Inventors.ECP.Communication.Tcp
             }
         }
 
+        /*
         /// <summary>
         /// Use of 'StreamReceivedWithMetadata' is exclusive and cannot be used with 'MessageReceivedWithMetadata'.
         /// This callback is called when a stream is received from the server with attached metadata.
@@ -132,7 +133,7 @@ namespace Inventors.ECP.Communication.Tcp
                 if (_MessageReceivedWithMetadata != null) throw new InvalidOperationException("You may not use 'StreamReceivedWithMetadata' when 'MessageReceivedWithMetadata' has been set.");
                 _StreamReceivedWithMetadata = value;
             }
-        }
+        }*/
 
         /// <summary>
         /// Function called when the client successfully connects to the server.

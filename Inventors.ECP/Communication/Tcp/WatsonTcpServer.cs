@@ -22,22 +22,6 @@ namespace Inventors.ECP.Communication.Tcp
     public class WatsonTcpServer : IDisposable
     {
         #region Public-Members
-         
-        /// <summary>
-        /// Buffer size to use when reading input and output streams.  Default is 65536.
-        /// </summary>
-        public int StreamBufferSize
-        {
-            get
-            {
-                return _ReadStreamBufferSize;
-            }
-            set
-            {
-                if (value < 1) throw new ArgumentException("Read stream buffer size must be greater than zero.");
-                _ReadStreamBufferSize = value;
-            }
-        }
 
         /// <summary>
         /// Maximum amount of time to wait before considering a client idle and disconnecting them. 
@@ -63,10 +47,12 @@ namespace Inventors.ECP.Communication.Tcp
         /// </summary>
         public bool Debug = false;
 
+        /*
         /// <summary>
         /// Permitted IP addresses.
         /// </summary>
         public List<string> PermittedIPs = null;
+        */
 
         /// <summary>
         /// Method to call when a client connects to the server.
@@ -88,90 +74,9 @@ namespace Inventors.ECP.Communication.Tcp
         /// </summary>
         public Func<string, byte[], Task> MessageReceived
         {
-            get
-            {
-                return _MessageReceived;
-            }
-            set
-            {
-                if (_StreamReceived != null) throw new InvalidOperationException("Only one of 'MessageReceived' and 'StreamReceived' can be set.");
-                if (_StreamReceivedWithMetadata != null) throw new InvalidOperationException("You may not use 'MessageReceived' when 'StreamReceivedWithMetadata' has been set.");
-                _MessageReceived = value;
-            }
+            get => _MessageReceived;
+            set => _MessageReceived = value;
         }
-
-        /// <summary>
-        /// Use of 'MessageReceivedWithMetadata' is exclusive and cannot be used with 'StreamReceivedWithMetadata'.
-        /// This callback is called when a message is received from the server with attached metadata.
-        /// The IP:port of the client, metadata dictionary, and the entire message payload is passed into the supplied byte array.
-        /// </summary>
-        public Func<string, Dictionary<object, object>, byte[], Task> MessageReceivedWithMetadata
-        {
-            get
-            {
-                return _MessageReceivedWithMetadata;
-            }
-            set
-            {
-                if (_StreamReceived != null) throw new InvalidOperationException("'MessageReceivedWithMetadata' cannot be used when 'StreamReceived' has been set.");
-                if (_StreamReceivedWithMetadata != null) throw new InvalidOperationException("You may not use 'MessageReceivedWithMetadata' when 'StreamReceivedWithMetadata' has been set.");
-                _MessageReceivedWithMetadata = value;
-            }
-        }
-
-        /// <summary>
-        /// Use of 'StreamReceived' is exclusive and cannot be used with 'StreamReceived'. 
-        /// If receiving messages with metadata, 'StreamReceivedWithMetadata' must be set and 'MessageReceivedWithMetadata' cannot be used.
-        /// This callback is called when a stream is received from the server.
-        /// The IP:port of the client, stream, and its length are passed to your application. 
-        /// </summary>
-        public Func<string, long, Stream, Task> StreamReceived
-        {
-            get
-            {
-                return _StreamReceived;
-            }
-            set
-            {
-                if (_MessageReceived != null) throw new InvalidOperationException("Only one of 'MessageReceived' and 'StreamReceived' can be set.");
-                if (_MessageReceivedWithMetadata != null) throw new InvalidOperationException("You may not use 'StreamReceived' when 'MessageReceivedWithMetadata' has been set.");
-                _StreamReceived = value;
-            }
-        }
-
-        /// <summary>
-        /// Use of 'StreamReceivedWithMetadata' is exclusive and cannot be used with 'MessageReceivedWithMetadata'.
-        /// This callback is called when a stream is received from the server with attached metadata.
-        /// The IP:port of the client, metadata dictionary, the stream, and its length are passed into your application.
-        /// </summary>
-        public Func<string, Dictionary<object, object>, long, Stream, Task> StreamReceivedWithMetadata
-        {
-            get
-            {
-                return _StreamReceivedWithMetadata;
-            }
-            set
-            {
-                if (_MessageReceived != null) throw new InvalidOperationException("'StreamReceivedWithMetadata' cannot be used when 'MessageReceived' has been set.");
-                if (_MessageReceivedWithMetadata != null) throw new InvalidOperationException("You may not use 'StreamReceivedWithMetadata' when 'MessageReceivedWithMetadata' has been set.");
-                _StreamReceivedWithMetadata = value;
-            }
-        }
-
-        /// <summary>
-        /// Enable acceptance of SSL certificates from clients that cannot be validated.
-        /// </summary>
-        public bool AcceptInvalidCertificates = true;
-
-        /// <summary>
-        /// Require mutual authentication between SSL clients and this server.
-        /// </summary>
-        public bool MutuallyAuthenticate = false;
-
-        /// <summary>
-        /// Preshared key that must be consistent between clients and this server.
-        /// </summary>
-        public string PresharedKey = null;
 
         #endregion Public-Members
 
@@ -179,13 +84,10 @@ namespace Inventors.ECP.Communication.Tcp
          
         private int _ReadStreamBufferSize = 65536;
         private int _IdleClientTimeoutSeconds = 0;
-        private Mode _Mode;
         private string _ListenerIp;
         private int _ListenerPort;
         private IPAddress _ListenerIpAddress;
         private TcpListener _Listener;
-
-        private X509Certificate2 _SslCertificate;
 
         private ConcurrentDictionary<string, DateTime> _UnauthenticatedClients = new ConcurrentDictionary<string, DateTime>();
         private ConcurrentDictionary<string, ClientMetadata> _Clients = new ConcurrentDictionary<string, ClientMetadata>();
@@ -219,7 +121,7 @@ namespace Inventors.ECP.Communication.Tcp
         {
             if (listenerPort < 1) throw new ArgumentOutOfRangeException(nameof(listenerPort));
 
-            _Mode = Mode.Tcp;
+            //_Mode = Mode.Tcp;
              
             if (String.IsNullOrEmpty(listenerIp))
             {
@@ -239,6 +141,7 @@ namespace Inventors.ECP.Communication.Tcp
             Task.Run(() => MonitorForIdleClients(), _Token);
         }
 
+        /*
         /// <summary>
         /// Initialize the Watson TCP server with SSL.  
         /// Supply a specific IP address on which to listen.  Otherwise, use 'null' for the IP address to listen on any IP address.
@@ -287,6 +190,7 @@ namespace Inventors.ECP.Communication.Tcp
 
             Task.Run(() => MonitorForIdleClients(), _Token);
         }
+        */
 
         #endregion Constructors-and-Factories
 
@@ -336,24 +240,12 @@ namespace Inventors.ECP.Communication.Tcp
         /// </summary>
         public void Start()
         {
-            if (_StreamReceived == null && _MessageReceived == null)
+            if (_MessageReceived == null)
             {
                 throw new InvalidOperationException("Either 'MessageReceived' or 'StreamReceived' must first be set.");
             }
 
-            if (_Mode == Mode.Tcp)
-            {
-                Log("Watson TCP server starting on " + _ListenerIp + ":" + _ListenerPort);
-            }
-            else if (_Mode == Mode.Ssl)
-            {
-                Log("Watson TCP SSL server starting on " + _ListenerIp + ":" + _ListenerPort);
-            }
-            else
-            {
-                throw new ArgumentException("Unknown mode: " + _Mode.ToString());
-            }
-
+            Log("Watson TCP server starting on " + _ListenerIp + ":" + _ListenerPort);
             Task.Run(() => AcceptConnections(), _Token); 
         }
 
@@ -367,47 +259,8 @@ namespace Inventors.ECP.Communication.Tcp
                 throw new InvalidOperationException("Either 'MessageReceived' or 'StreamReceived' must first be set.");
             }
 
-            if (_Mode == Mode.Tcp)
-            {
-                Log("Watson TCP server starting on " + _ListenerIp + ":" + _ListenerPort);
-            }
-            else if (_Mode == Mode.Ssl)
-            {
-                Log("Watson TCP SSL server starting on " + _ListenerIp + ":" + _ListenerPort);
-            }
-            else
-            {
-                throw new ArgumentException("Unknown mode: " + _Mode.ToString());
-            }
-
+            Log("Watson TCP server starting on " + _ListenerIp + ":" + _ListenerPort);
             return AcceptConnections();
-        }
-
-        /// <summary>
-        /// Send data to the specified client.
-        /// </summary>
-        /// <param name="ipPort">IP:port of the recipient client.</param>
-        /// <param name="data">String containing data.</param>
-        /// <returns>Boolean indicating if the message was sent successfully.</returns>
-        public bool Send(string ipPort, string data)
-        {
-            if (String.IsNullOrEmpty(ipPort)) throw new ArgumentNullException(nameof(ipPort));
-            if (String.IsNullOrEmpty(data)) return Send(ipPort, new byte[0]);
-            else return Send(ipPort, Encoding.UTF8.GetBytes(data));
-        }
-
-        /// <summary>
-        /// Send data and metadata to the specified client.
-        /// </summary>
-        /// <param name="ipPort">IP:port of the recipient client.</param>
-        /// <param name="metadata">Dictionary containing metadata.</param>
-        /// <param name="data">String containing data.</param>
-        /// <returns>Boolean indicating if the message was sent successfully.</returns>
-        public bool Send(string ipPort, Dictionary<object, object> metadata, string data)
-        {
-            if (String.IsNullOrEmpty(ipPort)) throw new ArgumentNullException(nameof(ipPort));
-            if (String.IsNullOrEmpty(data)) return Send(ipPort, new byte[0]);
-            else return Send(ipPort, metadata, Encoding.UTF8.GetBytes(data));
         }
 
         /// <summary>
@@ -430,94 +283,6 @@ namespace Inventors.ECP.Communication.Tcp
         }
 
         /// <summary>
-        /// Send data and metadata to the specified client.
-        /// </summary>
-        /// <param name="ipPort">IP:port of the recipient client.</param>
-        /// <param name="metadata">Dictionary containing metadata.</param>
-        /// <param name="data">Byte array containing data.</param>
-        /// <returns>Boolean indicating if the message was sent successfully.</returns>
-        public bool Send(string ipPort, Dictionary<object, object> metadata, byte[] data)
-        {
-            if (String.IsNullOrEmpty(ipPort)) throw new ArgumentNullException(nameof(ipPort));
-            if (!_Clients.TryGetValue(ipPort, out ClientMetadata client))
-            {
-                Log("*** Send unable to find client " + ipPort);
-                return false;
-            }
-
-            WatsonMessage msg = new WatsonMessage(metadata, data, Debug);
-            return MessageWrite(client, msg, data);
-        }
-
-        /// <summary>
-        /// Send data to the specified client using a stream.
-        /// </summary>
-        /// <param name="ipPort">IP:port of the recipient client.</param>
-        /// <param name="contentLength">The number of bytes in the stream.</param>
-        /// <param name="stream">The stream containing the data.</param>
-        /// <returns>Boolean indicating if the message was sent successfully.</returns>
-        public bool Send(string ipPort, long contentLength, Stream stream)
-        {
-            if (String.IsNullOrEmpty(ipPort)) throw new ArgumentNullException(nameof(ipPort));
-            if (!_Clients.TryGetValue(ipPort, out ClientMetadata client))
-            {
-                Log("*** Send unable to find client " + ipPort);
-                return false;
-            }
-
-            WatsonMessage msg = new WatsonMessage(null, contentLength, stream, Debug);
-            return MessageWrite(client, msg, contentLength, stream);
-        }
-
-        /// <summary>
-        /// Send data and metadata to the specified client using a stream.
-        /// </summary>
-        /// <param name="ipPort">IP:port of the recipient client.</param>
-        /// <param name="metadata">Dictionary containing metadata.</param>
-        /// <param name="contentLength">The number of bytes in the stream.</param>
-        /// <param name="stream">The stream containing the data.</param>
-        /// <returns>Boolean indicating if the message was sent successfully.</returns>
-        public bool Send(string ipPort, Dictionary<object, object> metadata, long contentLength, Stream stream)
-        {
-            if (String.IsNullOrEmpty(ipPort)) throw new ArgumentNullException(nameof(ipPort));
-            if (!_Clients.TryGetValue(ipPort, out ClientMetadata client))
-            {
-                Log("*** Send unable to find client " + ipPort);
-                return false;
-            }
-
-            WatsonMessage msg = new WatsonMessage(metadata, contentLength, stream, Debug);
-            return MessageWrite(client, msg, contentLength, stream);
-        }
-
-        /// <summary>
-        /// Send data to the specified client, asynchronously.
-        /// </summary>
-        /// <param name="ipPort">IP:port of the recipient client.</param>
-        /// <param name="data">String containing data.</param>
-        /// <returns>Task with Boolean indicating if the message was sent successfully.</returns>
-        public async Task<bool> SendAsync(string ipPort, string data)
-        {
-            if (String.IsNullOrEmpty(ipPort)) throw new ArgumentNullException(nameof(ipPort));
-            if (String.IsNullOrEmpty(data)) return await SendAsync(ipPort, new byte[0]);
-            else return await SendAsync(ipPort, Encoding.UTF8.GetBytes(data));
-        }
-
-        /// <summary>
-        /// Send data and metadata to the specified client, asynchronously.
-        /// </summary>
-        /// <param name="ipPort">IP:port of the recipient client.</param>
-        /// <param name="metadata">Dictionary containing metadata.</param>
-        /// <param name="data">String containing data.</param>
-        /// <returns>Task with Boolean indicating if the message was sent successfully.</returns>
-        public async Task<bool> SendAsync(string ipPort, Dictionary<object, object> metadata, string data)
-        {
-            if (String.IsNullOrEmpty(ipPort)) throw new ArgumentNullException(nameof(ipPort));
-            if (String.IsNullOrEmpty(data)) return await SendAsync(ipPort, new byte[0]);
-            else return await SendAsync(ipPort, metadata, Encoding.UTF8.GetBytes(data));
-        }
-
-        /// <summary>
         /// Send data to the specified client, asynchronously.
         /// </summary>
         /// <param name="ipPort">IP:port of the recipient client.</param>
@@ -535,68 +300,7 @@ namespace Inventors.ECP.Communication.Tcp
             WatsonMessage msg = new WatsonMessage(null, data, Debug);
             return await MessageWriteAsync(client, msg, data);
         }
-
-        /// <summary>
-        /// Send data and metadata to the specified client, asynchronously.
-        /// </summary>
-        /// <param name="ipPort">IP:port of the recipient client.</param>
-        /// <param name="metadata">Dictionary containing metadata.</param>
-        /// <param name="data">Byte array containing data.</param>
-        /// <returns>Task with Boolean indicating if the message was sent successfully.</returns>
-        public async Task<bool> SendAsync(string ipPort, Dictionary<object, object> metadata, byte[] data)
-        {
-            if (String.IsNullOrEmpty(ipPort)) throw new ArgumentNullException(nameof(ipPort));
-            if (!_Clients.TryGetValue(ipPort, out ClientMetadata client))
-            {
-                Log("*** SendAsync unable to find client " + ipPort);
-                return false;
-            }
-
-            WatsonMessage msg = new WatsonMessage(metadata, data, Debug);
-            return await MessageWriteAsync(client, msg, data);
-        }
-
-        /// <summary>
-        /// Send data to the specified client using a stream, asynchronously.
-        /// </summary>
-        /// <param name="ipPort">IP:port of the recipient client.</param>
-        /// <param name="contentLength">The number of bytes in the stream.</param>
-        /// <param name="stream">The stream containing the data.</param>
-        /// <returns>Task with Boolean indicating if the message was sent successfully.</returns>
-        public async Task<bool> SendAsync(string ipPort, long contentLength, Stream stream)
-        {
-            if (String.IsNullOrEmpty(ipPort)) throw new ArgumentNullException(nameof(ipPort));
-            if (!_Clients.TryGetValue(ipPort, out ClientMetadata client))
-            {
-                Log("*** SendAsync unable to find client " + ipPort);
-                return false;
-            }
-
-            WatsonMessage msg = new WatsonMessage(null, contentLength, stream, Debug);
-            return await MessageWriteAsync(client, msg, contentLength, stream);
-        }
-
-        /// <summary>
-        /// Send data and metadata to the specified client using a stream, asynchronously.
-        /// </summary>
-        /// <param name="ipPort">IP:port of the recipient client.</param>
-        /// <param name="metadata">Dictionary containing metadata.</param>
-        /// <param name="contentLength">The number of bytes in the stream.</param>
-        /// <param name="stream">The stream containing the data.</param>
-        /// <returns>Task with Boolean indicating if the message was sent successfully.</returns>
-        public async Task<bool> SendAsync(string ipPort, Dictionary<object, object> metadata, long contentLength, Stream stream)
-        {
-            if (String.IsNullOrEmpty(ipPort)) throw new ArgumentNullException(nameof(ipPort));
-            if (!_Clients.TryGetValue(ipPort, out ClientMetadata client))
-            {
-                Log("*** SendAsync unable to find client " + ipPort);
-                return false;
-            }
-
-            WatsonMessage msg = new WatsonMessage(metadata, contentLength, stream, Debug);
-            return await MessageWriteAsync(client, msg, contentLength, stream);
-        }
-
+        
         /// <summary>
         /// Determine whether or not the specified client is connected to the server.
         /// </summary>
@@ -675,12 +379,6 @@ namespace Inventors.ECP.Communication.Tcp
             Log("");
         }
 
-        private bool AcceptCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
-        {
-            // return true; // Allow untrusted certificates.
-            return AcceptInvalidCertificates;
-        }
-
         private async Task AcceptConnections()
         {
             _Listener.Start();
@@ -697,50 +395,12 @@ namespace Inventors.ECP.Communication.Tcp
                     tcpClient.LingerState.Enabled = false;
 
                     string clientIp = ((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address.ToString();
-                    if (PermittedIPs != null && PermittedIPs.Count > 0)
-                    {
-                        if (!PermittedIPs.Contains(clientIp))
-                        {
-                            Log("*** AcceptConnections rejecting connection from " + clientIp + " (not permitted)");
-                            tcpClient.Close();
-                            continue;
-                        }
-                    }
 
                     ClientMetadata client = new ClientMetadata(tcpClient);
                     clientIpPort = client.IpPort;
 
                     #endregion Accept-Connection-and-Validate-IP
-
-                    if (_Mode == Mode.Tcp)
-                    { 
-                        Task unawaited = Task.Run(() => FinalizeConnection(client), _Token); 
-                    }
-                    else if (_Mode == Mode.Ssl)
-                    { 
-                        if (AcceptInvalidCertificates)
-                        {
-                            client.SslStream = new SslStream(client.NetworkStream, false, new RemoteCertificateValidationCallback(AcceptCertificate));
-                        }
-                        else
-                        {
-                            client.SslStream = new SslStream(client.NetworkStream, false);
-                        }
-
-                        Task unawaited = Task.Run(() =>
-                        {
-                            Task<bool> success = StartTls(client);
-                            if (success.Result)
-                            {
-                                FinalizeConnection(client);
-                            }
-                        }, _Token); 
-                    }
-                    else
-                    {
-                        throw new ArgumentException("Unknown mode: " + _Mode.ToString());
-                    }
-
+                    Task unawaited = Task.Run(() => FinalizeConnection(client), _Token);
                     Log("*** AcceptConnections accepted connection from " + client.IpPort);
                 }
                 catch (Exception e)
@@ -750,93 +410,10 @@ namespace Inventors.ECP.Communication.Tcp
             }
         }
 
-        private async Task<bool> StartTls(ClientMetadata client)
-        {
-            try
-            { 
-                await client.SslStream.AuthenticateAsServerAsync(_SslCertificate, true, SslProtocols.Tls12, !AcceptInvalidCertificates);
-
-                if (!client.SslStream.IsEncrypted)
-                {
-                    Log("*** StartTls stream from " + client.IpPort + " not encrypted");
-                    client.Dispose();
-                    return false;
-                }
-
-                if (!client.SslStream.IsAuthenticated)
-                {
-                    Log("*** StartTls stream from " + client.IpPort + " not authenticated");
-                    client.Dispose();
-                    return false;
-                }
-
-                if (MutuallyAuthenticate && !client.SslStream.IsMutuallyAuthenticated)
-                {
-                    Log("*** StartTls stream from " + client.IpPort + " failed mutual authentication");
-                    client.Dispose();
-                    return false;
-                }
-            }
-            catch (IOException ex)
-            {
-                // Some type of problem initiating the SSL connection
-                switch (ex.Message)
-                {
-                    case "Authentication failed because the remote party has closed the transport stream.":
-                    case "Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.":
-                        Log("*** StartTls IOException " + client.IpPort + " closed the connection.");
-                        break;
-
-                    case "The handshake failed due to an unexpected packet format.":
-                        Log("*** StartTls IOException " + client.IpPort + " disconnected, invalid handshake.");
-                        break;
-
-                    default:
-                        Log("*** StartTls IOException from " + client.IpPort + Environment.NewLine + ex.ToString());
-                        break;
-                }
-
-                client.Dispose();
-                return false;
-            }
-            catch (Exception ex)
-            {
-                Log("*** StartTls Exception from " + client.IpPort + Environment.NewLine + ex.ToString());
-                client.Dispose();
-                return false;
-            }
-
-            return true;
-        }
-
         private void FinalizeConnection(ClientMetadata client)
         {
-            #region Add-to-Client-List
-             
             _Clients.TryAdd(client.IpPort, client);
-            _ClientsLastSeen.TryAdd(client.IpPort, DateTime.Now);
-             
-            #endregion Add-to-Client-List
-
-            #region Request-Authentication
-
-            if (!String.IsNullOrEmpty(PresharedKey))
-            {
-                Log("*** FinalizeConnection soliciting authentication material from " + client.IpPort);
-                _UnauthenticatedClients.TryAdd(client.IpPort, DateTime.Now);
-
-                byte[] data = Encoding.UTF8.GetBytes("Authentication required");
-                WatsonMessage authMsg = new WatsonMessage();
-                authMsg.Status = MessageStatus.AuthRequired;
-                authMsg.Data = null;
-                authMsg.ContentLength = 0;
-                MessageWrite(client, authMsg, null);
-            }
-
-            #endregion Request-Authentication
-
-            #region Start-Data-Receiver
-
+            _ClientsLastSeen.TryAdd(client.IpPort, DateTime.Now);             
             Log("*** FinalizeConnection starting data receiver for " + client.IpPort);
             if (ClientConnected != null)
             {
@@ -844,8 +421,6 @@ namespace Inventors.ECP.Communication.Tcp
             }
 
             Task.Run(async () => await DataReceiver(client, client.Token));
-
-            #endregion Start-Data-Receiver 
         }
 
         private bool IsConnected(ClientMetadata client)
@@ -939,15 +514,7 @@ namespace Inventors.ECP.Communication.Tcp
 
                     WatsonMessage msg = null;
                     bool buildSuccess = false;
-
-                    if (_Mode == Mode.Ssl)
-                    {
-                        msg = new WatsonMessage(client.SslStream, Debug); 
-                    }
-                    else if (_Mode == Mode.Tcp)
-                    {
-                        msg = new WatsonMessage(client.NetworkStream, Debug); 
-                    } 
+                    msg = new WatsonMessage(client.NetworkStream, Debug);
                      
                     if (_MessageReceived != null)
                     {
@@ -972,61 +539,6 @@ namespace Inventors.ECP.Communication.Tcp
                         // no message available
                         await Task.Delay(30);
                         continue;
-                    }
-
-                    if (!String.IsNullOrEmpty(PresharedKey))
-                    {
-                        if (_UnauthenticatedClients.ContainsKey(client.IpPort))
-                        {
-                            Log(header + " message received from unauthenticated endpoint");
-
-                            if (msg.Status == MessageStatus.AuthRequested)
-                            {
-                                // check preshared key
-                                if (msg.PresharedKey != null && msg.PresharedKey.Length > 0)
-                                {
-                                    string clientPsk = Encoding.UTF8.GetString(msg.PresharedKey).Trim();
-                                    if (PresharedKey.Trim().Equals(clientPsk))
-                                    {
-                                        Log(header + " accepted authentication");
-                                        _UnauthenticatedClients.TryRemove(client.IpPort, out DateTime dt);
-                                        byte[] data = Encoding.UTF8.GetBytes("Authentication successful");
-                                        WatsonMessage authMsg = new WatsonMessage(null, data, Debug);
-                                        authMsg.Status = MessageStatus.AuthSuccess;
-                                        MessageWrite(client, authMsg, null);
-                                        continue;
-                                    }
-                                    else
-                                    {
-                                        Log(header + " declined authentication");
-                                        byte[] data = Encoding.UTF8.GetBytes("Authentication declined");
-                                        WatsonMessage authMsg = new WatsonMessage(null, data, Debug);
-                                        authMsg.Status = MessageStatus.AuthFailure;
-                                        MessageWrite(client, authMsg, null);
-                                        continue;
-                                    }
-                                }
-                                else
-                                {
-                                    Log(header + " no authentication material");
-                                    byte[] data = Encoding.UTF8.GetBytes("No authentication material");
-                                    WatsonMessage authMsg = new WatsonMessage(null, data, Debug);
-                                    authMsg.Status = MessageStatus.AuthFailure;
-                                    MessageWrite(client, authMsg, null);
-                                    continue;
-                                }
-                            }
-                            else
-                            {
-                                // decline the message
-                                Log(header + " no authentication material");
-                                byte[] data = Encoding.UTF8.GetBytes("Authentication required");
-                                WatsonMessage authMsg = new WatsonMessage(null, data, Debug);
-                                authMsg.Status = MessageStatus.AuthRequired;
-                                MessageWrite(client, authMsg, null);
-                                continue;
-                            }
-                        }
                     }
 
                     if (msg.Status == MessageStatus.Disconnecting)
@@ -1161,60 +673,30 @@ namespace Inventors.ECP.Communication.Tcp
 
             try
             {
-                if (_Mode == Mode.Tcp)
+                // write headers
+                client.NetworkStream.Write(headerBytes, 0, headerBytes.Length);
+
+                // write metadata
+                if (msg.MetadataBytes != null && msg.MetadataBytes.Length > 0)
                 {
-                    // write headers
-                    client.NetworkStream.Write(headerBytes, 0, headerBytes.Length);
+                    client.NetworkStream.Write(msg.MetadataBytes, 0, msg.MetadataBytes.Length);
+                }
 
-                    // write metadata
-                    if (msg.MetadataBytes != null && msg.MetadataBytes.Length > 0)
+                // write data
+                if (contentLength > 0)
+                {
+                    while (bytesRemaining > 0)
                     {
-                        client.NetworkStream.Write(msg.MetadataBytes, 0, msg.MetadataBytes.Length);
-                    }
-
-                    // write data
-                    if (contentLength > 0)
-                    {
-                        while (bytesRemaining > 0)
+                        bytesRead = stream.Read(buffer, 0, buffer.Length);
+                        if (bytesRead > 0)
                         {
-                            bytesRead = stream.Read(buffer, 0, buffer.Length);
-                            if (bytesRead > 0)
-                            {
-                                client.NetworkStream.Write(buffer, 0, bytesRead);
-                                bytesRemaining -= bytesRead;
-                            }
+                            client.NetworkStream.Write(buffer, 0, bytesRead);
+                            bytesRemaining -= bytesRead;
                         }
                     }
-
-                    client.NetworkStream.Flush();
                 }
-                else if (_Mode == Mode.Ssl)
-                {
-                    // write headers
-                    client.SslStream.Write(headerBytes, 0, headerBytes.Length);
 
-                    // write metadata
-                    if (msg.MetadataBytes != null && msg.MetadataBytes.Length > 0)
-                    {
-                        client.SslStream.Write(msg.MetadataBytes, 0, msg.MetadataBytes.Length);
-                    }
-
-                    // write data
-                    if (contentLength > 0)
-                    {
-                        while (bytesRemaining > 0)
-                        {
-                            bytesRead = stream.Read(buffer, 0, buffer.Length);
-                            if (bytesRead > 0)
-                            {
-                                client.SslStream.Write(buffer, 0, bytesRead);
-                                bytesRemaining -= bytesRead;
-                            }
-                        }
-                    }
-
-                    client.SslStream.Flush();
-                }
+                client.NetworkStream.Flush();
 
                 return true;
             }
@@ -1273,60 +755,30 @@ namespace Inventors.ECP.Communication.Tcp
 
             try
             {
-                if (_Mode == Mode.Tcp)
+                // write headers
+                await client.NetworkStream.WriteAsync(headerBytes, 0, headerBytes.Length);
+
+                // write metadata
+                if (msg.MetadataBytes != null && msg.MetadataBytes.Length > 0)
                 {
-                    // write headers
-                    await client.NetworkStream.WriteAsync(headerBytes, 0, headerBytes.Length);
+                    await client.NetworkStream.WriteAsync(msg.MetadataBytes, 0, msg.MetadataBytes.Length);
+                }
 
-                    // write metadata
-                    if (msg.MetadataBytes != null && msg.MetadataBytes.Length > 0)
+                // write data
+                if (contentLength > 0)
+                {
+                    while (bytesRemaining > 0)
                     {
-                        await client.NetworkStream.WriteAsync(msg.MetadataBytes, 0, msg.MetadataBytes.Length);
-                    }
-
-                    // write data
-                    if (contentLength > 0)
-                    {
-                        while (bytesRemaining > 0)
+                        bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
+                        if (bytesRead > 0)
                         {
-                            bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
-                            if (bytesRead > 0)
-                            {
-                                await client.NetworkStream.WriteAsync(buffer, 0, bytesRead);
-                                bytesRemaining -= bytesRead;
-                            }
+                            await client.NetworkStream.WriteAsync(buffer, 0, bytesRead);
+                            bytesRemaining -= bytesRead;
                         }
                     }
-
-                    await client.NetworkStream.FlushAsync();
                 }
-                else if (_Mode == Mode.Ssl)
-                {
-                    // write headers
-                    await client.SslStream.WriteAsync(headerBytes, 0, headerBytes.Length);
 
-                    // write metadata
-                    if (msg.MetadataBytes != null && msg.MetadataBytes.Length > 0)
-                    {
-                        await client.SslStream.WriteAsync(msg.MetadataBytes, 0, msg.MetadataBytes.Length);
-                    }
-
-                    // write data
-                    if (contentLength > 0)
-                    {
-                        while (bytesRemaining > 0)
-                        {
-                            bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
-                            if (bytesRead > 0)
-                            {
-                                await client.SslStream.WriteAsync(buffer, 0, bytesRead);
-                                bytesRemaining -= bytesRead;
-                            }
-                        }
-                    }
-
-                    await client.SslStream.FlushAsync();
-                }
+                await client.NetworkStream.FlushAsync();
                  
                 return true;
             }
