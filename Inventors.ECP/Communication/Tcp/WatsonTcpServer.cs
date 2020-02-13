@@ -141,57 +141,6 @@ namespace Inventors.ECP.Communication.Tcp
             Task.Run(() => MonitorForIdleClients(), _Token);
         }
 
-        /*
-        /// <summary>
-        /// Initialize the Watson TCP server with SSL.  
-        /// Supply a specific IP address on which to listen.  Otherwise, use 'null' for the IP address to listen on any IP address.
-        /// If you do not specify an IP address, you may have to run WatsonTcp with administrative privileges.  
-        /// Call Start() afterward to start the server.
-        /// </summary>
-        /// <param name="listenerIp">The IP address on which the server should listen.  If null, listen on any IP address (may require administrative privileges).</param>
-        /// <param name="listenerPort">The TCP port on which the server should listen.</param>
-        /// <param name="pfxCertFile">The file containing the SSL certificate.</param>
-        /// <param name="pfxCertPass">The password for the SSL certificate.</param>
-        public WatsonTcpServer(
-            string listenerIp,
-            int listenerPort,
-            string pfxCertFile,
-            string pfxCertPass)
-        {
-            if (listenerPort < 1) throw new ArgumentOutOfRangeException(nameof(listenerPort));
-            if (String.IsNullOrEmpty(pfxCertFile)) throw new ArgumentNullException(nameof(pfxCertFile));
-             
-            _Mode = Mode.Ssl;
-
-            if (String.IsNullOrEmpty(listenerIp))
-            {
-                _ListenerIpAddress = IPAddress.Any;
-                _ListenerIp = _ListenerIpAddress.ToString();
-            }
-            else
-            {
-                _ListenerIpAddress = IPAddress.Parse(listenerIp);
-                _ListenerIp = listenerIp;
-            }
-
-            _SslCertificate = null; 
-            if (String.IsNullOrEmpty(pfxCertPass))
-            {
-                _SslCertificate = new X509Certificate2(pfxCertFile);
-            }
-            else
-            {
-                _SslCertificate = new X509Certificate2(pfxCertFile, pfxCertPass);
-            }
-
-            _ListenerPort = listenerPort;
-            _Listener = new TcpListener(_ListenerIpAddress, _ListenerPort); 
-            _Token = _TokenSource.Token;
-
-            Task.Run(() => MonitorForIdleClients(), _Token);
-        }
-        */
-
         #endregion Constructors-and-Factories
 
         #region Public-Methods
