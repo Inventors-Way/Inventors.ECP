@@ -315,21 +315,10 @@ namespace Inventors.ECP.Communication.Tcp
          
         private void Log(string msg)
         {
-            if (Debug) Console.WriteLine(msg);
-        }
-
-        private void LogException(string method, Exception e)
-        {
-            Log("");
-            Log("An exception was encountered.");
-            Log("   Method        : " + method);
-            Log("   Type          : " + e.GetType().ToString());
-            Log("   Data          : " + e.Data);
-            Log("   Inner         : " + e.InnerException);
-            Log("   Message       : " + e.Message);
-            Log("   Source        : " + e.Source);
-            Log("   StackTrace    : " + e.StackTrace);
-            Log("");
+            if (Debug)
+            {
+                Logging.Log.Debug(msg);
+            }
         }
 
         private async Task AcceptConnections()
