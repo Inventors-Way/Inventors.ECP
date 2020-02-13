@@ -46,7 +46,6 @@
   <ItemGroup>
     <Compile Include="DevicePackage.cs" />
     <Compile Include="DeviceState.cs" />
-    <Compile Include="HostedDevice.cs" />
     <Compile Include="Loader.cs" />
     <Compile Include="HostingForm.cs">
       <SubType>Form</SubType>

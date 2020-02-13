@@ -61,6 +61,7 @@
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deviceStatus = new System.Windows.Forms.ToolStripLabel();
             this.menuStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.hSplitContainer)).BeginInit();
@@ -223,7 +224,8 @@
             this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.runButton,
             this.stopButton,
-            this.toolStripSeparator3});
+            this.toolStripSeparator3,
+            this.deviceStatus});
             this.toolStrip.Location = new System.Drawing.Point(0, 24);
             this.toolStrip.Name = "toolStrip";
             this.toolStrip.Size = new System.Drawing.Size(1029, 31);
@@ -363,6 +365,13 @@
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
+            // deviceStatus
+            // 
+            this.deviceStatus.Name = "deviceStatus";
+            this.deviceStatus.Size = new System.Drawing.Size(109, 28);
+            this.deviceStatus.Text = "No device selected.";
+            this.deviceStatus.ToolTipText = "Device status";
+            // 
             // HostingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -430,5 +439,6 @@
         private System.Windows.Forms.ToolStripMenuItem errorToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ListBox deviceList;
+        private System.Windows.Forms.ToolStripLabel deviceStatus;
     }
 }

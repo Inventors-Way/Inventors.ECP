@@ -54,6 +54,7 @@ namespace Inventors.ECP.Hosting
                                 device.Run();
                             }
 
+                            device.OnPropertyChanged += (p) => BeginInvoke((Action)(() => propertyGrid.Refresh()));
                             deviceList.Items.Add(device);
                             Log.Status("Loaded device: {0} [{1}]", device.ToString(), device.State);
                         }
@@ -100,10 +101,12 @@ namespace Inventors.ECP.Hosting
                     {
                         deviceList.Items.Add(package.Device);
 
-                        if (package.Device.State == DeviceState.RUNNING)
+                        if (package.Loader.State == DeviceState.RUNNING)
                         {
                             package.Device.Run();
+                            Log.Status("Device [ {0} ] is started", package.Device.ToString());
                         }
+                        package.Device.OnPropertyChanged += (p) => BeginInvoke((Action)(() => propertyGrid.Refresh()));
 
                         Settings.Devices.Add(package.Loader);
                         Settings.Save();
@@ -240,6 +243,7 @@ namespace Inventors.ECP.Hosting
                 runMenuItem.Enabled = runButton.Enabled = device.State == DeviceState.STOPPED;
                 stopMenuItem.Enabled = stopButton.Enabled = device.State == DeviceState.RUNNING;
                 removeDeviceMenuItem.Enabled = true;
+                deviceStatus.Text = String.Format("{0} ({1}) [{2}]", device.ToString(), device.Port, device.State);
             }
             else
             {

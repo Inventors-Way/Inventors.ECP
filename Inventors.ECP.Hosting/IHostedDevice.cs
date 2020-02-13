@@ -8,7 +8,11 @@ namespace Inventors.ECP.Hosting
 {
     public interface IHostedDevice
     {
+        event Action<string> OnPropertyChanged;
+
         string ID { get; set; }
+
+        string Port { get; }
 
         DeviceState State { get; }
 
