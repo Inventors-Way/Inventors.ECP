@@ -23,7 +23,13 @@ namespace Inventors.ECP.DeviceHost
                 Icon = config.Icon,
                 Text = config.Title,
                 CloseToTray = config.CloseToTray,
-                MinimizeToTray = config.MinimizeToTray
+                MinimizeToTray = config.MinimizeToTray,
+                Product = config.Product,
+                Version = config.Version,
+                Line1 = config.Line1,
+                Line2 = config.Line2,
+                Line3 = config.Line3,
+                AboutImage = config.AboutImage
             });
         }
     }

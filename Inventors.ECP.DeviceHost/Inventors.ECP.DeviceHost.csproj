@@ -47,6 +47,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AboutDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AboutDialog.Designer.cs">
+      <DependentUpon>AboutDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="DevicePackage.cs" />
     <Compile Include="HostConfiguration.cs" />
     <Compile Include="HostingForm.cs">
@@ -66,6 +72,9 @@
     </Compile>
     <Compile Include="Settings.cs" />
     <Compile Include="SettingsFile.cs" />
+    <EmbeddedResource Include="AboutDialog.resx">
+      <DependentUpon>AboutDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="HostingForm.resx">
       <DependentUpon>HostingForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -123,6 +132,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="about.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="configuration.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

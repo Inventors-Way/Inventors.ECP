@@ -1,6 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<configuration title="ECP Device Host"
+<configuration title="ECP Host"
                notify-icon="hammer.ico" 
                icon="device-host.ico"
-               close-to-tray="true" 
-               minimize-to-tray="true" />
+               close-to-tray="false" 
+               minimize-to-tray="true" 
+               product="ECP Host"
+               version="1.0.0"
+               line1="Copyright (C) 2019-2020 Inventors' Way ApS. All rights reserved."
+               line2="ECP Host is made possible by the ECP open source project at Inventors' Way."
+               line3=""
+               about-image="about.png"/>

@@ -27,6 +27,18 @@ namespace Inventors.ECP.DeviceHost
 
         public bool MinimizeToTray { get; set; } = true;
 
+        public string Product { get; set; }
+
+        public string Version { get; set; }
+
+        public string Line1 { get; set; }
+
+        public string Line2 { get; set; }
+
+        public string Line3 { get; set; }
+
+        public Image AboutImage { get; set; }
+
         public HostingForm()
         {
             InitializeComponent();
@@ -272,5 +284,22 @@ namespace Inventors.ECP.DeviceHost
         private void DebugToolStripMenuItem_Click(object sender, EventArgs e) => SetLoggingLevel(LogLevel.DEBUG);
         private void StatusToolStripMenuItem_Click(object sender, EventArgs e) => SetLoggingLevel(LogLevel.STATUS);
         private void ErrorToolStripMenuItem_Click(object sender, EventArgs e) => SetLoggingLevel(LogLevel.ERROR);
+
+        private void AboutMenuItem_Click(object sender, EventArgs e)
+        {
+            AboutDialog dialog = new AboutDialog()
+            {
+                Text = String.Format("About {0}", Product),
+                Product = Product,
+                Version = Version,
+                Line1 = Line1,
+                Line2 = Line2,
+                Line3 = Line3,
+                Image = AboutImage,
+            };
+
+            dialog.ShowDialog();
+
+        }
     }
 }

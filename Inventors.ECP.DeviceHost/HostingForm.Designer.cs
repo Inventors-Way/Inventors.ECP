@@ -109,7 +109,7 @@
             this.statusToolStripMenuItem,
             this.errorToolStripMenuItem});
             this.loggingToolStripMenuItem.Name = "loggingToolStripMenuItem";
-            this.loggingToolStripMenuItem.Size = new System.Drawing.Size(188, 30);
+            this.loggingToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
             this.loggingToolStripMenuItem.Text = "Logging";
             // 
             // debugToolStripMenuItem
@@ -136,13 +136,13 @@
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(185, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(115, 6);
             // 
             // installDeviceMenuItem
             // 
             this.installDeviceMenuItem.Image = global::Inventors.ECP.DeviceHost.Resource.install;
             this.installDeviceMenuItem.Name = "installDeviceMenuItem";
-            this.installDeviceMenuItem.Size = new System.Drawing.Size(188, 30);
+            this.installDeviceMenuItem.Size = new System.Drawing.Size(118, 22);
             this.installDeviceMenuItem.Text = "Install";
             this.installDeviceMenuItem.Click += new System.EventHandler(this.InstallDeviceMenuItem_Click);
             // 
@@ -150,19 +150,19 @@
             // 
             this.removeDeviceMenuItem.Image = global::Inventors.ECP.DeviceHost.Resource.remove;
             this.removeDeviceMenuItem.Name = "removeDeviceMenuItem";
-            this.removeDeviceMenuItem.Size = new System.Drawing.Size(188, 30);
+            this.removeDeviceMenuItem.Size = new System.Drawing.Size(118, 22);
             this.removeDeviceMenuItem.Text = "Remove";
             this.removeDeviceMenuItem.Click += new System.EventHandler(this.RemoveDeviceMenuItem_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(185, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(115, 6);
             // 
             // exitMenuItem
             // 
             this.exitMenuItem.Name = "exitMenuItem";
-            this.exitMenuItem.Size = new System.Drawing.Size(188, 30);
+            this.exitMenuItem.Size = new System.Drawing.Size(118, 22);
             this.exitMenuItem.Text = "Exit";
             this.exitMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
@@ -179,7 +179,7 @@
             // 
             this.runMenuItem.Image = global::Inventors.ECP.DeviceHost.Resource.play;
             this.runMenuItem.Name = "runMenuItem";
-            this.runMenuItem.Size = new System.Drawing.Size(188, 30);
+            this.runMenuItem.Size = new System.Drawing.Size(98, 22);
             this.runMenuItem.Text = "Run";
             this.runMenuItem.Click += new System.EventHandler(this.Run_Click);
             // 
@@ -187,7 +187,7 @@
             // 
             this.stopMenuItem.Image = global::Inventors.ECP.DeviceHost.Resource.stop;
             this.stopMenuItem.Name = "stopMenuItem";
-            this.stopMenuItem.Size = new System.Drawing.Size(188, 30);
+            this.stopMenuItem.Size = new System.Drawing.Size(98, 22);
             this.stopMenuItem.Text = "Stop";
             this.stopMenuItem.Click += new System.EventHandler(this.Stop_Click);
             // 
@@ -204,19 +204,20 @@
             // documentationMenuItem
             // 
             this.documentationMenuItem.Name = "documentationMenuItem";
-            this.documentationMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.documentationMenuItem.Size = new System.Drawing.Size(180, 22);
             this.documentationMenuItem.Text = "Documentation";
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(154, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
             // 
             // aboutMenuItem
             // 
             this.aboutMenuItem.Name = "aboutMenuItem";
-            this.aboutMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.aboutMenuItem.Size = new System.Drawing.Size(180, 22);
             this.aboutMenuItem.Text = "About";
+            this.aboutMenuItem.Click += new System.EventHandler(this.AboutMenuItem_Click);
             // 
             // toolStrip
             // 
@@ -268,7 +269,7 @@
             // 
             this.hSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.hSplitContainer.Location = new System.Drawing.Point(0, 55);
-            this.hSplitContainer.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.hSplitContainer.Margin = new System.Windows.Forms.Padding(2);
             this.hSplitContainer.Name = "hSplitContainer";
             this.hSplitContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -376,7 +377,7 @@
             this.Controls.Add(this.toolStrip);
             this.Controls.Add(this.menuStrip);
             this.MainMenuStrip = this.menuStrip;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "HostingForm";
             this.Text = "HostingForm";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.HostingForm_FormClosing);
