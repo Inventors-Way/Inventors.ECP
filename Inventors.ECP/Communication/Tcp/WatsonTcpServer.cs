@@ -577,7 +577,7 @@ namespace Inventors.ECP.Communication.Tcp
             }
             else
             {
-                ms = new MemoryStream(new byte[0]);
+                ms = new MemoryStream(Array.Empty<byte>());
             }
 
             return MessageWrite(client, msg, dataLen, ms);
