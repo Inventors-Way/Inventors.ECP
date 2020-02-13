@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration title="ECP Device Host"
+               notify-icon="hammer.ico" 
+               icon="device-host.ico"
+               close-to-tray="true" 
+               minimize-to-tray="true" />

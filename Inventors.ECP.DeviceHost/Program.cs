@@ -14,13 +14,16 @@ namespace Inventors.ECP.DeviceHost
         [STAThread]
         static void Main()
         {
+            var config = HostConfiguration.Load();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new HostingForm()
             {
-                NotifyIcon = Resource.hammer,
-                Icon = Resource.hammer,
-                Text = "Device Manager"
+                NotifyIcon = config.NotifyIcon,
+                Icon = config.Icon,
+                Text = config.Title,
+                CloseToTray = config.CloseToTray,
+                MinimizeToTray = config.MinimizeToTray
             });
         }
     }

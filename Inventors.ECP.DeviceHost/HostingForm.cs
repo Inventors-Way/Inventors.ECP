@@ -23,6 +23,10 @@ namespace Inventors.ECP.DeviceHost
             set => notifyIcon.Icon = value;
         }
 
+        public bool CloseToTray { get; set; } = true;
+
+        public bool MinimizeToTray { get; set; } = true;
+
         public HostingForm()
         {
             InitializeComponent();
@@ -134,7 +138,7 @@ namespace Inventors.ECP.DeviceHost
 
                 if (MessageBox.Show("Please restart the application to complete the removal of the device.", "Restart application", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    _exitAllowed = true;
+                    CloseToTray = false;
                     Application.Exit();
                 }
             }
@@ -152,7 +156,7 @@ namespace Inventors.ECP.DeviceHost
 
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _exitAllowed = true;
+            CloseToTray = false;
             Application.Exit();
         }
 
@@ -166,13 +170,16 @@ namespace Inventors.ECP.DeviceHost
         {
             if (this.WindowState == FormWindowState.Minimized)
             {
-                Hide();
+                if (MinimizeToTray)
+                {
+                    Hide();
+                }
             }
         }
 
         private void HostingForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!_exitAllowed)
+            if (CloseToTray)
             {
                 if (e.CloseReason == CloseReason.UserClosing)
                 {
@@ -265,6 +272,5 @@ namespace Inventors.ECP.DeviceHost
         private void DebugToolStripMenuItem_Click(object sender, EventArgs e) => SetLoggingLevel(LogLevel.DEBUG);
         private void StatusToolStripMenuItem_Click(object sender, EventArgs e) => SetLoggingLevel(LogLevel.STATUS);
         private void ErrorToolStripMenuItem_Click(object sender, EventArgs e) => SetLoggingLevel(LogLevel.ERROR);
-        private bool _exitAllowed = true; // Change for when released
     }
 }

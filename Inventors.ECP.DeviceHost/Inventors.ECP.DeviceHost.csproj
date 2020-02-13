@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DevicePackage.cs" />
+    <Compile Include="HostConfiguration.cs" />
     <Compile Include="HostingForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -112,12 +113,19 @@
     <None Include="Resources\NotifyIcon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="device-host.ico" />
+    <None Include="device-host.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="hammer.ico" />
+    <None Include="hammer.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="configuration.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="HostedDevice.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
