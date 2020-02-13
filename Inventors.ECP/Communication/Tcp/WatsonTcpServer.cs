@@ -100,7 +100,7 @@ namespace Inventors.ECP.Communication.Tcp
 
         private Func<string, byte[], Task> _MessageReceived = null;
         private Func<string, Dictionary<object, object>, byte[], Task> _MessageReceivedWithMetadata = null;
-        private Func<string, long, Stream, Task> _StreamReceived = null;
+        //private Func<string, long, Stream, Task> _StreamReceived = null;
         private Func<string, Dictionary<object, object>, long, Stream, Task> _StreamReceivedWithMetadata = null;
 
         #endregion Private-Members
@@ -191,7 +191,7 @@ namespace Inventors.ECP.Communication.Tcp
         {
             if (_MessageReceived == null)
             {
-                throw new InvalidOperationException("Either 'MessageReceived' or 'StreamReceived' must first be set.");
+                throw new InvalidOperationException("'MessageReceived' must first be set.");
             }
 
             Log("Watson TCP server starting on " + _ListenerIp + ":" + _ListenerPort);
@@ -203,9 +203,9 @@ namespace Inventors.ECP.Communication.Tcp
         /// </summary>
         public Task StartAsync()
         {
-            if (_StreamReceived == null && _MessageReceived == null)
+            if (_MessageReceived == null)
             {
-                throw new InvalidOperationException("Either 'MessageReceived' or 'StreamReceived' must first be set.");
+                throw new InvalidOperationException("'MessageReceived' must first be set.");
             }
 
             Log("Watson TCP server starting on " + _ListenerIp + ":" + _ListenerPort);
@@ -462,10 +462,6 @@ namespace Inventors.ECP.Communication.Tcp
                     {
                         buildSuccess = await msg.Build();
                     }
-                    else if (_StreamReceived != null)
-                    {
-                        buildSuccess = await msg.BuildStream();
-                    }
                     else
                     {
                         break;
@@ -518,11 +514,6 @@ namespace Inventors.ECP.Communication.Tcp
                         {
                             // does not need to be awaited, because the stream has been fully read
                             Task unawaited = Task.Run(() => _MessageReceived(client.IpPort, msg.Data));
-                        }
-                        else if (_StreamReceived != null)
-                        {
-                            // must be awaited, the stream has not been fully read
-                            await _StreamReceived(client.IpPort, msg.ContentLength, msg.DataStream);
                         }
                         else
                         {
