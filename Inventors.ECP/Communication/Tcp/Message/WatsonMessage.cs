@@ -210,7 +210,7 @@ namespace Inventors.ECP.Communication.Tcp.Message
             DataStream = stream;
             _Debug = debug;
         }
-
+/*
         /// <summary>
         /// Read from an SSL-based stream and construct a message.  Call Build() to populate.
         /// </summary>
@@ -228,7 +228,7 @@ namespace Inventors.ECP.Communication.Tcp.Message
             DataStream = stream;
             _Debug = debug;
         }
-
+        */
         #endregion Constructors-and-Factories
 
         #region Public-Methods
