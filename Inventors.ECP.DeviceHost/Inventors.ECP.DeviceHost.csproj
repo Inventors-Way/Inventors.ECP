@@ -53,6 +53,12 @@
     <Compile Include="AboutDialog.Designer.cs">
       <DependentUpon>AboutDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Actions\CreateDevice.cs" />
+    <Compile Include="Actions\CreateDirectory.cs" />
+    <Compile Include="Actions\CreateLoader.cs" />
+    <Compile Include="Actions\ExtractPackage.cs" />
+    <Compile Include="Actions\InstallLoader.cs" />
+    <Compile Include="Actions\VerifyPackage.cs" />
     <Compile Include="DevicePackage.cs" />
     <Compile Include="HostConfiguration.cs" />
     <Compile Include="HostingForm.cs">
@@ -63,6 +69,7 @@
     </Compile>
     <Compile Include="Loader.cs" />
     <Compile Include="Logger.cs" />
+    <Compile Include="PackageAction.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resource.Designer.cs">
@@ -146,5 +153,6 @@
     <None Include="icons\play.png" />
     <None Include="icons\install.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

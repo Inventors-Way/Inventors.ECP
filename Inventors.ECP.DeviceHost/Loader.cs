@@ -62,8 +62,8 @@ namespace Inventors.ECP.DeviceHost
         public IHostedDevice Create()
         {
             IHostedDevice retValue = null;
-            var assembly = Assembly.LoadFrom(AssemblyPath);
-            var type = assembly.GetType(DeviceType);
+            assembly = Assembly.LoadFrom(AssemblyPath);
+            type = assembly.GetType(DeviceType);
 
             if (type is object)
             {
@@ -84,5 +84,13 @@ namespace Inventors.ECP.DeviceHost
             return retValue;
         }
 
+        public void Uncreate()
+        {
+
+        }
+
+        private AppDomain domain;
+        private Assembly assembly = null;
+        private Type type = null;
     }
 }

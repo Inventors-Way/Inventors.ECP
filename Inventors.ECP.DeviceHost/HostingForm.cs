@@ -122,8 +122,8 @@ namespace Inventors.ECP.DeviceHost
                         }
                         package.Device.OnPropertyChanged += (p) => BeginInvoke((Action)(() => propertyGrid.Refresh()));
 
-                        Settings.Devices.Add(package.Loader);
-                        Settings.Save();
+                        //Settings.Devices.Add(package.Loader);
+                        //Settings.Save();
                     }
                     catch (Exception ex)
                     {

@@ -8,19 +8,23 @@ using System.IO;
 using Inventors.Logging;
 using System.IO.Compression;
 using System.Reflection;
+using Inventors.ECP.DeviceHost.Actions;
 
 namespace Inventors.ECP.DeviceHost
 {
     public class DevicePackage
     {
+        public Queue<PackageAction> actions = new Queue<PackageAction>();
+        public Queue<PackageAction> completed = new Queue<PackageAction>();
+
         public string SourceFile { get; }
 
         public string DestinationDirectory =>
             Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), Path.GetFileNameWithoutExtension(SourceFile));
 
-        public Loader Loader { get; private set; }
+        public Loader Loader { get; set; }
 
-        public IHostedDevice Device { get; private set; }
+        public IHostedDevice Device { get; set; }
 
         public DevicePackage(string source)
         {
@@ -31,6 +35,28 @@ namespace Inventors.ECP.DeviceHost
         {
             bool retValue = true;
 
+            Build();
+
+            while (actions.Count > 0)
+            {
+                var action = actions.Dequeue();
+
+                if (action.Execute())
+                {
+                    completed.Enqueue(action);
+                }
+                else
+                {
+                    retValue = false;
+                    break;
+                }
+            }
+
+            if (!retValue)
+            {
+                Revert();
+            }
+            /*
             if (VerifyChecksum())
             {
                 if (CreateDirectory())
@@ -46,9 +72,27 @@ namespace Inventors.ECP.DeviceHost
                         }
                     }
                 }
-            }
+            }*/
 
             return retValue;
+        }
+
+        private void Build()
+        {
+            actions.Enqueue(new VerifyPackage(this));
+            actions.Enqueue(new CreateDirectory(this));
+            actions.Enqueue(new ExtractPackage(this));
+            actions.Enqueue(new CreateLoader(this));
+            actions.Enqueue(new CreateDevice(this));
+            actions.Enqueue(new InstallLoader(this));
+        }
+
+        private void Revert()
+        {
+            while (completed.Count > 0)
+            {
+                completed.Dequeue().Revert();
+            }
         }
 
         public static void Remove(Loader loader)
