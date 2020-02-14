@@ -71,6 +71,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AboutDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AboutDialog.Designer.cs">
+      <DependentUpon>AboutDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Settings.cs" />
     <Compile Include="TrialsDialog.cs">
       <SubType>Form</SubType>
@@ -87,6 +93,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AboutDialog.resx">
+      <DependentUpon>AboutDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TrialsDialog.resx">
       <DependentUpon>TrialsDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -122,6 +131,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="216410 - spanner.ico" />
+    <Content Include="about.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="icons\216173 - device phone.ico" />
     <None Include="icons\216190 - export.ico" />
   </ItemGroup>

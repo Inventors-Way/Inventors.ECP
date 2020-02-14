@@ -497,7 +497,15 @@ namespace Inventors.ECP.Tester
 
         private void AboutECPTesterToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("ECP Tester\nInventors' Way ApS\nMorten Nielsens Vej 6\n9200 Aalborg SV\n", "About", MessageBoxButtons.OK);
+            var dialog = new AboutDialog()
+            {
+                Text = "About ECP Tester",
+                Product = "ECP Tester",
+                Version = "1.3.1",
+                Description = "Copyright (C) 2019-2020 Inventors' Way ApS. All rights reserved." + Environment.NewLine + "ECP Tester is made possible by the open source ECP project made by the scientists and engineers at Inventors' Way.",
+                Image = Image.FromFile("about.png")
+            };
+            dialog.ShowDialog();
         }
 
         private void EnabledToolStripMenuItem_Click(object sender, EventArgs e)
