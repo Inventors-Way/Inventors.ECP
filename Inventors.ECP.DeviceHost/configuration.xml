@@ -6,6 +6,7 @@
                minimize-to-tray="true"
                product="ECP Host"
                version="1.0.0"
+               documentation-url="github.com/Inventors-Way/Inventors.ECP"
                about-image="about.png">
 <description>
 Copyright (C) 2019-2020 Inventors' Way ApS. All rights reserved.

@@ -27,7 +27,8 @@ namespace Inventors.ECP.DeviceHost
                 Product = config.Product,
                 Version = config.Version,
                 Description = config.Description,
-                AboutImage = config.AboutImage
+                AboutImage = config.AboutImage,
+                Documentation = config.Documentation
             });
         }
     }

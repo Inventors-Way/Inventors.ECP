@@ -74,6 +74,9 @@ namespace Inventors.ECP.DeviceHost
         [XmlAttribute("about-image")]
         public string AboutImageFileName { get; set; }
 
+        [XmlAttribute("documentation-url")]
+        public string Documentation { get; set; }
+
         [XmlIgnore]
         public Image AboutImage => string.IsNullOrEmpty(AboutImageFileName) ? null : Image.FromFile(AboutImageFileName);
 

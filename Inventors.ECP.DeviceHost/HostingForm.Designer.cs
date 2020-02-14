@@ -84,8 +84,8 @@
             this.helpToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
-            this.menuStrip.Size = new System.Drawing.Size(772, 24);
+            this.menuStrip.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
+            this.menuStrip.Size = new System.Drawing.Size(1029, 24);
             this.menuStrip.TabIndex = 0;
             this.menuStrip.Text = "menuStrip1";
             // 
@@ -206,6 +206,7 @@
             this.documentationMenuItem.Name = "documentationMenuItem";
             this.documentationMenuItem.Size = new System.Drawing.Size(180, 22);
             this.documentationMenuItem.Text = "Documentation";
+            this.documentationMenuItem.Click += new System.EventHandler(this.DocumentationMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
@@ -229,7 +230,7 @@
             this.deviceStatus});
             this.toolStrip.Location = new System.Drawing.Point(0, 24);
             this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Size = new System.Drawing.Size(772, 31);
+            this.toolStrip.Size = new System.Drawing.Size(1029, 31);
             this.toolStrip.TabIndex = 1;
             this.toolStrip.Text = "toolStrip1";
             // 
@@ -269,7 +270,7 @@
             // 
             this.hSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.hSplitContainer.Location = new System.Drawing.Point(0, 55);
-            this.hSplitContainer.Margin = new System.Windows.Forms.Padding(2);
+            this.hSplitContainer.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.hSplitContainer.Name = "hSplitContainer";
             this.hSplitContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -280,15 +281,15 @@
             // hSplitContainer.Panel2
             // 
             this.hSplitContainer.Panel2.Controls.Add(this.logBox);
-            this.hSplitContainer.Size = new System.Drawing.Size(772, 498);
-            this.hSplitContainer.SplitterDistance = 343;
-            this.hSplitContainer.SplitterWidth = 3;
+            this.hSplitContainer.Size = new System.Drawing.Size(1029, 626);
+            this.hSplitContainer.SplitterDistance = 431;
             this.hSplitContainer.TabIndex = 3;
             // 
             // vSplitContainer
             // 
             this.vSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.vSplitContainer.Location = new System.Drawing.Point(0, 0);
+            this.vSplitContainer.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.vSplitContainer.Name = "vSplitContainer";
             // 
             // vSplitContainer.Panel1
@@ -298,17 +299,20 @@
             // vSplitContainer.Panel2
             // 
             this.vSplitContainer.Panel2.Controls.Add(this.propertyGrid);
-            this.vSplitContainer.Size = new System.Drawing.Size(772, 343);
-            this.vSplitContainer.SplitterDistance = 198;
+            this.vSplitContainer.Size = new System.Drawing.Size(1029, 431);
+            this.vSplitContainer.SplitterDistance = 263;
+            this.vSplitContainer.SplitterWidth = 5;
             this.vSplitContainer.TabIndex = 0;
             // 
             // deviceList
             // 
             this.deviceList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.deviceList.FormattingEnabled = true;
+            this.deviceList.ItemHeight = 16;
             this.deviceList.Location = new System.Drawing.Point(0, 0);
+            this.deviceList.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.deviceList.Name = "deviceList";
-            this.deviceList.Size = new System.Drawing.Size(198, 343);
+            this.deviceList.Size = new System.Drawing.Size(263, 431);
             this.deviceList.TabIndex = 0;
             this.deviceList.SelectedIndexChanged += new System.EventHandler(this.DeviceList_SelectedIndexChanged);
             // 
@@ -316,8 +320,9 @@
             // 
             this.propertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.propertyGrid.Location = new System.Drawing.Point(0, 0);
+            this.propertyGrid.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.propertyGrid.Name = "propertyGrid";
-            this.propertyGrid.Size = new System.Drawing.Size(570, 343);
+            this.propertyGrid.Size = new System.Drawing.Size(761, 431);
             this.propertyGrid.TabIndex = 0;
             // 
             // logBox
@@ -325,11 +330,12 @@
             this.logBox.BackColor = System.Drawing.SystemColors.Window;
             this.logBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.logBox.Location = new System.Drawing.Point(0, 0);
+            this.logBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.logBox.Multiline = true;
             this.logBox.Name = "logBox";
             this.logBox.ReadOnly = true;
             this.logBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.logBox.Size = new System.Drawing.Size(772, 152);
+            this.logBox.Size = new System.Drawing.Size(1029, 191);
             this.logBox.TabIndex = 0;
             // 
             // notifyIcon
@@ -370,14 +376,14 @@
             // 
             // HostingForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(772, 553);
+            this.ClientSize = new System.Drawing.Size(1029, 681);
             this.Controls.Add(this.hSplitContainer);
             this.Controls.Add(this.toolStrip);
             this.Controls.Add(this.menuStrip);
             this.MainMenuStrip = this.menuStrip;
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "HostingForm";
             this.Text = "HostingForm";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.HostingForm_FormClosing);

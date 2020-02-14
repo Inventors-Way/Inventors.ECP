@@ -35,6 +35,8 @@ namespace Inventors.ECP.DeviceHost
 
         public Image AboutImage { get; set; }
 
+        public string Documentation { get; set; }
+
         public HostingForm()
         {
             InitializeComponent();
@@ -294,6 +296,14 @@ namespace Inventors.ECP.DeviceHost
 
             dialog.ShowDialog();
 
+        }
+
+        private void DocumentationMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(Documentation))
+            {
+                Process.Start(String.Format("https://{0}", Documentation));
+            }
         }
     }
 }
