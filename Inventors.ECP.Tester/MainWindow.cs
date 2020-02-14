@@ -170,13 +170,14 @@ namespace Inventors.ECP.Tester
 
                 if (CheckDevicesChanged(devices))
                 {
+                    Log.Debug("Available devices changed:");
                     portMenuItem.DropDownItems.Clear();
 
                     for (int n = 0; n < devices.Count; ++n)
                     {
                         var item = new ToolStripMenuItem(devices[n].ToString()) { Tag = devices[n] };
                         portMenuItem.DropDownItems.Add(item);
-
+                        Log.Debug("  [ {0} ] Device: {1}", n, devices[n].ToString());
                         if (selectedDevice is object)
                         {
                             if (selectedDevice.ToString() == devices[n].ToString())
@@ -204,7 +205,8 @@ namespace Inventors.ECP.Tester
             {
                 if (!device.IsOpen)
                 {
-                    await UpdatePorts();
+                    Log.Debug("Updating ports");
+                    await UpdatePorts();                    
                 }
             }
         }

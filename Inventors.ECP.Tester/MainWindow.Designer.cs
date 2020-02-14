@@ -36,6 +36,11 @@
             this.fileMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.logLevelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.statusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.errorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.connectMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -66,11 +71,6 @@
             this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.msgTimer = new System.Windows.Forms.Timer(this.components);
             this.deviceTimer = new System.Windows.Forms.Timer(this.components);
-            this.logLevelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
-            this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.statusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.errorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.hSplitContainer)).BeginInit();
@@ -145,6 +145,42 @@
             this.saveLogToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
             this.saveLogToolStripMenuItem.Text = "Save Log";
             this.saveLogToolStripMenuItem.Click += new System.EventHandler(this.SaveLogToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(158, 6);
+            // 
+            // logLevelToolStripMenuItem
+            // 
+            this.logLevelToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.debugToolStripMenuItem,
+            this.statusToolStripMenuItem,
+            this.errorToolStripMenuItem});
+            this.logLevelToolStripMenuItem.Name = "logLevelToolStripMenuItem";
+            this.logLevelToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            this.logLevelToolStripMenuItem.Text = "Log Level";
+            // 
+            // debugToolStripMenuItem
+            // 
+            this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
+            this.debugToolStripMenuItem.Size = new System.Drawing.Size(109, 22);
+            this.debugToolStripMenuItem.Text = "Debug";
+            this.debugToolStripMenuItem.Click += new System.EventHandler(this.DebugToolStripMenuItem_Click);
+            // 
+            // statusToolStripMenuItem
+            // 
+            this.statusToolStripMenuItem.Name = "statusToolStripMenuItem";
+            this.statusToolStripMenuItem.Size = new System.Drawing.Size(109, 22);
+            this.statusToolStripMenuItem.Text = "Status";
+            this.statusToolStripMenuItem.Click += new System.EventHandler(this.StatusToolStripMenuItem_Click);
+            // 
+            // errorToolStripMenuItem
+            // 
+            this.errorToolStripMenuItem.Name = "errorToolStripMenuItem";
+            this.errorToolStripMenuItem.Size = new System.Drawing.Size(109, 22);
+            this.errorToolStripMenuItem.Text = "Error";
+            this.errorToolStripMenuItem.Click += new System.EventHandler(this.ErrorToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
@@ -354,6 +390,7 @@
             // 
             this.functionList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.functionList.FormattingEnabled = true;
+            this.functionList.ItemHeight = 16;
             this.functionList.Location = new System.Drawing.Point(0, 0);
             this.functionList.Name = "functionList";
             this.functionList.Size = new System.Drawing.Size(259, 371);
@@ -408,44 +445,9 @@
             // 
             // deviceTimer
             // 
+            this.deviceTimer.Enabled = true;
             this.deviceTimer.Interval = 1000;
             this.deviceTimer.Tick += new System.EventHandler(this.DeviceTimer_Tick);
-            // 
-            // logLevelToolStripMenuItem
-            // 
-            this.logLevelToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.debugToolStripMenuItem,
-            this.statusToolStripMenuItem,
-            this.errorToolStripMenuItem});
-            this.logLevelToolStripMenuItem.Name = "logLevelToolStripMenuItem";
-            this.logLevelToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
-            this.logLevelToolStripMenuItem.Text = "Log Level";
-            // 
-            // toolStripSeparator6
-            // 
-            this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(181, 6);
-            // 
-            // debugToolStripMenuItem
-            // 
-            this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
-            this.debugToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.debugToolStripMenuItem.Text = "Debug";
-            this.debugToolStripMenuItem.Click += new System.EventHandler(this.DebugToolStripMenuItem_Click);
-            // 
-            // statusToolStripMenuItem
-            // 
-            this.statusToolStripMenuItem.Name = "statusToolStripMenuItem";
-            this.statusToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.statusToolStripMenuItem.Text = "Status";
-            this.statusToolStripMenuItem.Click += new System.EventHandler(this.StatusToolStripMenuItem_Click);
-            // 
-            // errorToolStripMenuItem
-            // 
-            this.errorToolStripMenuItem.Name = "errorToolStripMenuItem";
-            this.errorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.errorToolStripMenuItem.Text = "Error";
-            this.errorToolStripMenuItem.Click += new System.EventHandler(this.ErrorToolStripMenuItem_Click);
             // 
             // MainWindow
             // 
