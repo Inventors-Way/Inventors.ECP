@@ -68,14 +68,8 @@ namespace Inventors.ECP.DeviceHost
         [XmlAttribute("version")]
         public string Version { get; set; }
 
-        [XmlAttribute("line1")]
-        public string Line1 { get; set; }
-
-        [XmlAttribute("line2")]
-        public string Line2 { get; set; }
-
-        [XmlAttribute("line3")]
-        public string Line3 { get; set; }
+        [XmlElement("description")]
+        public string Description { get; set; }
 
         [XmlAttribute("about-image")]
         public string AboutImageFileName { get; set; }

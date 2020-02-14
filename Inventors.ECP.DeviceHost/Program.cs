@@ -26,9 +26,7 @@ namespace Inventors.ECP.DeviceHost
                 MinimizeToTray = config.MinimizeToTray,
                 Product = config.Product,
                 Version = config.Version,
-                Line1 = config.Line1,
-                Line2 = config.Line2,
-                Line3 = config.Line3,
+                Description = config.Description,
                 AboutImage = config.AboutImage
             });
         }

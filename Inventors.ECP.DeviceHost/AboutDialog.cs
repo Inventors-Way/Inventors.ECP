@@ -46,22 +46,10 @@ namespace Inventors.ECP.DeviceHost
             set => version.Text = value;
         }
 
-        public string Line1
+        public string Description
         {
-            get => line1.Text;
-            set => line1.Text = value;
-        }
-
-        public string Line2
-        {
-            get => line2.Text;
-            set => line2.Text = value;
-        }
-
-        public string Line3
-        {
-            get => line3.Text;
-            set => line3.Text = value;
+            get => description.Text;
+            set => description.Text = value;
         }
     }
 }

@@ -31,11 +31,7 @@ namespace Inventors.ECP.DeviceHost
 
         public string Version { get; set; }
 
-        public string Line1 { get; set; }
-
-        public string Line2 { get; set; }
-
-        public string Line3 { get; set; }
+        public string Description { get; set; }
 
         public Image AboutImage { get; set; }
 
@@ -292,9 +288,7 @@ namespace Inventors.ECP.DeviceHost
                 Text = String.Format("About {0}", Product),
                 Product = Product,
                 Version = Version,
-                Line1 = Line1,
-                Line2 = Line2,
-                Line3 = Line3,
+                Description = Description,
                 Image = AboutImage,
             };
 
