@@ -70,7 +70,7 @@ namespace Inventors.ECP.DeviceHost
                                 device.Run();
                             }
 
-                            device.OnPropertyChanged += (p) => BeginInvoke((Action)(() => propertyGrid.Refresh()));
+                            device.OnPropertyChanged += (owner, p) => BeginInvoke((Action)(() => propertyGrid.Refresh()));
                             deviceList.Items.Add(device);
                             Log.Status("Loaded device: {0} [{1}]", device.ToString(), device.State);
                         }
@@ -122,7 +122,7 @@ namespace Inventors.ECP.DeviceHost
                             package.Device.Run();
                             Log.Status("Device [ {0} ] is started", package.Device.ToString());
                         }
-                        package.Device.OnPropertyChanged += (p) => BeginInvoke((Action)(() => propertyGrid.Refresh()));
+                        package.Device.OnPropertyChanged += (owner, p) => BeginInvoke((Action)(() => propertyGrid.Refresh()));
                     }
                     catch (Exception ex)
                     {

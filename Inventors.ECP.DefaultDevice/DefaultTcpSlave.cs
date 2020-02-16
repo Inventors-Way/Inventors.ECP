@@ -20,7 +20,7 @@ namespace Inventors.ECP.DefaultDevice
         private TcpServerLayer commLayer = null;
         private DeviceSlave slave;
 
-        public event Action<string> OnPropertyChanged;
+        public event Action<object, string> OnPropertyChanged;
 
         [Category("Communication")]
         [XmlIgnore]
@@ -122,7 +122,7 @@ namespace Inventors.ECP.DefaultDevice
         public bool Accept(Ping func)
         {
             func.Count = Pings++;
-            OnPropertyChanged?.Invoke(nameof(Pings));
+            OnPropertyChanged?.Invoke(this, nameof(Pings));
             return true;
         }
 

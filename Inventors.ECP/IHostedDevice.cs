@@ -18,7 +18,7 @@ namespace Inventors.ECP
     public interface IHostedDevice
     {
 
-        event Action<string> OnPropertyChanged;
+        event Action<object, string> OnPropertyChanged;
 
         string ID { get; set; }
 
