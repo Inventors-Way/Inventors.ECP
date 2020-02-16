@@ -31,26 +31,16 @@ namespace Inventors.ECP.DeviceHost
         {
             if (!Directory.Exists(SystemDirectory))
             {
-                Directory.CreateDirectory(GetSystemDirectory());
+                Directory.CreateDirectory(SystemDirectory);
             }
 
             Load();
         }
 
-        private static string SystemDirectory { get; set; } = "ecp_host";
+        public static string SystemDirectory => 
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ecp_host");
 
-        private static string GetSystemDirectory()
-        {
-            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), SystemDirectory);
-        }
-
-        private static string StateFile
-        {
-            get
-            {
-                return Path.Combine(GetSystemDirectory(), "settings.xml");
-            }
-        }
+        private static string StateFile => Path.Combine(SystemDirectory, "settings.xml");
 
         public static LogLevel Level
         {
@@ -92,7 +82,7 @@ namespace Inventors.ECP.DeviceHost
             where T : class, new()
         {
             T retValue = null;
-
+             
             if (File.Exists(filename))
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(T));

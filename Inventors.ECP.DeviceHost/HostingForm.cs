@@ -121,9 +121,6 @@ namespace Inventors.ECP.DeviceHost
                             Log.Status("Device [ {0} ] is started", package.Device.ToString());
                         }
                         package.Device.OnPropertyChanged += (p) => BeginInvoke((Action)(() => propertyGrid.Refresh()));
-
-                        //Settings.Devices.Add(package.Loader);
-                        //Settings.Save();
                     }
                     catch (Exception ex)
                     {
