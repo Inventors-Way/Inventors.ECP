@@ -86,8 +86,6 @@ namespace Inventors.ECP.DeviceHost
                 Log.Debug("File: {0} deleted", file);
             }
             Directory.Delete(loader.BasePath);
-            Settings.Devices.Remove(loader);
-            Settings.Save();
         }
     }
 }

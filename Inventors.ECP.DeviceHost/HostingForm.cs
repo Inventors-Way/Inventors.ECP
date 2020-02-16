@@ -55,6 +55,8 @@ namespace Inventors.ECP.DeviceHost
 
         private void SetupDevices()
         {
+            List<Loader> removedDevices = new List<Loader>();
+
             foreach (var dev in Settings.Devices)
             {
                 if (!dev.RemoveAtStart)
@@ -73,19 +75,16 @@ namespace Inventors.ECP.DeviceHost
                             Log.Status("Loaded device: {0} [{1}]", device.ToString(), device.State);
                         }
                     }
-                    catch (Exception e)
+                    catch (Exception e) 
                     {
                         Log.Error(e.Message);
-                        Log.Status("Please remove the directory [ {0} ] manually", dev.BasePath);
-                        Settings.Devices.Remove(dev);
-                        Settings.Save();
-                        Process.Start(dev.BasePath);
                     }
                 }
                 else
                 {
                     try
                     {
+                        removedDevices.Add(dev);
                         DevicePackage.Remove(dev);
                         Log.Status("Removed device: {0}", dev.DeviceType);
                     }
@@ -95,6 +94,9 @@ namespace Inventors.ECP.DeviceHost
                     }
                 }
             }
+
+            removedDevices.ForEach((d) => Settings.Devices.Remove(d));
+            Settings.Save();
         }
 
         private void InstallDeviceMenuItem_Click(object sender, EventArgs e)
