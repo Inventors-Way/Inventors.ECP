@@ -162,7 +162,7 @@ namespace Inventors.ECP
             if (!Master.IsOpen)
             {
                 var retries = Retries;
-                Retries = 3;
+                Retries = Retries > 3 ? Retries : 3;
                 retValue = new DeviceIdentification();
                 Master.Open();
                 WaitOnConnected(200);
