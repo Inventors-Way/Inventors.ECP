@@ -26,6 +26,7 @@ namespace Inventors.ECP.Tools
             {
                 var fmtStrHeader = " | {0, -15} | {1}";
                 var fmtStr = " | {0, -15} | {1} (Serial number: {2})";
+                device.Timeout = 100;
 
                 Console.Write("Scanning for devices ... ");
                 var available = device.GetAvailableDevices();
