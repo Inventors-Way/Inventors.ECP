@@ -166,7 +166,10 @@ namespace Inventors.ECP.Tester
         {
             if (!device.IsOpen)
             {
-                var devices = await device.GetAvailableDevicesAsync();
+                var timeout = device.Timeout;
+                device.Timeout = 100;
+                var devices = await device.GetAvailableDevicesAsync().ConfigureAwait(true);
+                device.Timeout = timeout;
 
                 if (CheckDevicesChanged(devices))
                 {
@@ -301,8 +304,9 @@ namespace Inventors.ECP.Tester
             {
                 try
                 {
+                    deviceTimer.Enabled = false;
                     device.Port = selectedDevice.Port;
-                    await device.ConnectAsync();
+                    await device.ConnectAsync().ConfigureAwait(true);
                     Log.Status("Device Connected: {0} [{1}]", device.ToString(), device.Port);
                     UpdateAppStates(AppState.APP_STATE_CONNECTED);
                 }
@@ -310,6 +314,7 @@ namespace Inventors.ECP.Tester
                 {
                     Log.Error("Problem connecting to device: " + ex.Message);
                     UpdateAppStates(AppState.APP_STATE_INITIALIZED);
+                    deviceTimer.Enabled = true;
                 }
             }
             else
@@ -322,9 +327,10 @@ namespace Inventors.ECP.Tester
         {
             try
             {
-                await device.DisconnectAsync();
+                await device.DisconnectAsync().ConfigureAwait(true);
                 UpdateAppStates(AppState.APP_STATE_INITIALIZED);
                 Log.Status("Device disconnected: {0} [{1}]", device.ToString(), device.Port);
+                deviceTimer.Enabled = true;
             }
             catch (Exception ex)
             {
@@ -391,7 +397,7 @@ namespace Inventors.ECP.Tester
             {
                 try
                 {
-                    await device.ExecuteAsync(function);
+                    await device.ExecuteAsync(function).ConfigureAwait(true);
 
                     if (doLogging)
                     {
@@ -442,7 +448,7 @@ namespace Inventors.ECP.Tester
                 if (device.Profiler.Function != null)
                 {
                     UpdateAppStates(AppState.APP_STATE_ACTIVE);
-                    var report = await device.Profiler.TestAsync();
+                    var report = await device.Profiler.TestAsync().ConfigureAwait(true);
                     Log.Status(report.ToString());
                     UpdateAppStates(AppState.APP_STATE_CONNECTED);
                     UpdateProfiling();
