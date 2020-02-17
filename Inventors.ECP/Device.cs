@@ -161,10 +161,13 @@ namespace Inventors.ECP
 
             if (!Master.IsOpen)
             {
+                var retries = Retries;
+                Retries = 3;
                 retValue = new DeviceIdentification();
                 Master.Open();
                 WaitOnConnected(200);
                 Execute(retValue);
+                Retries = retries;
 
                 if (IsCompatible(retValue))
                 {
@@ -196,7 +199,8 @@ namespace Inventors.ECP
         }
 
 
-        public async Task ConnectAsync() => await Task.Run(() => Connect()).ConfigureAwait(false);
+        public async Task<DeviceIdentification> ConnectAsync() => 
+            await Task.Run(() => Connect()).ConfigureAwait(false);
 
         public virtual void Disconnect()
         {
