@@ -8,14 +8,11 @@ namespace Inventors.ECP.Communication.Discovery
 {
     public class BeaconID
     {
-        public BeaconID(UInt32 manufactuer, UInt16 device, string name)
+        public BeaconID(UInt32 manufactuer, UInt16 device, UInt32 serial)
         {
-            if (string.IsNullOrEmpty(name))
-                throw new ArgumentNullException(nameof(name));
-
             ManufactureID = manufactuer;
             DeviceID = device;
-            Device = name;
+            Serial = serial.ToString(CultureInfo.InvariantCulture);
         }
 
         [XmlAttribute("manufacturer-id")]
@@ -25,13 +22,13 @@ namespace Inventors.ECP.Communication.Discovery
         public UInt16 DeviceID { get; set; } = 1;
 
         [XmlAttribute("device")]
-        public string Device { get; set; } = "Default Device";
+        public string Serial { get; set; } = "0".ToString(CultureInfo.InvariantCulture);
 
         [XmlIgnore]
-        public string ID => String.Format(CultureInfo.CurrentCulture, "ECP-{0}-{1}", ManufactureID, DeviceID);
+        public string ID => String.Format(CultureInfo.InvariantCulture, "ECP:{0}:{1}", ManufactureID, DeviceID);
 
         [XmlIgnore]
-        public string Data => String.Format(CultureInfo.CurrentCulture, "[{0}.{1}] {2}", ManufactureID, DeviceID, Device);
+        public string Data => Serial;
 
         public override string ToString() => ID;
     }

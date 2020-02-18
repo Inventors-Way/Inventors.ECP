@@ -11,6 +11,7 @@ using System.Net;
 using System.Threading;
 using Inventors.ECP.Communication.Discovery;
 using Inventors.Logging;
+using System.Globalization;
 
 namespace Inventors.ECP.UnitTests.ApplicationLayer
 {
@@ -36,7 +37,7 @@ namespace Inventors.ECP.UnitTests.ApplicationLayer
         {
             var info = new DeviceIdentification();
             TC.Device.Execute(info);
-            Assert.AreEqual(expected: TC.Slave.Beacon.Device, actual: info.Device);
+            Assert.AreEqual(expected: TC.Slave.Beacon.Serial, actual: info.SerialNumber.ToString(CultureInfo.InvariantCulture));
             Assert.AreEqual(expected: TC.Slave.Beacon.DeviceID, actual: info.DeviceID);
         }
 

@@ -136,7 +136,7 @@ namespace Inventors.ECP
             }
         }
 
-        public bool DispatchMessage(Packet packet)
+        private bool DispatchMessage(Packet packet)
         {
             bool retValue = false;
 
@@ -153,7 +153,7 @@ namespace Inventors.ECP
             return retValue;
         }
 
-        public bool DispatchFunction(Packet packet, out DeviceFunction function)
+        private bool DispatchFunction(Packet packet, out DeviceFunction function)
         {
             bool retValue = false;
             function = null;
