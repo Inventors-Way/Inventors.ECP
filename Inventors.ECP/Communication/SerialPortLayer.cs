@@ -72,24 +72,28 @@ namespace Inventors.ECP.Communication
                 {
                     if (port.IsOpen)
                     {
-                        port.BaseStream.BeginRead(buffer, 0, buffer.Length, delegate (IAsyncResult ar)
+                        try
                         {
-                            try
+                            port.BaseStream.BeginRead(buffer, 0, buffer.Length, delegate (IAsyncResult ar)
                             {
-                                int bytesRead = port.BaseStream.EndRead(ar);
-                                byte[] received = new byte[bytesRead];
-                                Buffer.BlockCopy(buffer, 0, received, 0, bytesRead);
-
-                                foreach (var b in received)
+                                try
                                 {
-                                    Destuffer.Add(b);
-                                    ++BytesReceived;
-                                }
-                            }
-                            catch { }
+                                    int bytesRead = port.BaseStream.EndRead(ar);
+                                    byte[] received = new byte[bytesRead];
+                                    Buffer.BlockCopy(buffer, 0, received, 0, bytesRead);
 
-                            reader();
-                        }, null);
+                                    foreach (var b in received)
+                                    {
+                                        Destuffer.Add(b);
+                                        ++BytesReceived;
+                                    }
+                                }
+                                catch { }
+
+                                reader();
+                            }, null);
+                        }
+                        catch { }
                     }
                 }
             }

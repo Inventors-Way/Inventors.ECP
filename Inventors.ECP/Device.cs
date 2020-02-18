@@ -248,8 +248,8 @@ namespace Inventors.ECP
             }
         }
 
-        public async Task ExecuteAsync(DeviceFunction function) =>
-            await Task.Run(() => { Execute(function); }).ConfigureAwait(false);
+        public async Task ExecuteAsync(DeviceFunction function) => 
+            await Task.Run(() => Execute(function)).ConfigureAwait(false);
 
         public void Send(DeviceMessage message)
         {

@@ -21,7 +21,7 @@ using Inventors.ECP.Communication;
 
 namespace Inventors.ECP.Tester
 {
-    public partial class MainWindow : 
+    public partial class MainWindow :
         Form
     {
         private enum AppState
@@ -139,7 +139,7 @@ namespace Inventors.ECP.Tester
             }
             catch (Exception e)
             {
-                UpdateAppStates(AppState.APP_STATE_INITIALIZED);
+                UpdateAppStates(AppState.APP_STATE_UNINITIALIZED);
                 Log.Error(e.Message);
                 MessageBox.Show(e.Message, "Error loading device");
             }
@@ -218,7 +218,7 @@ namespace Inventors.ECP.Tester
                 if (!device.IsOpen)
                 {
                     Log.Debug("Updating ports");
-                    await UpdatePorts();                    
+                    await UpdatePorts();
                 }
             }
         }
@@ -277,7 +277,7 @@ namespace Inventors.ECP.Tester
             }
         }
 
-        private async void FunctionList_DoubleClick(object sender, EventArgs e)
+        private void FunctionList_DoubleClick(object sender, EventArgs e)
         {
             if (state == AppState.APP_STATE_CONNECTED)
             {
@@ -288,7 +288,7 @@ namespace Inventors.ECP.Tester
                         functionList.Enabled = false;
                         testToolStripMenuItem.Enabled = false;
                         UpdateAppStates(AppState.APP_STATE_ACTIVE);
-                        await Execute(functionList.SelectedItem as DeviceFunction, true);
+                        Execute(functionList.SelectedItem as DeviceFunction, true);
                     }
                     catch { }
 
@@ -400,21 +400,20 @@ namespace Inventors.ECP.Tester
 
         #endregion
         #region Functions and message handling
-        private async Task Execute(DeviceFunction function, bool doLogging = false)
+        private async void Execute(DeviceFunction function, bool doLogging = false)
         {
             if (device != null)
             {
                 try
                 {
-                    await device.ExecuteAsync(function).ConfigureAwait(true);
+                    await device.ExecuteAsync(function);
 
                     if (doLogging)
                     {
                         Log.Status(String.Format("Complete [{0}] ({1}ms)", function.ToString(), function.TransmissionTime));
 
-                        if (function is DeviceIdentification)
+                        if (function is DeviceIdentification identification)
                         {
-                            DeviceIdentification identification = function as DeviceIdentification;
                             if (!device.IsCompatible(identification))
                             {
                                 Log.Error("Incompatible device: {0} [{1}:{2}]",
@@ -434,6 +433,16 @@ namespace Inventors.ECP.Tester
 
                     propertyGrid.Refresh();
                 }
+                catch (AggregateException ae)
+                {
+                    if (doLogging)
+                    {
+                        foreach (var ie in ae.InnerExceptions)
+                        {
+                            Log.Error("EXCEPTION:" + function.ToString() + " [" + ie.Message + " ] ");
+                        }
+                    }
+                }
                 catch (Exception e)
                 {
                     if (doLogging)
@@ -444,7 +453,7 @@ namespace Inventors.ECP.Tester
                     throw;
                 }
             }
-        }      
+        }
 
         #endregion
 
