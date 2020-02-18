@@ -118,22 +118,31 @@ namespace Inventors.ECP.Tester
         }
 
         private async void LoadDevice(string fileName)
-        {            
-            var loader = DeviceLoader.Load(fileName);
-            Log.Status("Device: {0}", loader.AssemblyName);
-            device = loader.Create();
+        {
+            try
+            {
+                var loader = DeviceLoader.Load(fileName);
+                Log.Status("Device: {0}", loader.AssemblyName);
+                device = loader.Create();
 
-            device.Profiler.Profiling = loader.Profiling;
-            device.Profiler.Trials = loader.Trials;
-            device.Profiler.TestDelay = loader.TestDelay;
-            Log.Status("Profiler: {0} (Test Trials: {1}, Test Delay: {2})", 
-                loader.Profiling ? "ENABLED" : "DISABLED", 
-                device.Profiler.Trials,
-                device.Profiler.TestDelay);
-            UpdateProfiling();
-            InitializeFunctions();
-            await UpdatePorts();
-            UpdateAppStates(AppState.APP_STATE_INITIALIZED);
+                device.Profiler.Profiling = loader.Profiling;
+                device.Profiler.Trials = loader.Trials;
+                device.Profiler.TestDelay = loader.TestDelay;
+                Log.Status("Profiler: {0} (Test Trials: {1}, Test Delay: {2})",
+                    loader.Profiling ? "ENABLED" : "DISABLED",
+                    device.Profiler.Trials,
+                    device.Profiler.TestDelay);
+                UpdateProfiling();
+                InitializeFunctions();
+                await UpdatePorts();
+                UpdateAppStates(AppState.APP_STATE_INITIALIZED);
+            }
+            catch (Exception e)
+            {
+                UpdateAppStates(AppState.APP_STATE_INITIALIZED);
+                Log.Error(e.Message);
+                MessageBox.Show(e.Message, "Error loading device");
+            }
         }
 
         private bool CheckDevicesChanged(List<DeviceType> devices)
