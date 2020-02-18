@@ -85,10 +85,7 @@ namespace Inventors.ECP.UnitTests.TransportLayer
 
         private void Send(Destuffer destuffer, byte[] frame)
         {
-            foreach (var data in frame)
-            {
-                destuffer.Add(data);
-            }
+            destuffer.Add(frame.Length, frame);
         }
 
         private void Destruffer_OnReceive(Destuffer sender, byte[] frame)

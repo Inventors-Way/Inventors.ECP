@@ -5,7 +5,8 @@
     <Version>1.3.3</Version>
     <Authors>Inventors' Way</Authors>
     <Company>Inventors' Way ApS</Company>
-    <Description>Implementation of the ECP Communications protocol for embedded devices</Description>
+    <Description>Fixed a deadlock in the ECP Tester.
+This cause the program to be slugish when not connected, will be solved in a later release.</Description>
     <Copyright>Copyright 2019 Inventors Way ApS</Copyright>
     <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/Inventors-Way/Inventors.ECP</PackageProjectUrl>

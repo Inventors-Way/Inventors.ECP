@@ -121,10 +121,7 @@ namespace Inventors.ECP.Communication
         {
             await Task.Run(() =>
             {
-                foreach (var d in data)
-                {
-                    Destuffer.Add(d);
-                }
+                Destuffer.Add(data.Length, data);
             }).ConfigureAwait(false);
         }
 

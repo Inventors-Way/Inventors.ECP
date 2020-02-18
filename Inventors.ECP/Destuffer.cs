@@ -26,24 +26,32 @@ namespace Inventors.ECP
             buffer.Clear();
         }
 
-        public void Add(byte data)
+        public void Add(int length, byte[] buffer)
         {
-            switch (state)
+            if (buffer is object)
             {
-                case State.WAITING_FOR_DLE:
-                    HandleWaitingForDLE(data);
-                    break;
+                for (int n = 0; n < length; ++n)
+                {
+                    var data = buffer[n];
 
-                case State.WAITING_FOR_STX:
-                    HandleWaitingForSTX(data);
-                    break;
+                    switch (state)
+                    {
+                        case State.WAITING_FOR_DLE:
+                            HandleWaitingForDLE(data);
+                            break;
 
-                case State.RECEIVING_DATA:
-                    HandleReceivingData(data);
-                    break;
-                case State.WAITING_FOR_ETX:
-                    HandleWaitingForETX(data);
-                    break;
+                        case State.WAITING_FOR_STX:
+                            HandleWaitingForSTX(data);
+                            break;
+
+                        case State.RECEIVING_DATA:
+                            HandleReceivingData(data);
+                            break;
+                        case State.WAITING_FOR_ETX:
+                            HandleWaitingForETX(data);
+                            break;
+                    }
+                }
             }
         }
 

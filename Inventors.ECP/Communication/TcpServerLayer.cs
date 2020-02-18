@@ -185,10 +185,7 @@ namespace Inventors.ECP.Communication
                 {
                     if (ipPort == ClientPort)
                     {
-                        foreach (var d in data)
-                        {
-                            Destuffer.Add(d);
-                        }
+                        Destuffer.Add(data.Length, data);
                     }
                 }
             }).ConfigureAwait(false);

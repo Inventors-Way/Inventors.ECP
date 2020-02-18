@@ -81,12 +81,8 @@ namespace Inventors.ECP.Communication
                                     int bytesRead = port.BaseStream.EndRead(ar);
                                     byte[] received = new byte[bytesRead];
                                     Buffer.BlockCopy(buffer, 0, received, 0, bytesRead);
-
-                                    foreach (var b in received)
-                                    {
-                                        Destuffer.Add(b);
-                                        ++BytesReceived;
-                                    }
+                                    Destuffer.Add(bytesRead, received);
+                                    BytesReceived += bytesRead;
                                 }
                                 catch { }
 

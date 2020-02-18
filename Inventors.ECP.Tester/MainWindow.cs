@@ -134,7 +134,7 @@ namespace Inventors.ECP.Tester
                     device.Profiler.TestDelay);
                 UpdateProfiling();
                 InitializeFunctions();
-                await UpdatePorts();
+                UpdatePorts();
                 UpdateAppStates(AppState.APP_STATE_INITIALIZED);
             }
             catch (Exception e)
@@ -171,13 +171,13 @@ namespace Inventors.ECP.Tester
             return false;
         }
 
-        private async Task UpdatePorts()
+        private void UpdatePorts()
         {
             if (!device.IsOpen)
             {
                 var timeout = device.Timeout;
                 device.Timeout = 100;
-                var devices = await device.GetAvailableDevicesAsync().ConfigureAwait(true);
+                var devices = device.GetAvailableDevices(); // Async().ConfigureAwait(true);
                 device.Timeout = timeout;
 
                 if (CheckDevicesChanged(devices))
@@ -211,14 +211,14 @@ namespace Inventors.ECP.Tester
             }
         }
 
-        private async void DeviceTimer_Tick(object sender, EventArgs e)
+        private void DeviceTimer_Tick(object sender, EventArgs e)
         {
             if (device is object)
             {
                 if (!device.IsOpen)
                 {
                     Log.Debug("Updating ports");
-                    await UpdatePorts();
+                    UpdatePorts();
                 }
             }
         }
@@ -307,7 +307,7 @@ namespace Inventors.ECP.Tester
             }
         }
 
-        private async void ConnectToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ConnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (selectedDevice is object)
             {
@@ -315,7 +315,7 @@ namespace Inventors.ECP.Tester
                 {
                     deviceTimer.Enabled = false;
                     device.Port = selectedDevice.Port;
-                    await device.ConnectAsync().ConfigureAwait(true);
+                    device.Connect();
                     Log.Status("Device Connected: {0} [{1}]", device.ToString(), device.Port);
                     UpdateAppStates(AppState.APP_STATE_CONNECTED);
                 }
@@ -332,11 +332,11 @@ namespace Inventors.ECP.Tester
             }
         }
 
-        private async void DisconnectToolStripMenuItem_Click(object sender, EventArgs e)
+        private void DisconnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
-                await device.DisconnectAsync().ConfigureAwait(true);
+                device.Disconnect();
                 UpdateAppStates(AppState.APP_STATE_INITIALIZED);
                 Log.Status("Device disconnected: {0} [{1}]", device.ToString(), device.Port);
                 deviceTimer.Enabled = true;
