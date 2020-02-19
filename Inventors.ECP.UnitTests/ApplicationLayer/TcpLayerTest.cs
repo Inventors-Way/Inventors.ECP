@@ -53,14 +53,16 @@ namespace Inventors.ECP.UnitTests.ApplicationLayer
         public void BeaconTest()
         {
             List<BeaconLocation> locations = new List<BeaconLocation>();
-            var probe = new Probe(TC.Slave.Beacon);
-            probe.BeaconsUpdated += (beacons) => locations = beacons.ToList();
-            probe.Start();
-            Thread.Sleep(500);
-            probe.Stop();
-            Assert.AreEqual(expected: 1, actual: locations.Count);
-            var beacon = locations[0];
-            Assert.AreEqual(expected: TC.Slave.Beacon.Data, actual: beacon.Data);
+            using (var probe = new Probe(TC.Slave.Beacon))
+            {
+                probe.BeaconsUpdated += (beacons) => locations = beacons.ToList();
+                probe.Start();
+                Thread.Sleep(500);
+                probe.Stop();
+                Assert.AreEqual(expected: 1, actual: locations.Count);
+                var beacon = locations[0];
+                Assert.AreEqual(expected: TC.Slave.Beacon.Data, actual: beacon.Data);
+            }
         }
 
         [TestMethod]
