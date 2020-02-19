@@ -106,7 +106,7 @@ namespace Inventors.ECP.UnitTests.Utility
         [TestMethod]
         public void NetworkLocationNoDevice()
         {
-            var location = Location.Parse("network://192.172.0.1:1001");
+            var location = Location.Parse("tcp://192.172.0.1:1001");
 
             Assert.AreEqual(expected: CommunicationProtocol.NETWORK, actual: location.Protocol);
             Assert.AreEqual(expected: "192.172.0.1", actual: location.Address);
@@ -114,13 +114,13 @@ namespace Inventors.ECP.UnitTests.Utility
             Assert.AreEqual(expected: Manufacturer.Invalid, actual: location.ManufacturerID);
             Assert.AreEqual<ushort>(expected: 0, actual: location.DeviceID);
             Assert.AreEqual<UInt32>(expected: 0, actual: location.SerialNumber);
-            Assert.AreEqual(expected: "network://192.172.0.1:1001", actual: location.ToString());
+            Assert.AreEqual(expected: "tcp://192.172.0.1:1001", actual: location.ToString());
         }
 
         [TestMethod]
         public void NetworkLocationNoSerialNumber()
         {
-            var location = Location.Parse("network://192.172.0.1:1001/1.1");
+            var location = Location.Parse("tcp://192.172.0.1:1001/1.1");
 
             Assert.AreEqual(expected: CommunicationProtocol.NETWORK, actual: location.Protocol);
             Assert.AreEqual(expected: "192.172.0.1", actual: location.Address);
@@ -128,13 +128,13 @@ namespace Inventors.ECP.UnitTests.Utility
             Assert.AreEqual(expected: Manufacturer.InventorsWay, actual: location.ManufacturerID);
             Assert.AreEqual<ushort>(expected: 1, actual: location.DeviceID);
             Assert.AreEqual<UInt32>(expected: 0, actual: location.SerialNumber);
-            Assert.AreEqual(expected: "network://192.172.0.1:1001/1.1", actual: location.ToString());
+            Assert.AreEqual(expected: "tcp://192.172.0.1:1001/1.1", actual: location.ToString());
         }
 
         [TestMethod]
         public void NetworkLocation()
         {
-            var location = Location.Parse("network://192.172.0.1:1001/1.1/10");
+            var location = Location.Parse("tcp://192.172.0.1:1001/1.1/10");
 
             Assert.AreEqual(expected: CommunicationProtocol.NETWORK, actual: location.Protocol);
             Assert.AreEqual(expected: "192.172.0.1", actual: location.Address);
@@ -142,13 +142,13 @@ namespace Inventors.ECP.UnitTests.Utility
             Assert.AreEqual(expected: Manufacturer.InventorsWay, actual: location.ManufacturerID);
             Assert.AreEqual<ushort>(expected: 1, actual: location.DeviceID);
             Assert.AreEqual<UInt32>(expected: 10, actual: location.SerialNumber);
-            Assert.AreEqual(expected: "network://192.172.0.1:1001/1.1/10", actual: location.ToString());
+            Assert.AreEqual(expected: "tcp://192.172.0.1:1001/1.1/10", actual: location.ToString());
         }
 
         [TestMethod]
         public void InvalidManufacturer()
         {
-            var location = Location.Parse("serial://COM1/99.1/10");
+            Assert.ThrowsException<ArgumentException>(() => Location.Parse("serial://COM1/99.1/10"));
         }
     }
 }

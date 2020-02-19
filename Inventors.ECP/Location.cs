@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
@@ -11,7 +12,7 @@ namespace Inventors.ECP
      * Detailed description, the encoding string is of the form:
      * 
      *    serial://COM1{/MID.DID/SERIAL_NUMBER}
-     *    network://192.172.0.1:10001{/MID.DID/SERIAL_NUMBER}
+     *    tcp://192.172.0.1:10001{/MID.DID/SERIAL_NUMBER}
      *    COM1{/MID.DID}{/SERIAL_NUMBER}
      * 
      * where {} denotes optional parts
@@ -32,7 +33,7 @@ namespace Inventors.ECP
     public class Location
     {
         private static readonly string serialStr = "serial://";
-        private static readonly string networkStr = "network://";
+        private static readonly string networkStr = "tcp://";
 
         [XmlIgnore]
         public CommunicationProtocol Protocol { get; private set; } = CommunicationProtocol.SERIAL;
@@ -78,6 +79,8 @@ namespace Inventors.ECP
         private void ParseSerial(string str)
         {
             var tokens = str.Split('/');
+
+            Protocol = CommunicationProtocol.SERIAL;
 
             if (tokens.Length == 1)
             {
@@ -159,21 +162,40 @@ namespace Inventors.ECP
         {
             var tokens = str.Split('/');
 
+            Protocol = CommunicationProtocol.NETWORK;
+
             if (tokens.Length == 1)
             {
-
+                ParseNetworkAddress(tokens[0]);
             }
             else if (tokens.Length == 2)
             {
-
+                ParseNetworkAddress(tokens[0]);
+                ParseDevice(tokens[1]);
             }
             else if (tokens.Length == 3)
             {
-
+                ParseNetworkAddress(tokens[0]);
+                ParseDevice(tokens[1]);
+                ParseSerialNumber(tokens[2]);
             }
             else
             {
-                throw new ArgumentException("{0} is not a valid string encoding a network device location");
+                throw new ArgumentException(str + " is not a valid string encoding a network device location");
+            }
+        }
+
+        private void ParseNetworkAddress(string str)
+        {
+            if (!ValidateNetworkAddress(str))
+                throw new ArgumentException(str + " is not a valid network address");
+
+            var tokens = str.Split(':');
+
+            if (tokens.Length == 2)
+            {
+                Address = tokens[0];
+                Port = ushort.Parse(tokens[1]);
             }
         }
 
@@ -223,7 +245,7 @@ namespace Inventors.ECP
                 case CommunicationProtocol.NETWORK:
                     return String.Format(CultureInfo.InvariantCulture,
                                          "{0}{1}:{2}{3}{4}",
-                                         serialStr,
+                                         networkStr,
                                          Address,
                                          Port,
                                          DeviceString(),
