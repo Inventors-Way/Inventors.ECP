@@ -118,13 +118,11 @@ namespace Inventors.ECP
 
             var tokens = device.Split('.');
             
-            if (UInt32.TryParse(tokens[0], out UInt32 result))
+            if (UInt32.TryParse(tokens[0], out UInt32 mid))
             {
-                var manufacturer = (Manufacturer)result;
-
-                if (Enum.TryParse<Manufacturer>(manufacturer.ToString(), out Manufacturer mid))
+                if (ValidateManufacturer(mid))
                 {
-                    ManufacturerID = mid;
+                    ManufacturerID = (Manufacturer) mid;
                 }
                 else
                 {
@@ -136,9 +134,9 @@ namespace Inventors.ECP
                 throw new ArgumentException("Not a valid integer: " + tokens[0]);
             }
 
-            if (ushort.TryParse(tokens[1], out ushort id))
+            if (ushort.TryParse(tokens[1], out ushort did))
             {
-                DeviceID = id;
+                DeviceID = did;
             }
             else
             {
@@ -207,6 +205,9 @@ namespace Inventors.ECP
 
         private static bool ValidateDevice(string token) => 
             Regex.IsMatch(token, "^[1-9][0-9]*\\.[1-9][0-9]*$");
+
+        private static bool ValidateManufacturer(UInt32 value) =>
+            Enum.IsDefined(typeof(Manufacturer), value);
 
         public Location() { }
 
