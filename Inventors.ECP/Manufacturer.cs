@@ -7,6 +7,7 @@ namespace Inventors.ECP
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1028:Enum Storage should be Int32", Justification = "Required as it is for embeded software")]
     public enum Manufacturer : UInt32
     {
+        Invalid = 0,
         /// <summary>
         /// Inventors' Way ApS
         /// Morten Nielsens Vej 6

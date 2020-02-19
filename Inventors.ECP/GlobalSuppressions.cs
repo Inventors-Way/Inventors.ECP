@@ -9,3 +9,6 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>", Scope = "member", Target = "~M:Inventors.ECP.Discovery.Probe.ResponseReceived(System.IAsyncResult)")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>", Scope = "member", Target = "~M:Inventors.ECP.Discovery.Probe.BackgroundLoop")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>", Scope = "member", Target = "~M:Inventors.ECP.Discovery.Probe.Dispose(System.Boolean)")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1802:Use literals where appropriate", Justification = "<Pending>", Scope = "member", Target = "~F:Inventors.ECP.Location.serialStr")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1802:Use literals where appropriate", Justification = "<Pending>", Scope = "member", Target = "~F:Inventors.ECP.Location.networkStr")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>", Scope = "member", Target = "~M:Inventors.ECP.Location.ParseSerial(System.String)")]
