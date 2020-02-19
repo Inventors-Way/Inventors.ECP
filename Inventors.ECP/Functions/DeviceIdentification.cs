@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Inventors.ECP;
+using Inventors.ECP.Communication;
 
 namespace Inventors.ECP.Functions
 {

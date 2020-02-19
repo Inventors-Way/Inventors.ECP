@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Inventors.Logging;
 
-namespace Inventors.ECP
+namespace Inventors.ECP.Communication
 {
     public class Destuffer
     {

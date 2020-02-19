@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Inventors.ECP
+namespace Inventors.ECP.Communication
 {
     public class FunctionDispatcher
     {
