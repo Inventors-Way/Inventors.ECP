@@ -8,7 +8,7 @@ namespace Inventors.ECP.Communication.Discovery
 {
     public class BeaconID
     {
-        public BeaconID(UInt32 manufactuer, UInt16 device, UInt32 serial)
+        public BeaconID(Manufacturer manufactuer, UInt16 device, UInt32 serial = 0)
         {
             ManufactureID = manufactuer;
             DeviceID = device;
@@ -16,7 +16,7 @@ namespace Inventors.ECP.Communication.Discovery
         }
 
         [XmlAttribute("manufacturer-id")]
-        public UInt32 ManufactureID { get; set; } = 1;
+        public Manufacturer ManufactureID { get; set; } = Manufacturer.Generic;
 
         [XmlAttribute("device-id")]
         public UInt16 DeviceID { get; set; } = 1;

@@ -44,7 +44,7 @@ namespace Inventors.ECP.DefaultDevice
 
         [Browsable(false)]
         [XmlIgnore]
-        public BeaconID Beacon { get; private set; } = new BeaconID(1, 1, 1000);
+        public BeaconID Beacon { get; private set; } = new BeaconID(Manufacturer.Generic, 1, 1000);
 
         [Browsable(false)]
         [XmlIgnore]
