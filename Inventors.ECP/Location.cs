@@ -92,6 +92,7 @@ namespace Inventors.ECP
             {
                 ParseSerialPortAddress(tokens[0]);
                 ParseDevice(tokens[1]);
+                ParseSerialNumber(tokens[2]);
             }
             else
             {
@@ -147,6 +148,10 @@ namespace Inventors.ECP
             if (UInt32.TryParse(str, out UInt32 result))
             {
                 SerialNumber = result;
+            }
+            else
+            {
+                throw new ArgumentException(str + " is not a valid serial number");
             }
         }
 
