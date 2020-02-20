@@ -32,15 +32,15 @@ namespace Inventors.ECP.Functions
 
         [Category("Manufacturer")]
         [Description("The identifier of the manufacturer")]
-        public UInt32 ManufactureID
+        public Manufacturer ManufactureID
         {
             get
             {
-                return Response.GetUInt32(0);
+                return (Manufacturer) Response.GetUInt32(0);
             }
             set
             {
-                Response.InsertUInt32(0, value);
+                Response.InsertUInt32(0, (UInt32) value);
             }
         }
 

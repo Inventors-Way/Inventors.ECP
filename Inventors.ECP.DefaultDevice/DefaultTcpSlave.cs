@@ -28,15 +28,15 @@ namespace Inventors.ECP.DefaultDevice
 
         [Browsable(false)]
         [XmlIgnore]
-        public Location Port { get; set; }
+        public Location Port { get; set; } = new Location(new IPEndPoint(TcpServerLayer.LocalAddress, 9000));
 
         [Browsable(false)]
-        [XmlAttribute("port")]
-        public ushort IPPort { get; set; }
-
-        [Browsable(false)]
-        [XmlAttribute("loopback")]
-        public bool Loopback { get; set; }
+        [XmlAttribute("address")]
+        public string IPPort 
+        {
+            get => Port.ToString();
+            set => Port = Location.Parse(value);
+        }
 
         [Browsable(false)]
         [XmlIgnore]
@@ -69,11 +69,6 @@ namespace Inventors.ECP.DefaultDevice
         {
             if (!IsOpen)
             {
-                if (Port is null)
-                {
-                    Port = new Location(Loopback ? IPAddress.Loopback : TcpServerLayer.LocalAddress, IPPort);
-
-                }
                 Log.Debug("Port: {0} (Beacon: {1})", Port, Beacon.ToString());
                 commLayer = new TcpServerLayer(Port);
                 slave = new DeviceSlave(commLayer)
@@ -106,8 +101,8 @@ namespace Inventors.ECP.DefaultDevice
 
         public bool Accept(DeviceIdentification func)
         {
-            func.DeviceID = 1;
-            func.ManufactureID = 1;
+            func.DeviceID = Port.DeviceID;
+            func.ManufactureID = Port.ManufacturerID;
             func.Manufacture = "Inventors' Way";
             func.Device = "Default Device";
             func.MajorVersion = 1;
