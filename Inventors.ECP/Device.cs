@@ -127,9 +127,20 @@ namespace Inventors.ECP
                 var retries = Retries;
                 Retries = Retries > 3 ? Retries : 3;
                 retValue = new DeviceIdentification();
-                Master.Open();
-                WaitOnConnected(200);
-                Execute(retValue);
+
+                try
+                {
+                    Master.Open();
+                    WaitOnConnected(200);
+                    Execute(retValue);
+                }
+                catch
+                {
+                    Master.Close();
+                    Retries = retries;
+                    throw;
+                }
+
                 Retries = retries;
 
                 if (IsCompatible(retValue))
