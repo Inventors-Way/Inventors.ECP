@@ -109,7 +109,7 @@ namespace Inventors.ECP
 
         protected Device(CommunicationLayer commLayer)
         {
-            this.Master = new DeviceMaster(commLayer);
+            Master = new DeviceMaster(commLayer);
             Master.MessageListener = this;
             Master.Add(new PrintfMessage());
         }
