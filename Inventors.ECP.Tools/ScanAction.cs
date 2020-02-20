@@ -29,18 +29,18 @@ namespace Inventors.ECP.Tools
                 device.Timeout = 100;
 
                 Console.Write("Scanning for devices ... ");
-                var available = device.GetAvailableDevices();
+                var locations = device.GetLocationsDevices();
                 Console.WriteLine("completed");
                 Console.WriteLine();
                 Console.WriteLine(fmtStrHeader, "PORT", "DEVICE");
-
-                foreach (var current in available)
+                /*
+                foreach (var current in locations)
                 {
                     Console.WriteLine(fmtStr,
                         current.Port,
                         "[" + current.ManufactureID.ToString() + "." + current.DeviceID.ToString() + "] " + current.Device,
                         current.SerialNumber);
-                }
+                }*/
             }
 
             return retValue;

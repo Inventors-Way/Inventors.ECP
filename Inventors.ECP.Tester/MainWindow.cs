@@ -34,7 +34,7 @@ namespace Inventors.ECP.Tester
 
         private Logger logger;
         private Device device = null;
-        private DeviceType selectedDevice = null;
+        private Location selectedDevice = null;
         private AppState state = AppState.APP_STATE_UNINITIALIZED;
 
         public MainWindow()
@@ -145,18 +145,18 @@ namespace Inventors.ECP.Tester
             }
         }
 
-        private bool CheckDevicesChanged(List<DeviceType> devices)
+        private bool CheckDevicesChanged(List<Location> locations)
         {
-            if (devices.Count != portMenuItem.DropDownItems.Count)
+            if (locations.Count != portMenuItem.DropDownItems.Count)
                 return true;
 
-            if (devices.Count == portMenuItem.DropDownItems.Count)
+            if (locations.Count == portMenuItem.DropDownItems.Count)
             {
-                for (int n = 0; n < devices.Count; ++n)
+                for (int n = 0; n < locations.Count; ++n)
                 {
-                    if (portMenuItem.DropDownItems[n].Tag is DeviceType menuDevice)
+                    if (portMenuItem.DropDownItems[n].Tag is Location menuDevice)
                     {
-                        if (menuDevice.ToString() != devices[n].ToString())
+                        if (menuDevice.ToString() != locations[n].ToString())
                         {
                             return true;
                         }
@@ -175,10 +175,7 @@ namespace Inventors.ECP.Tester
         {
             if (!device.IsOpen)
             {
-                var timeout = device.Timeout;
-                device.Timeout = 100;
-                var devices = device.GetAvailableDevices(); // Async().ConfigureAwait(true);
-                device.Timeout = timeout;
+                var devices = device.GetLocationsDevices(); 
 
                 if (CheckDevicesChanged(devices))
                 {
@@ -217,7 +214,6 @@ namespace Inventors.ECP.Tester
             {
                 if (!device.IsOpen)
                 {
-                    Log.Debug("Updating ports");
                     UpdatePorts();
                 }
             }
@@ -229,10 +225,10 @@ namespace Inventors.ECP.Tester
             {
                 if (!device.IsOpen)
                 {
-                    if (e.ClickedItem.Tag is DeviceType current)
+                    if (e.ClickedItem.Tag is Location current)
                     {
                         Log.Debug("Port changed to: {0}", e.ClickedItem.Text);
-                        device.Port = current.Port;
+                        device.Port = current;
                         selectedDevice = current;
 
                         foreach (var item in portMenuItem.DropDownItems)
@@ -314,7 +310,7 @@ namespace Inventors.ECP.Tester
                 try
                 {
                     deviceTimer.Enabled = false;
-                    device.Port = selectedDevice.Port;
+                    device.Port = selectedDevice;
                     device.Connect();
                     Log.Status("Device Connected: {0} [{1}]", device.ToString(), device.Port);
                     UpdateAppStates(AppState.APP_STATE_CONNECTED);

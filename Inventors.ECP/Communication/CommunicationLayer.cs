@@ -11,9 +11,11 @@ namespace Inventors.ECP.Communication
 {
     public abstract class CommunicationLayer
     {
+        public abstract CommunicationProtocol Protocol { get; }
+
         public abstract int BaudRate { get; set; }
 
-        public abstract string Port { get; set; }
+        public abstract Location Port { get; set; }
 
         public bool ResetOnConnection { get; set; } = false;
 
@@ -31,7 +33,11 @@ namespace Inventors.ECP.Communication
             testWatch.Restart();
         }
 
-        public abstract List<string> GetAvailablePorts();
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>A list of device locations</returns>
+        public abstract List<Location> GetLocations();
 
         public CommunicationLayerStatistics GetStatistics()
         {
@@ -45,19 +51,9 @@ namespace Inventors.ECP.Communication
             };
         }
 
-        public static string FormatTcpPort(IPAddress localAddress, ushort port) => new IPEndPoint(localAddress, port).ToString();
-
-        public static string FormatTcpPort(long localAddress, ushort port) => new IPEndPoint(localAddress, port).ToString();
-
-        public CommunicationLayer SetTcpPort(long address, ushort port)
+        public CommunicationLayer SetLocation(Location location)
         {
-            Port = FormatTcpPort(address, port);
-            return this;
-        }
-
-        public CommunicationLayer SetTcpPort(IPAddress address, ushort port)
-        {
-            Port = FormatTcpPort(address, port);
+            Port = location;
             return this;
         }
 

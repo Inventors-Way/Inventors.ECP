@@ -24,7 +24,7 @@ namespace Inventors.ECP
 
         public int Timeout { get; set; }
 
-        public string Port
+        public Location Port
         {
             get => connection.Port;
             set => connection.Port = value;
@@ -201,7 +201,7 @@ namespace Inventors.ECP
 
         private List<MessageDispatcher> Dispatchers { get; } = new List<MessageDispatcher>();
 
-        public List<string> GetAvailablePorts() => connection.GetAvailablePorts();
+        public List<Location> GetLocations() => connection.GetLocations();
 
         public dynamic MessageListener { get; set; } = null;
 

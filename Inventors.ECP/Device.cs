@@ -85,7 +85,7 @@ namespace Inventors.ECP
         #region Port
         [Browsable(false)]
         [XmlIgnore]
-        public string Port
+        public Location Port
         {
             get => Master.Port;
             set => Master.Port = NotifyIfChanged(Master.Port, value);
@@ -114,46 +114,9 @@ namespace Inventors.ECP
             Master.Add(new PrintfMessage());
         }
 
-        public List<DeviceType> GetAvailableDevices()
-        {
-            if (Master.IsOpen)
-            {
-                throw new InvalidOperationException();
-            }
-
-            var retValue = new List<DeviceType>();
-            var currentPort = Master.Port;
-
-            foreach (var port in Master.GetAvailablePorts())
-            {
-                try
-                {
-                    Master.Port = port;
-                    var devId = Connect();
-                    var devType = new DeviceType(port, devId);
-
-                    if (IsCompatible(devId))
-                    {
-                        retValue.Add(devType);
-                    }
-
-                    Close();
-                }
-                catch 
-                {
-                    Close();
-                }
-            }
-
-            Master.Port = currentPort;
-
-            return retValue;
-        }
+        public List<Location> GetLocationsDevices() => Master.GetLocations();
 
         public CommunicationLayerStatistics GetStatistics() => Master.GetStatistics();
-
-        public async Task<List<DeviceType>> GetAvailableDevicesAsync() =>
-            await Task.Run(() => GetAvailableDevices()).ConfigureAwait(false);
 
         public virtual DeviceIdentification Connect()
         {

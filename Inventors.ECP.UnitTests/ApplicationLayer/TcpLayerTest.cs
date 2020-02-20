@@ -72,7 +72,7 @@ namespace Inventors.ECP.UnitTests.ApplicationLayer
             Log.Debug("TESTING GET TCP PORTS");
             device.Close();
             Thread.Sleep(2500);
-            var devices = device.GetAvailableDevices();
+            var devices = device.GetLocationsDevices();
             device.Open();
             Assert.AreEqual(expected: 1, actual: devices.Count);
         }

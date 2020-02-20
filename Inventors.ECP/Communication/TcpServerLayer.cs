@@ -20,12 +20,12 @@ namespace Inventors.ECP.Communication
         private bool _isOpen = false;
         private bool _isConnected = false;
         private string _IpPort = null;
-        private string _port = new IPEndPoint(IPAddress.Loopback, 9000).ToString();
+        private Location _port = new Location(new IPEndPoint(IPAddress.Loopback, 9000));
         private readonly BeaconID _beaconId;
 
         public override int BaudRate { get; set; } = int.MaxValue;
 
-        public override string Port
+        public override Location Port
         {
             get => _port;
             set
@@ -41,32 +41,20 @@ namespace Inventors.ECP.Communication
             }
         }
 
-        public TcpServerLayer(BeaconID id, string port)
+        public TcpServerLayer(Location location)
         {
-            Log.Debug("TCP SERVER [ {0} ]", id);
-            _beaconId = id;
-            Port = port;
+            if (location is null)
+                throw new ArgumentNullException(nameof(location));
+
+            Log.Debug("TCP SERVER [ {0} ]", location.ToString());
+            Port = location;
         }
 
-        public TcpServerLayer(BeaconID id, long address, ushort port)
+        public override CommunicationProtocol Protocol => CommunicationProtocol.NETWORK;
+
+        public override List<Location> GetLocations()
         {
-            _beaconId = id;
-            SetTcpPort(address, port);
-        }
-
-        public TcpServerLayer(BeaconID id, IPAddress address, ushort port)
-        {
-            _beaconId = id;
-            SetTcpPort(address, port);
-        }
-
-        public string Address => Port.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries)[0];
-
-        public int IPPort => int.Parse(Port.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries)[1], CultureInfo.CurrentCulture);
-
-        public override List<string> GetAvailablePorts()
-        {
-            return new List<string>();
+            return new List<Location>();
         }
 
         public override bool IsOpen
@@ -132,13 +120,13 @@ namespace Inventors.ECP.Communication
                 {
                     SetConnected(false);
                     ClientPort = null;
-                    server = new WatsonTcpServer(Address, IPPort);
+                    server = new WatsonTcpServer(Port.Address, Port.Port);
                     server.ClientConnected += OnConnected;
                     server.ClientDisconnected += OnDisconnected;
                     server.MessageReceived += MessageReceived;
                     server.Start();
                     SetOpen(true);
-                    beacon = new Beacon(_beaconId, (ushort)IPPort);
+                    beacon = new Beacon(_beaconId, (ushort)Port.Port);
                     beacon.Start();
                 }
             }

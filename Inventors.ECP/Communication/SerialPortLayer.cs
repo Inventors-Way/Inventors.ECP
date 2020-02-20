@@ -45,7 +45,7 @@ namespace Inventors.ECP.Communication
 
             if (port == null)
             {
-                port = new SerialPort(Port)
+                port = new SerialPort(Port.Address)
                 {
                     BaudRate = BaudRate,
                     Parity = Parity.None,
@@ -126,10 +126,8 @@ namespace Inventors.ECP.Communication
             }
         }
 
-        public override List<string> GetAvailablePorts()
-        {
-            return SerialPort.GetPortNames().ToList();
-        }
+        public override List<Location> GetLocations() =>
+            (from port in SerialPort.GetPortNames() select Location.Parse(port)).ToList();
 
         public override bool IsOpen
         {
@@ -146,9 +144,11 @@ namespace Inventors.ECP.Communication
 
         public override bool IsConnected => IsOpen;
 
-        public override string Port { get; set; }
+        public override Location Port { get; set; }
 
         public override int BaudRate { get; set; }
+
+        public override CommunicationProtocol Protocol => CommunicationProtocol.SERIAL;
 
         private SerialPort port = null;
         private readonly int BlockLimit = 1024;

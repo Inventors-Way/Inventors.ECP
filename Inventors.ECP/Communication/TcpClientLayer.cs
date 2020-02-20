@@ -16,12 +16,13 @@ namespace Inventors.ECP.Communication
         CommunicationLayer,
         IDisposable
     {
+        private readonly BeaconID _id;
         private readonly Probe _probe;
         private readonly List<BeaconLocation> _beacons = new List<BeaconLocation>();
         private WatsonTcpClient _client;
         private bool _open = false;
         private bool _connected = false;
-        private string _port = new IPEndPoint(IPAddress.Loopback, 9000).ToString();
+        private Location _port = new Location(new IPEndPoint(IPAddress.Loopback, 9000));
 
         public override int BaudRate { get; set; } = 1;
 
@@ -31,6 +32,7 @@ namespace Inventors.ECP.Communication
                 throw new ArgumentNullException(nameof(id));
             
             Log.Debug("TCP CLIENT [ {0} ]", id);
+            _id = id;
             _probe = new Probe(id);
             _probe.BeaconsUpdated += (beacons) =>
             {
@@ -43,7 +45,9 @@ namespace Inventors.ECP.Communication
             _probe.Start();
         }
 
-        public override string Port
+        public override CommunicationProtocol Protocol => CommunicationProtocol.NETWORK;
+
+        public override Location Port
         {
             get => _port;
             set
@@ -61,13 +65,7 @@ namespace Inventors.ECP.Communication
 
         public TcpClientLayer() { }
 
-        public TcpClientLayer(long address, ushort port) => SetTcpPort(address, port);
-
-        public TcpClientLayer(IPAddress address, ushort port) => SetTcpPort(address, port);
-
-        public string Address => Port.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries)[0];
-
-        public int IPPort => int.Parse(Port.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries)[1], CultureInfo.CurrentCulture);
+        public TcpClientLayer(Location location) => SetLocation(location);
 
         public override bool IsOpen => _open;
 
@@ -108,7 +106,7 @@ namespace Inventors.ECP.Communication
             if (!IsOpen)
             {
                 SetConnected(false);
-                _client = new WatsonTcpClient(Address, IPPort);
+                _client = new WatsonTcpClient(Port.Address, Port.Port);
                 _client.ServerConnected += OnConnected;
                 _client.ServerDisconnected += OnDisconnected;
                 _client.MessageReceived += MessageReceived;
@@ -129,12 +127,17 @@ namespace Inventors.ECP.Communication
 
         private async Task OnDisconnected() => await Task.Run(() => SetConnected(false)).ConfigureAwait(false);
 
-        public override List<string> GetAvailablePorts()
+        public override List<Location> GetLocations() 
         {            
             lock (_beacons)
             {
                 return (from b in _beacons
-                        select b.Address.ToString()).ToList();
+                        select new Location(protocol: CommunicationProtocol.NETWORK,
+                                            address: b.Address.ToString(),
+                                            manufacturerId: _id.ManufactureID,
+                                            deviceId: _id.DeviceID,
+                                            serialNumber: UInt32.Parse(b.Data)
+                                            )).ToList();
             }
         }
 

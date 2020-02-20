@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Inventors.ECP.Communication.Discovery;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
@@ -52,6 +53,9 @@ namespace Inventors.ECP
 
         [XmlIgnore]
         public UInt32 SerialNumber { get; private set; } = 0;
+
+        [XmlIgnore]
+        public BeaconID BeaconID => new BeaconID(manufactuer: ManufacturerID, device: DeviceID, serial: SerialNumber);
 
         public static Location Parse(string str)
         {
@@ -211,16 +215,54 @@ namespace Inventors.ECP
 
         public Location() { }
 
+        public Location(IPEndPoint endpoint)
+        {
+            if (endpoint is null)
+                throw new ArgumentNullException(nameof(endpoint));
+
+            Protocol = CommunicationProtocol.NETWORK;
+            Address = endpoint.Address.ToString();
+            Port = (ushort) endpoint.Port;
+        }
+
+        public Location(IPAddress address, ushort port)
+        {
+            if (address is null)
+                throw new ArgumentNullException(nameof(address));
+
+            Protocol = CommunicationProtocol.NETWORK;
+            Address = address.ToString();
+            Port = port;
+        }
+
         public Location(CommunicationProtocol protocol, 
                         string address, 
-                        ushort port, 
                         UInt16 deviceId,
                         Manufacturer manufacturerId,
                         UInt32 serialNumber) 
         {
+            if (address is null)
+                throw new ArgumentNullException(nameof(address));
+
+            if (protocol == CommunicationProtocol.NETWORK)
+            {
+                if (!ValidateNetworkAddress(address))
+                    throw new ArgumentException(address + "is not a valid network address");
+
+                ParseNetworkAddress(address);
+            }
+            else if (protocol == CommunicationProtocol.SERIAL)
+            {
+                if (!ValidateSerialPort(address))
+                    throw new ArgumentException(address + " is not a valid serial port");
+
+                Address = address;
+            }
+            else
+            {
+                throw new ArgumentException(protocol.ToString() + " is not a valid protocol");
+            }
             Protocol = protocol;
-            Address = address;
-            Port = port;
             DeviceID = deviceId;
             ManufacturerID = manufacturerId;
             SerialNumber = serialNumber;

@@ -28,7 +28,7 @@ namespace Inventors.ECP.DefaultDevice
 
         [Browsable(false)]
         [XmlIgnore]
-        public string Port { get; set; }
+        public Location Port { get; set; }
 
         [Browsable(false)]
         [XmlAttribute("port")]
@@ -57,9 +57,9 @@ namespace Inventors.ECP.DefaultDevice
         [Browsable(false)]
         public string DeviceFile { get; set; }
 
-        public DefaultTcpSlave SetPort(IPAddress localAddress, ushort port) 
+        public DefaultTcpSlave SetLocation(Location location) 
         {
-            Port = CommunicationLayer.FormatTcpPort(localAddress, port);
+            Port = location;
             return this;
         }
 
@@ -69,12 +69,13 @@ namespace Inventors.ECP.DefaultDevice
         {
             if (!IsOpen)
             {
-                if (string.IsNullOrEmpty(Port))
+                if (Port is null)
                 {
-                    SetPort(Loopback ? IPAddress.Loopback : TcpServerLayer.LocalAddress, IPPort);
+                    Port = new Location(Loopback ? IPAddress.Loopback : TcpServerLayer.LocalAddress, IPPort);
+
                 }
                 Log.Debug("Port: {0} (Beacon: {1})", Port, Beacon.ToString());
-                commLayer = new TcpServerLayer(Beacon, Port);
+                commLayer = new TcpServerLayer(Port);
                 slave = new DeviceSlave(commLayer)
                 {
                     FunctionListener = this,
