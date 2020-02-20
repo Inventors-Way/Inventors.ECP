@@ -1,4 +1,5 @@
-﻿using Inventors.ECP.Communication.Discovery;
+﻿using Inventors.ECP.Communication;
+using Inventors.ECP.Communication.Discovery;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -189,15 +190,30 @@ namespace Inventors.ECP
 
         private void ParseNetworkAddress(string str)
         {
-            if (!ValidateNetworkAddress(str))
-                throw new ArgumentException(str + " is not a valid network address");
-
-            var tokens = str.Split(':');
-
-            if (tokens.Length == 2)
+            if (Regex.IsMatch(str, "^loopback:\\d{1,5}$"))
             {
-                Address = tokens[0];
+                var tokens = str.Split(':');
+                Address = IPAddress.Loopback.ToString();
                 Port = ushort.Parse(tokens[1]);
+            }
+            else if (Regex.IsMatch(str, "^local:\\d{1,5}$"))
+            {
+                var tokens = str.Split(':');
+                Address = TcpServerLayer.LocalAddress.ToString();
+                Port = ushort.Parse(tokens[1]);
+            }
+            else
+            {
+                if (!ValidateNetworkAddress(str))
+                    throw new ArgumentException(str + " is not a valid network address");
+
+                var tokens = str.Split(':');
+
+                if (tokens.Length == 2)
+                {
+                    Address = tokens[0];
+                    Port = ushort.Parse(tokens[1]);
+                }
             }
         }
 
@@ -286,13 +302,38 @@ namespace Inventors.ECP
                                          DeviceString(), 
                                          SerialString());
                 case CommunicationProtocol.NETWORK:
-                    return String.Format(CultureInfo.InvariantCulture,
-                                         "{0}{1}:{2}{3}{4}",
-                                         networkStr,
-                                         Address,
-                                         Port,
-                                         DeviceString(),
-                                         SerialString());
+                    {
+                        if (Address == IPAddress.Loopback.ToString())
+                        {
+                            return String.Format(CultureInfo.InvariantCulture,
+                                                 "{0}{1}:{2}{3}{4}",
+                                                 networkStr,
+                                                 "loopback",
+                                                 Port,
+                                                 DeviceString(),
+                                                 SerialString());
+                        }
+                        else if (Address == TcpServerLayer.LocalAddress.ToString())
+                        {
+                            return String.Format(CultureInfo.InvariantCulture,
+                                                 "{0}{1}:{2}{3}{4}",
+                                                 networkStr,
+                                                 "local",
+                                                 Port,
+                                                 DeviceString(),
+                                                 SerialString());
+                        }
+                        else
+                        {
+                            return String.Format(CultureInfo.InvariantCulture,
+                                                 "{0}{1}:{2}{3}{4}",
+                                                 networkStr,
+                                                 Address,
+                                                 Port,
+                                                 DeviceString(),
+                                                 SerialString());
+                        }
+                    }
                 default:
                     return "";
             }

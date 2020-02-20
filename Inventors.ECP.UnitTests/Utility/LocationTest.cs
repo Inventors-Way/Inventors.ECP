@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using Inventors.ECP;
 using System.Text.RegularExpressions;
+using Inventors.ECP.Communication;
 
 namespace Inventors.ECP.UnitTests.Utility
 {
@@ -143,6 +144,34 @@ namespace Inventors.ECP.UnitTests.Utility
             Assert.AreEqual<ushort>(expected: 1, actual: location.DeviceID);
             Assert.AreEqual<UInt32>(expected: 10, actual: location.SerialNumber);
             Assert.AreEqual(expected: "tcp://192.172.0.1:1001/1.1/10", actual: location.ToString());
+        }
+
+        [TestMethod]
+        public void NetworkLoopbackLocation()
+        {
+            var location = Location.Parse("tcp://loopback:1001/1.1/10");
+
+            Assert.AreEqual(expected: CommunicationProtocol.NETWORK, actual: location.Protocol);
+            Assert.AreEqual(expected: "127.0.0.1", actual: location.Address);
+            Assert.AreEqual<ushort>(expected: 1001, actual: location.Port);
+            Assert.AreEqual(expected: Manufacturer.InventorsWay, actual: location.ManufacturerID);
+            Assert.AreEqual<ushort>(expected: 1, actual: location.DeviceID);
+            Assert.AreEqual<UInt32>(expected: 10, actual: location.SerialNumber);
+            Assert.AreEqual(expected: "tcp://loopback:1001/1.1/10", actual: location.ToString());
+        }
+
+        [TestMethod]
+        public void NetworkLocalLocation()
+        {
+            var location = Location.Parse("tcp://local:1001/1.1/10");
+
+            Assert.AreEqual(expected: CommunicationProtocol.NETWORK, actual: location.Protocol);
+            Assert.AreEqual(expected: TcpServerLayer.LocalAddress.ToString(), actual: location.Address);
+            Assert.AreEqual<ushort>(expected: 1001, actual: location.Port);
+            Assert.AreEqual(expected: Manufacturer.InventorsWay, actual: location.ManufacturerID);
+            Assert.AreEqual<ushort>(expected: 1, actual: location.DeviceID);
+            Assert.AreEqual<UInt32>(expected: 10, actual: location.SerialNumber);
+            Assert.AreEqual(expected: "tcp://local:1001/1.1/10", actual: location.ToString());
         }
 
         [TestMethod]
