@@ -37,8 +37,8 @@ namespace Inventors.ECP.UnitTests.ApplicationLayer
         {
             var info = new DeviceIdentification();
             TC.Device.Execute(info);
-            Assert.AreEqual(expected: TC.Slave.Beacon.Serial, actual: info.SerialNumber.ToString(CultureInfo.InvariantCulture));
-            Assert.AreEqual(expected: TC.Slave.Beacon.DeviceID, actual: info.DeviceID);
+            Assert.AreEqual<UInt32>(expected: TC.Slave.Beacon.Serial, actual: info.SerialNumber);
+            Assert.AreEqual<ushort>(expected: TC.Slave.Beacon.DeviceID, actual: info.DeviceID);
         }
 
         [TestMethod]
@@ -53,6 +53,7 @@ namespace Inventors.ECP.UnitTests.ApplicationLayer
         public void BeaconTest()
         {
             List<BeaconLocation> locations = new List<BeaconLocation>();
+
             using (var probe = new Probe(TC.Slave.Beacon))
             {
                 probe.BeaconsUpdated += (beacons) => locations = beacons.ToList();
@@ -70,10 +71,8 @@ namespace Inventors.ECP.UnitTests.ApplicationLayer
         {
             var device = TC.Device;
             Log.Debug("TESTING GET TCP PORTS");
-            device.Close();
             Thread.Sleep(2500);
             var devices = device.GetLocationsDevices();
-            device.Open();
             Assert.AreEqual(expected: 1, actual: devices.Count);
         }
     }
