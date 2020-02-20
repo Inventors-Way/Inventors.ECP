@@ -22,7 +22,7 @@ namespace Inventors.ECP.Communication
         private WatsonTcpClient _client;
         private bool _open = false;
         private bool _connected = false;
-        private Location _port = new Location(new IPEndPoint(IPAddress.Loopback, 9000));
+        private Location _port = null;
 
         public override int BaudRate { get; set; } = 1;
 

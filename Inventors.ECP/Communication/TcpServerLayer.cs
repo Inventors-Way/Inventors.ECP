@@ -20,8 +20,7 @@ namespace Inventors.ECP.Communication
         private bool _isOpen = false;
         private bool _isConnected = false;
         private string _IpPort = null;
-        private Location _port = new Location(new IPEndPoint(IPAddress.Loopback, 9000));
-        private readonly BeaconID _beaconId;
+        private Location _port = null;
 
         public override int BaudRate { get; set; } = int.MaxValue;
 
@@ -126,7 +125,7 @@ namespace Inventors.ECP.Communication
                     server.MessageReceived += MessageReceived;
                     server.Start();
                     SetOpen(true);
-                    beacon = new Beacon(_beaconId, (ushort)Port.Port);
+                    beacon = new Beacon(Port.BeaconID, (ushort)Port.Port);
                     beacon.Start();
                 }
             }

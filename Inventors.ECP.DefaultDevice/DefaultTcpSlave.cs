@@ -28,7 +28,7 @@ namespace Inventors.ECP.DefaultDevice
 
         [Browsable(false)]
         [XmlIgnore]
-        public Location Port { get; set; } = new Location(new IPEndPoint(TcpServerLayer.LocalAddress, 9000));
+        public Location Port { get; set; } = null;
 
         [Browsable(false)]
         [XmlAttribute("address")]

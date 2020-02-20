@@ -12,7 +12,7 @@ namespace Inventors.ECP.Communication.Discovery
         {
             ManufactureID = manufactuer;
             DeviceID = device;
-            Serial = serial.ToString(CultureInfo.InvariantCulture);
+            Serial = serial;
         }
 
         [XmlAttribute("manufacturer-id")]
@@ -22,14 +22,15 @@ namespace Inventors.ECP.Communication.Discovery
         public UInt16 DeviceID { get; set; } = 1;
 
         [XmlAttribute("device")]
-        public string Serial { get; set; } = "0".ToString(CultureInfo.InvariantCulture);
+        public UInt32 Serial { get; set; } = 0;
 
         [XmlIgnore]
-        public string ID => String.Format(CultureInfo.InvariantCulture, "ECP:{0}:{1}", ManufactureID, DeviceID);
+        public string ID => String.Format(CultureInfo.InvariantCulture, "ecp://{0}.{1}", (UInt32) ManufactureID, DeviceID);
 
         [XmlIgnore]
-        public string Data => Serial;
+        public string Data => Serial.ToString(CultureInfo.InvariantCulture);
 
-        public override string ToString() => ID;
+        public override string ToString() =>
+            String.Format(CultureInfo.InvariantCulture, "ecp://{0}.{1}/{2}", (UInt32)ManufactureID, DeviceID, Serial);
     }
 }

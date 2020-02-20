@@ -231,7 +231,7 @@ namespace Inventors.ECP
 
         public Location() { }
 
-        public Location(IPEndPoint endpoint)
+        public Location(IPEndPoint endpoint, BeaconID id)
         {
             if (endpoint is null)
                 throw new ArgumentNullException(nameof(endpoint));
@@ -239,16 +239,9 @@ namespace Inventors.ECP
             Protocol = CommunicationProtocol.NETWORK;
             Address = endpoint.Address.ToString();
             Port = (ushort) endpoint.Port;
-        }
-
-        public Location(IPAddress address, ushort port)
-        {
-            if (address is null)
-                throw new ArgumentNullException(nameof(address));
-
-            Protocol = CommunicationProtocol.NETWORK;
-            Address = address.ToString();
-            Port = port;
+            DeviceID = id.DeviceID;
+            ManufacturerID = id.ManufactureID;
+            SerialNumber = id.Serial;
         }
 
         public Location(CommunicationProtocol protocol, 

@@ -6,6 +6,7 @@ using System.Text;
 using System.Net;
 using System.Threading;
 using Inventors.ECP.Communication;
+using Inventors.ECP.Communication.Discovery;
 
 namespace Inventors.ECP.UnitTests.ApplicationLayer
 {
@@ -31,8 +32,8 @@ namespace Inventors.ECP.UnitTests.ApplicationLayer
 
         private TC()
         {
-            var location = new Location();
-            _slave = new DefaultTcpSlave().SetLocation(location); //.SetPort(TcpServerLayer.LocalAddress, 9000);
+            var location = Location.Parse("tcp://loopback:9000/1.1/100");
+            _slave = new DefaultTcpSlave().SetLocation(location); 
             _device = new DefaultTcpDevice(_slave.Beacon) { Port = _slave.Port };
             _slave.Start();
             Thread.Sleep(100);
