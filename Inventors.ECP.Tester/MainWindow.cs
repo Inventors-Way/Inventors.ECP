@@ -273,7 +273,7 @@ namespace Inventors.ECP.Tester
             }
         }
 
-        private async void FunctionList_DoubleClick(object sender, EventArgs e)
+        private void FunctionList_DoubleClick(object sender, EventArgs e)
         {
             if (state == AppState.APP_STATE_CONNECTED)
             {
@@ -396,13 +396,13 @@ namespace Inventors.ECP.Tester
 
         #endregion
         #region Functions and message handling
-        private async Task Execute(DeviceFunction function, bool doLogging = false)
+        private void Execute(DeviceFunction function, bool doLogging = false)
         {
             if (device != null)
             {
                 try
                 {
-                    await Task.Run(() => device.Execute(function)).ConfigureAwait(true);
+                    device.Execute(function);
 
                     if (doLogging)
                     {
@@ -435,8 +435,6 @@ namespace Inventors.ECP.Tester
                     {
                         Log.Error("EXCEPTION:" + function.ToString() + " [" + e.Message + " ] ");
                     }
-
-                    throw;
                 }
             }
         }
