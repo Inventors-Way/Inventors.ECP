@@ -273,18 +273,18 @@ namespace Inventors.ECP.Tester
             }
         }
 
-        private void FunctionList_DoubleClick(object sender, EventArgs e)
+        private async void FunctionList_DoubleClick(object sender, EventArgs e)
         {
             if (state == AppState.APP_STATE_CONNECTED)
             {
-                if (functionList.SelectedItem is DeviceFunction)
+                if (functionList.SelectedItem is DeviceFunction function)
                 {
                     try
                     {
                         functionList.Enabled = false;
                         testToolStripMenuItem.Enabled = false;
                         UpdateAppStates(AppState.APP_STATE_ACTIVE);
-                        Execute(functionList.SelectedItem as DeviceFunction, true);
+                        Execute(function, true);
                     }
                     catch { }
 
@@ -311,8 +311,8 @@ namespace Inventors.ECP.Tester
                 {
                     deviceTimer.Enabled = false;
                     device.Port = selectedDevice;
-                    device.Connect();
-                    Log.Status("Device Connected: {0} [{1}]", device.ToString(), device.Port);
+                    device.Open();
+                    Log.Status("Location opened: {0}", device.Port);
                     UpdateAppStates(AppState.APP_STATE_CONNECTED);
                 }
                 catch (Exception ex)
@@ -332,14 +332,14 @@ namespace Inventors.ECP.Tester
         {
             try
             {
-                device.Disconnect();
+                device.Close();
                 UpdateAppStates(AppState.APP_STATE_INITIALIZED);
-                Log.Status("Device disconnected: {0} [{1}]", device.ToString(), device.Port);
+                Log.Status("Location closed: {0}", device.Port);
                 deviceTimer.Enabled = true;
             }
             catch (Exception ex)
             {
-                Log.Error("Problem disconnecting from device: " + ex.Message);
+                Log.Error("Problem closing location: " + ex.Message);
                 UpdateAppStates(AppState.APP_STATE_INITIALIZED);
             }
         }
@@ -396,13 +396,13 @@ namespace Inventors.ECP.Tester
 
         #endregion
         #region Functions and message handling
-        private async void Execute(DeviceFunction function, bool doLogging = false)
+        private async Task Execute(DeviceFunction function, bool doLogging = false)
         {
             if (device != null)
             {
                 try
                 {
-                    await device.ExecuteAsync(function);
+                    await Task.Run(() => device.Execute(function)).ConfigureAwait(true);
 
                     if (doLogging)
                     {
@@ -428,16 +428,6 @@ namespace Inventors.ECP.Tester
                     }
 
                     propertyGrid.Refresh();
-                }
-                catch (AggregateException ae)
-                {
-                    if (doLogging)
-                    {
-                        foreach (var ie in ae.InnerExceptions)
-                        {
-                            Log.Error("EXCEPTION:" + function.ToString() + " [" + ie.Message + " ] ");
-                        }
-                    }
                 }
                 catch (Exception e)
                 {

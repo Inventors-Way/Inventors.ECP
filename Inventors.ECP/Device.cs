@@ -109,8 +109,10 @@ namespace Inventors.ECP
 
         protected Device(CommunicationLayer commLayer)
         {
-            Master = new DeviceMaster(commLayer);
-            Master.MessageListener = this;
+            Master = new DeviceMaster(commLayer)
+            {
+                MessageListener = this
+            };
             Master.Add(new PrintfMessage());
         }
 
@@ -118,7 +120,7 @@ namespace Inventors.ECP
 
         public CommunicationLayerStatistics GetStatistics() => Master.GetStatistics();
 
-        public virtual DeviceIdentification Connect()
+        public DeviceIdentification Connect()
         {
             DeviceIdentification retValue = null;
 
@@ -172,10 +174,9 @@ namespace Inventors.ECP
             watch.Stop();
         }
 
-
-        public async Task<DeviceIdentification> ConnectAsync() => 
-            await Task.Run(() => Connect()).ConfigureAwait(false);
-
+        /// <summary>
+        /// Disconnects a device.
+        /// </summary>
         public virtual void Disconnect()
         {
             if (Master.IsOpen)
@@ -185,8 +186,9 @@ namespace Inventors.ECP
             }
         }
 
-        public async Task DisconnectAsync() => await Task.Run(() => Disconnect()).ConfigureAwait(false);
-
+        /// <summary>
+        /// Open the location of device, but does not check if a device is present by connecting to it.
+        /// </summary>
         public void Open()
         {
             if (!Master.IsOpen)
@@ -195,6 +197,9 @@ namespace Inventors.ECP
             }
         }
 
+        /// <summary>
+        /// Closes the location of the device.
+        /// </summary>
         public void Close()
         {
             if (Master.IsOpen)
@@ -221,9 +226,6 @@ namespace Inventors.ECP
                 }
             }
         }
-
-        public async Task ExecuteAsync(DeviceFunction function) => 
-            await Task.Run(() => Execute(function)).ConfigureAwait(false);
 
         public void Send(DeviceMessage message)
         {

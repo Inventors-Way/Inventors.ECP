@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 using System.Text;
 
 namespace Inventors.ECP
-{
+{    
     [Serializable]
     public class IncompatibleDeviceException :
         Exception
@@ -86,5 +86,5 @@ namespace Inventors.ECP
         public UnknownMessageReceivedException(String message, Exception inner) : base(message, inner) { }
         protected UnknownMessageReceivedException(SerializationInfo info, StreamingContext context) : base(info, context) { }
         public UnknownMessageReceivedException() { }
-    }
+    }    
 }

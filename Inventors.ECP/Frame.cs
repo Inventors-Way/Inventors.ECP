@@ -14,8 +14,10 @@ namespace Inventors.ECP
 
         public static byte[] Encode(byte[] packet)
         {
-            if (!(packet is object))
+            if (packet is null)
+            {
                 throw new ArgumentNullException(nameof(packet));
+            }
 
             var frame = new Frame();
             
