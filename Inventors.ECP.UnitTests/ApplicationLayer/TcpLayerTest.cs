@@ -50,23 +50,6 @@ namespace Inventors.ECP.UnitTests.ApplicationLayer
         }
 
         [TestMethod]
-        public void BeaconTest()
-        {
-            List<BeaconLocation> locations = new List<BeaconLocation>();
-
-            using (var probe = new Probe(TC.Slave.Beacon))
-            {
-                probe.BeaconsUpdated += (beacons) => locations = beacons.ToList();
-                probe.Start();
-                Thread.Sleep(500);
-                probe.Stop();
-                Assert.AreEqual(expected: 1, actual: locations.Count);
-                var beacon = locations[0];
-                Assert.AreEqual(expected: TC.Slave.Beacon.Data, actual: beacon.Data);
-            }
-        }
-
-        [TestMethod]
         public void GetTcpPorts()
         {
             var device = TC.Device;
