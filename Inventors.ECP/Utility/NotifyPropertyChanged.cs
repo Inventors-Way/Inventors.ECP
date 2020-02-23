@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace Inventors.ECP.Profiling
+namespace Inventors.ECP.Utility
 {
     public class NotifyPropertyChanged : 
         INotifyPropertyChanged
