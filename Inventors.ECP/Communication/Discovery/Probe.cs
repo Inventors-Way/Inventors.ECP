@@ -49,15 +49,17 @@ namespace Inventors.ECP.Communication.Discovery
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Error switching on NAT traversal: " + ex.Message);
+                Log.Debug("Error switching on NAT traversal: " + ex.Message);
             }
 
             udp.BeginReceive(ResponseReceived, null);
+            Log.Debug("Create probe listening for Beacons [ {0} ]", BeaconType);
         }
 
         public void Start()
         {
             thread.Start();
+            Log.Debug("Started probe listening for Beacons [ {0} ]", BeaconType);
         }
 
         private void ResponseReceived(IAsyncResult ar)
@@ -144,6 +146,7 @@ namespace Inventors.ECP.Communication.Discovery
             running = false;
             waitHandle.Set();
             thread.Join();
+            Log.Debug("Stopped probe listening for Beacons [ {0} ]", BeaconType);
         }
 
         #region IDisposable Support
