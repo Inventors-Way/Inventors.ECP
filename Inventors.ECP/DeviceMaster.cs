@@ -26,8 +26,8 @@ namespace Inventors.ECP
 
         public Location Port
         {
-            get => connection.Port;
-            set => connection.Port = value;
+            get => connection.Location;
+            set => connection.Location = value;
         }
 
         public int BaudRate

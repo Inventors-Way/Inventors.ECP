@@ -13,8 +13,8 @@ namespace Inventors.ECP.UnitTests.Utility
         [TestMethod]
         public void Beacon()
         {
-            var beaconId = new BeaconID(Manufacturer.Generic, 1, 10);
-            var probeId = new BeaconID(Manufacturer.Generic, 1);
+            var beaconId = new BeaconID(Manufacturer.InnoCon, 1, 10);
+            var probeId = new BeaconID(Manufacturer.InnoCon, 1);
 
             using (var beacon = new Beacon(beaconId, 9001))
             {

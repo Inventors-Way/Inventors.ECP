@@ -228,7 +228,7 @@ namespace Inventors.ECP.Tester
                     if (e.ClickedItem.Tag is Location current)
                     {
                         Log.Debug("Port changed to: {0}", e.ClickedItem.Text);
-                        device.Port = current;
+                        device.Location = current;
                         selectedDevice = current;
 
                         foreach (var item in portMenuItem.DropDownItems)
@@ -310,9 +310,9 @@ namespace Inventors.ECP.Tester
                 try
                 {
                     deviceTimer.Enabled = false;
-                    device.Port = selectedDevice;
+                    device.Location = selectedDevice;
                     device.Open();
-                    Log.Status("Location opened: {0}", device.Port);
+                    Log.Status("Location opened: {0}", device.Location);
                     UpdateAppStates(AppState.APP_STATE_CONNECTED);
                 }
                 catch (Exception ex)
@@ -334,7 +334,7 @@ namespace Inventors.ECP.Tester
             {
                 device.Close();
                 UpdateAppStates(AppState.APP_STATE_INITIALIZED);
-                Log.Status("Location closed: {0}", device.Port);
+                Log.Status("Location closed: {0}", device.Location);
                 deviceTimer.Enabled = true;
             }
             catch (Exception ex)

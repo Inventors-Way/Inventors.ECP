@@ -15,7 +15,7 @@ namespace Inventors.ECP.Communication
 
         public abstract int BaudRate { get; set; }
 
-        public abstract Location Port { get; set; }
+        public abstract Location Location { get; set; }
 
         public bool ResetOnConnection { get; set; } = false;
 
@@ -24,7 +24,6 @@ namespace Inventors.ECP.Communication
             BytesTransmitted = 0;
             BytesReceived = 0;
         }
-
 
         public void RestartStatistics()
         {
@@ -53,7 +52,7 @@ namespace Inventors.ECP.Communication
 
         public CommunicationLayer SetLocation(Location location)
         {
-            Port = location;
+            Location = location;
             return this;
         }
 

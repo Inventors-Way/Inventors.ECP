@@ -47,7 +47,7 @@ namespace Inventors.ECP.Communication
 
         public override CommunicationProtocol Protocol => CommunicationProtocol.NETWORK;
 
-        public override Location Port
+        public override Location Location
         {
             get => _port;
             set
@@ -106,7 +106,7 @@ namespace Inventors.ECP.Communication
             if (!IsOpen)
             {
                 SetConnected(false);
-                _client = new WatsonTcpClient(Port.Address, Port.Port);
+                _client = new WatsonTcpClient(Location.Address, Location.Port);
                 _client.ServerConnected += OnConnected;
                 _client.ServerDisconnected += OnDisconnected;
                 _client.MessageReceived += MessageReceived;

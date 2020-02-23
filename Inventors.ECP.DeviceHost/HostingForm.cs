@@ -259,7 +259,7 @@ namespace Inventors.ECP.DeviceHost
                 runMenuItem.Enabled = runButton.Enabled = device.State == DeviceState.STOPPED;
                 stopMenuItem.Enabled = stopButton.Enabled = device.State == DeviceState.RUNNING;
                 removeDeviceMenuItem.Enabled = true;
-                deviceStatus.Text = String.Format("{0} ({1}) [{2}]", device.ToString(), device.Port, device.State);
+                deviceStatus.Text = String.Format("{0} ({1}) [{2}]", device.ToString(), device.Location, device.State);
             }
             else
             {

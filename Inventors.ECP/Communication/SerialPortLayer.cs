@@ -45,7 +45,7 @@ namespace Inventors.ECP.Communication
 
             if (port == null)
             {
-                port = new SerialPort(Port.Address)
+                port = new SerialPort(Location.Address)
                 {
                     BaudRate = BaudRate,
                     Parity = Parity.None,
@@ -144,7 +144,7 @@ namespace Inventors.ECP.Communication
 
         public override bool IsConnected => IsOpen;
 
-        public override Location Port { get; set; }
+        public override Location Location { get; set; }
 
         public override int BaudRate { get; set; }
 

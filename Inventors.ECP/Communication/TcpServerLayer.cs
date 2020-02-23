@@ -24,7 +24,7 @@ namespace Inventors.ECP.Communication
 
         public override int BaudRate { get; set; } = int.MaxValue;
 
-        public override Location Port
+        public override Location Location
         {
             get => _port;
             set
@@ -46,7 +46,7 @@ namespace Inventors.ECP.Communication
                 throw new ArgumentNullException(nameof(location));
 
             Log.Debug("TCP SERVER [ {0} ]", location.ToString());
-            Port = location;
+            Location = location;
         }
 
         public override CommunicationProtocol Protocol => CommunicationProtocol.NETWORK;
@@ -119,13 +119,13 @@ namespace Inventors.ECP.Communication
                 {
                     SetConnected(false);
                     ClientPort = null;
-                    server = new WatsonTcpServer(Port.Address, Port.Port);
+                    server = new WatsonTcpServer(Location.Address, Location.Port);
                     server.ClientConnected += OnConnected;
                     server.ClientDisconnected += OnDisconnected;
                     server.MessageReceived += MessageReceived;
                     server.Start();
                     SetOpen(true);
-                    beacon = new Beacon(Port.BeaconID, (ushort)Port.Port);
+                    beacon = new Beacon(Location.BeaconID, (ushort)Location.Port);
                     beacon.Start();
                 }
             }

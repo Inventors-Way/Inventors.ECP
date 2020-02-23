@@ -22,7 +22,7 @@ namespace Inventors.ECP
 
         string ID { get; set; }
 
-        Location Port { get; }
+        Location Location { get; }
 
         DeviceState State { get; }
 

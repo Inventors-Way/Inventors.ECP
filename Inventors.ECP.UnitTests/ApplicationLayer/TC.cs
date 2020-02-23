@@ -32,9 +32,9 @@ namespace Inventors.ECP.UnitTests.ApplicationLayer
 
         private TC()
         {
-            var location = Location.Parse("tcp://loopback:9000/1.1/100");
+            var location = Location.Parse("tcp://loopback:9000/4294967295.1/100");
             _slave = new DefaultTcpSlave().SetLocation(location); 
-            _device = new DefaultTcpDevice(_slave.Beacon) { Port = _slave.Port };
+            _device = new DefaultTcpDevice(_slave.Beacon) { Location = _slave.Location };
             _slave.Start();
             Thread.Sleep(100);
             _device.Connect();

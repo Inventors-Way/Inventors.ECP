@@ -85,7 +85,7 @@ namespace Inventors.ECP
         #region Port
         [Browsable(false)]
         [XmlIgnore]
-        public Location Port
+        public Location Location
         {
             get => Master.Port;
             set => Master.Port = NotifyIfChanged(Master.Port, value);
@@ -168,7 +168,7 @@ namespace Inventors.ECP
             {
                 if (watch.ElapsedMilliseconds > timeout)
                 {
-                    throw new SlaveNotRespondingException(string.Format(CultureInfo.CurrentCulture, "Could not connect to: {0}", Port));
+                    throw new SlaveNotRespondingException(string.Format(CultureInfo.CurrentCulture, "Could not connect to: {0}", Location));
                 }
             }
             watch.Stop();
