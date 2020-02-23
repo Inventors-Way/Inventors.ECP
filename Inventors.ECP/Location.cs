@@ -278,7 +278,7 @@ namespace Inventors.ECP
         } 
 
         private string DeviceString() =>
-            DeviceID > 0 ? String.Format(CultureInfo.InvariantCulture, "/{0}.{1}", DeviceID, (UInt32) ManufacturerID) : "";
+            DeviceID > 0 ? String.Format(CultureInfo.InvariantCulture, "/{0}.{1}", ManufacturerID, DeviceID) : "";
 
         private string SerialString() =>
             DeviceID > 0 && SerialNumber > 0 ? String.Format(CultureInfo.InvariantCulture, "/{0}", SerialNumber) : "";

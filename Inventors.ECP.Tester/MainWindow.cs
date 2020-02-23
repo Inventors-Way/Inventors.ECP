@@ -511,7 +511,7 @@ namespace Inventors.ECP.Tester
             {
                 Text = "About ECP Tester",
                 Product = "ECP Tester",
-                Version = "1.3.1",
+                Version = "1.4.2",
                 Description = "Copyright (C) 2019-2020 Inventors' Way ApS. All rights reserved." + Environment.NewLine + "ECP Tester is made possible by the open source ECP project made by the scientists and engineers at Inventors' Way.",
                 Image = Image.FromFile("about.png")
             };

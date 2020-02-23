@@ -1,2 +1,2 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<default-tcp-slave address="network://127.0.0.1:9000/1.1/1000" />
+<default-tcp-slave address="tcp://local:9000/4294967295.1/1000" />

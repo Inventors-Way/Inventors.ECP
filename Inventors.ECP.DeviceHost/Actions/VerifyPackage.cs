@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Inventors.Logging;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace Inventors.ECP.DeviceHost.Actions
         {
             bool retValue = false;
             var msg = String.Format($"Please check that the SHA-256 checksum [ {CalculateChecksum()} ] is correct and matches the one provided by the provider of the device package");
+            Log.Status(msg);
 
             if (MessageBox.Show(msg, "Verify Package", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
