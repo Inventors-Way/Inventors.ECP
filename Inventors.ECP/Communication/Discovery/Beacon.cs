@@ -20,6 +20,11 @@ namespace Inventors.ECP.Communication.Discovery
         internal const int DiscoveryPort = 35891;
         private readonly UdpClient udp;
  
+        /// <summary>
+        /// Create a beacon.
+        /// </summary>
+        /// <param name="id">The BeaconID of the beacon</param>
+        /// <param name="advertisedPort">The port of the service to advertice</param>
         public Beacon(BeaconID id, ushort advertisedPort)
         {
             if (id is null)
@@ -41,17 +46,21 @@ namespace Inventors.ECP.Communication.Discovery
             {
                 Debug.WriteLine("Error switching on NAT traversal: " + ex.Message);
             }
+
+            Log.Debug("Beacon [ {0}/{1} ] created on Port: {2}", BeaconType, BeaconData, AdvertisedPort);
         }
 
         public void Start()
         {
             Stopped = false;
             udp.BeginReceive(ProbeReceived, null);
+            Log.Debug("Beacon [ {0}/{1} ] started on Port: {2}", BeaconType, BeaconData, AdvertisedPort);
         }
 
         public void Stop()
         {
             Stopped = true;
+            Log.Debug("Beacon [ {0}/{1} ] stopped on Port: {2}", BeaconType, BeaconData, AdvertisedPort);
         }
 
         private void ProbeReceived(IAsyncResult ar)
@@ -124,7 +133,6 @@ namespace Inventors.ECP.Communication.Discovery
         public string BeaconType { get; private set; }
         public ushort AdvertisedPort { get; private set; }
         public bool Stopped { get; private set; }
-
         public string BeaconData { get; private set; }
 
         #region IDisposable Support
