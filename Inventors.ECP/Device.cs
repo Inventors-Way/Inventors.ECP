@@ -87,8 +87,8 @@ namespace Inventors.ECP
         [XmlIgnore]
         public Location Location
         {
-            get => Master.Port;
-            set => Master.Port = NotifyIfChanged(Master.Port, value);
+            get => Master.Location;
+            set => Master.Location = NotifyIfChanged(Master.Location, value);
         }
         #endregion
         #region BaudRate

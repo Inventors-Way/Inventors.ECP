@@ -24,7 +24,7 @@ namespace Inventors.ECP
 
         public int Timeout { get; set; }
 
-        public Location Port
+        public Location Location
         {
             get => connection.Location;
             set => connection.Location = value;
@@ -59,10 +59,20 @@ namespace Inventors.ECP
             Profiler = new Profiler(connection, this);
         }
 
+        /// <summary>
+        /// Open the communication with a device.
+        /// </summary>
         public void Open() => connection.Open();
 
+        /// <summary>
+        /// Close the communication with a device.
+        /// </summary>
         public void Close() => connection.Close();        
 
+        /// <summary>
+        /// Execute a function.
+        /// </summary>
+        /// <param name="function">The function to execute.</param>
         public void Execute(DeviceFunction function)
         {
             if (function is object)
@@ -79,6 +89,10 @@ namespace Inventors.ECP
             }
         }
 
+        /// <summary>
+        /// Send an unacknowledged message to the device.
+        /// </summary>
+        /// <param name="message">The message to send</param>
         public void Send(DeviceMessage message)
         {
             if (connection.IsOpen && (message is object))
@@ -203,6 +217,9 @@ namespace Inventors.ECP
 
         public List<Location> GetLocations() => connection.GetLocations();
 
+        /// <summary>
+        /// The message listener.
+        /// </summary>
         public dynamic MessageListener { get; set; } = null;
 
         private readonly CommunicationLayer connection;
