@@ -63,13 +63,11 @@ namespace Inventors.ECP.DefaultDevice
             return this;
         }
 
-        public void Run() => Start();
-
         public void Start()
         {
             if (!IsOpen)
             {
-                Log.Debug("Port: {0} (Beacon: {1})", Location, Beacon.ToString());
+                Log.Debug("Location: {0}", Location);
                 commLayer = new TcpServerLayer(Location);
                 slave = new DeviceSlave(commLayer)
                 {

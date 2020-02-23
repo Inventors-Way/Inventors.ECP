@@ -53,7 +53,6 @@ namespace Inventors.ECP.UnitTests.ApplicationLayer
         public void GetTcpPorts()
         {
             var device = TC.Device;
-            Log.Debug("TESTING GET TCP PORTS");
             Thread.Sleep(2500);
             var devices = device.GetLocationsDevices();
             Assert.AreEqual(expected: 1, actual: devices.Count);

@@ -67,7 +67,7 @@ namespace Inventors.ECP.DeviceHost
                         {
                             if (dev.State == DeviceState.RUNNING)
                             {
-                                device.Run();
+                                device.Start();
                             }
 
                             device.OnPropertyChanged += (owner, p) => BeginInvoke((Action)(() => propertyGrid.Refresh()));
@@ -119,7 +119,7 @@ namespace Inventors.ECP.DeviceHost
 
                         if (package.Loader.State == DeviceState.RUNNING)
                         {
-                            package.Device.Run();
+                            package.Device.Start();
                             Log.Status("Device [ {0} ] is started", package.Device.ToString());
                         }
                         package.Device.OnPropertyChanged += (owner, p) => BeginInvoke((Action)(() => propertyGrid.Refresh()));
@@ -204,7 +204,7 @@ namespace Inventors.ECP.DeviceHost
             {
                 if (device.State == DeviceState.STOPPED)
                 {
-                    device.Run();
+                    device.Start();
                     UpdateDeviceState(device);
                     Log.Status("Device {0} started", device.ToString());
                 }

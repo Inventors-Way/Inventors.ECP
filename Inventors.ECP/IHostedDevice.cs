@@ -28,7 +28,7 @@ namespace Inventors.ECP
 
         string DeviceFile { get; set; }
 
-        void Run();
+        void Start();
 
         void Stop();
     }
