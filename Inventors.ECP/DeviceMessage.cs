@@ -33,15 +33,9 @@ namespace Inventors.ECP
             return Packet.ToArray();
         }
 
-        public virtual void OnSend()
-        {
+        public virtual void OnSend() { }
 
-        }
-
-        public virtual void OnReceived()
-        {
-
-        }
+        public virtual void OnReceived() { }
 
         protected Packet Packet { get; set; }
 
