@@ -23,7 +23,7 @@ namespace Inventors.ECP
             Packet = new Packet(code, 0);
         }
 
-        public DeviceMessage(byte code, byte length)
+        public DeviceMessage(byte code, int length)
         {
             Packet = new Packet(code, length);
         }

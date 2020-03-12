@@ -26,16 +26,16 @@ namespace Inventors.ECP
             Request = new Packet(code, 0);
         }
 
-        public DeviceFunction(byte code, byte length)
+        public DeviceFunction(byte code, int requestLength)
         {
             functionCode = code;
-            RequestLength = length;
+            RequestLength = requestLength;
             ResponseLength = 0;
-            Request = new Packet(code, length);
+            Request = new Packet(code, requestLength);
             Response = new Packet(code, 0);
         }
 
-        public DeviceFunction(byte code, byte requestLength, byte responseLength)
+        public DeviceFunction(byte code, int requestLength, int responseLength)
         {
             functionCode = code;
             RequestLength = requestLength;
@@ -88,35 +88,43 @@ namespace Inventors.ECP
             return this;
         }
 
+        /// <summary>
+        /// Default response verification. Override this function if more than length verification is required.
+        /// </summary>
+        /// <returns>True if valid, otherwise false.</returns>
         protected virtual bool IsResponseValid()
         {
             return Response.Length == ResponseLength;
         }
 
+        /// <summary>
+        /// Default request verification. Override this function in a slave if more than length verification is required.
+        /// </summary>
+        /// <returns>True if valid, otherwise false.</returns>
         protected virtual bool IsRequestValid()
         {
             return Request.Length == RequestLength;
         }
 
-        public virtual void OnSend()
-        {
+        /// <summary>
+        /// Override this function to build the request packet (Request), when the function is executed.
+        /// </summary>
+        internal virtual void OnSend() { }
 
-        }
+        /// <summary>
+        /// Override this function to parse the response packet (Response), when the response is received from the slave.
+        /// </summary>
+        internal virtual void OnReceived() { }
 
-        public virtual void OnReceived()
-        {
+        /// <summary>
+        /// Override this function in a slave to parse the request packet (Request), when the function is received from the master.
+        /// </summary>
+        internal virtual void OnSlaveReceived() { }
 
-        }
-
-        public virtual void OnSlaveReceived()
-        {
-
-        }
-
-        public virtual void OnSlaveSend()
-        {
-
-        }
+        /// <summary>
+        /// Override this function to build the response packet (Response) in a slave, when the response to master has to be send.
+        /// </summary>
+        internal virtual void OnSlaveSend() { }
 
         public abstract FunctionDispatcher CreateDispatcher();
 
@@ -133,9 +141,9 @@ namespace Inventors.ECP
 
         private readonly byte functionCode = 0x00;
 
-        protected byte ResponseLength { get; } = 0;
+        protected int ResponseLength { get; } = 0;
 
-        protected byte RequestLength { get; } = 0;
+        protected int RequestLength { get; } = 0;
 
     }
 }
