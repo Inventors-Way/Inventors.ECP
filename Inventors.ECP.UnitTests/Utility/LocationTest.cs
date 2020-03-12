@@ -87,7 +87,7 @@ namespace Inventors.ECP.UnitTests.Utility
             Assert.AreEqual(expected: Manufacturer.InventorsWay, actual: location.ManufacturerID);
             Assert.AreEqual<ushort>(expected: 1, actual: location.DeviceID);
             Assert.AreEqual<UInt32>(expected: 0, actual: location.SerialNumber);
-            Assert.AreEqual(expected: "serial://COM1/1.1", actual: location.ToString());
+            Assert.AreEqual(expected: "serial://COM1/InventorsWay.1", actual: location.ToString());
         }
 
         [TestMethod]
@@ -101,7 +101,7 @@ namespace Inventors.ECP.UnitTests.Utility
             Assert.AreEqual(expected: Manufacturer.InventorsWay, actual: location.ManufacturerID);
             Assert.AreEqual<ushort>(expected: 1, actual: location.DeviceID);
             Assert.AreEqual<UInt32>(expected: 10, actual: location.SerialNumber);
-            Assert.AreEqual(expected: "serial://COM1/1.1/10", actual: location.ToString());
+            Assert.AreEqual(expected: "serial://COM1/InventorsWay.1/10", actual: location.ToString());
         }
 
         [TestMethod]
@@ -129,7 +129,7 @@ namespace Inventors.ECP.UnitTests.Utility
             Assert.AreEqual(expected: Manufacturer.InventorsWay, actual: location.ManufacturerID);
             Assert.AreEqual<ushort>(expected: 1, actual: location.DeviceID);
             Assert.AreEqual<UInt32>(expected: 0, actual: location.SerialNumber);
-            Assert.AreEqual(expected: "tcp://192.172.0.1:1001/1.1", actual: location.ToString());
+            Assert.AreEqual(expected: "tcp://192.172.0.1:1001/InventorsWay.1", actual: location.ToString());
         }
 
         [TestMethod]
@@ -143,7 +143,7 @@ namespace Inventors.ECP.UnitTests.Utility
             Assert.AreEqual(expected: Manufacturer.InventorsWay, actual: location.ManufacturerID);
             Assert.AreEqual<ushort>(expected: 1, actual: location.DeviceID);
             Assert.AreEqual<UInt32>(expected: 10, actual: location.SerialNumber);
-            Assert.AreEqual(expected: "tcp://192.172.0.1:1001/1.1/10", actual: location.ToString());
+            Assert.AreEqual(expected: "tcp://192.172.0.1:1001/InventorsWay.1/10", actual: location.ToString());
         }
 
         [TestMethod]
@@ -157,7 +157,7 @@ namespace Inventors.ECP.UnitTests.Utility
             Assert.AreEqual(expected: Manufacturer.InventorsWay, actual: location.ManufacturerID);
             Assert.AreEqual<ushort>(expected: 1, actual: location.DeviceID);
             Assert.AreEqual<UInt32>(expected: 10, actual: location.SerialNumber);
-            Assert.AreEqual(expected: "tcp://loopback:1001/1.1/10", actual: location.ToString());
+            Assert.AreEqual(expected: "tcp://loopback:1001/InventorsWay.1/10", actual: location.ToString());
         }
 
         [TestMethod]
@@ -171,7 +171,7 @@ namespace Inventors.ECP.UnitTests.Utility
             Assert.AreEqual(expected: Manufacturer.InventorsWay, actual: location.ManufacturerID);
             Assert.AreEqual<ushort>(expected: 1, actual: location.DeviceID);
             Assert.AreEqual<UInt32>(expected: 10, actual: location.SerialNumber);
-            Assert.AreEqual(expected: "tcp://local:1001/1.1/10", actual: location.ToString());
+            Assert.AreEqual(expected: "tcp://local:1001/InventorsWay.1/10", actual: location.ToString());
         }
 
         [TestMethod]
