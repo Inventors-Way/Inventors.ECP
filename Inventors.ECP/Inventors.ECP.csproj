@@ -2,10 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>1.4.5</Version>
+    <Version>1.4.6</Version>
     <Authors>Inventors' Way</Authors>
     <Company>Inventors' Way ApS</Company>
-    <Description>Made it possible to have functions and messages over 255 in length and up to 4GB.</Description>
+    <Description>Implemented INotifyPropertyChanged on devices</Description>
     <Copyright>Copyright 2019 Inventors Way ApS</Copyright>
     <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/Inventors-Way/Inventors.ECP</PackageProjectUrl>
@@ -60,5 +60,9 @@
       <PackagePath></PackagePath>
     </None>
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy $(ProjectDir)\bin\$(ConfigurationName)\*.nupkg C:\Tools\nuget\*.nupkg" />
+  </Target>
 
 </Project>
