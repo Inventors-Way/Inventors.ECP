@@ -109,22 +109,22 @@ namespace Inventors.ECP
         /// <summary>
         /// Override this function to build the request packet (Request), when the function is executed.
         /// </summary>
-        internal virtual void OnSend() { }
+        public virtual void OnSend() { }
 
         /// <summary>
         /// Override this function to parse the response packet (Response), when the response is received from the slave.
         /// </summary>
-        internal virtual void OnReceived() { }
+        public virtual void OnReceived() { }
 
         /// <summary>
         /// Override this function in a slave to parse the request packet (Request), when the function is received from the master.
         /// </summary>
-        internal virtual void OnSlaveReceived() { }
+        public virtual void OnSlaveReceived() { }
 
         /// <summary>
         /// Override this function to build the response packet (Response) in a slave, when the response to master has to be send.
         /// </summary>
-        internal virtual void OnSlaveSend() { }
+        public virtual void OnSlaveSend() { }
 
         public abstract FunctionDispatcher CreateDispatcher();
 
