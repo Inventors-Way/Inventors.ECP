@@ -5,7 +5,7 @@
     <Version>1.4.3</Version>
     <Authors>Inventors' Way</Authors>
     <Company>Inventors' Way ApS</Company>
-    <Description>Bugfix: exceptions thrown when executing function in the ECP Tester caused the program to crash</Description>
+    <Description>Made it possible to have functions and messages over 255 in length and up to 4GB.</Description>
     <Copyright>Copyright 2019 Inventors Way ApS</Copyright>
     <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/Inventors-Way/Inventors.ECP</PackageProjectUrl>
