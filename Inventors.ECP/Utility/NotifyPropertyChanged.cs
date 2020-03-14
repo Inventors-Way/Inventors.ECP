@@ -47,6 +47,8 @@ namespace Inventors.ECP.Utility
 
         protected bool SetPropertyLocked<T>(ref T field, T newValue, [CallerMemberName]string propertyName = null)
         {
+            bool retValue = false;
+
             Debug.Assert(string.IsNullOrEmpty(propertyName) ||
                          (this.GetType().GetRuntimeProperty(propertyName) != null),
                          "Check that the property name exists for this instance.");
@@ -56,13 +58,28 @@ namespace Inventors.ECP.Utility
                 if (!EqualityComparer<T>.Default.Equals(field, newValue))
                 {
                     field = newValue;
-                    PropertyChanged?.Invoke(this, GetEventArgs(propertyName));
-
-                    return true;
+                    retValue = true;
                 }
             }
 
-            return false;
+            if (retValue)
+            {
+                PropertyChanged?.Invoke(this, GetEventArgs(propertyName));
+            }
+
+            return retValue;
+        }
+
+        protected T GetPropertyLocked<T>(ref T field)
+        {
+            T retValue;
+
+            lock (lockObject)
+            {
+                retValue = field;
+            }
+
+            return retValue;
         }
 
         protected T NotifyIfChanged<T>(T current, T newValue, [CallerMemberName]string propertyName = null)
