@@ -20,7 +20,7 @@ namespace Inventors.ECP.DefaultDevice
             FunctionList.Add(new GetEndianness());
         }
 
-        public override bool IsCompatible(DeviceIdentification identification)
+        public override bool IsCompatible(DeviceFunction identification)
         {
             return true;
         }

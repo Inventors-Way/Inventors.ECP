@@ -121,21 +121,22 @@ namespace Inventors.ECP
 
         public CommunicationLayerStatistics GetStatistics() => Master.GetStatistics();
 
-        public DeviceIdentification Connect()
+        public virtual DeviceFunction CreateIdentificationFunction() => new DeviceIdentification();
+
+        public bool Connect(DeviceFunction function)
         {
-            DeviceIdentification retValue = null;
+            bool retValue = false;
 
             if (!Master.IsOpen)
             {
                 var retries = Retries;
                 Retries = Retries > 3 ? Retries : 3;
-                retValue = new DeviceIdentification();
 
                 try
                 {
                     Master.Open();
                     WaitOnConnected(200);
-                    Execute(retValue);
+                    Execute(function);
                 }
                 catch
                 {
@@ -146,9 +147,10 @@ namespace Inventors.ECP
 
                 Retries = retries;
 
-                if (IsCompatible(retValue))
+                if (IsCompatible(function))
                 {
                     Connected = true;
+                    retValue = true;
                 }
                 else
                 {
@@ -262,7 +264,7 @@ namespace Inventors.ECP
             }
         }
 
-        public abstract bool IsCompatible(DeviceIdentification identification);
+        public abstract bool IsCompatible(DeviceFunction function);
 
         private int _retries = 1;
 
