@@ -37,7 +37,7 @@ namespace Inventors.ECP.UnitTests.ApplicationLayer
             _device = new DefaultTcpDevice(_slave.Beacon) { Location = _slave.Location };
             _slave.Start();
             Thread.Sleep(100);
-            _device.Connect(_device.CreateIdentificationFunction());
+            _device.Connect();
         }
 
         private static TC _instance;

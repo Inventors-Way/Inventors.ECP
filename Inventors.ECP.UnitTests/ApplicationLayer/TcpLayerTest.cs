@@ -21,15 +21,11 @@ namespace Inventors.ECP.UnitTests.ApplicationLayer
         [TestMethod]
         public void Ping()
         {
-            var ping = new Ping();
-
             TC.Slave.Pings = 0;
-            TC.Device.Execute(ping);
-            Assert.IsTrue(ping.Count == 0);
-            TC.Device.Execute(ping);
-            Assert.IsTrue(ping.Count == 1);
-            TC.Device.Execute(ping);
-            Assert.IsTrue(ping.Count == 2);
+            Assert.AreEqual(expected: 0, actual: TC.Device.Ping());
+            Assert.AreEqual(expected: 1, actual: TC.Device.Ping());
+            Assert.AreEqual(expected: 2, actual: TC.Device.Ping());
+            Assert.AreEqual(expected: 3, actual: TC.Device.Ping());
         }
 
         [TestMethod]

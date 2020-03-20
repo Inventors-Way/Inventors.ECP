@@ -121,14 +121,39 @@ namespace Inventors.ECP
 
         public CommunicationLayerStatistics GetStatistics() => Master.GetStatistics();
 
+        /// <summary>
+        /// Ping the connected device.
+        /// </summary>
+        /// <returns>the ping count of the connected the device</returns>
+        public virtual int Ping()
+        {
+            int retValue = -1;
+
+            try
+            {
+                var ping = new Ping();
+                Execute(ping);
+                retValue = (int) ping.Count;
+            }
+            catch { }
+
+            return retValue;
+        }
+
+        /// <summary>
+        /// Create the DeviceFunction for identifying the device. After it has been successfully executed the 
+        /// IsCompatible() function can be used to check if the connected device is compatible.
+        /// </summary>
+        /// <returns>The DeviceFunction that performs device identification for the device</returns>
         public virtual DeviceFunction CreateIdentificationFunction() => new DeviceIdentification();
 
-        public bool Connect(DeviceFunction function)
+        public bool Connect()
         {
             bool retValue = false;
 
             if (!Master.IsOpen)
             {
+                var identification = CreateIdentificationFunction();
                 var retries = Retries;
                 Retries = Retries > 3 ? Retries : 3;
 
@@ -136,7 +161,7 @@ namespace Inventors.ECP
                 {
                     Master.Open();
                     WaitOnConnected(200);
-                    Execute(function);
+                    Execute(identification);
                 }
                 catch
                 {
@@ -147,7 +172,7 @@ namespace Inventors.ECP
 
                 Retries = retries;
 
-                if (IsCompatible(function))
+                if (IsCompatible(identification))
                 {
                     Connected = true;
                     retValue = true;
@@ -155,7 +180,7 @@ namespace Inventors.ECP
                 else
                 {
                     Master.Close();    
-                    throw new IncompatibleDeviceException(retValue.ToString());
+                    throw new IncompatibleDeviceException(identification.ToString());
                 }
             }
 
@@ -256,13 +281,7 @@ namespace Inventors.ECP
         }
 
         [Browsable(false)]
-        public List<DeviceFunction> Functions
-        {
-            get
-            {
-                return FunctionList;
-            }
-        }
+        public List<DeviceFunction> Functions => FunctionList;
 
         public abstract bool IsCompatible(DeviceFunction function);
 

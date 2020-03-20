@@ -2,6 +2,8 @@
 // attributes that are applied to this project.
 // Project-level suppressions either have no target or are given
 // a specific target and scoped to a namespace, type, member, etc.
+using System.Diagnostics.CodeAnalysis;
+
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores", Justification = "<Pending>", Scope = "type", Target = "Inventors.ECP")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>", Scope = "member", Target = "~M:Inventors.ECP.Device.GetAvailableDevices~System.Collections.Generic.List{Inventors.ECP.DeviceType}")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>", Scope = "member", Target = "~M:Inventors.ECP.Discovery.Beacon.#ctor(System.String,System.UInt16)")]
@@ -14,3 +16,4 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>", Scope = "member", Target = "~M:Inventors.ECP.Location.ParseSerial(System.String)")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "<Pending>", Scope = "member", Target = "~M:Inventors.ECP.Location.ParseNetworkAddress(System.String)")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "<Pending>", Scope = "member", Target = "~M:Inventors.ECP.Communication.TcpClientLayer.GetLocations~System.Collections.Generic.List{Inventors.ECP.Location}")]
+[assembly: SuppressMessage("Naming", "CA1716:Identifiers should not match keywords", Justification = "<Pending>", Scope = "member", Target = "~M:Inventors.ECP.Device.IsCompatible(Inventors.ECP.DeviceFunction)~System.Boolean")]
