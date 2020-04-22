@@ -171,6 +171,19 @@ namespace Inventors.ECP.Tester
             return false;
         }
 
+        private string CreatePortDescription(Location location, string description)
+        {
+
+            if (description is object)
+            {
+                return String.Format("{0} ({1})", location.ToString(), description);
+            }
+            else
+            {
+                return location.ToString();
+            }
+        }
+
         private void UpdatePorts()
         {
             if (!device.IsOpen)
@@ -179,14 +192,21 @@ namespace Inventors.ECP.Tester
 
                 if (CheckDevicesChanged(devices))
                 {
+                    var portInfo = new PortInformationProvider();
                     Log.Debug("Available devices changed:");
                     portMenuItem.DropDownItems.Clear();
 
                     for (int n = 0; n < devices.Count; ++n)
                     {
-                        var item = new ToolStripMenuItem(devices[n].ToString()) { Tag = devices[n] };
+                        var location = devices[n];
+                        var menuName = CreatePortDescription(location, portInfo.GetDescription(location.Address));
+                        var item = new ToolStripMenuItem(menuName) 
+                        { 
+                            Tag = devices[n] 
+                        };
                         portMenuItem.DropDownItems.Add(item);
-                        Log.Debug("  [ {0} ] Device: {1}", n, devices[n].ToString());
+
+                        Log.Debug("  [ {0} ] Device: {1}", n, menuName);
                         if (selectedDevice is object)
                         {
                             if (selectedDevice.ToString() == devices[n].ToString())
