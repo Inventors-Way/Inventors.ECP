@@ -20,7 +20,8 @@ using System.Xml.Serialization;
 namespace Inventors.ECP
 {
     public abstract class Device :
-        NotifyPropertyChanged
+        NotifyPropertyChanged,
+        IDisposable
     {
         #region Properties
         #region PrintLevel
@@ -286,6 +287,7 @@ namespace Inventors.ECP
         public abstract bool IsCompatible(DeviceFunction function);
 
         private int _retries = 1;
+        private bool disposedValue;
 
         [Category("Retries")]
         public int Retries 
@@ -303,5 +305,24 @@ namespace Inventors.ECP
         protected List<MessageDispatcher> Dispatchers { get; } = new List<MessageDispatcher>();
 
         private readonly Stopwatch watch = new Stopwatch();
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    if (Master is object)
+                        Master.Dispose();
+                }
+                disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
     }
 }
