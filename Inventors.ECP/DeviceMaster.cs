@@ -12,7 +12,8 @@ using Inventors.Logging;
 
 namespace Inventors.ECP
 {
-    public class DeviceMaster
+    public class DeviceMaster :
+        IDisposable
     {
         private enum CommState
         {
@@ -217,6 +218,28 @@ namespace Inventors.ECP
 
         public List<Location> GetLocations() => connection.GetLocations();
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    if (IsOpen)
+                    {
+                        Close();
+                    }
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
+
         /// <summary>
         /// The message listener.
         /// </summary>
@@ -228,5 +251,6 @@ namespace Inventors.ECP
         private Exception currentException = null;
         private readonly Stopwatch stopwatch = new Stopwatch();
         private CommState state = CommState.WAITING;
+        private bool disposedValue;
     }
 }

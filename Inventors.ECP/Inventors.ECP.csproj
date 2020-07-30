@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
-    <Version>1.4.10</Version>
+    <Version>1.4.11</Version>
     <Authors>Inventors' Way</Authors>
     <Company>Inventors' Way ApS</Company>
     <Description>Library implementing the Embedded Communication Protocol (ECP)</Description>
@@ -12,8 +12,7 @@
     <RepositoryUrl>https://github.com/Inventors-Way/Inventors.ECP</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>Communication</PackageTags>
-    <PackageReleaseNotes>Fixed a potential deadlock in SetPropertyLocked
-Added a GetPropertyLocked</PackageReleaseNotes>
+    <PackageReleaseNotes>Made the ECP Master Disposable</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageIconUrl></PackageIconUrl>
     <NeutralLanguage>en</NeutralLanguage>

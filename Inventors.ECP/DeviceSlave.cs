@@ -9,7 +9,8 @@ using System.Text;
 
 namespace Inventors.ECP
 {
-    public class DeviceSlave
+    public class DeviceSlave :
+        IDisposable
     {
 
         private List<MessageDispatcher> MessageDispatchers { get; } = new List<MessageDispatcher>();
@@ -171,6 +172,29 @@ namespace Inventors.ECP
             return retValue;
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    if (IsOpen)
+                    {
+                        Close();
+                    }
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
+
         private readonly CommunicationLayer _connection;
+        private bool disposedValue;
     }
 }
