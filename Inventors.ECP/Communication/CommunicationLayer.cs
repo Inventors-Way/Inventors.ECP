@@ -41,13 +41,21 @@ namespace Inventors.ECP.Communication
         public CommunicationLayerStatistics GetStatistics()
         {
             double time = ((double)testWatch.ElapsedMilliseconds) / 1000;
-            return new CommunicationLayerStatistics()
+
+            var stat = new CommunicationLayerStatistics()
             {
                 BytesTransmitted = BytesTransmitted,
                 BytesReceived = BytesReceived,
                 RxRate = ((double)BytesReceived) / time,
                 TxRate = ((double)BytesTransmitted) / time
             };
+
+            if (testWatch.ElapsedMilliseconds > 5000)
+            {
+                RestartStatistics();
+            }
+
+            return stat;
         }
 
         public CommunicationLayer SetLocation(Location location)

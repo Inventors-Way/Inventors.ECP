@@ -50,7 +50,6 @@
             this.disconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.portMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mTime = new System.Windows.Forms.ToolStripTextBox();
             this.profilerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.trialsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -107,12 +106,11 @@
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileMenuItem,
             this.connectMenuItem,
-            this.mTime,
             this.profilerToolStripMenuItem,
             this.helpToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(927, 27);
+            this.menuStrip.Size = new System.Drawing.Size(927, 24);
             this.menuStrip.TabIndex = 1;
             this.menuStrip.Text = "menuStrip1";
             // 
@@ -126,7 +124,7 @@
             this.toolStripSeparator1,
             this.exitToolStripMenuItem});
             this.fileMenuItem.Name = "fileMenuItem";
-            this.fileMenuItem.Size = new System.Drawing.Size(37, 23);
+            this.fileMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileMenuItem.Text = "File";
             // 
             // clearLogToolStripMenuItem
@@ -204,7 +202,7 @@
             this.toolStripSeparator2,
             this.portMenuItem});
             this.connectMenuItem.Name = "connectMenuItem";
-            this.connectMenuItem.Size = new System.Drawing.Size(81, 23);
+            this.connectMenuItem.Size = new System.Drawing.Size(81, 20);
             this.connectMenuItem.Text = "Connection";
             // 
             // openDeviceToolStripMenuItem
@@ -212,20 +210,20 @@
             this.openDeviceToolStripMenuItem.Image = global::Inventors.ECP.Tester.Properties.Resources._216173___device_phone;
             this.openDeviceToolStripMenuItem.Name = "openDeviceToolStripMenuItem";
             this.openDeviceToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openDeviceToolStripMenuItem.Size = new System.Drawing.Size(188, 26);
+            this.openDeviceToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.openDeviceToolStripMenuItem.Text = "Open Device";
             this.openDeviceToolStripMenuItem.Click += new System.EventHandler(this.OpenDeviceToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(185, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(181, 6);
             // 
             // connectToolStripMenuItem
             // 
             this.connectToolStripMenuItem.Name = "connectToolStripMenuItem";
             this.connectToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.connectToolStripMenuItem.Size = new System.Drawing.Size(188, 26);
+            this.connectToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.connectToolStripMenuItem.Text = "Open";
             this.connectToolStripMenuItem.Click += new System.EventHandler(this.ConnectToolStripMenuItem_Click);
             // 
@@ -233,31 +231,21 @@
             // 
             this.disconnectToolStripMenuItem.Name = "disconnectToolStripMenuItem";
             this.disconnectToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
-            this.disconnectToolStripMenuItem.Size = new System.Drawing.Size(188, 26);
+            this.disconnectToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.disconnectToolStripMenuItem.Text = "Close";
             this.disconnectToolStripMenuItem.Click += new System.EventHandler(this.DisconnectToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(185, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(181, 6);
             // 
             // portMenuItem
             // 
             this.portMenuItem.Name = "portMenuItem";
-            this.portMenuItem.Size = new System.Drawing.Size(188, 26);
+            this.portMenuItem.Size = new System.Drawing.Size(184, 22);
             this.portMenuItem.Text = "Device";
             this.portMenuItem.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.PortMenuItem_DropDownItemClicked);
-            // 
-            // mTime
-            // 
-            this.mTime.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.mTime.BackColor = System.Drawing.SystemColors.InactiveBorder;
-            this.mTime.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.mTime.Name = "mTime";
-            this.mTime.ReadOnly = true;
-            this.mTime.Size = new System.Drawing.Size(213, 23);
-            this.mTime.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // profilerToolStripMenuItem
             // 
@@ -268,27 +256,27 @@
             this.profilingToolStripMenuItem,
             this.reportToolStripMenuItem});
             this.profilerToolStripMenuItem.Name = "profilerToolStripMenuItem";
-            this.profilerToolStripMenuItem.Size = new System.Drawing.Size(57, 23);
+            this.profilerToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
             this.profilerToolStripMenuItem.Text = "Profiler";
             // 
             // testToolStripMenuItem
             // 
             this.testToolStripMenuItem.Name = "testToolStripMenuItem";
-            this.testToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
+            this.testToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.testToolStripMenuItem.Text = "Test";
             this.testToolStripMenuItem.Click += new System.EventHandler(this.TestToolStripMenuItem_Click);
             // 
             // trialsToolStripMenuItem
             // 
             this.trialsToolStripMenuItem.Name = "trialsToolStripMenuItem";
-            this.trialsToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
+            this.trialsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.trialsToolStripMenuItem.Text = "Trials";
             this.trialsToolStripMenuItem.Click += new System.EventHandler(this.TrialsToolStripMenuItem_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(116, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(177, 6);
             // 
             // profilingToolStripMenuItem
             // 
@@ -296,7 +284,7 @@
             this.enabledToolStripMenuItem,
             this.disabledToolStripMenuItem});
             this.profilingToolStripMenuItem.Name = "profilingToolStripMenuItem";
-            this.profilingToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
+            this.profilingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.profilingToolStripMenuItem.Text = "Profiling";
             // 
             // enabledToolStripMenuItem
@@ -316,7 +304,7 @@
             // reportToolStripMenuItem
             // 
             this.reportToolStripMenuItem.Name = "reportToolStripMenuItem";
-            this.reportToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
+            this.reportToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.reportToolStripMenuItem.Text = "Report";
             this.reportToolStripMenuItem.Click += new System.EventHandler(this.ReportToolStripMenuItem_Click);
             // 
@@ -327,7 +315,7 @@
             this.toolStripSeparator5,
             this.aboutECPTesterToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 23);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
             // 
             // documentationToolStripMenuItem
@@ -353,7 +341,7 @@
             // 
             this.hSplitContainer.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.hSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.hSplitContainer.Location = new System.Drawing.Point(0, 27);
+            this.hSplitContainer.Location = new System.Drawing.Point(0, 24);
             this.hSplitContainer.Name = "hSplitContainer";
             this.hSplitContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -364,8 +352,8 @@
             // hSplitContainer.Panel2
             // 
             this.hSplitContainer.Panel2.Controls.Add(this.logBox);
-            this.hSplitContainer.Size = new System.Drawing.Size(927, 540);
-            this.hSplitContainer.SplitterDistance = 375;
+            this.hSplitContainer.Size = new System.Drawing.Size(927, 543);
+            this.hSplitContainer.SplitterDistance = 377;
             this.hSplitContainer.TabIndex = 2;
             // 
             // vSplitContainer
@@ -382,7 +370,7 @@
             // vSplitContainer.Panel2
             // 
             this.vSplitContainer.Panel2.Controls.Add(this.propertyGrid);
-            this.vSplitContainer.Size = new System.Drawing.Size(927, 375);
+            this.vSplitContainer.Size = new System.Drawing.Size(927, 377);
             this.vSplitContainer.SplitterDistance = 263;
             this.vSplitContainer.TabIndex = 0;
             // 
@@ -390,10 +378,9 @@
             // 
             this.functionList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.functionList.FormattingEnabled = true;
-            this.functionList.ItemHeight = 16;
             this.functionList.Location = new System.Drawing.Point(0, 0);
             this.functionList.Name = "functionList";
-            this.functionList.Size = new System.Drawing.Size(259, 371);
+            this.functionList.Size = new System.Drawing.Size(259, 373);
             this.functionList.TabIndex = 0;
             this.functionList.SelectedIndexChanged += new System.EventHandler(this.FunctionList_SelectedIndexChanged);
             this.functionList.DoubleClick += new System.EventHandler(this.FunctionList_DoubleClick);
@@ -403,7 +390,7 @@
             this.propertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.propertyGrid.Location = new System.Drawing.Point(0, 0);
             this.propertyGrid.Name = "propertyGrid";
-            this.propertyGrid.Size = new System.Drawing.Size(656, 371);
+            this.propertyGrid.Size = new System.Drawing.Size(656, 373);
             this.propertyGrid.TabIndex = 0;
             // 
             // logBox
@@ -414,7 +401,7 @@
             this.logBox.Multiline = true;
             this.logBox.Name = "logBox";
             this.logBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.logBox.Size = new System.Drawing.Size(923, 157);
+            this.logBox.Size = new System.Drawing.Size(923, 158);
             this.logBox.TabIndex = 0;
             // 
             // imageList
@@ -499,7 +486,6 @@
         private System.Windows.Forms.Timer msgTimer;
         private System.Windows.Forms.ToolStripMenuItem portMenuItem;
         private System.Windows.Forms.ImageList imageList;
-        private System.Windows.Forms.ToolStripTextBox mTime;
         private System.Windows.Forms.PropertyGrid propertyGrid;
         private System.Windows.Forms.ToolStripStatusLabel statusText;
         private System.Windows.Forms.ToolStripMenuItem clearLogToolStripMenuItem;
