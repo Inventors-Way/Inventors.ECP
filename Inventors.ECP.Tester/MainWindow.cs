@@ -117,7 +117,7 @@ namespace Inventors.ECP.Tester
             }
         }
 
-        private async void LoadDevice(string fileName)
+        private void LoadDevice(string fileName)
         {
             try
             {

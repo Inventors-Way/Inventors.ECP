@@ -128,7 +128,7 @@ namespace Inventors.ECP
 
         public abstract FunctionDispatcher CreateDispatcher();
 
-        public abstract bool Dispatch(dynamic listener);
+        public abstract int Dispatch(dynamic listener);
 
         [XmlIgnore]
         [Category("Statistics")]

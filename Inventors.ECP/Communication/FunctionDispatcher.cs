@@ -8,17 +8,11 @@ namespace Inventors.ECP.Communication
     {
         public FunctionDispatcher(byte code, Func<DeviceFunction> creator)
         {
-            this.code = code;
+            this.Code = code;
             this.creator = creator;
         }
 
-        public byte Code
-        {
-            get
-            {
-                return code;
-            }
-        }
+        public byte Code { get; }
 
         public DeviceFunction Create(Packet packet)
         {
@@ -28,7 +22,6 @@ namespace Inventors.ECP.Communication
             return retValue;
         }
 
-        private readonly byte code;
         private readonly Func<DeviceFunction> creator;
     }
 }

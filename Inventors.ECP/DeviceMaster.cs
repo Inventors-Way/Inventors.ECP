@@ -196,12 +196,12 @@ namespace Inventors.ECP
 
         private void Dispatch(Packet packet)
         {
-            foreach (var displatcher in Dispatchers)
+            foreach (var dispatcher in Dispatchers)
             {
-                if ((displatcher.Code == packet.Code) &&
+                if ((dispatcher.Code == packet.Code) &&
                     (MessageListener != null))
                 {
-                    displatcher.Create(packet).Dispatch(MessageListener);
+                    dispatcher.Create(packet).Dispatch(MessageListener);
                 }
             }
         }

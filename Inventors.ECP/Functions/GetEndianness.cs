@@ -24,7 +24,7 @@ namespace Inventors.ECP.Functions
             return new FunctionDispatcher(CODE, () => new GetEndianness());
         }
 
-        public override bool Dispatch(dynamic listener)
+        public override int Dispatch(dynamic listener)
         {
             return listener.Accept(this);
         }

@@ -97,7 +97,7 @@ namespace Inventors.ECP.DefaultDevice
             }
         }
 
-        public bool Accept(DeviceIdentification func)
+        public int Accept(DeviceIdentification func)
         {
             func.DeviceID = Location.DeviceID;
             func.ManufactureID = Location.ManufacturerID;
@@ -110,20 +110,20 @@ namespace Inventors.ECP.DefaultDevice
             func.Checksum = 5;
             func.SerialNumber = 1000;
 
-            return true;
+            return 0;
         }
 
-        public bool Accept(Ping func)
+        public int Accept(Ping func)
         {
             func.Count = Pings++;
             OnPropertyChanged?.Invoke(this, nameof(Pings));
-            return true;
+            return 0;
         }
 
-        public bool Accept(GetEndianness func)
+        public int Accept(GetEndianness func)
         {
             Log.Status("Endianness: {0}", func.EqualEndianness);
-            return true;
+            return 0;
         }
 
         public void Accept(PrintfMessage msg)

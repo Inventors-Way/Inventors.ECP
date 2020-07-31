@@ -12,7 +12,6 @@ namespace Inventors.ECP
     public class DeviceSlave :
         IDisposable
     {
-
         private List<MessageDispatcher> MessageDispatchers { get; } = new List<MessageDispatcher>();
         private List<FunctionDispatcher> FunctionDispatchers { get; } = new List<FunctionDispatcher>();
 
@@ -28,7 +27,9 @@ namespace Inventors.ECP
                 _connection.Destuffer.OnReceive += HandleIncommingFrame;
             }
             else
+            {
                 throw new ArgumentException(Resources.LAYER_OR_DEVICE_DATA_IS_NULL);
+            }
         }
 
         public void Open()
@@ -89,7 +90,9 @@ namespace Inventors.ECP
                 {
                     if (response.IsFunction)
                     {
-                        if (DispatchFunction(response, out DeviceFunction function))
+                        int errorCode = DispatchFunction(response, out DeviceFunction function);
+
+                        if (errorCode == 0)
                         {
                             function.OnSlaveSend();
                             _connection.Transmit(Frame.Encode(function.GetResponse()));
@@ -97,7 +100,7 @@ namespace Inventors.ECP
                         else
                         {
                             Packet nack = new Packet(0, 1);
-                            nack.InsertByte(0, 0);
+                            nack.InsertByte(0, (byte) errorCode);
 
                             _connection.Transmit(Frame.Encode(nack.ToArray()));
                         }
@@ -154,9 +157,9 @@ namespace Inventors.ECP
             return retValue;
         }
 
-        private bool DispatchFunction(Packet packet, out DeviceFunction function)
+        private int DispatchFunction(Packet packet, out DeviceFunction function)
         {
-            bool retValue = false;
+            int retValue = 0;
             function = null;
 
             foreach (var displatcher in FunctionDispatchers)

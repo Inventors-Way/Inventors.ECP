@@ -422,7 +422,7 @@ namespace Inventors.ECP.Communication.Tcp
             }
             else
             {
-                ms = new MemoryStream(new byte[0]);
+                ms = new MemoryStream(Array.Empty<byte>());
             }
 
             return MessageWrite(metadata, dataLen, ms);
@@ -592,7 +592,7 @@ namespace Inventors.ECP.Communication.Tcp
             }
             else
             {
-                ms = new MemoryStream(new byte[0]);
+                ms = new MemoryStream(Array.Empty<byte>());
             }
 
             return await MessageWriteAsync(metadata, dataLen, ms);

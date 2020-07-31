@@ -33,8 +33,19 @@ namespace Inventors.ECP
             return Packet.ToArray();
         }
 
+        /// <summary>
+        /// Override this function to create the message Packet from properties when the 
+        /// message is send. This enables messages where their size cannot be known when
+        /// they are constructed.
+        /// </summary>
         public virtual void OnSend() { }
 
+        /// <summary>
+        /// Override this function provide initialization of properties when the message
+        /// is received by the master or slave. This can be used if it is to expensive to
+        /// create the properties of the message everytime they are accessed, instead they
+        /// can be created once when the message is received.
+        /// </summary>
         public virtual void OnReceived() { }
 
         protected Packet Packet { get; set; }
