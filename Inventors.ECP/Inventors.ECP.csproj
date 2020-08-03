@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
-    <Version>1.5.0</Version>
+    <Version>1.5.1</Version>
     <Authors>Inventors' Way</Authors>
     <Company>Inventors' Way ApS</Company>
     <Description>Library implementing the Embedded Communication Protocol (ECP)</Description>
@@ -12,7 +12,7 @@
     <RepositoryUrl>https://github.com/Inventors-Way/Inventors.ECP</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>Communication</PackageTags>
-    <PackageReleaseNotes>Made the ECP Master Disposable</PackageReleaseNotes>
+    <PackageReleaseNotes>Made the serial port layer thread safe</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageIconUrl></PackageIconUrl>
     <NeutralLanguage>en</NeutralLanguage>

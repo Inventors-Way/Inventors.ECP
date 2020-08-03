@@ -21,7 +21,10 @@ namespace Inventors.ECP.Communication
             {
                 if (disposing)
                 {
-                    port.Dispose();
+                    if (port is object)
+                    {
+                        port.Dispose();
+                    }
                 }
 
                 disposedValue = true;
@@ -35,30 +38,34 @@ namespace Inventors.ECP.Communication
         }
 
         #endregion
+        private object lockObject = new object();
 
         protected override void DoOpen()
         {
-            if (port != null)
+            lock (lockObject)
             {
-                Close();
-            }
-
-            if (port == null)
-            {
-                port = new SerialPort(Location.Address)
+                if (port != null)
                 {
-                    BaudRate = BaudRate,
-                    Parity = Parity.None,
-                    StopBits = StopBits.One,
-                    DataBits = 8,
-                    Handshake = Handshake.None,
-                    DtrEnable = ResetOnConnection,
-                    ReadTimeout = 10
-                };
+                    Close();
+                }
 
-                Destuffer.Reset();
-                port.Open();
-                InitializeRead();
+                if (port == null)
+                {
+                    port = new SerialPort(Location.Address)
+                    {
+                        BaudRate = BaudRate,
+                        Parity = Parity.None,
+                        StopBits = StopBits.One,
+                        DataBits = 8,
+                        Handshake = Handshake.None,
+                        DtrEnable = ResetOnConnection,
+                        ReadTimeout = 10
+                    };
+
+                    Destuffer.Reset();
+                    port.Open();
+                    InitializeRead();
+                }
             }
         }
 
@@ -99,29 +106,35 @@ namespace Inventors.ECP.Communication
 
         protected override void DoClose()
         {
-            if (port != null)
+            lock (lockObject)
             {
-                if (port.IsOpen)
+                if (port is object)
                 {
-                    port.Close();
-                    port.Dispose();
-                    port = null;
-                }
-                else
-                {
-                    port = null;
+                    if (port.IsOpen)
+                    {
+                        port.Close();
+                        port.Dispose();
+                        port = null;
+                    }
+                    else
+                    {
+                        port = null;
+                    }
                 }
             }
         }
 
         public override void Transmit(byte[] frame)
         {
-            if ((port is object) && (frame is object))
+            lock (lockObject)
             {
-                if (port.IsOpen)
+                if ((port is object) && (frame is object))
                 {
-                    port.Write(frame, 0, frame.Length);
-                    BytesTransmitted += frame.Length;
+                    if (port.IsOpen)
+                    {
+                        port.Write(frame, 0, frame.Length);
+                        BytesTransmitted += frame.Length;
+                    }
                 }
             }
         }
@@ -135,8 +148,10 @@ namespace Inventors.ECP.Communication
             {
                 bool retValue = false;
 
-                if (port != null)
+                if (port is object)
+                {
                     retValue = port.IsOpen;
+                }
 
                 return retValue;
             }
