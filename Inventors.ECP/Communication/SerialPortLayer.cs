@@ -38,7 +38,7 @@ namespace Inventors.ECP.Communication
         }
 
         #endregion
-        private object lockObject = new object();
+        private readonly object lockObject = new object();
 
         protected override void DoOpen()
         {
@@ -48,8 +48,7 @@ namespace Inventors.ECP.Communication
                 {
                     Close();
                 }
-
-                if (port == null)
+                else
                 {
                     port = new SerialPort(Location.Address)
                     {
@@ -62,10 +61,13 @@ namespace Inventors.ECP.Communication
                         ReadTimeout = 10
                     };
 
-                    Destuffer.Reset();
-                    port.Open();
-                    InitializeRead();
                 }
+                port.PortName = Location.Address;
+                port.BaudRate = BaudRate;
+
+                Destuffer.Reset();
+                port.Open();
+                InitializeRead();
             }
         }
 
@@ -142,20 +144,7 @@ namespace Inventors.ECP.Communication
         public override List<Location> GetLocations() =>
             (from port in SerialPort.GetPortNames() select Location.Parse(port)).ToList();
 
-        public override bool IsOpen
-        {
-            get
-            {
-                bool retValue = false;
-
-                if (port is object)
-                {
-                    retValue = port.IsOpen;
-                }
-
-                return retValue;
-            }
-        }
+        public override bool IsOpen => port is object && port.IsOpen;
 
         public override bool IsConnected => IsOpen;
 

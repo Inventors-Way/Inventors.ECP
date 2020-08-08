@@ -15,26 +15,27 @@ namespace Inventors.ECP.Tester
         public TrialsDialog()
         {
             InitializeComponent();
-            trials.Text = number.ToString();
+            trials.Text = _trials.ToString();
         }
+
+        private int _trials = 2;
 
         public int Trials
         {
             get
             {
-                int x;
 
-                if (Int32.TryParse(trials.Text, out x))
+                if (Int32.TryParse(trials.Text, out int x))
                 {
-                    number = x;
+                    _trials = x;
                 }
 
-                return number;
+                return _trials;
             }
             set
             {
                 trials.Text = value.ToString();
-                number = value;
+                _trials = value;
             }
         }
 
@@ -62,7 +63,6 @@ namespace Inventors.ECP.Tester
             }
         }
 
-        private int number = 2;
 
         private void TrialsDialog_Load(object sender, EventArgs e)
         {
