@@ -28,6 +28,10 @@ namespace Inventors.ECP
         /// </summary>
         InnoCon = 4,
         /// <summary>
+        /// Nordic-NeuroSTIM ApS
+        /// </summary>
+        NordicNeuroSTIM = 5,
+        /// <summary>
         /// Use only for testing purposes. Please contact Inventors' Way at info@inventors.dk to get an MID allocated to your company, which is free for non-profit or open source projects.
         /// </summary>
         Generic = uint.MaxValue

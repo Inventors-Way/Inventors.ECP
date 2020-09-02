@@ -102,6 +102,18 @@ namespace Inventors.ECP
             set => Master.BaudRate = NotifyIfChanged(Master.BaudRate, value);
         }
         #endregion
+        #region PingEnabled
+        private bool _pingEnabled;
+
+        [Category("Debug")]
+        [XmlIgnore]
+        public bool PingEnabled
+        {
+            get => _pingEnabled;
+            set => SetProperty(ref _pingEnabled, value);
+        }
+
+        #endregion
         #region Profiler
         [Browsable(false)]
         [XmlIgnore]

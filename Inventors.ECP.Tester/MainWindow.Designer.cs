@@ -70,6 +70,7 @@
             this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.msgTimer = new System.Windows.Forms.Timer(this.components);
             this.deviceTimer = new System.Windows.Forms.Timer(this.components);
+            this.pingStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.hSplitContainer)).BeginInit();
@@ -86,7 +87,8 @@
             // 
             this.statusStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.statusText});
+            this.statusText,
+            this.pingStatus});
             this.statusStrip.Location = new System.Drawing.Point(0, 567);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 15, 0);
@@ -262,21 +264,21 @@
             // testToolStripMenuItem
             // 
             this.testToolStripMenuItem.Name = "testToolStripMenuItem";
-            this.testToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.testToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
             this.testToolStripMenuItem.Text = "Test";
             this.testToolStripMenuItem.Click += new System.EventHandler(this.TestToolStripMenuItem_Click);
             // 
             // trialsToolStripMenuItem
             // 
             this.trialsToolStripMenuItem.Name = "trialsToolStripMenuItem";
-            this.trialsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.trialsToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
             this.trialsToolStripMenuItem.Text = "Trials";
             this.trialsToolStripMenuItem.Click += new System.EventHandler(this.TrialsToolStripMenuItem_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(116, 6);
             // 
             // profilingToolStripMenuItem
             // 
@@ -284,7 +286,7 @@
             this.enabledToolStripMenuItem,
             this.disabledToolStripMenuItem});
             this.profilingToolStripMenuItem.Name = "profilingToolStripMenuItem";
-            this.profilingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.profilingToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
             this.profilingToolStripMenuItem.Text = "Profiling";
             // 
             // enabledToolStripMenuItem
@@ -304,7 +306,7 @@
             // reportToolStripMenuItem
             // 
             this.reportToolStripMenuItem.Name = "reportToolStripMenuItem";
-            this.reportToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.reportToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
             this.reportToolStripMenuItem.Text = "Report";
             this.reportToolStripMenuItem.Click += new System.EventHandler(this.ReportToolStripMenuItem_Click);
             // 
@@ -436,6 +438,12 @@
             this.deviceTimer.Interval = 1000;
             this.deviceTimer.Tick += new System.EventHandler(this.DeviceTimer_Tick);
             // 
+            // pingStatus
+            // 
+            this.pingStatus.Name = "pingStatus";
+            this.pingStatus.Size = new System.Drawing.Size(74, 17);
+            this.pingStatus.Text = "| Ping count:";
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -509,6 +517,7 @@
         private System.Windows.Forms.ToolStripMenuItem debugToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem statusToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem errorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripStatusLabel pingStatus;
     }
 }
 

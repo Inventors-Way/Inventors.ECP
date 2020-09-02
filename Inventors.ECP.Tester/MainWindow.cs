@@ -57,15 +57,7 @@ namespace Inventors.ECP.Tester
 
         private void SetTitle()
         {
-            Text = String.Format("ECP Tester, Rev {0}", VersionInformation);
-        }
-
-        public static string VersionInformation
-        {
-            get
-            {
-                return Assembly.GetAssembly(typeof(MainWindow)).GetName().Version.ToString();
-            }
+            Text = String.Format("ECP Tester, Rev {0}", VersionInfo.VersionDescription);
         }
 
         private void SetupLogging()
@@ -236,6 +228,22 @@ namespace Inventors.ECP.Tester
                 {
                     UpdatePorts();
                 }
+                else if (device.IsOpen)
+                {
+                    if (device.PingEnabled)
+                    {
+                        var ping = device.Ping();
+
+                        if (ping < 0)
+                        {
+                            Log.Error("Ping failed!");
+                        }
+                        else
+                        {
+                            pingStatus.Text = String.Format($"| Ping count: { ping }");
+                        }
+                    }
+                }
             }
         }
 
@@ -253,7 +261,7 @@ namespace Inventors.ECP.Tester
 
                         foreach (var item in portMenuItem.DropDownItems)
                         {
-                            ((ToolStripMenuItem)item).Checked = item != e.ClickedItem ? false : true;
+                            ((ToolStripMenuItem)item).Checked = item == e.ClickedItem;
                         }
                     }
                     else
@@ -329,7 +337,7 @@ namespace Inventors.ECP.Tester
             {
                 try
                 {
-                    deviceTimer.Enabled = false;
+                    //deviceTimer.Enabled = false;
                     device.Location = selectedDevice;
                     device.Open();
                     Log.Status("Location opened: {0}", device.Location);
@@ -339,7 +347,7 @@ namespace Inventors.ECP.Tester
                 {
                     Log.Error("Problem connecting to device: " + ex.Message);
                     UpdateAppStates(AppState.APP_STATE_INITIALIZED);
-                    deviceTimer.Enabled = true;
+                    //deviceTimer.Enabled = true;
                 }
             }
             else
@@ -355,7 +363,7 @@ namespace Inventors.ECP.Tester
                 device.Close();
                 UpdateAppStates(AppState.APP_STATE_INITIALIZED);
                 Log.Status("Location closed: {0}", device.Location);
-                deviceTimer.Enabled = true;
+                //deviceTimer.Enabled = true;
             }
             catch (Exception ex)
             {
@@ -531,9 +539,9 @@ namespace Inventors.ECP.Tester
             {
                 Text = "About ECP Tester",
                 Product = "ECP Tester",
-                Version = "1.4.2",
+                Version = VersionInfo.VersionDescription,
                 Description = "Copyright (C) 2019-2020 Inventors' Way ApS. All rights reserved." + Environment.NewLine + "ECP Tester is made possible by the open source ECP project made by the scientists and engineers at Inventors' Way.",
-                Image = Image.FromFile("about.png")
+                Image = Resource.AboutImage
             };
             dialog.ShowDialog();
         }
