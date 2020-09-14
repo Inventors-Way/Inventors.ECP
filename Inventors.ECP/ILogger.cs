@@ -16,10 +16,6 @@ namespace Inventors.ECP
 
     public interface ILogger
     {
-        void Initialize();
-
         void Add(DateTime time, LogLevel level, string str);
-
-        void AddMonitor(ILogger log);
     }
 }

@@ -61,8 +61,7 @@ namespace Inventors.ECP.Tester
 
         private void SetupLogging()
         {
-            logger = new Logger() { Box = logBox };
-            Log.SetLogger(logger);
+            Log.SetLogger(logControl);
             Log.Level = LogLevel.DEBUG;
         }
 
@@ -509,20 +508,34 @@ namespace Inventors.ECP.Tester
 
         private void ClearLogToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            logBox.Text = "";
+            if (!string.IsNullOrEmpty(logControl.Content))
+            {
+                if (MessageBox.Show(this, 
+                                    "This will delete all content in the log, do you intend to do this", 
+                                    "Deleting Log", 
+                                    MessageBoxButtons.YesNo, 
+                                    MessageBoxIcon.Question, 
+                                    MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                {
+                    logControl.Clear();
+                }
+            }
         }
 
         private void SaveLogToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var dialog = new SaveFileDialog()
+            if (!string.IsNullOrEmpty(logControl.Content))
             {
-                Filter = "Text Files|*.txt",
-                Title = "Save Log File"
-            })
-            {
-                if (dialog.ShowDialog() == DialogResult.OK)
+                using (var dialog = new SaveFileDialog()
                 {
-                    File.WriteAllText(dialog.FileName, logBox.Text);
+                    Filter = "Text Files|*.txt",
+                    Title = "Save Log File"
+                })
+                {
+                    if (dialog.ShowDialog() == DialogResult.OK)
+                    {
+                        File.WriteAllText(dialog.FileName, logControl.Content);
+                    }
                 }
             }
         }
