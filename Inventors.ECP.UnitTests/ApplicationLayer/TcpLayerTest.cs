@@ -10,7 +10,6 @@ using Inventors.ECP.Messages;
 using System.Net;
 using System.Threading;
 using Inventors.ECP.Communication.Discovery;
-using Inventors.Logging;
 using System.Globalization;
 
 namespace Inventors.ECP.UnitTests.ApplicationLayer

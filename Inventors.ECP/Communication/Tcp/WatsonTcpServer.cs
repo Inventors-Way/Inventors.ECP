@@ -317,7 +317,7 @@ namespace Inventors.ECP.Communication.Tcp
         {
             if (Debug)
             {
-                Logging.Log.Debug(msg);
+                ECP.Log.Debug(msg);
             }
         }
 

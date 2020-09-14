@@ -1,6 +1,5 @@
 ﻿using Inventors.ECP.Communication.Discovery;
 using Inventors.ECP.Communication.Tcp;
-using Inventors.Logging;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -15,12 +14,13 @@ namespace Inventors.ECP.Communication
         CommunicationLayer,
         IDisposable
     {
+        private readonly object lockObject = new object();
         private WatsonTcpServer server;
         private Beacon beacon;
-        private bool _isOpen = false;
-        private bool _isConnected = false;
-        private string _IpPort = null;
-        private Location _port = null;
+        private bool _isOpen;
+        private bool _isConnected;
+        private string _IpPort;
+        private Location _port;
 
         public override int BaudRate { get; set; } = int.MaxValue;
 
@@ -58,26 +58,26 @@ namespace Inventors.ECP.Communication
 
         public override bool IsOpen
         {
-            get { lock (this) { return _isOpen; } }
+            get { lock (lockObject) { return _isOpen; } }
         }
 
         public override bool IsConnected
         {
-            get { lock(this) { return _isConnected; }}
+            get { lock(lockObject) { return _isConnected; }}
         }
 
         private void SetConnected(bool value)
         {
-            lock (this) { _isConnected = value; } 
+            lock (lockObject) { _isConnected = value; } 
         }
 
         private string ClientPort
         {
-            get { lock (this) { return _IpPort; } }
-            set { lock (this) { _IpPort = value; } }
+            get { lock (lockObject) { return _IpPort; } }
+            set { lock (lockObject) { _IpPort = value; } }
         }
 
-        private void SetOpen(bool open) { lock(this) { _isOpen = open; } }
+        private void SetOpen(bool open) { lock(lockObject) { _isOpen = open; } }
 
         public override void Transmit(byte[] frame)
         {
@@ -93,7 +93,7 @@ namespace Inventors.ECP.Communication
         {
             if (IsOpen)
             {
-                lock (this)
+                lock (lockObject)
                 {
                     foreach (var client in server.ListClients())
                     {
@@ -115,7 +115,7 @@ namespace Inventors.ECP.Communication
         {
             if (!IsOpen)
             {
-                lock (this)
+                lock (lockObject)
                 {
                     SetConnected(false);
                     ClientPort = null;
@@ -199,7 +199,7 @@ namespace Inventors.ECP.Communication
         }
 
         #region IDisposable Support
-        private bool disposedValue = false; 
+        private bool disposedValue; 
 
         protected virtual void Dispose(bool disposing)
         {

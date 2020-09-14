@@ -19,25 +19,13 @@ namespace Inventors.ECP.Functions
             Response.InsertUInt16(0, 1);
         }
 
-        public override FunctionDispatcher CreateDispatcher()
-        {
-            return new FunctionDispatcher(CODE, () => new GetEndianness());
-        }
+        public override FunctionDispatcher CreateDispatcher() => new FunctionDispatcher(CODE, () => new GetEndianness());
 
-        public override int Dispatch(dynamic listener)
-        {
-            return listener.Accept(this);
-        }
+        public override int Dispatch(dynamic listener) => listener.Accept(this);
 
         [Category("Endianness")]
         [Description("Are the slave and master of the same endianness")]
-        public bool EqualEndianness
-        {
-            get
-            {
-                return Response != null ? Response.GetUInt16(0) == 1 : true;
-            }
-        }
+        public bool EqualEndianness => Response == null || Response.GetUInt16(0) == 1;
 
         public override string ToString()
         {

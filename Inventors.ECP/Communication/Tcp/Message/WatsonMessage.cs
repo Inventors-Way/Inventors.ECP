@@ -634,9 +634,9 @@ namespace Inventors.ECP.Communication.Tcp.Message
             }
             else if (fieldType == FieldType.Bits)
             {
-                if (data is BitArray)
+                if (data is BitArray array)
                 {
-                    data = BitArrayToBytes((BitArray)data);
+                    data = BitArrayToBytes(array);
                 }
 
                 string[] s = ((byte[])data).Select(x => Convert.ToString(x, 2).PadLeft(8, '0')).ToArray();

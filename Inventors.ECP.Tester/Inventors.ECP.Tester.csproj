@@ -51,9 +51,6 @@
     <ApplicationIcon>216410 - spanner.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Inventors.Logging, Version=2.1.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Inventors.Logging.2.1.4\lib\net48\Inventors.Logging.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Ports, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -77,6 +74,12 @@
     </Compile>
     <Compile Include="AboutDialog.Designer.cs">
       <DependentUpon>AboutDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LogControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LogControl.Designer.cs">
+      <DependentUpon>LogControl.cs</DependentUpon>
     </Compile>
     <Compile Include="PortInformationProvider.cs" />
     <Compile Include="Resource.Designer.cs">
@@ -102,6 +105,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="AboutDialog.resx">
       <DependentUpon>AboutDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LogControl.resx">
+      <DependentUpon>LogControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resource.resx">
       <Generator>ResXFileCodeGenerator</Generator>

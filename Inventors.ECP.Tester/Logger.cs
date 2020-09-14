@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Inventors.ECP;
-using Inventors.Logging;
 
 namespace Inventors.ECP.Tester
 {
@@ -13,7 +12,7 @@ namespace Inventors.ECP.Tester
     {
         public delegate void InvokeDelegate();
 
-        public void Add(DateTime time, LogCategory category, LogLevel level, string str)
+        public void Add(DateTime time, LogLevel level, string str)
         {
             if (mBox != null)
             {
@@ -31,7 +30,7 @@ namespace Inventors.ECP.Tester
         {
         }
 
-        public void AddMonitor(LogCategory category, ILogger log)
+        public void AddMonitor(ILogger log)
         {
         }
 

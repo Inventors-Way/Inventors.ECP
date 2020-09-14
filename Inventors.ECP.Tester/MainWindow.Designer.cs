@@ -32,10 +32,10 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.statusText = new System.Windows.Forms.ToolStripStatusLabel();
+            this.pingStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.logLevelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -44,7 +44,6 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.connectMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openDeviceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.connectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.disconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -66,11 +65,12 @@
             this.vSplitContainer = new System.Windows.Forms.SplitContainer();
             this.functionList = new System.Windows.Forms.ListBox();
             this.propertyGrid = new System.Windows.Forms.PropertyGrid();
-            this.logBox = new System.Windows.Forms.TextBox();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.msgTimer = new System.Windows.Forms.Timer(this.components);
             this.deviceTimer = new System.Windows.Forms.Timer(this.components);
-            this.pingStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.logControl = new Inventors.ECP.Tester.LogControl();
+            this.saveLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openDeviceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.hSplitContainer)).BeginInit();
@@ -101,6 +101,12 @@
             this.statusText.Name = "statusText";
             this.statusText.Size = new System.Drawing.Size(42, 17);
             this.statusText.Text = "Status:";
+            // 
+            // pingStatus
+            // 
+            this.pingStatus.Name = "pingStatus";
+            this.pingStatus.Size = new System.Drawing.Size(74, 17);
+            this.pingStatus.Text = "| Ping count:";
             // 
             // menuStrip
             // 
@@ -136,15 +142,6 @@
             this.clearLogToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
             this.clearLogToolStripMenuItem.Text = "Clear Log";
             this.clearLogToolStripMenuItem.Click += new System.EventHandler(this.ClearLogToolStripMenuItem_Click);
-            // 
-            // saveLogToolStripMenuItem
-            // 
-            this.saveLogToolStripMenuItem.Image = global::Inventors.ECP.Tester.Properties.Resources._216190___export;
-            this.saveLogToolStripMenuItem.Name = "saveLogToolStripMenuItem";
-            this.saveLogToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveLogToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
-            this.saveLogToolStripMenuItem.Text = "Save Log";
-            this.saveLogToolStripMenuItem.Click += new System.EventHandler(this.SaveLogToolStripMenuItem_Click);
             // 
             // toolStripSeparator6
             // 
@@ -206,15 +203,6 @@
             this.connectMenuItem.Name = "connectMenuItem";
             this.connectMenuItem.Size = new System.Drawing.Size(81, 20);
             this.connectMenuItem.Text = "Connection";
-            // 
-            // openDeviceToolStripMenuItem
-            // 
-            this.openDeviceToolStripMenuItem.Image = global::Inventors.ECP.Tester.Properties.Resources._216173___device_phone;
-            this.openDeviceToolStripMenuItem.Name = "openDeviceToolStripMenuItem";
-            this.openDeviceToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openDeviceToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
-            this.openDeviceToolStripMenuItem.Text = "Open Device";
-            this.openDeviceToolStripMenuItem.Click += new System.EventHandler(this.OpenDeviceToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
@@ -353,7 +341,7 @@
             // 
             // hSplitContainer.Panel2
             // 
-            this.hSplitContainer.Panel2.Controls.Add(this.logBox);
+            this.hSplitContainer.Panel2.Controls.Add(this.logControl);
             this.hSplitContainer.Size = new System.Drawing.Size(927, 543);
             this.hSplitContainer.SplitterDistance = 377;
             this.hSplitContainer.TabIndex = 2;
@@ -395,17 +383,6 @@
             this.propertyGrid.Size = new System.Drawing.Size(656, 373);
             this.propertyGrid.TabIndex = 0;
             // 
-            // logBox
-            // 
-            this.logBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.logBox.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.logBox.Location = new System.Drawing.Point(0, 0);
-            this.logBox.Multiline = true;
-            this.logBox.Name = "logBox";
-            this.logBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.logBox.Size = new System.Drawing.Size(923, 158);
-            this.logBox.TabIndex = 0;
-            // 
             // imageList
             // 
             this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList.ImageStream")));
@@ -438,11 +415,35 @@
             this.deviceTimer.Interval = 1000;
             this.deviceTimer.Tick += new System.EventHandler(this.DeviceTimer_Tick);
             // 
-            // pingStatus
+            // logControl
             // 
-            this.pingStatus.Name = "pingStatus";
-            this.pingStatus.Size = new System.Drawing.Size(74, 17);
-            this.pingStatus.Text = "| Ping count:";
+            this.logControl.DebugColor = System.Drawing.Color.Blue;
+            this.logControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.logControl.ErrorColor = System.Drawing.Color.Red;
+            this.logControl.Level = Inventors.ECP.LogLevel.STATUS;
+            this.logControl.Location = new System.Drawing.Point(0, 0);
+            this.logControl.Name = "logControl";
+            this.logControl.Size = new System.Drawing.Size(923, 158);
+            this.logControl.StatusColor = System.Drawing.Color.Black;
+            this.logControl.TabIndex = 0;
+            // 
+            // saveLogToolStripMenuItem
+            // 
+            this.saveLogToolStripMenuItem.Image = global::Inventors.ECP.Tester.Properties.Resources._216190___export;
+            this.saveLogToolStripMenuItem.Name = "saveLogToolStripMenuItem";
+            this.saveLogToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.saveLogToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            this.saveLogToolStripMenuItem.Text = "Save Log";
+            this.saveLogToolStripMenuItem.Click += new System.EventHandler(this.SaveLogToolStripMenuItem_Click);
+            // 
+            // openDeviceToolStripMenuItem
+            // 
+            this.openDeviceToolStripMenuItem.Image = global::Inventors.ECP.Tester.Properties.Resources._216173___device_phone;
+            this.openDeviceToolStripMenuItem.Name = "openDeviceToolStripMenuItem";
+            this.openDeviceToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.openDeviceToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.openDeviceToolStripMenuItem.Text = "Open Device";
+            this.openDeviceToolStripMenuItem.Click += new System.EventHandler(this.OpenDeviceToolStripMenuItem_Click);
             // 
             // MainWindow
             // 
@@ -463,7 +464,6 @@
             this.menuStrip.PerformLayout();
             this.hSplitContainer.Panel1.ResumeLayout(false);
             this.hSplitContainer.Panel2.ResumeLayout(false);
-            this.hSplitContainer.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.hSplitContainer)).EndInit();
             this.hSplitContainer.ResumeLayout(false);
             this.vSplitContainer.Panel1.ResumeLayout(false);
@@ -490,7 +490,6 @@
         private System.Windows.Forms.SplitContainer hSplitContainer;
         private System.Windows.Forms.SplitContainer vSplitContainer;
         private System.Windows.Forms.ListBox functionList;
-        private System.Windows.Forms.TextBox logBox;
         private System.Windows.Forms.Timer msgTimer;
         private System.Windows.Forms.ToolStripMenuItem portMenuItem;
         private System.Windows.Forms.ImageList imageList;
@@ -518,6 +517,7 @@
         private System.Windows.Forms.ToolStripMenuItem statusToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem errorToolStripMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel pingStatus;
+        private LogControl logControl;
     }
 }
 

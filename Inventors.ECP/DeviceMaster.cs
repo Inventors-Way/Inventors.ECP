@@ -8,7 +8,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Inventors.ECP.Communication;
 using Inventors.ECP.Profiling;
-using Inventors.Logging;
 
 namespace Inventors.ECP
 {
