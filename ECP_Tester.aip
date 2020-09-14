@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<DOCUMENT Type="Advanced Installer" CreateVersion="16.2" version="17.3" Modules="professional" RootPath="." Language="en" Id="{0687AB8F-C018-4E72-ADE8-CA2B69065AF4}">
+<DOCUMENT Type="Advanced Installer" CreateVersion="16.2" version="17.4" Modules="professional" RootPath="." Language="en" Id="{0687AB8F-C018-4E72-ADE8-CA2B69065AF4}">
   <COMPONENT cid="caphyon.advinst.msicomp.MsiPropsComponent">
     <ROW Property="AI_BITMAP_DISPLAY_MODE" Value="0"/>
     <ROW Property="AI_FINDEXE_TITLE" Value="Select the installation package for [|ProductName]" ValueLocId="AI.Property.FindExeTitle"/>
@@ -12,10 +12,10 @@
     <ROW Property="ARPNOREPAIR" MultiBuildValue="DefaultBuild:1"/>
     <ROW Property="ARPPRODUCTICON" Value="spanner.exe" Type="8"/>
     <ROW Property="Manufacturer" Value="Inventors Way"/>
-    <ROW Property="ProductCode" Value="1033:{A1EC1785-BE82-42BD-A5C6-C7749E52ACF1} " Type="16"/>
+    <ROW Property="ProductCode" Value="1033:{7D1D6531-E903-461C-816F-40DE605CF12B} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="ECP Tester"/>
-    <ROW Property="ProductVersion" Value="1.5.2" Type="32"/>
+    <ROW Property="ProductVersion" Value="1.5.3" Type="32"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND;AI_SETUPEXEPATH;SETUPEXEDIR"/>
     <ROW Property="UpgradeCode" Value="{7AF47BB0-E218-41DD-B835-61EC033F35ED}"/>
     <ROW Property="WindowsType9X" MultiBuildValue="DefaultBuild:Windows 9x/ME" ValueLocId="-"/>
@@ -37,7 +37,6 @@
     <ROW Component="AI_ExePath" ComponentId="{4BA90B5E-E11F-4031-A4BD-0B35534DBF2B}" Directory_="APPDIR" Attributes="4" KeyPath="AI_ExePath"/>
     <ROW Component="APPDIR" ComponentId="{04FDEAF2-9F48-402B-8084-66DE0D08F821}" Directory_="APPDIR" Attributes="0"/>
     <ROW Component="Inventors.ECP.dll" ComponentId="{B62BD3A2-B748-461A-A1E3-65190BA61C8D}" Directory_="APPDIR" Attributes="0" KeyPath="Inventors.ECP.dll"/>
-    <ROW Component="Inventors.Logging.dll" ComponentId="{2ABEDD03-875B-42DA-A047-E2C4DEB7CBD4}" Directory_="APPDIR" Attributes="0" KeyPath="Inventors.Logging.dll"/>
     <ROW Component="ProductInformation" ComponentId="{5363DE25-DBDD-4F8F-BA55-B904FFBDA7D6}" Directory_="APPDIR" Attributes="4" KeyPath="Version"/>
     <ROW Component="SHORTCUTDIR" ComponentId="{6EE2CC2D-6FB3-4365-A77E-3DEA4743196E}" Directory_="SHORTCUTDIR" Attributes="0"/>
     <ROW Component="System.IO.Ports.dll" ComponentId="{F0B9B790-9526-4683-B6F6-E84A09C7F246}" Directory_="APPDIR" Attributes="0" KeyPath="System.IO.Ports.dll"/>
@@ -54,7 +53,6 @@
     <ROW File="ecp_tester.pdb" Component_="ecp_tester.exe" FileName="ECP_TE~1.PDB|ecp_tester.pdb" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Debug\ecp_tester.pdb" SelfReg="false"/>
     <ROW File="Inventors.ECP.dll" Component_="Inventors.ECP.dll" FileName="INVENT~1.DLL|Inventors.ECP.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Debug\Inventors.ECP.dll" SelfReg="false"/>
     <ROW File="Inventors.ECP.pdb" Component_="Inventors.ECP.dll" FileName="INVENT~1.PDB|Inventors.ECP.pdb" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Debug\Inventors.ECP.pdb" SelfReg="false"/>
-    <ROW File="Inventors.Logging.dll" Component_="Inventors.Logging.dll" FileName="INVENT~2.DLL|Inventors.Logging.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Debug\Inventors.Logging.dll" SelfReg="false"/>
     <ROW File="System.IO.Ports.dll" Component_="System.IO.Ports.dll" FileName="SYSTEM~1.DLL|System.IO.Ports.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Debug\System.IO.Ports.dll" SelfReg="false"/>
     <ROW File="System.IO.Ports.xml" Component_="ecp_tester.exe.config" FileName="SYSTEM~1.XML|System.IO.Ports.xml" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Debug\System.IO.Ports.xml" SelfReg="false"/>
   </COMPONENT>
@@ -171,7 +169,6 @@
     <ROW Feature_="MainFeature" Component_="ecp_tester.exe.config"/>
     <ROW Feature_="MainFeature" Component_="AI_ExePath"/>
     <ROW Feature_="MainFeature" Component_="Inventors.ECP.dll"/>
-    <ROW Feature_="MainFeature" Component_="Inventors.Logging.dll"/>
     <ROW Feature_="MainFeature" Component_="System.IO.Ports.dll"/>
     <ROW Feature_="MainFeature" Component_="SHORTCUTDIR"/>
   </COMPONENT>
