@@ -9,7 +9,6 @@ using Inventors.ECP.Communication;
 using Inventors.ECP.Communication.Discovery;
 using Inventors.ECP.Functions;
 using Inventors.ECP.Messages;
-using Inventors.Logging;
 
 namespace Inventors.ECP.DefaultDevice
 {

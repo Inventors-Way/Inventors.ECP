@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Inventors.ECP;
 using System.IO.Ports;
-using Inventors.Logging;
 using Inventors.ECP.Messages;
 using Inventors.ECP.Functions;
 using System.Diagnostics;

@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Inventors.ECP.Communication.Tcp;
 using System.Linq;
 using Inventors.ECP.Communication.Discovery;
-using Inventors.Logging;
 
 namespace Inventors.ECP.Communication
 {
@@ -16,13 +15,14 @@ namespace Inventors.ECP.Communication
         CommunicationLayer,
         IDisposable
     {
+        private readonly object lockObject = new object();
         private readonly BeaconID _id;
         private readonly Probe _probe;
         private readonly List<BeaconLocation> _beacons = new List<BeaconLocation>();
         private WatsonTcpClient _client;
-        private bool _open = false;
-        private bool _connected = false;
-        private Location _port = null;
+        private bool _open;
+        private bool _connected;
+        private Location _port;
 
         public override int BaudRate { get; set; } = 1;
 
@@ -71,15 +71,15 @@ namespace Inventors.ECP.Communication
 
         public override bool IsConnected
         {
-            get { lock (this) { return _connected; } }
+            get { lock (lockObject) { return _connected; } }
         }
 
         private void SetConnected(bool value)
         {
-            lock (this) { _connected = value; }
+            lock (lockObject) { _connected = value; }
         }
 
-        private void SetOpen(bool open) { lock (this) { _open = open; } }
+        private void SetOpen(bool open) { lock (lockObject) { _open = open; } }
 
         public override void Transmit(byte[] frame)
         {
@@ -142,7 +142,7 @@ namespace Inventors.ECP.Communication
         }
 
         #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
+        private bool disposedValue; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
         {

@@ -3,7 +3,6 @@ using Inventors.ECP.Functions;
 using Inventors.ECP.Messages;
 using Inventors.ECP.Profiling;
 using Inventors.ECP.Utility;
-using Inventors.Logging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
