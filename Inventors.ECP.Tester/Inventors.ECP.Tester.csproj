@@ -94,7 +94,6 @@
     <Compile Include="TrialsDialog.Designer.cs">
       <DependentUpon>TrialsDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Logger.cs" />
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>

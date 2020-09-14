@@ -31,7 +31,6 @@ namespace Inventors.ECP.Tester
             APP_STATE_ACTIVE
         }
 
-        private Logger logger;
         private Device device = null;
         private Location selectedDevice = null;
         private AppState state = AppState.APP_STATE_UNINITIALIZED;
