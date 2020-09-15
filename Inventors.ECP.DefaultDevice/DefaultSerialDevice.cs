@@ -18,9 +18,6 @@ namespace Inventors.ECP.DefaultDevice
             FunctionList.Add(new DeviceIdentification());
             FunctionList.Add(new Ping());
             FunctionList.Add(new GetEndianness());
-
-            Master.Add(new TimingViolationMessage());
-            Master.Add(new TimingMessage());
         }
 
         public override bool IsCompatible(DeviceFunction identification)
