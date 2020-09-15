@@ -48,6 +48,6 @@ namespace Inventors.ECP
             }
         }
 
-        private static ILogger logger = null;
+        private static ILogger logger;
     }
 }

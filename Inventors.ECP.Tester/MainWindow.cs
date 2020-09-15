@@ -162,7 +162,6 @@ namespace Inventors.ECP.Tester
 
         private string CreatePortDescription(Location location, string description)
         {
-
             if (description is object)
             {
                 return String.Format("{0} ({1})", location.ToString(), description);
@@ -334,7 +333,6 @@ namespace Inventors.ECP.Tester
             {
                 try
                 {
-                    //deviceTimer.Enabled = false;
                     device.Location = selectedDevice;
                     device.Open();
                     Log.Status("Location opened: {0}", device.Location);
@@ -344,7 +342,6 @@ namespace Inventors.ECP.Tester
                 {
                     Log.Error("Problem connecting to device: " + ex.Message);
                     UpdateAppStates(AppState.APP_STATE_INITIALIZED);
-                    //deviceTimer.Enabled = true;
                 }
             }
             else
@@ -360,7 +357,6 @@ namespace Inventors.ECP.Tester
                 device.Close();
                 UpdateAppStates(AppState.APP_STATE_INITIALIZED);
                 Log.Status("Location closed: {0}", device.Location);
-                //deviceTimer.Enabled = true;
             }
             catch (Exception ex)
             {

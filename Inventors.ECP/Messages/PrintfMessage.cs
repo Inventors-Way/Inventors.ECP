@@ -71,9 +71,6 @@ namespace Inventors.ECP.Messages
             }
         }
 
-        public override string ToString()
-        {
-            return DebugMessage;
-        }
+        public override string ToString() => DebugMessage;
     }
 }

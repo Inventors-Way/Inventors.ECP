@@ -49,16 +49,16 @@ namespace Inventors.ECP.Tester
         {
             if (logBox.InvokeRequired)
             {
-                logBox.BeginInvoke(new InvokeDelegate(() => Add(time, level, message)));
+                logBox.BeginInvoke(new InvokeDelegate(() => LogText(FormatMessage(time, message), GetColor(level))));
             }
             else
             {
-                LogText(FormatMessage(time, message) + System.Environment.NewLine, GetColor(level));
+                LogText(FormatMessage(time, message), GetColor(level));
             }
         }
 
         private static string FormatMessage(DateTime time, string message) =>
-            String.Format(CultureInfo.CurrentCulture, "[{0}| {1}]", time, message);
+            String.Format(CultureInfo.CurrentCulture, "{0}| {1}", time, message);
 
         public void LogText(string text, Color color)
         {
@@ -139,6 +139,7 @@ namespace Inventors.ECP.Tester
 
             box.SelectionColor = color;
             box.AppendText(text);
+            box.AppendText(Environment.NewLine);
             box.SelectionColor = box.ForeColor;
         }
     }
