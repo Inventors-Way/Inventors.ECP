@@ -22,7 +22,6 @@
   <ItemGroup>
     <Folder Include="Communication\Tcp\" />
     <Folder Include="Functions\" />
-    <Folder Include="Messages\" />
   </ItemGroup>
 
   <ItemGroup>

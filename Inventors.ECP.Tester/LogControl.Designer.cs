@@ -35,12 +35,11 @@
             // logBox
             // 
             this.logBox.BackColor = System.Drawing.Color.White;
-            this.logBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.logBox.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.logBox.Location = new System.Drawing.Point(0, 0);
             this.logBox.Name = "logBox";
             this.logBox.ReadOnly = true;
-            this.logBox.Size = new System.Drawing.Size(786, 408);
+            this.logBox.Size = new System.Drawing.Size(783, 382);
             this.logBox.TabIndex = 0;
             this.logBox.Text = "";
             // 
@@ -61,6 +60,7 @@
             this.Controls.Add(this.logBox);
             this.Name = "LogControl";
             this.Size = new System.Drawing.Size(786, 408);
+            this.SizeChanged += new System.EventHandler(this.LogControl_SizeChanged);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -153,7 +153,7 @@ namespace Inventors.ECP.Communication
 
         public override CommunicationProtocol Protocol => CommunicationProtocol.SERIAL;
 
-        private SerialPort port = null;
+        private SerialPort port;
         private readonly int BlockLimit = 1024;
     }
 }

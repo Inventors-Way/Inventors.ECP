@@ -31,6 +31,7 @@ namespace Inventors.ECP.Tester
         {
             InitializeComponent();
             logBox.VisibleChanged += (o, e) => ScrollToEnd();
+            ResizeLogBox();
         }
 
         private void ScrollToEnd()
@@ -116,6 +117,14 @@ namespace Inventors.ECP.Tester
         }
 
         internal void Clear() => logBox.Text = "";
+
+        private void LogControl_SizeChanged(object sender, EventArgs e) =>
+            ResizeLogBox();
+
+        private void ResizeLogBox()
+        {
+            logBox.Size = new Size(width: Width, height: Height - logEntry.Height);
+        }
     }
 
     public static class RichTextBoxExtensions

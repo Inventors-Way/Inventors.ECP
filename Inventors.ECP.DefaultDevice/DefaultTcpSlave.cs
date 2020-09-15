@@ -13,8 +13,7 @@ using Inventors.ECP.Messages;
 namespace Inventors.ECP.DefaultDevice
 {
     [XmlRoot("default-tcp-slave")]
-    public class DefaultTcpSlave :
-        IHostedDevice
+    public class DefaultTcpSlave 
     {
         private TcpServerLayer commLayer = null;
         private DeviceSlave slave;
@@ -50,10 +49,6 @@ namespace Inventors.ECP.DefaultDevice
         public string ID { get; set; }
 
         [Browsable(false)]
-        [XmlIgnore]
-        public DeviceState State { get; private set; } = DeviceState.STOPPED;
-
-        [Browsable(false)]
         public string DeviceFile { get; set; }
 
         public DefaultTcpSlave SetLocation(Location location) 
@@ -82,7 +77,6 @@ namespace Inventors.ECP.DefaultDevice
 
                 IsOpen = true;
                 Pings = 0;
-                State = DeviceState.RUNNING;
             }
         }
 
@@ -92,7 +86,6 @@ namespace Inventors.ECP.DefaultDevice
             {
                 slave.Close();
                 IsOpen = false;
-                State = DeviceState.STOPPED;
             }
         }
 
@@ -130,10 +123,6 @@ namespace Inventors.ECP.DefaultDevice
             Log.Status("PRINTF: {0}", msg.DebugMessage);
         }
 
-        public override string ToString()
-        {
-            return String.Format("DEFAULT TCP SLAVE", State.ToString());
-        }
-
+        public override string ToString() => "DEFAULT TCP SLAVE";
     }
 }

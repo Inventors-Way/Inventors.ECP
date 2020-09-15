@@ -17,7 +17,7 @@ namespace Inventors.ECP.Communication
 
         public abstract Location Location { get; set; }
 
-        public bool ResetOnConnection { get; set; } = false;
+        public bool ResetOnConnection { get; set; }
 
         public CommunicationLayer()
         {

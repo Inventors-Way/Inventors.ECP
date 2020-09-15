@@ -217,6 +217,9 @@ namespace Inventors.ECP
 
         public List<Location> GetLocations() => connection.GetLocations();
 
+        #region Dispose Pattern
+        private bool disposedValue;
+
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
@@ -239,17 +242,18 @@ namespace Inventors.ECP
             GC.SuppressFinalize(this);
         }
 
+        #endregion
+
         /// <summary>
         /// The message listener.
         /// </summary>
-        public dynamic MessageListener { get; set; } = null;
+        public dynamic MessageListener { get; set; }
 
         private readonly CommunicationLayer connection;
-        private DeviceFunction current = null;
+        private DeviceFunction current;
         private readonly object lockObject = new object();
-        private Exception currentException = null;
+        private Exception currentException;
         private readonly Stopwatch stopwatch = new Stopwatch();
         private CommState state = CommState.WAITING;
-        private bool disposedValue;
     }
 }
