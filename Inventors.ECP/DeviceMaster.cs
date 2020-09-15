@@ -67,7 +67,28 @@ namespace Inventors.ECP
         /// <summary>
         /// Close the communication with a device.
         /// </summary>
-        public void Close() => connection.Close();        
+        public void Close() => connection.Close();
+
+        #region Target profiling
+
+        public event EventHandler<TargetEvent> TargetEventOccurred;
+
+        public event EventHandler<TimingRecord> TargetTimingReceived;
+
+        public event EventHandler<TimingViolation> TargetTimingViolationOccured;
+
+        protected void NotifyTargetEvent(TargetEvent e) =>
+            TargetEventOccurred?.Invoke(this, e);
+
+        protected void NotifyTargetTiming(TimingRecord r) =>
+            TargetTimingReceived?.Invoke(this, r);
+
+        protected void NotifyTargetTimingViolation(TimingViolation v) =>
+            TargetTimingViolationOccured?.Invoke(this, v);
+
+        #endregion
+
+        #region Execution of device functions
 
         /// <summary>
         /// Execute a function.
@@ -124,10 +145,6 @@ namespace Inventors.ECP
             return retValue;
         }
 
-        public CommunicationLayerStatistics GetStatistics() => connection.GetStatistics();
-
-        public void RestartStatistics() => connection.RestartStatistics();
-
         private void Initiate(DeviceFunction function)
         {
             var bytes = function.GetRequest();
@@ -142,6 +159,13 @@ namespace Inventors.ECP
 
             connection.Transmit(Frame.Encode(bytes));
         }
+
+        #endregion
+
+        public CommunicationLayerStatistics GetStatistics() => connection.GetStatistics();
+
+        public void RestartStatistics() => connection.RestartStatistics();
+
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         private void HandleIncommingFrame(Destuffer caller, byte[] frame)
