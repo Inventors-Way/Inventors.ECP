@@ -53,10 +53,6 @@
             this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.trialsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-            this.profilingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.enabledToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.disabledToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.reportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.documentationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
@@ -68,9 +64,10 @@
             this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.msgTimer = new System.Windows.Forms.Timer(this.components);
             this.deviceTimer = new System.Windows.Forms.Timer(this.components);
-            this.logControl = new Inventors.ECP.Tester.LogControl();
             this.saveLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openDeviceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.profilerMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.logControl = new Inventors.ECP.Tester.LogControl();
             this.statusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.hSplitContainer)).BeginInit();
@@ -243,8 +240,7 @@
             this.testToolStripMenuItem,
             this.trialsToolStripMenuItem,
             this.toolStripSeparator4,
-            this.profilingToolStripMenuItem,
-            this.reportToolStripMenuItem});
+            this.profilerMenuItem});
             this.profilerToolStripMenuItem.Name = "profilerToolStripMenuItem";
             this.profilerToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
             this.profilerToolStripMenuItem.Text = "Profiler";
@@ -252,51 +248,21 @@
             // testToolStripMenuItem
             // 
             this.testToolStripMenuItem.Name = "testToolStripMenuItem";
-            this.testToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
+            this.testToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.testToolStripMenuItem.Text = "Test";
             this.testToolStripMenuItem.Click += new System.EventHandler(this.TestToolStripMenuItem_Click);
             // 
             // trialsToolStripMenuItem
             // 
             this.trialsToolStripMenuItem.Name = "trialsToolStripMenuItem";
-            this.trialsToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
+            this.trialsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.trialsToolStripMenuItem.Text = "Trials";
             this.trialsToolStripMenuItem.Click += new System.EventHandler(this.TrialsToolStripMenuItem_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(116, 6);
-            // 
-            // profilingToolStripMenuItem
-            // 
-            this.profilingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.enabledToolStripMenuItem,
-            this.disabledToolStripMenuItem});
-            this.profilingToolStripMenuItem.Name = "profilingToolStripMenuItem";
-            this.profilingToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
-            this.profilingToolStripMenuItem.Text = "Profiling";
-            // 
-            // enabledToolStripMenuItem
-            // 
-            this.enabledToolStripMenuItem.Name = "enabledToolStripMenuItem";
-            this.enabledToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
-            this.enabledToolStripMenuItem.Text = "Enabled";
-            this.enabledToolStripMenuItem.Click += new System.EventHandler(this.EnabledToolStripMenuItem_Click);
-            // 
-            // disabledToolStripMenuItem
-            // 
-            this.disabledToolStripMenuItem.Name = "disabledToolStripMenuItem";
-            this.disabledToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
-            this.disabledToolStripMenuItem.Text = "Disabled";
-            this.disabledToolStripMenuItem.Click += new System.EventHandler(this.DisabledToolStripMenuItem_Click);
-            // 
-            // reportToolStripMenuItem
-            // 
-            this.reportToolStripMenuItem.Name = "reportToolStripMenuItem";
-            this.reportToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
-            this.reportToolStripMenuItem.Text = "Report";
-            this.reportToolStripMenuItem.Click += new System.EventHandler(this.ReportToolStripMenuItem_Click);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(177, 6);
             // 
             // helpToolStripMenuItem
             // 
@@ -361,7 +327,7 @@
             // 
             this.vSplitContainer.Panel2.Controls.Add(this.propertyGrid);
             this.vSplitContainer.Size = new System.Drawing.Size(927, 377);
-            this.vSplitContainer.SplitterDistance = 263;
+            this.vSplitContainer.SplitterDistance = 177;
             this.vSplitContainer.TabIndex = 0;
             // 
             // functionList
@@ -370,7 +336,7 @@
             this.functionList.FormattingEnabled = true;
             this.functionList.Location = new System.Drawing.Point(0, 0);
             this.functionList.Name = "functionList";
-            this.functionList.Size = new System.Drawing.Size(259, 373);
+            this.functionList.Size = new System.Drawing.Size(173, 373);
             this.functionList.TabIndex = 0;
             this.functionList.SelectedIndexChanged += new System.EventHandler(this.FunctionList_SelectedIndexChanged);
             this.functionList.DoubleClick += new System.EventHandler(this.FunctionList_DoubleClick);
@@ -380,7 +346,7 @@
             this.propertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.propertyGrid.Location = new System.Drawing.Point(0, 0);
             this.propertyGrid.Name = "propertyGrid";
-            this.propertyGrid.Size = new System.Drawing.Size(656, 373);
+            this.propertyGrid.Size = new System.Drawing.Size(742, 373);
             this.propertyGrid.TabIndex = 0;
             // 
             // imageList
@@ -415,18 +381,6 @@
             this.deviceTimer.Interval = 1000;
             this.deviceTimer.Tick += new System.EventHandler(this.DeviceTimer_Tick);
             // 
-            // logControl
-            // 
-            this.logControl.DebugColor = System.Drawing.Color.Blue;
-            this.logControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.logControl.ErrorColor = System.Drawing.Color.Red;
-            this.logControl.Level = Inventors.ECP.LogLevel.STATUS;
-            this.logControl.Location = new System.Drawing.Point(0, 0);
-            this.logControl.Name = "logControl";
-            this.logControl.Size = new System.Drawing.Size(923, 158);
-            this.logControl.StatusColor = System.Drawing.Color.Black;
-            this.logControl.TabIndex = 0;
-            // 
             // saveLogToolStripMenuItem
             // 
             this.saveLogToolStripMenuItem.Image = global::Inventors.ECP.Tester.Properties.Resources._216190___export;
@@ -444,6 +398,25 @@
             this.openDeviceToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.openDeviceToolStripMenuItem.Text = "Open Device";
             this.openDeviceToolStripMenuItem.Click += new System.EventHandler(this.OpenDeviceToolStripMenuItem_Click);
+            // 
+            // profilerMenuItem
+            // 
+            this.profilerMenuItem.Name = "profilerMenuItem";
+            this.profilerMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.profilerMenuItem.Text = "Profiler";
+            this.profilerMenuItem.Click += new System.EventHandler(this.ProfilerMenuItem_Click);
+            // 
+            // logControl
+            // 
+            this.logControl.DebugColor = System.Drawing.Color.Blue;
+            this.logControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.logControl.ErrorColor = System.Drawing.Color.Red;
+            this.logControl.Level = Inventors.ECP.LogLevel.STATUS;
+            this.logControl.Location = new System.Drawing.Point(0, 0);
+            this.logControl.Name = "logControl";
+            this.logControl.Size = new System.Drawing.Size(923, 158);
+            this.logControl.StatusColor = System.Drawing.Color.Black;
+            this.logControl.TabIndex = 0;
             // 
             // MainWindow
             // 
@@ -506,10 +479,6 @@
         private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem trialsToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-        private System.Windows.Forms.ToolStripMenuItem profilingToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem enabledToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem disabledToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem reportToolStripMenuItem;
         private System.Windows.Forms.Timer deviceTimer;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripMenuItem logLevelToolStripMenuItem;
@@ -518,6 +487,7 @@
         private System.Windows.Forms.ToolStripMenuItem errorToolStripMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel pingStatus;
         private LogControl logControl;
+        private System.Windows.Forms.ToolStripMenuItem profilerMenuItem;
     }
 }
 

@@ -14,15 +14,15 @@ namespace Inventors.ECP.Profiling
     {
         private class FrameStat
         {
-            public long Count { get; set; } = 0;
-            public long Bytes { get; set; } = 0;
+            public long Count { get; set; }
+            public long Bytes { get; set; }
         }
 
-        private bool profiling = false;
+        private bool profiling;
         private readonly Dictionary<byte, FrameStat> framesReceived = new Dictionary<byte, FrameStat>();
 
 
-        public DeviceFunction Function { get; set; } = null;
+        public DeviceFunction Function { get; set; }
 
         private CommunicationLayerStatistics statistics = new CommunicationLayerStatistics();
 
@@ -32,7 +32,7 @@ namespace Inventors.ECP.Profiling
 
         public List<double> Time { get; private set; } = new List<double>();
 
-        public long RunTime { get; private set; } = 0;
+        public long RunTime { get; private set; }
 
         public Profiler(CommunicationLayer layer, DeviceMaster master)
         {
@@ -152,7 +152,6 @@ namespace Inventors.ECP.Profiling
                         Statistics.FormatRate(p.Bytes),
                         Statistics.FormatRate(p.Rate, "MSG/s")));
                 }
-
             }
 
             return builder.ToString();

@@ -198,6 +198,7 @@ namespace Inventors.ECP
                         catch (Exception e)
                         {
                             Log.Error(e.Message);
+                            NotifyTargetEvent(new TargetEvent(e.Message));
                         }
                     }
                 }
@@ -219,25 +220,24 @@ namespace Inventors.ECP
 
         private void Dispatch(Packet packet)
         {
-            foreach (var dispatcher in Dispatchers)
+            if (Dispatchers.ContainsKey(packet.Code) && (MessageListener is object))
             {
-                if ((dispatcher.Code == packet.Code) &&
-                    (MessageListener != null))
-                {
-                    dispatcher.Create(packet).Dispatch(MessageListener);
-                }
+                Dispatchers[packet.Code].Create(packet).Dispatch(MessageListener);
             }
         }
 
         public void Add(DeviceMessage message)
         {
-            if (message is object)
-            {
-                Dispatchers.Add(message.CreateDispatcher());
-            }
+            if (message is null)
+                throw new ArgumentNullException(nameof(message));
+
+            if (Dispatchers.ContainsKey(message.Code))
+                throw new ArgumentException($"Message [ { message.ToString() } ] is allready present in Dispatchers");
+
+            Dispatchers.Add(message.Code, message.CreateDispatcher());
         }
 
-        private List<MessageDispatcher> Dispatchers { get; } = new List<MessageDispatcher>();
+        private Dictionary<byte, MessageDispatcher> Dispatchers { get; } = new Dictionary<byte, MessageDispatcher>();
 
         public List<Location> GetLocations() => connection.GetLocations();
 

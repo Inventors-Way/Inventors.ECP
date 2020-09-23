@@ -17,6 +17,7 @@ using System.IO;
 using System.Reflection;
 using Inventors.ECP.Profiling;
 using Inventors.ECP.Communication;
+using Inventors.ECP.Tester.Profiling;
 
 namespace Inventors.ECP.Tester
 {
@@ -34,6 +35,7 @@ namespace Inventors.ECP.Tester
         private Device device = null;
         private Location selectedDevice = null;
         private AppState state = AppState.APP_STATE_UNINITIALIZED;
+        private ProfilerWindow profilerWindow;
 
         public MainWindow()
         {
@@ -44,6 +46,9 @@ namespace Inventors.ECP.Tester
             SetTitle();
             UpdateProfiling();
             SetLoggingLevel(Settings.Level);
+
+            profilerWindow = new ProfilerWindow();
+            profilerWindow.OnProfilerClosed += ProfilerWindow_OnClosed;
         }
 
         public MainWindow(string deviceFileName) :
@@ -279,15 +284,9 @@ namespace Inventors.ECP.Tester
             device.Functions.ForEach((f) => functionList.Items.Add(f));
         }
 
-        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e) => Application.Exit();
 
-        private void FunctionList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            UpdateFunction();
-        }
+        private void FunctionList_SelectedIndexChanged(object sender, EventArgs e) => UpdateFunction();
 
         private void UpdateFunction()
         {
@@ -584,14 +583,38 @@ namespace Inventors.ECP.Tester
         {
             if (device is object)
             {
-                enabledToolStripMenuItem.Checked = device.Profiler.Profiling;
-                disabledToolStripMenuItem.Checked = !device.Profiler.Profiling;
-            }
-            else
-            {
-                enabledToolStripMenuItem.Enabled = disabledToolStripMenuItem.Enabled = false;
+                profilerMenuItem.Checked = device.Profiler.Profiling;
+
+                if (device.Profiler.Profiling)
+                {
+                    profilerWindow.Show(this);
+                }
+                else
+                {
+                    profilerWindow.Visible = false;
+                }
             }
         }
+
+        private void ProfilerMenuItem_Click(object sender, EventArgs e)
+        {
+            if (device is object)
+            {
+                device.Profiler.Profiling = !device.Profiler.Profiling;
+                UpdateProfiling();
+            }
+        }
+
+        private void ProfilerWindow_OnClosed(object sender, bool close)
+        {
+            if (device is object)
+            {
+                device.Profiler.Profiling = false;
+                UpdateProfiling();
+                profilerWindow.Visible = false;
+            }
+        }
+
 
         private void DebugToolStripMenuItem_Click(object sender, EventArgs e) => SetLoggingLevel(LogLevel.DEBUG);
 
@@ -607,5 +630,6 @@ namespace Inventors.ECP.Tester
             Log.Level = level;
             Settings.Level = level;
         }
+
     }
 }
