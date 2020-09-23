@@ -98,15 +98,18 @@ namespace Inventors.ECP
         {
             if (function is object)
             {
-                function.OnSend();
-                Initiate(function);
+                lock (commLock)
+                {
+                    function.OnSend();
+                    Initiate(function);
 
-                while (!IsCompleted()) ;
+                    while (!IsCompleted()) ;
 
-                state = CommState.WAITING;
+                    state = CommState.WAITING;
 
-                if (currentException != null)
-                    throw currentException;
+                    if (currentException != null)
+                        throw currentException;
+                }
             }
         }
 
@@ -118,7 +121,10 @@ namespace Inventors.ECP
         {
             if (connection.IsOpen && (message is object))
             {
-                connection.Transmit(Frame.Encode(message.GetPacket()));
+                lock (commLock)
+                {
+                    connection.Transmit(Frame.Encode(message.GetPacket()));
+                }
             }
         }
 
@@ -276,6 +282,7 @@ namespace Inventors.ECP
         private readonly CommunicationLayer connection;
         private DeviceFunction current;
         private readonly object lockObject = new object();
+        private readonly object commLock = new object();
         private Exception currentException;
         private readonly Stopwatch stopwatch = new Stopwatch();
         private CommState state = CommState.WAITING;

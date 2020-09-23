@@ -587,7 +587,7 @@ namespace Inventors.ECP.Tester
 
                 if (device.Profiler.Profiling)
                 {
-                    profilerWindow.Show(this);
+                    profilerWindow.Show();
                 }
                 else
                 {
