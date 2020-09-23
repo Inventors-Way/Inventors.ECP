@@ -18,6 +18,6 @@ namespace Inventors.ECP.Profiling
 
         void Add(Packet packet);
 
-        void Add(CommRecord record);
+        void Add(double elapsedTime, CommRecord record);
     }
 }

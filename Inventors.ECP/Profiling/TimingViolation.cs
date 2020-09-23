@@ -6,20 +6,18 @@ using System.Threading.Tasks;
 
 namespace Inventors.ECP.Profiling
 {
-    public class TimingViolation
+    public class TimingViolation : 
+        Record
     {
         public TimingViolation(string id, double elapsedTime, double timeLimit, UInt32 context)
         {
             ID = id;
-            Time = ProfileTiming.Mark();
             ElapsedTime = elapsedTime;
             TimeLimit = timeLimit;
             Context = context;
         }
 
         public string ID { get; }
-
-        public double Time { get; }
 
         public UInt32 Context { get; }
 
