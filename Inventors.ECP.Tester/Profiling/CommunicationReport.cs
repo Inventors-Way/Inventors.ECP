@@ -4,18 +4,18 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Inventors.ECP.Profiling
+namespace Inventors.ECP.Tester.Profiling
 {
-    public class ProfileReport
+    public class CommunicationReport
     {
-        public ProfileReport(List<double> time,
+        public CommunicationReport(List<double> time,
                       int trials,
-                      CommunicationLayerStatistics stats,
                       double RunTime)
         {
-            if (!(time is object))
-                throw new ArgumentException(Resources.INVALID_TIME_NULL);
+            if (time is null)
+                throw new ArgumentException(nameof(time));
 
             Trials = trials;
             this.RunTime = RunTime;
@@ -36,8 +36,6 @@ namespace Inventors.ECP.Profiling
                 Tmax = 0;
                 Success = 0;
             }
-
-            Statistics = stats;
         }
 
         public override string ToString()
@@ -46,7 +44,6 @@ namespace Inventors.ECP.Profiling
             builder.AppendLine("Test Report");
             builder.AppendLine(String.Format(CultureInfo.CurrentCulture, "Success    : {0:0.00}%", Success));
             builder.AppendLine(String.Format(CultureInfo.CurrentCulture, "Time       : {0:0.00} +/- {1:0.00}ms, ({2}ms - {3}ms)", Tavg, Tstd, Tmin, Tmax));
-            builder.AppendLine(String.Format(CultureInfo.CurrentCulture, "Data rate  : Rx: {0}, Tx: {1}", Communication.Statistics.FormatRate(Statistics.RxRate), Communication.Statistics.FormatRate(Statistics.TxRate)));
             builder.Append(String.Format(CultureInfo.CurrentCulture, "Run Time   : {0:0.00}s", RunTime / 1000));
 
             return builder.ToString();
@@ -60,7 +57,5 @@ namespace Inventors.ECP.Profiling
         public double Success { get; private set; }
 
         public double RunTime { get; private set; }
-
-        public CommunicationLayerStatistics Statistics { get; private set; }
     }
 }

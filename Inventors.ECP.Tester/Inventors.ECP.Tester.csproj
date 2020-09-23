@@ -82,6 +82,8 @@
       <DependentUpon>LogControl.cs</DependentUpon>
     </Compile>
     <Compile Include="PortInformationProvider.cs" />
+    <Compile Include="Profiling\CommTester.cs" />
+    <Compile Include="Profiling\CommunicationReport.cs" />
     <Compile Include="Profiling\ProfilerWindow.cs">
       <SubType>Form</SubType>
     </Compile>

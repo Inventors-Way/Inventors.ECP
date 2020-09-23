@@ -1,6 +1,7 @@
 ﻿using Inventors.ECP.Communication;
 using Inventors.ECP.Functions;
 using Inventors.ECP.Messages;
+using Inventors.ECP.Profiling;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace Inventors.ECP.DefaultDevice
         Device
     {
         public DefaultSerialDevice() :
-            base(new SerialPortLayer())
+            base(new SerialPortLayer(), new Profiler())
         {
             FunctionList.Add(new DeviceIdentification());
             FunctionList.Add(new Ping());

@@ -46,9 +46,13 @@ namespace Inventors.ECP
             set => connection.ResetOnConnection = value;
         }
 
-        public Profiler Profiler { get; }
+        public IProfiler Profiler { get; }
 
-        public DeviceMaster(CommunicationLayer connection)
+        public double RxRate => connection.RxRate;
+
+        public double TxRate => connection.TxRate;
+
+        public DeviceMaster(CommunicationLayer connection, IProfiler profiler)
         {
             if (connection is null)
                 throw new ArgumentException(Resources.CONNECTION_NULL);
@@ -56,7 +60,7 @@ namespace Inventors.ECP
             this.connection = connection;
             connection.Destuffer.OnReceive += HandleIncommingFrame;
             Timeout = 500;
-            Profiler = new Profiler(connection, this);
+            Profiler = profiler;
         }
 
         /// <summary>
@@ -68,25 +72,6 @@ namespace Inventors.ECP
         /// Close the communication with a device.
         /// </summary>
         public void Close() => connection.Close();
-
-        #region Target profiling
-
-        public event EventHandler<TargetEvent> TargetEventOccurred;
-
-        public event EventHandler<TimingRecord> TargetTimingReceived;
-
-        public event EventHandler<TimingViolation> TargetTimingViolationOccured;
-
-        protected void NotifyTargetEvent(TargetEvent e) =>
-            TargetEventOccurred?.Invoke(this, e);
-
-        protected void NotifyTargetTiming(TimingRecord r) =>
-            TargetTimingReceived?.Invoke(this, r);
-
-        protected void NotifyTargetTimingViolation(TimingViolation v) =>
-            TargetTimingViolationOccured?.Invoke(this, v);
-
-        #endregion
 
         #region Execution of device functions
 
@@ -109,21 +94,6 @@ namespace Inventors.ECP
 
                     if (currentException != null)
                         throw currentException;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Send an unacknowledged message to the device.
-        /// </summary>
-        /// <param name="message">The message to send</param>
-        public void Send(DeviceMessage message)
-        {
-            if (connection.IsOpen && (message is object))
-            {
-                lock (commLock)
-                {
-                    connection.Transmit(Frame.Encode(message.GetPacket()));
                 }
             }
         }
@@ -167,8 +137,24 @@ namespace Inventors.ECP
         }
 
         #endregion
+        #region Sending messages
 
-        public CommunicationLayerStatistics GetStatistics() => connection.GetStatistics();
+        /// <summary>
+        /// Send an unacknowledged message to the device.
+        /// </summary>
+        /// <param name="message">The message to send</param>
+        public void Send(DeviceMessage message)
+        {
+            if (connection.IsOpen && (message is object))
+            {
+                lock (commLock)
+                {
+                    connection.Transmit(Frame.Encode(message.GetPacket()));
+                }
+            }
+        }
+
+        #endregion
 
         public void RestartStatistics() => connection.RestartStatistics();
 
@@ -179,6 +165,7 @@ namespace Inventors.ECP
             try
             {
                 var response = new Packet(frame);
+                Profiler.Add(response);
 
                 if (response.Code != 0x00)
                 {
@@ -204,7 +191,7 @@ namespace Inventors.ECP
                         catch (Exception e)
                         {
                             Log.Error(e.Message);
-                            NotifyTargetEvent(new TargetEvent(e.Message));
+                            Profiler.Add(new TargetEvent(e.Message));
                         }
                     }
                 }
@@ -238,7 +225,7 @@ namespace Inventors.ECP
                 throw new ArgumentNullException(nameof(message));
 
             if (Dispatchers.ContainsKey(message.Code))
-                throw new ArgumentException($"Message [ { message.ToString() } ] is allready present in Dispatchers");
+                throw new ArgumentException($"Message [ { message } ] is allready present in Dispatchers");
 
             Dispatchers.Add(message.Code, message.CreateDispatcher());
         }
