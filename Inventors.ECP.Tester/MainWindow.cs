@@ -244,6 +244,7 @@ namespace Inventors.ECP.Tester
                         if (ping < 0)
                         {
                             Log.Error("Ping failed!");
+                            device.Profiler.Add(new TargetEvent("Ping failed"));
                         }
                         else
                         {
@@ -340,7 +341,8 @@ namespace Inventors.ECP.Tester
                 {
                     device.Location = selectedDevice;
                     device.Open();
-                    Log.Status("Location opened: {0}", device.Location);
+                    Log.Status($"Location opened: {device.Location}");
+                    device.Profiler.Add(new TargetEvent($"Location opened: {device.Location}"));
                     UpdateAppStates(AppState.APP_STATE_CONNECTED);
                 }
                 catch (Exception ex)
@@ -362,6 +364,7 @@ namespace Inventors.ECP.Tester
                 device.Close();
                 UpdateAppStates(AppState.APP_STATE_INITIALIZED);
                 Log.Status("Location closed: {0}", device.Location);
+                device.Profiler.Add(new TargetEvent("Connection closed"));
             }
             catch (Exception ex)
             {
