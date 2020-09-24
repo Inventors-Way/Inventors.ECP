@@ -31,7 +31,14 @@
             this.components = new System.ComponentModel.Container();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.resetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.analysisMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.timeMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.TimeSpan60sMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.TimeSpan300sMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.TimeSpan600sMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.TimeSpanOffMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel = new System.Windows.Forms.Panel();
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.menuStrip.SuspendLayout();
@@ -41,7 +48,8 @@
             // 
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileMenu,
-            this.analysisMenu});
+            this.analysisMenu,
+            this.timeMenu});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Size = new System.Drawing.Size(800, 24);
@@ -50,15 +58,69 @@
             // 
             // fileMenu
             // 
+            this.fileMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.resetToolStripMenuItem});
             this.fileMenu.Name = "fileMenu";
             this.fileMenu.Size = new System.Drawing.Size(37, 20);
             this.fileMenu.Text = "File";
+            // 
+            // resetToolStripMenuItem
+            // 
+            this.resetToolStripMenuItem.Name = "resetToolStripMenuItem";
+            this.resetToolStripMenuItem.Size = new System.Drawing.Size(102, 22);
+            this.resetToolStripMenuItem.Text = "Reset";
+            this.resetToolStripMenuItem.Click += new System.EventHandler(this.ResetToolStripMenuItem_Click);
             // 
             // analysisMenu
             // 
             this.analysisMenu.Name = "analysisMenu";
             this.analysisMenu.Size = new System.Drawing.Size(62, 20);
             this.analysisMenu.Text = "Analysis";
+            // 
+            // timeMenu
+            // 
+            this.timeMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.TimeSpan60sMenuItem,
+            this.TimeSpan300sMenuItem,
+            this.TimeSpan600sMenuItem,
+            this.toolStripSeparator1,
+            this.TimeSpanOffMenuItem});
+            this.timeMenu.Name = "timeMenu";
+            this.timeMenu.Size = new System.Drawing.Size(45, 20);
+            this.timeMenu.Text = "Time";
+            // 
+            // TimeSpan60sMenuItem
+            // 
+            this.TimeSpan60sMenuItem.Name = "TimeSpan60sMenuItem";
+            this.TimeSpan60sMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.TimeSpan60sMenuItem.Text = "60s";
+            this.TimeSpan60sMenuItem.Click += new System.EventHandler(this.TimeSpan60s_Click);
+            // 
+            // TimeSpan300sMenuItem
+            // 
+            this.TimeSpan300sMenuItem.Name = "TimeSpan300sMenuItem";
+            this.TimeSpan300sMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.TimeSpan300sMenuItem.Text = "300s";
+            this.TimeSpan300sMenuItem.Click += new System.EventHandler(this.TimeSpan300s_Click);
+            // 
+            // TimeSpan600sMenuItem
+            // 
+            this.TimeSpan600sMenuItem.Name = "TimeSpan600sMenuItem";
+            this.TimeSpan600sMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.TimeSpan600sMenuItem.Text = "600s";
+            this.TimeSpan600sMenuItem.Click += new System.EventHandler(this.TimeSpan600s_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            // 
+            // TimeSpanOffMenuItem
+            // 
+            this.TimeSpanOffMenuItem.Name = "TimeSpanOffMenuItem";
+            this.TimeSpanOffMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.TimeSpanOffMenuItem.Text = "Off";
+            this.TimeSpanOffMenuItem.Click += new System.EventHandler(this.TimeSpanOffToolStripMenuItem_Click);
             // 
             // panel
             // 
@@ -82,7 +144,7 @@
             this.Controls.Add(this.menuStrip);
             this.MainMenuStrip = this.menuStrip;
             this.Name = "ProfilerWindow";
-            this.Text = "ProfilerWindow";
+            this.Text = "Profiler";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ProfilerWindow_FormClosing);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
@@ -98,5 +160,12 @@
         private System.Windows.Forms.ToolStripMenuItem analysisMenu;
         private System.Windows.Forms.Panel panel;
         private System.Windows.Forms.Timer timer;
+        private System.Windows.Forms.ToolStripMenuItem resetToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem timeMenu;
+        private System.Windows.Forms.ToolStripMenuItem TimeSpan60sMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem TimeSpan300sMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem TimeSpan600sMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem TimeSpanOffMenuItem;
     }
 }

@@ -20,6 +20,9 @@ namespace Inventors.ECP.Tester.Profiling
         public ProfilerWindow()
         {
             InitializeComponent();
+            analysisMenu.Enabled = false;
+            timeMenu.Enabled = false;
+            fileMenu.Enabled = false;
         }
 
         public void SetDevice(Device device)
@@ -29,11 +32,17 @@ namespace Inventors.ECP.Tester.Profiling
 
             this.device = device;
             CreateAnalyses();
+            UpdateTimeSpan();
+
+            analysisMenu.Enabled = true;
+            timeMenu.Enabled = true;
+            fileMenu.Enabled = true;
         }
 
         private void CreateAnalyses()
         {
             AddAnalysis("Overview", new OverviewControl(device.Profiler));
+            AddAnalysis("Task Profile", new TaskProfileControl(device.Profiler));
 
             if (fileMenu.DropDownItems.Count > 0)
             {
@@ -95,6 +104,55 @@ namespace Inventors.ECP.Tester.Profiling
             if (activeControl is object)
             {
                 activeControl.RefreshDisplay();
+            }
+        }
+
+        private void ResetToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (device is object)
+                device.Profiler.Reset();
+        }
+
+        private void TimeSpan60s_Click(object sender, EventArgs e)
+        {
+            if (device is object)
+                device.Profiler.TimeSpan = 60;
+
+            UpdateTimeSpan();
+        }
+
+        private void TimeSpan300s_Click(object sender, EventArgs e)
+        {
+            if (device is object)
+                device.Profiler.TimeSpan = 300;
+
+            UpdateTimeSpan();
+        }
+
+        private void TimeSpan600s_Click(object sender, EventArgs e)
+        {
+            if (device is object)
+                device.Profiler.TimeSpan = 600;
+
+            UpdateTimeSpan();
+        }
+
+        private void TimeSpanOffToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (device is object)
+                device.Profiler.TimeSpan = Double.NaN;
+
+            UpdateTimeSpan();
+        }
+
+        private void UpdateTimeSpan()
+        {
+            if (device is object)
+            {
+                TimeSpan60sMenuItem.Checked = device.Profiler.TimeSpan == 60;
+                TimeSpan300sMenuItem.Checked = device.Profiler.TimeSpan == 300;
+                TimeSpan600sMenuItem.Checked = device.Profiler.TimeSpan == 600;
+                TimeSpanOffMenuItem.Checked = device.Profiler.TimeSpan == Double.NaN;
             }
         }
     }

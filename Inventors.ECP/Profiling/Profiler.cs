@@ -22,6 +22,7 @@ namespace Inventors.ECP.Profiling
         private readonly Dictionary<byte, long> packets = new Dictionary<byte, long>();
         private readonly List<CommRecord> commRecords = new List<CommRecord>();
         private readonly Dictionary<string, double> timingMax = new Dictionary<string, double>();
+        private double time = 0;
 
         #region Properties
         #region Enabled Property
@@ -40,14 +41,21 @@ namespace Inventors.ECP.Profiling
         public string ActiveProfile
         {
             get => GetPropertyLocked(ref _activeProfile);
-            set => SetPropertyLocked(ref _activeProfile, value);
+            set
+            {
+                if (ActiveProfile != value)
+                {
+                    SetPropertyLocked(ref _activeProfile, value);
+                    UpdateTaskProfile();
+                }
+            }
         }
 
         #endregion
         #region AvailableProfiles
         private readonly List<string> profiles = new List<string>();
 
-        public IList<string> ActiveProfiles
+        public IList<string> AvailableProfiles
         {
             get
             {
@@ -65,7 +73,7 @@ namespace Inventors.ECP.Profiling
                 profiles.Clear();
             }
 
-            Notify(nameof(ActiveProfiles));
+            Notify(nameof(AvailableProfiles));
         }
 
         private void AddProfile(string profile)
@@ -75,7 +83,7 @@ namespace Inventors.ECP.Profiling
                 profiles.Add(profile);
             }
 
-            Notify(nameof(ActiveProfiles));
+            Notify(nameof(AvailableProfiles));
         }
 
         private bool ProfileExists(string profile)
@@ -103,10 +111,21 @@ namespace Inventors.ECP.Profiling
         public OverviewAnalysis Overview
         {
             get => GetPropertyLocked(ref _overview);
-            set => SetPropertyLocked(ref _overview, value);
+            private set => SetPropertyLocked(ref _overview, value);
         }
         #endregion
+        #region TaskProfile Property
+        private TaskAnalysis _taskProfile;
+
+        public TaskAnalysis TaskProfile
+        {
+            get => GetPropertyLocked(ref _taskProfile);
+            private set => SetProperty(ref _taskProfile, value);
+        }
+
         #endregion
+        #endregion
+        #region Overview Analysis
 
         private TimingRecord GetCurrentTiming(string id) =>
             timing[id][timing[id].Count - 1];
@@ -167,10 +186,61 @@ namespace Inventors.ECP.Profiling
             Overview = analysis;
         }
 
+        #endregion
+        #region Task Analysis
+
+        private void UpdateTaskProfile()
+        {
+            TaskAnalysis analysis = null;
+
+            if (!string.IsNullOrEmpty(ActiveProfile) && timing.ContainsKey(ActiveProfile))
+            {
+                lock (LockObject)
+                {
+                    var records = from r in timing[ActiveProfile]
+                                  where IsIncuded(r)
+                                  select r;
+                    var violationRecords = violations.ContainsKey(ActiveProfile) ?
+                                           (from r in violations[ActiveProfile]
+                                           where IsIncuded(r)
+                                           select r).ToList() :
+                                           null;
+                    var selectedEvents = (from e in events
+                                          where IsIncuded(e)
+                                          select e).ToList();
+
+                    var time = records.Select((r) => r.Time).ToList();
+                    var average = records.Select((r) => r.Average).ToList();
+                    var max = records.Select((r) => r.Max).ToList();
+                    var min = records.Select((r) => r.Min).ToList();
+
+                    analysis = new TaskAnalysis(ActiveProfile, average, max, min, time, violationRecords, selectedEvents);
+                }
+            }
+
+            TaskProfile = analysis;
+        }
+
+        #endregion
+
+        private bool IsIncuded(Record record)
+        {
+            bool retValue = true;
+
+            if (!Double.IsNaN(TimeSpan))
+            {
+                retValue = record.Time > time - TimeSpan;
+            }
+
+            return retValue;
+        }
+
+
         public void Reset()
         {
             lock (LockObject)
             {
+                ProfileTiming.Reset();
                 timingMax.Clear();
                 events.Clear();
                 timing.Clear();
@@ -182,6 +252,8 @@ namespace Inventors.ECP.Profiling
                 Overview = null;
                 ActiveProfile = "";
                 ClearProfiles();
+
+                time = 0;
             }
         }
 
@@ -197,6 +269,7 @@ namespace Inventors.ECP.Profiling
                 lock (LockObject)
                 {
                     events.Add(e);
+                    time = e.Time;
                 }
             }
         }
@@ -219,6 +292,8 @@ namespace Inventors.ECP.Profiling
                         timing.Add(record.ID, new List<TimingRecord>());
                         timing[record.ID].Add(record);
                     }
+
+                    time = record.Time;
                 }
 
                 if (!ProfileExists(record.ID))
@@ -229,6 +304,11 @@ namespace Inventors.ECP.Profiling
                 if (string.IsNullOrEmpty(ActiveProfile))
                 {
                     ActiveProfile = record.ID;
+                }
+
+                if (record.ID == ActiveProfile)
+                {
+                    UpdateTaskProfile();
                 }
 
                 UpdateOverview();
@@ -253,6 +333,8 @@ namespace Inventors.ECP.Profiling
                         violations.Add(violation.ID, new List<TimingViolation>());
                         violations[violation.ID].Add(violation);
                     }
+
+                    time = violation.Time;
                 }
             }
         }
@@ -288,6 +370,7 @@ namespace Inventors.ECP.Profiling
                 lock (LockObject)
                 {
                     commRecords.Add(record);
+                    time = record.Time;
                 }
             }
         }

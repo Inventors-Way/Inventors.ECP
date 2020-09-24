@@ -85,6 +85,7 @@ namespace Inventors.ECP.Tester.Profiling
         {
             plot.Resize(width: pictureBox.Width, height: pictureBox.Height);
             pictureBox.Image = plot.GetBitmap();
+            Dirty = false;
         }
     }
 }

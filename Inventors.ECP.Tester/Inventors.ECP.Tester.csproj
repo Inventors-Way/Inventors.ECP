@@ -88,7 +88,7 @@
       <DependentUpon>LogControl.cs</DependentUpon>
     </Compile>
     <Compile Include="PortInformationProvider.cs" />
-    <Compile Include="Profiling\AnalysisControl.cs" />
+    <Compile Include="Profiling\IAnalysisControl.cs" />
     <Compile Include="Profiling\CommTester.cs" />
     <Compile Include="Profiling\CommunicationReport.cs" />
     <Compile Include="Profiling\OverviewControl.cs">
@@ -102,6 +102,12 @@
     </Compile>
     <Compile Include="Profiling\ProfilerWindow.Designer.cs">
       <DependentUpon>ProfilerWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Profiling\TaskProfileControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Profiling\TaskProfileControl.Designer.cs">
+      <DependentUpon>TaskProfileControl.cs</DependentUpon>
     </Compile>
     <Compile Include="PropertyBinder.cs" />
     <Compile Include="Resource.Designer.cs">
@@ -135,6 +141,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Profiling\ProfilerWindow.resx">
       <DependentUpon>ProfilerWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Profiling\TaskProfileControl.resx">
+      <DependentUpon>TaskProfileControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resource.resx">
       <Generator>ResXFileCodeGenerator</Generator>
