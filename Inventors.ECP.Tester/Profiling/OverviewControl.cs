@@ -74,7 +74,7 @@ namespace Inventors.ECP.Tester.Profiling
                     plot.YLabel("Task ID");
                     plot.XLabel("Time [us]");
                     plot.Title("Task Overview");
-                    plot.Axis(x1: 0, x2: globalMax.Max() * 1.2);
+                    plot.Axis(x1: 0, x2: globalMax.Max() * 1.05);
 
                     Dirty = true;
                 }
