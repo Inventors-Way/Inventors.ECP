@@ -36,26 +36,45 @@ namespace Inventors.ECP.Tester.Profiling
             binder.Bind(nameof(profiler.Overview), UpdateAnalysis);
         }
 
+        private double Convert(double x)
+        {
+            if (Double.IsNaN(x))
+                return 0;
+            else if (x == Int32.MaxValue)
+                return 0;
+            else return x;
+        }
+
+        private double[] Convert(IList<double> x)
+        {
+            return (from v in x select Convert(v)).ToArray();
+        }
+
         private void UpdateAnalysis()
         {
             if (Active)
             {
                 if (profiler.Overview is OverviewAnalysis analysis)
                 {
+                    var x = analysis.X.ToArray();
+                    var avg = Convert(analysis.Average);
+                    var max = Convert(analysis.Maximum);
+                    var globalMax = Convert(analysis.ScaleMaximum);
+
                     plot.Clear();
 
-                    plot.PlotScatter(xs: analysis.Maximum.ToArray(), ys: analysis.X.ToArray(), lineWidth: 0, markerSize: 5, label: "Maximum");
-                    plot.PlotScatter(xs: analysis.ScaleMaximum.ToArray(), ys: analysis.X.ToArray(), lineWidth: 0, markerSize: 10, label: "Maximum");
-                    plot.PlotBar(xs: analysis.Average.ToArray(), ys: analysis.X.ToArray(), showValues: false, horizontal: true, label: "Average");
-                    plot.PlotScatter(xs: analysis.Minimum.ToArray(), ys: analysis.X.ToArray(), lineWidth: 0, markerSize: 5, label: "Minimum");
+                    plot.PlotBar(xs: x, ys: avg, showValues: false, horizontal: true, label: "Average");
+                    plot.PlotScatter(xs: max, ys: x, lineWidth: 0, markerSize: 5, label: "Maximum");
+                    plot.PlotScatter(xs: globalMax, ys: x, lineWidth: 0, markerSize: 5, label: "Global Max");
 
-                    plot.YTicks(analysis.X.ToArray(), analysis.Labels.ToArray());
+                    plot.YTicks(x, analysis.Labels.ToArray());
                     plot.Grid(enableVertical: false, lineStyle: LineStyle.Dot);
 
                     plot.Frame(top: false, right: false);
-                    plot.YLabel("Timer ID");
+                    plot.YLabel("Task ID");
                     plot.XLabel("Time [us]");
-                    plot.Title("Timer Statistics");
+                    plot.Title("Task Overview");
+                    plot.Axis(x1: 0, x2: globalMax.Max() * 1.2);
 
                     Dirty = true;
                 }
