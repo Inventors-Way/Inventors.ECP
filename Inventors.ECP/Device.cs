@@ -116,11 +116,11 @@ namespace Inventors.ECP
         #region Profiler
         [Browsable(false)]
         [XmlIgnore]
-        public IProfiler Profiler => Master.Profiler;
+        public Profiler Profiler => Master.Profiler;
         #endregion
         #endregion
 
-        protected Device(CommunicationLayer commLayer, IProfiler profiler)
+        protected Device(CommunicationLayer commLayer, Profiler profiler)
         {
             Master = new DeviceMaster(commLayer, profiler)
             {

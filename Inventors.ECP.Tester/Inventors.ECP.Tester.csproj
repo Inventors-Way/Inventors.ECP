@@ -51,8 +51,14 @@
     <ApplicationIcon>216410 - spanner.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ScottPlot, Version=4.0.40.0, Culture=neutral, PublicKeyToken=86698dc10387c39e, processorArchitecture=MSIL">
+      <HintPath>..\packages\ScottPlot.4.0.40\lib\netstandard2.0\ScottPlot.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing.Common, Version=4.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Drawing.Common.4.7.0\lib\net461\System.Drawing.Common.dll</HintPath>
+    </Reference>
     <Reference Include="System.IO.Ports, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IO.Ports.4.7.0\lib\net461\System.IO.Ports.dll</HintPath>
     </Reference>
@@ -82,14 +88,22 @@
       <DependentUpon>LogControl.cs</DependentUpon>
     </Compile>
     <Compile Include="PortInformationProvider.cs" />
+    <Compile Include="Profiling\AnalysisControl.cs" />
     <Compile Include="Profiling\CommTester.cs" />
     <Compile Include="Profiling\CommunicationReport.cs" />
+    <Compile Include="Profiling\OverviewControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Profiling\OverviewControl.Designer.cs">
+      <DependentUpon>OverviewControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Profiling\ProfilerWindow.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Profiling\ProfilerWindow.Designer.cs">
       <DependentUpon>ProfilerWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="PropertyBinder.cs" />
     <Compile Include="Resource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -115,6 +129,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="LogControl.resx">
       <DependentUpon>LogControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Profiling\OverviewControl.resx">
+      <DependentUpon>OverviewControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Profiling\ProfilerWindow.resx">
       <DependentUpon>ProfilerWindow.cs</DependentUpon>

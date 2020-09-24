@@ -122,6 +122,7 @@ namespace Inventors.ECP.Tester
                 device = loader.Create();
 
                 device.Profiler.Enabled = loader.Profiling;
+                profilerWindow.SetDevice(device);
                 commTester.Trials = loader.Trials;
                 commTester.TestDelay = loader.TestDelay;
                 commTester.Master = device.Master;

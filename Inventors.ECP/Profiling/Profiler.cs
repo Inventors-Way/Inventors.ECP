@@ -1,10 +1,12 @@
 ﻿using Inventors.ECP.Communication;
+using Inventors.ECP.Profiling.Analysis;
 using Inventors.ECP.Utility;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,14 +14,14 @@ using System.Threading.Tasks;
 namespace Inventors.ECP.Profiling
 {
     public class Profiler :
-        NotifyPropertyChanged,
-        IProfiler
+        NotifyPropertyChanged
     {
         private readonly List<TargetEvent> events = new List<TargetEvent>();
         private readonly Dictionary<string, List<TimingRecord>> timing = new Dictionary<string, List<TimingRecord>>();
         private readonly Dictionary<string, List<TimingViolation>> violations = new Dictionary<string, List<TimingViolation>>();
         private readonly Dictionary<byte, long> packets = new Dictionary<byte, long>();
         private readonly List<CommRecord> commRecords = new List<CommRecord>();
+        private readonly Dictionary<string, double> timingMax = new Dictionary<string, double>();
 
         #region Properties
         #region Enabled Property
@@ -42,6 +44,49 @@ namespace Inventors.ECP.Profiling
         }
 
         #endregion
+        #region AvailableProfiles
+        private readonly List<string> profiles = new List<string>();
+
+        public IList<string> ActiveProfiles
+        {
+            get
+            {
+                lock (LockObject)
+                {
+                    return profiles.AsReadOnly();
+                }
+            }
+        }
+
+        private void ClearProfiles()
+        {
+            lock (LockObject)
+            {
+                profiles.Clear();
+            }
+
+            Notify(nameof(ActiveProfiles));
+        }
+
+        private void AddProfile(string profile)
+        {
+            lock (LockObject)
+            {
+                profiles.Add(profile);
+            }
+
+            Notify(nameof(ActiveProfiles));
+        }
+
+        private bool ProfileExists(string profile)
+        {
+            lock (LockObject)
+            {
+                return profiles.Any((p) => p == profile);
+            }
+        }
+
+        #endregion
         #region TimeSpan Property
         private double _timeSpan = Double.NaN;
 
@@ -52,7 +97,93 @@ namespace Inventors.ECP.Profiling
         }
 
         #endregion
+        #region Overview Property
+        private OverviewAnalysis _overview;
+
+        public OverviewAnalysis Overview
+        {
+            get => GetPropertyLocked(ref _overview);
+            set => SetPropertyLocked(ref _overview, value);
+        }
         #endregion
+        #endregion
+
+        private TimingRecord GetCurrentTiming(string id) =>
+            timing[id][timing[id].Count - 1];
+
+        private List<TimingRecord> Current
+        {
+            get
+            {
+                List<TimingRecord> retValue = new List<TimingRecord>();
+
+                foreach (var pair in timing)
+                {
+                    retValue.Add(GetCurrentTiming(pair.Key));
+                }
+
+                return retValue;
+            }
+        }
+
+        private void UpdateOverview()
+        {
+            OverviewAnalysis analysis = null;
+
+            lock (LockObject)
+            {
+                var current = Current;
+                var x = (from v in Enumerable.Range(0, timing.Count) select (double)v).ToList();
+                var average = (from record in current select record.Average).ToList();
+                var max = (from record in current select record.Max).ToList();
+                var min = (from record in current select record.Min).ToList();
+                var labels = (from record in current select record.ID).ToList();
+
+                foreach (var r in current)
+                {
+                    if (timingMax.ContainsKey(r.ID))
+                    {
+                        if (timingMax[r.ID] < r.Max)
+                        {
+                            timingMax[r.ID] = r.Max;
+                        }
+                    }
+                    else
+                    {
+                        timingMax.Add(r.ID, r.Max);
+                    }
+                }
+
+                var globalMax = (from r in current select timingMax[r.ID]).ToList();
+
+                analysis = new OverviewAnalysis(x: x, 
+                                                average: average, 
+                                                maximum: max, 
+                                                minimum: min, 
+                                                labels: labels, 
+                                                scaleMaximum: globalMax);
+            }
+
+            Overview = analysis;
+        }
+
+        public void Reset()
+        {
+            lock (LockObject)
+            {
+                timingMax.Clear();
+                events.Clear();
+                timing.Clear();
+                violations.Clear();
+                packets.Clear();
+                commRecords.Clear();
+                
+                // Reset analysis
+                Overview = null;
+                ActiveProfile = "";
+                ClearProfiles();
+            }
+        }
 
         #region Adding Profiling
 
@@ -90,10 +221,17 @@ namespace Inventors.ECP.Profiling
                     }
                 }
 
+                if (!ProfileExists(record.ID))
+                {
+                    AddProfile(record.ID);
+                }
+
                 if (string.IsNullOrEmpty(ActiveProfile))
                 {
                     ActiveProfile = record.ID;
                 }
+
+                UpdateOverview();
             }
         }
 
@@ -115,11 +253,6 @@ namespace Inventors.ECP.Profiling
                         violations.Add(violation.ID, new List<TimingViolation>());
                         violations[violation.ID].Add(violation);
                     }
-                }
-
-                if (string.IsNullOrEmpty(ActiveProfile))
-                {
-                    ActiveProfile = violation.ID;
                 }
             }
         }

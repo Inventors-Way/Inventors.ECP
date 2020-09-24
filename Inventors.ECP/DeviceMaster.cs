@@ -46,13 +46,13 @@ namespace Inventors.ECP
             set => connection.ResetOnConnection = value;
         }
 
-        public IProfiler Profiler { get; }
+        public Profiler Profiler { get; }
 
         public double RxRate => connection.RxRate;
 
         public double TxRate => connection.TxRate;
 
-        public DeviceMaster(CommunicationLayer connection, IProfiler profiler)
+        public DeviceMaster(CommunicationLayer connection, Profiler profiler)
         {
             if (connection is null)
                 throw new ArgumentException(Resources.CONNECTION_NULL);
