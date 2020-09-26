@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
-    <Version>1.5.5</Version>
+    <Version>1.6.0</Version>
     <Authors>Inventors' Way</Authors>
     <Company>Inventors' Way ApS</Company>
     <Description>Library implementing the Embedded Communication Protocol (ECP)</Description>
@@ -12,12 +12,12 @@
     <RepositoryUrl>https://github.com/Inventors-Way/Inventors.ECP</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>Communication</PackageTags>
-    <PackageReleaseNotes>Minor fix to formatting of logs</PackageReleaseNotes>
+    <PackageReleaseNotes>Added profiling</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageIconUrl></PackageIconUrl>
     <NeutralLanguage>en</NeutralLanguage>
     <PackageIcon>Logo128x128.png</PackageIcon>
-    <AssemblyVersion>1.5.5.0</AssemblyVersion>
+    <AssemblyVersion>1.6.0.0</AssemblyVersion>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Communication\Tcp\" />
