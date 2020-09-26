@@ -16,6 +16,7 @@ namespace Inventors.ECP.Tester.Profiling
     {
         public event EventHandler<bool> OnProfilerClosed;
         private IAnalysisControl activeControl;
+        private readonly Dictionary<IAnalysisControl, ToolStripMenuItem> analysis = new Dictionary<IAnalysisControl, ToolStripMenuItem>();
         private Device device;
 
         public ProfilerWindow()
@@ -39,24 +40,17 @@ namespace Inventors.ECP.Tester.Profiling
             analysisMenu.Enabled = true;
             timeMenu.Enabled = true;
             fileMenu.Enabled = true;
-            clearProfilerToolStripMenuItem.Checked = false;
         }
 
         private void CreateAnalyses()
         {
-            AddAnalysis("Overview", new OverviewControl(device.Profiler));
+            activeControl = AddAnalysis("Overview", new OverviewControl(device.Profiler));
             AddAnalysis("Task Profile", new TaskProfileControl(device.Profiler));
-
-            if (fileMenu.DropDownItems.Count > 0)
-            {
-                if (fileMenu.DropDownItems[0] is ToolStripMenuItem item)
-                {
-                    item.Checked = true;
-                }
-            }
+            analysis[activeControl].Checked = true;
+            SetActive(activeControl);
         }
 
-        private void AddAnalysis(string name, IAnalysisControl control)
+        private IAnalysisControl AddAnalysis(string name, IAnalysisControl control)
         {
             var item = new ToolStripMenuItem(name)
             {
@@ -64,21 +58,17 @@ namespace Inventors.ECP.Tester.Profiling
             };
             item.Click += Analysis_Click;
             analysisMenu.DropDownItems.Add(item);
+            analysis.Add(control, item);
+
+            return control;
         }
 
         private void Analysis_Click(object sender, EventArgs e)
         {
             if (sender is ToolStripMenuItem current)
             {
-                foreach (var temp in analysisMenu.DropDownItems)
-                {
-                    if (temp is ToolStripMenuItem item)
-                    {
-                        item.Checked = item == current;
-                    }
-                }
-
                 SetActive(current.Tag as IAnalysisControl);
+                UpdateAnalysis();
             }
         }
 
@@ -156,6 +146,15 @@ namespace Inventors.ECP.Tester.Profiling
                 TimeSpan300sMenuItem.Checked = device.Profiler.TimeSpan == 300;
                 TimeSpan600sMenuItem.Checked = device.Profiler.TimeSpan == 600;
                 TimeSpanOffMenuItem.Checked = device.Profiler.TimeSpan == Double.NaN;
+            }
+        }
+
+        private void UpdateAnalysis()
+        {
+            foreach (var item in analysis)
+            {
+                analysis[item.Key].Checked = item.Key == activeControl;
+                analysis[item.Key].Enabled= item.Key != activeControl;
             }
         }
 
