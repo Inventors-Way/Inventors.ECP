@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Inventors.ECP.Profiling
 {
-    public class TimingRecord
+    public class TimingRecord :
+        Record
     {
         public TimingRecord(string id, double average, double min, double max)
         {
@@ -14,12 +15,9 @@ namespace Inventors.ECP.Profiling
             Average = average;
             Min = min;
             Max = max;
-            Time = ProfileTiming.Mark();
         }
 
         public string ID { get; }
-
-        public double Time { get; }
 
         public double Max { get; }
 

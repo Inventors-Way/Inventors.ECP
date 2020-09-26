@@ -48,7 +48,11 @@ namespace Inventors.ECP
 
         public Profiler Profiler { get; }
 
-        public DeviceMaster(CommunicationLayer connection)
+        public double RxRate => connection.RxRate;
+
+        public double TxRate => connection.TxRate;
+
+        public DeviceMaster(CommunicationLayer connection, Profiler profiler)
         {
             if (connection is null)
                 throw new ArgumentException(Resources.CONNECTION_NULL);
@@ -56,7 +60,7 @@ namespace Inventors.ECP
             this.connection = connection;
             connection.Destuffer.OnReceive += HandleIncommingFrame;
             Timeout = 500;
-            Profiler = new Profiler(connection, this);
+            Profiler = profiler;
         }
 
         /// <summary>
@@ -69,25 +73,6 @@ namespace Inventors.ECP
         /// </summary>
         public void Close() => connection.Close();
 
-        #region Target profiling
-
-        public event EventHandler<TargetEvent> TargetEventOccurred;
-
-        public event EventHandler<TimingRecord> TargetTimingReceived;
-
-        public event EventHandler<TimingViolation> TargetTimingViolationOccured;
-
-        protected void NotifyTargetEvent(TargetEvent e) =>
-            TargetEventOccurred?.Invoke(this, e);
-
-        protected void NotifyTargetTiming(TimingRecord r) =>
-            TargetTimingReceived?.Invoke(this, r);
-
-        protected void NotifyTargetTimingViolation(TimingViolation v) =>
-            TargetTimingViolationOccured?.Invoke(this, v);
-
-        #endregion
-
         #region Execution of device functions
 
         /// <summary>
@@ -98,27 +83,18 @@ namespace Inventors.ECP
         {
             if (function is object)
             {
-                function.OnSend();
-                Initiate(function);
+                lock (commLock)
+                {
+                    function.OnSend();
+                    Initiate(function);
 
-                while (!IsCompleted()) ;
+                    while (!IsCompleted()) ;
 
-                state = CommState.WAITING;
+                    state = CommState.WAITING;
 
-                if (currentException != null)
-                    throw currentException;
-            }
-        }
-
-        /// <summary>
-        /// Send an unacknowledged message to the device.
-        /// </summary>
-        /// <param name="message">The message to send</param>
-        public void Send(DeviceMessage message)
-        {
-            if (connection.IsOpen && (message is object))
-            {
-                connection.Transmit(Frame.Encode(message.GetPacket()));
+                    if (currentException != null)
+                        throw currentException;
+                }
             }
         }
 
@@ -161,8 +137,24 @@ namespace Inventors.ECP
         }
 
         #endregion
+        #region Sending messages
 
-        public CommunicationLayerStatistics GetStatistics() => connection.GetStatistics();
+        /// <summary>
+        /// Send an unacknowledged message to the device.
+        /// </summary>
+        /// <param name="message">The message to send</param>
+        public void Send(DeviceMessage message)
+        {
+            if (connection.IsOpen && (message is object))
+            {
+                lock (commLock)
+                {
+                    connection.Transmit(Frame.Encode(message.GetPacket()));
+                }
+            }
+        }
+
+        #endregion
 
         public void RestartStatistics() => connection.RestartStatistics();
 
@@ -173,6 +165,7 @@ namespace Inventors.ECP
             try
             {
                 var response = new Packet(frame);
+                Profiler.Add(response);
 
                 if (response.Code != 0x00)
                 {
@@ -198,6 +191,7 @@ namespace Inventors.ECP
                         catch (Exception e)
                         {
                             Log.Error(e.Message);
+                            Profiler.Add(new TargetEvent(e.Message));
                         }
                     }
                 }
@@ -219,25 +213,24 @@ namespace Inventors.ECP
 
         private void Dispatch(Packet packet)
         {
-            foreach (var dispatcher in Dispatchers)
+            if (Dispatchers.ContainsKey(packet.Code) && (MessageListener is object))
             {
-                if ((dispatcher.Code == packet.Code) &&
-                    (MessageListener != null))
-                {
-                    dispatcher.Create(packet).Dispatch(MessageListener);
-                }
+                Dispatchers[packet.Code].Create(packet).Dispatch(MessageListener);
             }
         }
 
         public void Add(DeviceMessage message)
         {
-            if (message is object)
-            {
-                Dispatchers.Add(message.CreateDispatcher());
-            }
+            if (message is null)
+                throw new ArgumentNullException(nameof(message));
+
+            if (Dispatchers.ContainsKey(message.Code))
+                throw new ArgumentException($"Message [ { message } ] is allready present in Dispatchers");
+
+            Dispatchers.Add(message.Code, message.CreateDispatcher());
         }
 
-        private List<MessageDispatcher> Dispatchers { get; } = new List<MessageDispatcher>();
+        private Dictionary<byte, MessageDispatcher> Dispatchers { get; } = new Dictionary<byte, MessageDispatcher>();
 
         public List<Location> GetLocations() => connection.GetLocations();
 
@@ -276,6 +269,7 @@ namespace Inventors.ECP
         private readonly CommunicationLayer connection;
         private DeviceFunction current;
         private readonly object lockObject = new object();
+        private readonly object commLock = new object();
         private Exception currentException;
         private readonly Stopwatch stopwatch = new Stopwatch();
         private CommState state = CommState.WAITING;

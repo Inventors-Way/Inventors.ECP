@@ -34,7 +34,7 @@ namespace Inventors.ECP
         }
         #endregion
         #region Connected
-        private bool _connected = false;
+        private bool _connected;
 
         [Browsable(false)]
         [XmlIgnore]
@@ -120,9 +120,9 @@ namespace Inventors.ECP
         #endregion
         #endregion
 
-        protected Device(CommunicationLayer commLayer)
+        protected Device(CommunicationLayer commLayer, Profiler profiler)
         {
-            Master = new DeviceMaster(commLayer)
+            Master = new DeviceMaster(commLayer, profiler)
             {
                 MessageListener = this
             };
@@ -130,8 +130,6 @@ namespace Inventors.ECP
         }
 
         public List<Location> GetLocationsDevices() => Master.GetLocations();
-
-        public CommunicationLayerStatistics GetStatistics() => Master.GetStatistics();
 
         /// <summary>
         /// Ping the connected device.

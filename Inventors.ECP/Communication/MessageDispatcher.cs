@@ -10,19 +10,25 @@ namespace Inventors.ECP.Communication
     {
         public MessageDispatcher(byte code, Func<Packet, DeviceMessage> creator)
         {
-            this.Code = code;
-            this.creator = creator;
+            if (creator is null)
+                throw new ArgumentNullException(nameof(creator));
+
+            Code = code;
+            _creator = creator;
         }
 
-        public byte Code { get; }
 
         public DeviceMessage Create(Packet packet)
         {
-            var retValue = creator(packet);
+            if (packet is null)
+                throw new ArgumentNullException(nameof(packet));
+
+            var retValue = _creator(packet);
             retValue.OnReceived();
             return retValue;
         }
 
-        private readonly Func<Packet, DeviceMessage> creator;
+        public byte Code { get; }
+        private readonly Func<Packet, DeviceMessage> _creator;
     }
 }

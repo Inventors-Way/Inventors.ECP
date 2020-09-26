@@ -1,211 +1,412 @@
 ﻿using Inventors.ECP.Communication;
+using Inventors.ECP.Profiling.Analysis;
+using Inventors.ECP.Utility;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Inventors.ECP.Profiling
 {
-    public class Profiler
+    public class Profiler :
+        NotifyPropertyChanged
     {
-        private class FrameStat
+        private readonly List<TargetEvent> events = new List<TargetEvent>();
+        private readonly Dictionary<string, List<TimingRecord>> timing = new Dictionary<string, List<TimingRecord>>();
+        private readonly Dictionary<string, List<TimingViolation>> violations = new Dictionary<string, List<TimingViolation>>();
+        private readonly Dictionary<byte, long> packets = new Dictionary<byte, long>();
+        private readonly List<CommRecord> commRecords = new List<CommRecord>();
+        private readonly Dictionary<string, double> timingMax = new Dictionary<string, double>();
+        private double time;
+
+        #region Properties
+        #region OverviewUpdated Property
+        private bool _overviewUpdated;
+
+        public bool OverviewUpdated
         {
-            public long Count { get; set; } = 0;
-            public long Bytes { get; set; } = 0;
+            get => GetPropertyLocked(ref _overviewUpdated);
+            private set => SetPropertyLocked(ref _overviewUpdated, value);
         }
 
-        private bool profiling = false;
-        private readonly Dictionary<byte, FrameStat> framesReceived = new Dictionary<byte, FrameStat>();
+        #endregion
+        #region TaskUpdated Property
+        private bool _taskUpdated;
 
-
-        public DeviceFunction Function { get; set; } = null;
-
-        private CommunicationLayerStatistics statistics = new CommunicationLayerStatistics();
-
-        public int Trials { get; set; } = 100;
-
-        public int TestDelay { get; set; } = 50;
-
-        public List<double> Time { get; private set; } = new List<double>();
-
-        public long RunTime { get; private set; } = 0;
-
-        public Profiler(CommunicationLayer layer, DeviceMaster master)
+        public bool TaskUpdated
         {
-            this.commLayer = layer;
-            this.master = master;
+            get => GetPropertyLocked(ref _taskUpdated);
+            private set => SetPropertyLocked(ref _taskUpdated, value);
         }
 
-        private void ClearProfile()
+        #endregion
+        #region Enabled Property
+        private bool _enabled;
+
+        public bool Enabled 
         {
-            framesReceived.Clear();
-            profileWatch.Restart();
+            get => GetPropertyLocked(ref _enabled);
+            set => SetPropertyLocked(ref _enabled, value);
         }
 
-        public bool Profiling
+        #endregion
+        #region ActiveProfile Property
+        private string _activeProfile;
+
+        public string ActiveProfile
+        {
+            get => GetPropertyLocked(ref _activeProfile);
+            set
+            {
+                if (ActiveProfile != value)
+                {
+                    SetPropertyLocked(ref _activeProfile, value);
+                    TaskUpdated = true;
+                }
+            }
+        }
+
+        #endregion
+        #region AvailableProfiles
+        private readonly List<string> profiles = new List<string>();
+
+        public IList<string> AvailableProfiles
         {
             get
             {
-                lock (framesReceived)
+                lock (LockObject)
                 {
-                    return profiling;
+                    return profiles.AsReadOnly();
                 }
             }
+        }
+
+        private void ClearProfiles()
+        {
+            lock (LockObject)
+            {
+                profiles.Clear();
+            }
+
+            Notify(nameof(AvailableProfiles));
+        }
+
+        private void AddProfile(string profile)
+        {
+            lock (LockObject)
+            {
+                profiles.Add(profile);
+            }
+
+            Notify(nameof(AvailableProfiles));
+        }
+
+        private bool ProfileExists(string profile)
+        {
+            lock (LockObject)
+            {
+                return profiles.Any((p) => p == profile);
+            }
+        }
+
+        #endregion
+        #region TimeSpan Property
+        private double _timeSpan = Double.NaN;
+
+        public double TimeSpan
+        {
+            get => GetPropertyLocked(ref _timeSpan);
             set
             {
-                if (value != profiling)
-                {
-                    lock (framesReceived)
-                    {
-                        if (value)
-                        {
-                            commLayer.Destuffer.OnReceive += HandleIncommingFrame;
-                            ClearProfile();
-                        }
-                        else
-                        {
-                            commLayer.Destuffer.OnReceive -= HandleIncommingFrame;
-                            profileWatch.Stop();
-                        }
-
-                        profiling = value;
-                    }
-                }
+                SetPropertyLocked(ref _timeSpan, value);
+                TaskUpdated = true;
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
-        private void HandleIncommingFrame(Destuffer caller, byte[] frame)
-        {
-            lock (framesReceived)
-            {
-                if (profiling)
-                {
-                    try
-                    {
-                        var response = new Packet(frame);
+        #endregion
+        #region Overview Property
+        private OverviewAnalysis _overview;
 
-                        if (!framesReceived.ContainsKey(response.Code))
-                        {
-                            framesReceived.Add(response.Code, new FrameStat()
-                            {
-                                Bytes = frame.Length,
-                                Count = 1
-                            });
-                        }
-                        else
-                        {
-                            framesReceived[response.Code].Bytes += frame.Length;
-                            framesReceived[response.Code].Count += 1;
-                        }
-                    }
-                    catch {}
-                }
+        public OverviewAnalysis Overview
+        {
+            get => GetPropertyLocked(ref _overview);
+            private set
+            {
+                SetPropertyLocked(ref _overview, value);
+                OverviewUpdated = false;
+            }
+        }
+        #endregion
+        #region TaskProfile Property
+        private TaskAnalysis _taskProfile;
+
+        public TaskAnalysis TaskProfile
+        {
+            get => GetPropertyLocked(ref _taskProfile);
+            private set
+            {
+                SetProperty(ref _taskProfile, value);
+                TaskUpdated = false;
             }
         }
 
-        public List<CommunicationProfile> GetProfile()
+        #endregion
+        #endregion
+        #region Overview Analysis
+
+        private TimingRecord GetCurrentTiming(string id) =>
+            timing[id][timing[id].Count - 1];
+
+        private List<TimingRecord> Current
         {
-            List<CommunicationProfile> retValue = new List<CommunicationProfile>();
-
-            lock (framesReceived)
+            get
             {
-                double time = ((double)profileWatch.ElapsedMilliseconds) / 1000.0;
+                List<TimingRecord> retValue = new List<TimingRecord>();
 
-                foreach (var item in framesReceived)
+                foreach (var pair in timing)
                 {
-                    var stat = item.Value;
-
-                    retValue.Add(new CommunicationProfile()
-                    {
-                        Code = item.Key,
-                        Bytes = ((double) stat.Bytes) / time,
-                        Rate = ((double)stat.Count) / time,
-                        Count = stat.Count
-                    });
+                    retValue.Add(GetCurrentTiming(pair.Key));
                 }
+
+                return retValue;
+            }
+        }
+
+        public void UpdateOverview()
+        {
+            OverviewAnalysis analysis = null;
+
+            lock (LockObject)
+            {
+                var current = Current;
+                var x = (from v in Enumerable.Range(0, timing.Count) select (double)v).ToList();
+                var average = (from record in current select record.Average).ToList();
+                var max = (from record in current select record.Max).ToList();
+                var min = (from record in current select record.Min).ToList();
+                var labels = (from record in current select record.ID).ToList();
+
+                foreach (var r in current)
+                {
+                    if (timingMax.ContainsKey(r.ID))
+                    {
+                        if (timingMax[r.ID] < r.Max)
+                        {
+                            timingMax[r.ID] = r.Max;
+                        }
+                    }
+                    else
+                    {
+                        timingMax.Add(r.ID, r.Max);
+                    }
+                }
+
+                var globalMax = (from r in current select timingMax[r.ID]).ToList();
+
+                analysis = new OverviewAnalysis(x: x, 
+                                                average: average, 
+                                                maximum: max, 
+                                                minimum: min, 
+                                                labels: labels, 
+                                                scaleMaximum: globalMax);
+            }
+
+            Overview = analysis;
+        }
+
+        #endregion
+        #region Task Analysis
+
+        public void UpdateTaskProfile()
+        {
+            TaskAnalysis analysis = null;
+
+            if (!string.IsNullOrEmpty(ActiveProfile) && timing.ContainsKey(ActiveProfile))
+            {
+                lock (LockObject)
+                {
+                    var records = from r in timing[ActiveProfile]
+                                  where IsIncuded(r)
+                                  select r;
+                    var violationRecords = violations.ContainsKey(ActiveProfile) ?
+                                           (from r in violations[ActiveProfile]
+                                           where IsIncuded(r)
+                                           select r).ToList() :
+                                           null;
+                    var selectedEvents = (from e in events
+                                          where IsIncuded(e)
+                                          select e).ToList();
+
+                    var time = records.Select((r) => r.Time).ToList();
+                    var average = records.Select((r) => r.Average).ToList();
+                    var max = records.Select((r) => r.Max).ToList();
+                    var min = records.Select((r) => r.Min).ToList();
+
+                    analysis = new TaskAnalysis(ActiveProfile, average, max, min, time, violationRecords, selectedEvents);
+                }
+            }
+
+            TaskProfile = analysis;
+        }
+        #endregion
+
+        private bool IsIncuded(Record record)
+        {
+            bool retValue = true;
+
+            if (!Double.IsNaN(TimeSpan))
+            {
+                retValue = record.Time > time - TimeSpan;
             }
 
             return retValue;
         }
 
-        public static string CreateProfileReport(List<CommunicationProfile> profile)
+
+        public void Reset()
         {
-            var builder = new StringBuilder();
-
-            if (profile is object)
+            lock (LockObject)
             {
-                string fmtString = " {0,-5} | {1,-12} | {2,-12} | {3,-12}";
-                string fmtString2 = " {0,-5} | {1,12} | {2,12} | {3,12}";
-                builder.AppendLine("PROFILE REPORT");
-                builder.AppendLine(String.Format(CultureInfo.CurrentCulture, fmtString, "CODE", "COUNT", "DATA RATE", "FRAME RATE"));
+                ProfileTiming.Reset();
+                timingMax.Clear();
+                events.Clear();
+                timing.Clear();
+                violations.Clear();
+                packets.Clear();
+                commRecords.Clear();
+                
+                // Reset analysis
+                Overview = null;
+                ActiveProfile = "";
+                ClearProfiles();
 
-                foreach (var p in profile)
+                time = 0;
+                TaskUpdated = OverviewUpdated = true;
+            }
+        }
+
+        #region Adding Profiling
+
+        public void Add(TargetEvent e)
+        {
+            if (e is null)
+                throw new ArgumentNullException(nameof(e));
+
+            if (Enabled)
+            {
+                lock (LockObject)
                 {
-                    builder.AppendLine(String.Format(CultureInfo.CurrentCulture, fmtString2,
-                        String.Format(CultureInfo.CurrentCulture, "0x{0:X2}", p.Code),
-                        p.Count.ToString(CultureInfo.CurrentCulture),
-                        Statistics.FormatRate(p.Bytes),
-                        Statistics.FormatRate(p.Rate, "MSG/s")));
+                    events.Add(e);
+                    time = e.Time;
+                }
+            }
+        }
+
+        public void Add(TimingRecord record)
+        {
+            if (record is null)
+                throw new ArgumentNullException(nameof(record));
+
+            if (Enabled)
+            {
+                lock (LockObject)
+                {
+                    if (timing.ContainsKey(record.ID))
+                    {
+                        timing[record.ID].Add(record);
+                    }
+                    else
+                    {
+                        timing.Add(record.ID, new List<TimingRecord>());
+                        timing[record.ID].Add(record);
+                    }
+
+                    time = record.Time;
                 }
 
-            }
+                if (!ProfileExists(record.ID))
+                {
+                    AddProfile(record.ID);
+                }
 
-            return builder.ToString();
+                if (string.IsNullOrEmpty(ActiveProfile))
+                {
+                    ActiveProfile = record.ID;
+                }
+
+                if (record.ID == ActiveProfile)
+                {
+                    TaskUpdated = true;
+                }
+
+                OverviewUpdated = true;
+            }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
-        public ProfileReport Test()
+        public void Add(TimingViolation violation)
         {
-            if (Function is object)
+            if (violation is null)
+                throw new ArgumentNullException(nameof(violation));
+
+            if (Enabled)
             {
-                ClearProfile();
-                Time.Clear();
-                watch.Restart();
-                commLayer.RestartStatistics();
-
-                for (int n = 0; n < Trials; ++n)
+                lock (LockObject)
                 {
-                    try
+                    if (violations.ContainsKey(violation.ID))
                     {
-                        master.Execute(Function);
-                        Time.Add(Function.TransmissionTime);
+                        violations[violation.ID].Add(violation);
                     }
-                    catch 
-                    { 
+                    else
+                    {
+                        violations.Add(violation.ID, new List<TimingViolation>());
+                        violations[violation.ID].Add(violation);
                     }
 
-                    if (TestDelay > 0)
+                    time = violation.Time;
+                }
+            }
+        }
+
+        public void Add(Packet packet)
+        {
+            if (packet is null)
+                throw new ArgumentNullException(nameof(packet));
+
+            if (Enabled)
+            {
+                lock (LockObject)
+                {
+                    if (packets.ContainsKey(packet.Code))
                     {
-                        Thread.Sleep(TestDelay);
+                        ++packets[packet.Code];
+                    }
+                    else
+                    {
+                        packets.Add(packet.Code, 1);
                     }
                 }
-                watch.Stop();
-                RunTime = watch.ElapsedMilliseconds;
-                statistics = commLayer.GetStatistics();
-                commLayer.RestartStatistics();
-
-                Profiling = false;
             }
-
-            return Compile();
         }
 
-        public async Task<ProfileReport> TestAsync() => await Task.Run((Func<ProfileReport>)(() => Test())).ConfigureAwait(false);
-
-        private ProfileReport Compile()
+        public void Add(double elapsedTime, CommRecord record)
         {
-            return new ProfileReport(Time, Trials, statistics, RunTime);
+            if (record is null)
+                throw new ArgumentNullException(nameof(record));
+
+            if (Enabled)
+            {
+                lock (LockObject)
+                {
+                    commRecords.Add(record);
+                    time = record.Time;
+                }
+            }
         }
 
-
-        private readonly Stopwatch watch = new Stopwatch();
-        private readonly Stopwatch profileWatch = new Stopwatch();
-        private readonly CommunicationLayer commLayer;
-        private readonly DeviceMaster master;
+        #endregion
     }
 }

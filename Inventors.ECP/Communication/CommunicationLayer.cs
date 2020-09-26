@@ -38,26 +38,6 @@ namespace Inventors.ECP.Communication
         /// <returns>A list of device locations</returns>
         public abstract List<Location> GetLocations();
 
-        public CommunicationLayerStatistics GetStatistics()
-        {
-            double time = ((double)testWatch.ElapsedMilliseconds) / 1000;
-
-            var stat = new CommunicationLayerStatistics()
-            {
-                BytesTransmitted = BytesTransmitted,
-                BytesReceived = BytesReceived,
-                RxRate = ((double)BytesReceived) / time,
-                TxRate = ((double)BytesTransmitted) / time
-            };
-
-            if (testWatch.ElapsedMilliseconds > 5000)
-            {
-                RestartStatistics();
-            }
-
-            return stat;
-        }
-
         public CommunicationLayer SetLocation(Location location)
         {
             Location = location;
@@ -88,9 +68,13 @@ namespace Inventors.ECP.Communication
 
         internal Destuffer Destuffer { get; } = new Destuffer();
 
-        protected long BytesReceived { get; set; }
+        public long BytesReceived { get; protected set; }
 
-        protected long BytesTransmitted { get; set; }
+        public long BytesTransmitted { get; protected set; }
+
+        public double RxRate => 1000 * ((double)BytesReceived) / ((double)testWatch.ElapsedMilliseconds);
+
+        public double TxRate => 1000 * ((double)BytesTransmitted) / ((double)testWatch.ElapsedMilliseconds);
 
         private readonly Stopwatch testWatch = new Stopwatch();
     }

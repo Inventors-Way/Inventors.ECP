@@ -17,6 +17,7 @@ using System.IO;
 using System.Reflection;
 using Inventors.ECP.Profiling;
 using Inventors.ECP.Communication;
+using Inventors.ECP.Tester.Profiling;
 
 namespace Inventors.ECP.Tester
 {
@@ -34,6 +35,8 @@ namespace Inventors.ECP.Tester
         private Device device = null;
         private Location selectedDevice = null;
         private AppState state = AppState.APP_STATE_UNINITIALIZED;
+        private readonly ProfilerWindow profilerWindow;
+        private readonly CommTester commTester;
 
         public MainWindow()
         {
@@ -44,6 +47,10 @@ namespace Inventors.ECP.Tester
             SetTitle();
             UpdateProfiling();
             SetLoggingLevel(Settings.Level);
+
+            profilerWindow = new ProfilerWindow();
+            profilerWindow.OnProfilerClosed += ProfilerWindow_OnClosed;
+            commTester = new CommTester();
         }
 
         public MainWindow(string deviceFileName) :
@@ -68,10 +75,9 @@ namespace Inventors.ECP.Tester
         {
             if (device is object)
             {
-                var report = device.GetStatistics();
                 statusText.Text = String.Format("DATA [Rx: {0}, Tx: {1}]",
-                    Statistics.FormatRate(report.RxRate),
-                    Statistics.FormatRate(report.TxRate));
+                    Statistics.FormatRate(device.Master.RxRate),
+                    Statistics.FormatRate(device.Master.TxRate));
             }
         }
 
@@ -80,6 +86,7 @@ namespace Inventors.ECP.Tester
             if (device != null)
             {
                 UpdateStatus();
+                device.Master.RestartStatistics();
             }
         }
 
@@ -114,13 +121,17 @@ namespace Inventors.ECP.Tester
                 Log.Status("Device: {0}", loader.AssemblyName);
                 device = loader.Create();
 
-                device.Profiler.Profiling = loader.Profiling;
-                device.Profiler.Trials = loader.Trials;
-                device.Profiler.TestDelay = loader.TestDelay;
+                device.Profiler.Enabled = loader.Profiling;
+                profilerWindow.SetDevice(device);
+                commTester.Trials = loader.Trials;
+                commTester.TestDelay = loader.TestDelay;
+                commTester.Master = device.Master;
+
                 Log.Status("Profiler: {0} (Test Trials: {1}, Test Delay: {2})",
                     loader.Profiling ? "ENABLED" : "DISABLED",
-                    device.Profiler.Trials,
-                    device.Profiler.TestDelay);
+                    commTester.Trials,
+                    commTester.TestDelay);
+
                 UpdateProfiling();
                 InitializeFunctions();
                 UpdatePorts();
@@ -233,6 +244,7 @@ namespace Inventors.ECP.Tester
                         if (ping < 0)
                         {
                             Log.Error("Ping failed!");
+                            device.Profiler.Add(new TargetEvent("Ping failed"));
                         }
                         else
                         {
@@ -279,15 +291,9 @@ namespace Inventors.ECP.Tester
             device.Functions.ForEach((f) => functionList.Items.Add(f));
         }
 
-        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e) => Application.Exit();
 
-        private void FunctionList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            UpdateFunction();
-        }
+        private void FunctionList_SelectedIndexChanged(object sender, EventArgs e) => UpdateFunction();
 
         private void UpdateFunction()
         {
@@ -335,7 +341,8 @@ namespace Inventors.ECP.Tester
                 {
                     device.Location = selectedDevice;
                     device.Open();
-                    Log.Status("Location opened: {0}", device.Location);
+                    Log.Status($"Location opened: {device.Location}");
+                    device.Profiler.Add(new TargetEvent($"Location opened: {device.Location}"));
                     UpdateAppStates(AppState.APP_STATE_CONNECTED);
                 }
                 catch (Exception ex)
@@ -357,6 +364,7 @@ namespace Inventors.ECP.Tester
                 device.Close();
                 UpdateAppStates(AppState.APP_STATE_INITIALIZED);
                 Log.Status("Location closed: {0}", device.Location);
+                device.Profiler.Add(new TargetEvent("Connection closed"));
             }
             catch (Exception ex)
             {
@@ -466,12 +474,10 @@ namespace Inventors.ECP.Tester
         {
             if (state == AppState.APP_STATE_CONNECTED)
             {
-                device.Profiler.Function = functionList.SelectedItem as DeviceFunction;
-
-                if (device.Profiler.Function != null)
+                if (functionList.SelectedItem is DeviceFunction function)
                 {
                     UpdateAppStates(AppState.APP_STATE_ACTIVE);
-                    var report = await device.Profiler.TestAsync().ConfigureAwait(true);
+                    var report = await commTester.TestAsync(function).ConfigureAwait(true);
                     Log.Status(report.ToString());
                     UpdateAppStates(AppState.APP_STATE_CONNECTED);
                     UpdateProfiling();
@@ -491,12 +497,12 @@ namespace Inventors.ECP.Tester
         {
             using (var dialog = new TrialsDialog())
             {
-                dialog.Trials = device.Profiler.Trials;
+                dialog.Trials = commTester.Trials;
 
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    device.Profiler.Trials = dialog.Trials;
-                    Log.Debug("Number of test trials set to {0}", device.Profiler.Trials);
+                    commTester.Trials = dialog.Trials;
+                    Log.Debug("Number of test trials set to {0}", commTester.Trials);
                 }
             }
         }
@@ -557,7 +563,7 @@ namespace Inventors.ECP.Tester
         {
             if (device is object)
             {
-                device.Profiler.Profiling = true;
+                device.Profiler.Enabled = true;
                 UpdateProfiling();
             }
         }
@@ -566,17 +572,8 @@ namespace Inventors.ECP.Tester
         {
             if (device is object)
             {
-                device.Profiler.Profiling = false;
+                device.Profiler.Enabled = false;
                 UpdateProfiling();
-            }
-        }
-
-        private void ReportToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (device is object)
-            {
-                var profile = device.Profiler.GetProfile();
-                Log.Status(Profiler.CreateProfileReport(profile));
             }
         }
 
@@ -584,14 +581,38 @@ namespace Inventors.ECP.Tester
         {
             if (device is object)
             {
-                enabledToolStripMenuItem.Checked = device.Profiler.Profiling;
-                disabledToolStripMenuItem.Checked = !device.Profiler.Profiling;
-            }
-            else
-            {
-                enabledToolStripMenuItem.Enabled = disabledToolStripMenuItem.Enabled = false;
+                profilerMenuItem.Checked = device.Profiler.Enabled;
+
+                if (device.Profiler.Enabled)
+                {
+                    profilerWindow.Show();
+                }
+                else
+                {
+                    profilerWindow.Visible = false;
+                }
             }
         }
+
+        private void ProfilerMenuItem_Click(object sender, EventArgs e)
+        {
+            if (device is object)
+            {
+                device.Profiler.Enabled = !device.Profiler.Enabled;
+                UpdateProfiling();
+            }
+        }
+
+        private void ProfilerWindow_OnClosed(object sender, bool close)
+        {
+            if (device is object)
+            {
+                device.Profiler.Enabled = false;
+                UpdateProfiling();
+                profilerWindow.Visible = false;
+            }
+        }
+
 
         private void DebugToolStripMenuItem_Click(object sender, EventArgs e) => SetLoggingLevel(LogLevel.DEBUG);
 
@@ -607,5 +628,6 @@ namespace Inventors.ECP.Tester
             Log.Level = level;
             Settings.Level = level;
         }
+
     }
 }

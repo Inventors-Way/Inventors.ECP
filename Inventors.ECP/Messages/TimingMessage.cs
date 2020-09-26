@@ -10,7 +10,7 @@ namespace Inventors.ECP.Messages
     public class TimingMessage :
         DeviceMessage
     {
-        public static readonly byte CODE = 0xFE;
+        public static readonly byte CODE = 0xFD;
 
         public override byte Code => CODE;
 
