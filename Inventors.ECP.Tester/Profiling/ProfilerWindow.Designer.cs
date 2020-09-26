@@ -92,33 +92,33 @@
             // TimeSpan60sMenuItem
             // 
             this.TimeSpan60sMenuItem.Name = "TimeSpan60sMenuItem";
-            this.TimeSpan60sMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.TimeSpan60sMenuItem.Size = new System.Drawing.Size(97, 22);
             this.TimeSpan60sMenuItem.Text = "60s";
             this.TimeSpan60sMenuItem.Click += new System.EventHandler(this.TimeSpan60s_Click);
             // 
             // TimeSpan300sMenuItem
             // 
             this.TimeSpan300sMenuItem.Name = "TimeSpan300sMenuItem";
-            this.TimeSpan300sMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.TimeSpan300sMenuItem.Size = new System.Drawing.Size(97, 22);
             this.TimeSpan300sMenuItem.Text = "300s";
             this.TimeSpan300sMenuItem.Click += new System.EventHandler(this.TimeSpan300s_Click);
             // 
             // TimeSpan600sMenuItem
             // 
             this.TimeSpan600sMenuItem.Name = "TimeSpan600sMenuItem";
-            this.TimeSpan600sMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.TimeSpan600sMenuItem.Size = new System.Drawing.Size(97, 22);
             this.TimeSpan600sMenuItem.Text = "600s";
             this.TimeSpan600sMenuItem.Click += new System.EventHandler(this.TimeSpan600s_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(94, 6);
             // 
             // TimeSpanOffMenuItem
             // 
             this.TimeSpanOffMenuItem.Name = "TimeSpanOffMenuItem";
-            this.TimeSpanOffMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.TimeSpanOffMenuItem.Size = new System.Drawing.Size(97, 22);
             this.TimeSpanOffMenuItem.Text = "Off";
             this.TimeSpanOffMenuItem.Click += new System.EventHandler(this.TimeSpanOffToolStripMenuItem_Click);
             // 
@@ -133,6 +133,7 @@
             // timer
             // 
             this.timer.Enabled = true;
+            this.timer.Interval = 500;
             this.timer.Tick += new System.EventHandler(this.Timer_Tick);
             // 
             // ProfilerWindow

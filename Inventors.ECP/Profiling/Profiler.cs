@@ -22,9 +22,29 @@ namespace Inventors.ECP.Profiling
         private readonly Dictionary<byte, long> packets = new Dictionary<byte, long>();
         private readonly List<CommRecord> commRecords = new List<CommRecord>();
         private readonly Dictionary<string, double> timingMax = new Dictionary<string, double>();
-        private double time = 0;
+        private double time;
 
         #region Properties
+        #region OverviewUpdated Property
+        private bool _overviewUpdated;
+
+        public bool OverviewUpdated
+        {
+            get => GetPropertyLocked(ref _overviewUpdated);
+            private set => SetPropertyLocked(ref _overviewUpdated, value);
+        }
+
+        #endregion
+        #region TaskUpdated Property
+        private bool _taskUpdated;
+
+        public bool TaskUpdated
+        {
+            get => GetPropertyLocked(ref _taskUpdated);
+            private set => SetPropertyLocked(ref _taskUpdated, value);
+        }
+
+        #endregion
         #region Enabled Property
         private bool _enabled;
 
@@ -46,7 +66,7 @@ namespace Inventors.ECP.Profiling
                 if (ActiveProfile != value)
                 {
                     SetPropertyLocked(ref _activeProfile, value);
-                    UpdateTaskProfile();
+                    TaskUpdated = true;
                 }
             }
         }
@@ -101,7 +121,11 @@ namespace Inventors.ECP.Profiling
         public double TimeSpan
         {
             get => GetPropertyLocked(ref _timeSpan);
-            set => SetPropertyLocked(ref _timeSpan, value);
+            set
+            {
+                SetPropertyLocked(ref _timeSpan, value);
+                TaskUpdated = true;
+            }
         }
 
         #endregion
@@ -111,7 +135,11 @@ namespace Inventors.ECP.Profiling
         public OverviewAnalysis Overview
         {
             get => GetPropertyLocked(ref _overview);
-            private set => SetPropertyLocked(ref _overview, value);
+            private set
+            {
+                SetPropertyLocked(ref _overview, value);
+                OverviewUpdated = false;
+            }
         }
         #endregion
         #region TaskProfile Property
@@ -120,7 +148,11 @@ namespace Inventors.ECP.Profiling
         public TaskAnalysis TaskProfile
         {
             get => GetPropertyLocked(ref _taskProfile);
-            private set => SetProperty(ref _taskProfile, value);
+            private set
+            {
+                SetProperty(ref _taskProfile, value);
+                TaskUpdated = false;
+            }
         }
 
         #endregion
@@ -145,7 +177,7 @@ namespace Inventors.ECP.Profiling
             }
         }
 
-        private void UpdateOverview()
+        public void UpdateOverview()
         {
             OverviewAnalysis analysis = null;
 
@@ -189,7 +221,7 @@ namespace Inventors.ECP.Profiling
         #endregion
         #region Task Analysis
 
-        private void UpdateTaskProfile()
+        public void UpdateTaskProfile()
         {
             TaskAnalysis analysis = null;
 
@@ -220,7 +252,6 @@ namespace Inventors.ECP.Profiling
 
             TaskProfile = analysis;
         }
-
         #endregion
 
         private bool IsIncuded(Record record)
@@ -254,6 +285,7 @@ namespace Inventors.ECP.Profiling
                 ClearProfiles();
 
                 time = 0;
+                TaskUpdated = OverviewUpdated = true;
             }
         }
 
@@ -308,10 +340,10 @@ namespace Inventors.ECP.Profiling
 
                 if (record.ID == ActiveProfile)
                 {
-                    UpdateTaskProfile();
+                    TaskUpdated = true;
                 }
 
-                UpdateOverview();
+                OverviewUpdated = true;
             }
         }
 

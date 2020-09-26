@@ -33,7 +33,7 @@ namespace Inventors.ECP.Tester.Profiling
             Dock = DockStyle.Fill;
             this.profiler = profiler;
             binder = new PropertyBinder<Profiler>(profiler, this);
-            binder.Bind(nameof(profiler.Overview), UpdateAnalysis);
+            binder.Bind(nameof(profiler.OverviewUpdated), () => Dirty = true);
         }
 
         private double Convert(double x)
@@ -75,16 +75,24 @@ namespace Inventors.ECP.Tester.Profiling
                     plot.XLabel("Time [us]");
                     plot.Title("Task Overview");
                     plot.Axis(x1: 0, x2: globalMax.Max() * 1.05);
-
-                    Dirty = true;
                 }
             }
         }
 
         public void RefreshDisplay()
         {
-            plot.Resize(width: pictureBox.Width, height: pictureBox.Height);
-            pictureBox.Image = plot.GetBitmap();
+            if (Active)
+            {
+                if (profiler.OverviewUpdated)
+                {
+                    profiler.UpdateOverview();
+                    UpdateAnalysis();
+                }
+
+                plot.Resize(width: pictureBox.Width, height: pictureBox.Height);
+                pictureBox.Image = plot.GetBitmap();
+            }
+
             Dirty = false;
         }
     }

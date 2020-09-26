@@ -33,8 +33,8 @@ namespace Inventors.ECP.Tester.Profiling
             Dock = DockStyle.Fill;
             this.profiler = profiler;
             binder = new PropertyBinder<Profiler>(profiler, this);
-            binder.Bind(nameof(profiler.TaskProfile), UpdateAnalysis);
-            binder.Bind(nameof(profiler.ActiveProfile), UpdateAnalysis);
+            binder.Bind(nameof(profiler.TaskUpdated), () => Dirty = true);
+            binder.Bind(nameof(profiler.ActiveProfile), () => Dirty = true);
             binder.Bind(nameof(profiler.AvailableProfiles), UpdateAvailableProfiles);
 
             eventsOffMenuItem.Enabled = eventsOnMenuItem.Checked = true;
@@ -147,17 +147,24 @@ namespace Inventors.ECP.Tester.Profiling
                     plot.YLabel("Execution Time [us]");
                     plot.Frame(top: false, right: false);
                     plot.Legend(enableLegend: true, location: legendLocation.lowerLeft);
-
-                    Dirty = true;
                 }
             }
         }
 
         public void RefreshDisplay()
         {
-            plot.Resize(width: pictureBox.Width, height: pictureBox.Height);
-            pictureBox.Image = plot.GetBitmap();
-            Dirty = false;
+            if (Active)
+            {
+                if (profiler.TaskUpdated)
+                {
+                    profiler.UpdateTaskProfile();
+                    UpdateAnalysis();
+                }
+
+                plot.Resize(width: pictureBox.Width, height: pictureBox.Height);
+                pictureBox.Image = plot.GetBitmap();
+                Dirty = false;
+            }
         }
 
         private void EventsOnMenuItem_Click(object sender, EventArgs e)
