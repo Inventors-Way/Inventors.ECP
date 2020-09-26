@@ -10,12 +10,12 @@
     <ROW Property="ARPCOMMENTS" Value="This installer database contains the logic and data required to install [|ProductName]." ValueLocId="*"/>
     <ROW Property="ARPHELPLINK" Value="https://github.com/Inventors-Way/ITLS-ECP"/>
     <ROW Property="ARPNOREPAIR" MultiBuildValue="DefaultBuild:1"/>
-    <ROW Property="ARPPRODUCTICON" Value="spanner.exe" Type="8"/>
+    <ROW Property="ARPPRODUCTICON" Value="icons8_usb_on_96_k8q_icon.exe" Type="8"/>
     <ROW Property="Manufacturer" Value="Inventors Way"/>
-    <ROW Property="ProductCode" Value="1033:{8E6EF4CA-C62B-4218-A5B6-8228D0D85B6D} " Type="16"/>
+    <ROW Property="ProductCode" Value="1033:{D2D82E6B-405E-41A7-9377-52923D28CF8D} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="ECP Tester"/>
-    <ROW Property="ProductVersion" Value="1.5.5" Type="32"/>
+    <ROW Property="ProductVersion" Value="1.6.0" Type="32"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND;AI_SETUPEXEPATH;SETUPEXEDIR"/>
     <ROW Property="UpgradeCode" Value="{7AF47BB0-E218-41DD-B835-61EC033F35ED}"/>
     <ROW Property="WindowsType9X" MultiBuildValue="DefaultBuild:Windows 9x/ME" ValueLocId="-"/>
@@ -37,8 +37,11 @@
     <ROW Component="AI_ExePath" ComponentId="{4BA90B5E-E11F-4031-A4BD-0B35534DBF2B}" Directory_="APPDIR" Attributes="4" KeyPath="AI_ExePath"/>
     <ROW Component="APPDIR" ComponentId="{04FDEAF2-9F48-402B-8084-66DE0D08F821}" Directory_="APPDIR" Attributes="0"/>
     <ROW Component="Inventors.ECP.dll" ComponentId="{B62BD3A2-B748-461A-A1E3-65190BA61C8D}" Directory_="APPDIR" Attributes="0" KeyPath="Inventors.ECP.dll"/>
+    <ROW Component="Newtonsoft.Json.dll" ComponentId="{239BA38A-FA2D-4C39-93B8-1E9D98381CF7}" Directory_="APPDIR" Attributes="0" KeyPath="Newtonsoft.Json.dll"/>
     <ROW Component="ProductInformation" ComponentId="{5363DE25-DBDD-4F8F-BA55-B904FFBDA7D6}" Directory_="APPDIR" Attributes="4" KeyPath="Version"/>
     <ROW Component="SHORTCUTDIR" ComponentId="{6EE2CC2D-6FB3-4365-A77E-3DEA4743196E}" Directory_="SHORTCUTDIR" Attributes="0"/>
+    <ROW Component="ScottPlot.dll" ComponentId="{20900D97-0D0D-4B25-8B7D-968E9C835731}" Directory_="APPDIR" Attributes="0" KeyPath="ScottPlot.dll"/>
+    <ROW Component="System.Drawing.Common.dll" ComponentId="{012A61DF-E0A5-4A4A-9552-C7E9E9E26DC0}" Directory_="APPDIR" Attributes="0" KeyPath="System.Drawing.Common.dll"/>
     <ROW Component="System.IO.Ports.dll" ComponentId="{F0B9B790-9526-4683-B6F6-E84A09C7F246}" Directory_="APPDIR" Attributes="0" KeyPath="System.IO.Ports.dll"/>
     <ROW Component="ecp_tester.exe" ComponentId="{43F93379-F8D3-4D99-8B0C-948FB0027A5C}" Directory_="APPDIR" Attributes="0" KeyPath="ecp_tester.exe"/>
     <ROW Component="ecp_tester.exe.config" ComponentId="{3E89CE5D-159A-4185-9897-8BCD1AB0D9F8}" Directory_="APPDIR" Attributes="0" KeyPath="ecp_tester.exe.config" Type="0"/>
@@ -55,6 +58,9 @@
     <ROW File="Inventors.ECP.pdb" Component_="Inventors.ECP.dll" FileName="INVENT~1.PDB|Inventors.ECP.pdb" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Debug\Inventors.ECP.pdb" SelfReg="false"/>
     <ROW File="System.IO.Ports.dll" Component_="System.IO.Ports.dll" FileName="SYSTEM~1.DLL|System.IO.Ports.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Debug\System.IO.Ports.dll" SelfReg="false"/>
     <ROW File="System.IO.Ports.xml" Component_="ecp_tester.exe.config" FileName="SYSTEM~1.XML|System.IO.Ports.xml" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Debug\System.IO.Ports.xml" SelfReg="false"/>
+    <ROW File="Newtonsoft.Json.dll" Component_="Newtonsoft.Json.dll" FileName="NEWTON~1.DLL|Newtonsoft.Json.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Debug\Newtonsoft.Json.dll" SelfReg="false"/>
+    <ROW File="ScottPlot.dll" Component_="ScottPlot.dll" FileName="SCOTTP~1.DLL|ScottPlot.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Debug\ScottPlot.dll" SelfReg="false"/>
+    <ROW File="System.Drawing.Common.dll" Component_="System.Drawing.Common.dll" FileName="SYSTEM~2.DLL|System.Drawing.Common.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Debug\System.Drawing.Common.dll" SelfReg="false"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.BootstrOptComponent">
     <ROW BootstrOptKey="GlobalOptions" DownloadFolder="[AppDataFolder][|Manufacturer]\[|ProductName]\prerequisites" Options="2"/>
@@ -171,9 +177,12 @@
     <ROW Feature_="MainFeature" Component_="Inventors.ECP.dll"/>
     <ROW Feature_="MainFeature" Component_="System.IO.Ports.dll"/>
     <ROW Feature_="MainFeature" Component_="SHORTCUTDIR"/>
+    <ROW Feature_="MainFeature" Component_="Newtonsoft.Json.dll"/>
+    <ROW Feature_="MainFeature" Component_="ScottPlot.dll"/>
+    <ROW Feature_="MainFeature" Component_="System.Drawing.Common.dll"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiIconsComponent">
-    <ROW Name="spanner.exe" SourcePath="Inventors.ECP.Tester\216410 - spanner.ico" Index="0"/>
+    <ROW Name="icons8_usb_on_96_k8q_icon.exe" SourcePath="Inventors.ECP.Tester\icons\icons8_usb_on_96_k8q_icon.ico" Index="0"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiInstExSeqComponent">
     <ROW Action="AI_DOWNGRADE" Condition="AI_NEWERPRODUCTFOUND AND (UILevel &lt;&gt; 5)" Sequence="210"/>
@@ -225,8 +234,8 @@
     <ROW Registry="Version" Root="-1" Key="Software\[Manufacturer]\[ProductName]" Name="Version" Value="[ProductVersion]" Component_="ProductInformation"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiShortsComponent">
-    <ROW Shortcut="ECPTester" Directory_="SHORTCUTDIR" Name="ECPTES~1|ECP Tester" Component_="ecp_tester.exe" Target="[#ecp_tester.exe]" Hotkey="0" Icon_="spanner.exe" IconIndex="0" ShowCmd="1" WkDir="APPDIR"/>
-    <ROW Shortcut="ECPTester_1" Directory_="DesktopFolder" Name="ECPTES~1|ECP Tester" Component_="ecp_tester.exe" Target="[#ecp_tester.exe]" Hotkey="0" Icon_="spanner.exe" IconIndex="0" ShowCmd="1" WkDir="APPDIR"/>
+    <ROW Shortcut="ECPTester" Directory_="SHORTCUTDIR" Name="ECPTES~1|ECP Tester" Component_="ecp_tester.exe" Target="[#ecp_tester.exe]" Description="Test program for ECP Devices" Hotkey="0" Icon_="icons8_usb_on_96_k8q_icon.exe" IconIndex="0" ShowCmd="1" WkDir="APPDIR"/>
+    <ROW Shortcut="ECPTester_1" Directory_="DesktopFolder" Name="ECPTES~1|ECP Tester" Component_="ecp_tester.exe" Target="[#ecp_tester.exe]" Hotkey="0" Icon_="icons8_usb_on_96_k8q_icon.exe" IconIndex="0" ShowCmd="1" WkDir="APPDIR"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiThemeComponent">
     <ATTRIBUTE name="UsedTheme" value="classic"/>
