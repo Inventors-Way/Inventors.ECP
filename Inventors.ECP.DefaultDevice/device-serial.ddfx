@@ -2,6 +2,6 @@
 <device assembly="Inventors.ECP.DefaultDevice" 
         factory="Inventors.ECP.DefaultDevice.DefaultSerialDevice" 
         baudrate="115200" 
-        profiling="true"
+        profiling="false"
         number-of-trials="100"
         test-delay="0" />

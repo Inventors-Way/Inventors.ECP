@@ -1,4 +1,5 @@
 ﻿using Inventors.ECP.Functions;
+using Inventors.ECP.Profiling;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -23,6 +24,7 @@ namespace Inventors.ECP.Tester.Profiling
             analysisMenu.Enabled = false;
             timeMenu.Enabled = false;
             fileMenu.Enabled = false;
+            clearProfilerToolStripMenuItem.Checked = false;
         }
 
         public void SetDevice(Device device)
@@ -37,6 +39,7 @@ namespace Inventors.ECP.Tester.Profiling
             analysisMenu.Enabled = true;
             timeMenu.Enabled = true;
             fileMenu.Enabled = true;
+            clearProfilerToolStripMenuItem.Checked = false;
         }
 
         private void CreateAnalyses()
@@ -153,6 +156,19 @@ namespace Inventors.ECP.Tester.Profiling
                 TimeSpan300sMenuItem.Checked = device.Profiler.TimeSpan == 300;
                 TimeSpan600sMenuItem.Checked = device.Profiler.TimeSpan == 600;
                 TimeSpanOffMenuItem.Checked = device.Profiler.TimeSpan == Double.NaN;
+            }
+        }
+
+        private void CloseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OnProfilerClosed?.Invoke(this, false);
+        }
+
+        private void ClearProfilerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (device is object)
+            {
+                device.Profiler.Reset();
             }
         }
     }

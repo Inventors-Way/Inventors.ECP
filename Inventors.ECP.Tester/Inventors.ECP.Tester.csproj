@@ -48,7 +48,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>216410 - spanner.ico</ApplicationIcon>
+    <ApplicationIcon>icons8_usb_on_96_k8q_icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ScottPlot, Version=4.0.40.0, Culture=neutral, PublicKeyToken=86698dc10387c39e, processorArchitecture=MSIL">
@@ -187,6 +187,8 @@
     <Content Include="about.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="icons8_usb_on_96_k8q_icon.ico" />
+    <None Include="icons\icons8-graph-32.png" />
     <None Include="icons\216173 - device phone.ico" />
     <None Include="icons\216190 - export.ico" />
   </ItemGroup>
