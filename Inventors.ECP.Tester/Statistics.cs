@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Inventors.ECP.Communication
+namespace Inventors.ECP.Tester
 {
     public abstract class Statistics
     {
