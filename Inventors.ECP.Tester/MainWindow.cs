@@ -255,6 +255,24 @@ namespace Inventors.ECP.Tester
             }
         }
 
+        private void RunScriptToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var dialog = new OpenFileDialog()
+            {
+                CheckFileExists = true,
+                Title = "Open Script",
+                DefaultExt = "xml",
+                Filter = "Script Files (*.xml)|*.xml"
+            };
+
+            if (dialog.ShowDialog(this) == DialogResult.OK)
+            {
+                var content = File.ReadAllText(dialog.FileName);
+
+                MessageBox.Show(content);
+            }
+        }
+
         private void PortMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             if (device is object)
@@ -387,6 +405,7 @@ namespace Inventors.ECP.Tester
                     portMenuItem.Enabled = true;
                     testToolStripMenuItem.Enabled = false;
                     trialsToolStripMenuItem.Enabled = true;
+                    runScriptToolStripMenuItem.Enabled = false;
                     break;
                 case AppState.APP_STATE_INITIALIZED:
                     functionList.Enabled = true;
@@ -396,6 +415,7 @@ namespace Inventors.ECP.Tester
                     portMenuItem.Enabled = true;
                     testToolStripMenuItem.Enabled = false;
                     trialsToolStripMenuItem.Enabled = true;
+                    runScriptToolStripMenuItem.Enabled = false;
                     break;
                 case AppState.APP_STATE_CONNECTED:
                     functionList.Enabled = true;
@@ -405,6 +425,7 @@ namespace Inventors.ECP.Tester
                     portMenuItem.Enabled = false;
                     testToolStripMenuItem.Enabled = true;
                     trialsToolStripMenuItem.Enabled = true;
+                    runScriptToolStripMenuItem.Enabled = true;
                     break;
                 case AppState.APP_STATE_ACTIVE:
                     functionList.Enabled = false;
@@ -414,6 +435,7 @@ namespace Inventors.ECP.Tester
                     portMenuItem.Enabled = false;
                     testToolStripMenuItem.Enabled = false;
                     trialsToolStripMenuItem.Enabled = false;
+                    runScriptToolStripMenuItem.Enabled = false;
                     break;
             }
         }
@@ -628,6 +650,5 @@ namespace Inventors.ECP.Tester
             Log.Level = level;
             Settings.Level = level;
         }
-
     }
 }
