@@ -223,7 +223,7 @@ namespace Inventors.ECP
 
         public void InsertString(int position, int maxSize, String value)
         {
-            System.Text.ASCIIEncoding encoding = new System.Text.ASCIIEncoding();
+            ASCIIEncoding encoding = new ASCIIEncoding();
             var bytes = encoding.GetBytes(value);
             VerifyPosition(data, position, maxSize);
 
@@ -278,10 +278,12 @@ namespace Inventors.ECP
             for (int i = 0; i < size; ++i)
             {
                 if (data[position + i] != 0)
+                {
                     bytes.Add(data[position + i]);
+                }
             }
 
-            return System.Text.Encoding.ASCII.GetString(bytes.ToArray());
+            return Encoding.ASCII.GetString(bytes.ToArray());
         }
 
         private void Serialize(byte[] dest, int position, byte[] bytes)
@@ -320,7 +322,9 @@ namespace Inventors.ECP
         private static void VerifyPosition(byte[] data, int position, int size)
         {
             if (!ValidPosition(data, position, size))
+            {
                 throw new ArgumentOutOfRangeException(nameof(position));
+            }
         }
 
         private static bool ValidPosition(byte[] data, int position, int size)
