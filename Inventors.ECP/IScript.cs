@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Inventors.ECP
 {
-    public interface IMessageScript
+    public interface IScript
     {
         IList<DeviceFunction> Functions { get; }
     }

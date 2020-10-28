@@ -24,7 +24,7 @@ namespace Inventors.ECP.DefaultDevice
             Master.Add(new TimingMessage());
         }
 
-        public override IMessageScript CreateScript(string content) => content.ToObject<DefaultScript>();
+        public override IScript CreateScript(string content) => content.ToObject<DefaultScript>();
 
         public void Accept(TimingViolationMessage msg)
         {

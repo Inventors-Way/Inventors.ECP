@@ -44,6 +44,8 @@ namespace Inventors.ECP.Functions
             }
         }
 
+        public override string ReportResponse() => $"Count: {Count}";
+
         public override string ToString()
         {
             return "[0x02] Ping";

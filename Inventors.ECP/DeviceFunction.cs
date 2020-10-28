@@ -130,6 +130,12 @@ namespace Inventors.ECP
 
         public abstract int Dispatch(dynamic listener);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public abstract string ReportResponse();
+
         [XmlIgnore]
         [Category("Statistics")]
         [Description("The time it took to transmit the function and get a response from the slave")]

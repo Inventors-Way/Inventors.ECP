@@ -10,13 +10,14 @@ namespace Inventors.ECP.DefaultDevice
 {
     [XmlRoot("script")]
     public class DefaultScript :
-        IMessageScript
+        IScript
     {
         [XmlElement("identification", type: typeof(DeviceIdentification))]
         [XmlElement("endianness", type: typeof(GetEndianness))]
         [XmlElement("ping", type: typeof(Ping))]
         public List<DeviceFunction> Elements { get; set; } = new List<DeviceFunction>();
 
+        [XmlIgnore]
         public IList<DeviceFunction> Functions => Elements.AsReadOnly();
     }
 }

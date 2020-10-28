@@ -21,7 +21,7 @@ namespace Inventors.ECP.DefaultDevice
             FunctionList.Add(new GetEndianness());
         }
 
-        public override IMessageScript CreateScript(string content) => content.ToObject<DefaultScript>();
+        public override IScript CreateScript(string content) => content.ToObject<DefaultScript>();
 
         public override bool IsCompatible(DeviceFunction identification)
         {

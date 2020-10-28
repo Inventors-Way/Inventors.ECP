@@ -136,7 +136,7 @@ namespace Inventors.ECP
         /// </summary>
         /// <param name="content"></param>
         /// <returns></returns>
-        public abstract IMessageScript CreateScript(string content);
+        public abstract IScript CreateScript(string content);
 
         /// <summary>
         /// Ping the connected device.

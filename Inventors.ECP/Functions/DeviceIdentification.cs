@@ -200,6 +200,19 @@ namespace Inventors.ECP.Functions
             }
         }
 
+        public override string ReportResponse()
+        {
+            var retValue = new StringBuilder();
+
+            retValue.AppendLine($"Manufactuer   : {ManufactureID}:{Manufacture}");
+            retValue.AppendLine($"Device        : {DeviceID}:{Device}");
+            retValue.AppendLine($"Serial Number : {SerialNumber}");
+            retValue.AppendLine($"Firmware      : {Version}");
+            retValue.Append($"Checksum      : {Checksum}");
+
+            return retValue.ToString();
+        }
+
         public override string ToString()
         {
             return "[0x01] Device Identification";

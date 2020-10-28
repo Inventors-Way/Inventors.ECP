@@ -32,11 +32,14 @@ namespace Inventors.ECP.Tester
             APP_STATE_ACTIVE
         }
 
+        private delegate void InvokeDelegate();
+
         private Device device = null;
         private Location selectedDevice = null;
         private AppState state = AppState.APP_STATE_UNINITIALIZED;
         private readonly ProfilerWindow profilerWindow;
         private readonly CommTester commTester;
+        private ScriptRunner scriptRunner = null;
 
         public MainWindow()
         {
@@ -120,6 +123,8 @@ namespace Inventors.ECP.Tester
                 var loader = DeviceLoader.Load(fileName);
                 Log.Status("Device: {0}", loader.AssemblyName);
                 device = loader.Create();
+                scriptRunner = new ScriptRunner(device);
+                scriptRunner.Completed += OnScriptCompleted;
 
                 device.Profiler.Enabled = loader.Profiling;
                 profilerWindow.SetDevice(device);
@@ -142,6 +147,18 @@ namespace Inventors.ECP.Tester
                 UpdateAppStates(AppState.APP_STATE_UNINITIALIZED);
                 Log.Error(e.Message);
                 MessageBox.Show(e.Message, "Error loading device");
+            }
+        }
+
+        private void OnScriptCompleted(object sender, bool status)
+        {
+            if (InvokeRequired)
+            {
+                BeginInvoke(new InvokeDelegate(() => UpdateAppStates(AppState.APP_STATE_CONNECTED)));
+            }
+            else
+            {
+                UpdateAppStates(AppState.APP_STATE_CONNECTED);
             }
         }
 
@@ -267,9 +284,17 @@ namespace Inventors.ECP.Tester
 
             if (dialog.ShowDialog(this) == DialogResult.OK)
             {
-                var content = File.ReadAllText(dialog.FileName);
+                Log.Status($"EXECUTING SCRIPT [ {dialog.FileName} ]");
 
-                MessageBox.Show(content);
+                try
+                {
+                    var script = device.CreateScript(File.ReadAllText(dialog.FileName));
+                    scriptRunner.Run(script);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error($"Script error: {ex.Message}");
+                }
             }
         }
 

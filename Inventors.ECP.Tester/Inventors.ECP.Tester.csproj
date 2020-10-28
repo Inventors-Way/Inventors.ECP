@@ -115,6 +115,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resource.resx</DependentUpon>
     </Compile>
+    <Compile Include="ScriptRunner.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Statistics.cs" />
     <Compile Include="TrialsDialog.cs">
