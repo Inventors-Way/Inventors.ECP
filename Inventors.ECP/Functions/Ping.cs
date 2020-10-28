@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Inventors.ECP.Functions
 {
@@ -28,6 +29,7 @@ namespace Inventors.ECP.Functions
             return listener.Accept(this);
         }
 
+        [XmlIgnore]
         [Category("Ping")]
         [Description("Number of pings answered by the slave")]
         public UInt32 Count

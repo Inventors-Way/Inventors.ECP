@@ -24,4 +24,8 @@
     </None>
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xsd $(TargetPath) /type:Inventors.ECP.DefaultDevice.DefaultScript /out:$(ProjectDir)Schema&#xD;&#xA;move $(ProjectDir)Schema\schema0.xsd $(ProjectDir)Schema\script.xsd&#xD;&#xA;" />
+  </Target>
+
 </Project>

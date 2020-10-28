@@ -132,6 +132,13 @@ namespace Inventors.ECP
         public List<Location> GetLocationsDevices() => Master.GetLocations();
 
         /// <summary>
+        /// Create a new message script from a text string
+        /// </summary>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        public abstract IMessageScript CreateScript(string content);
+
+        /// <summary>
         /// Ping the connected device.
         /// </summary>
         /// <returns>the ping count of the connected the device</returns>

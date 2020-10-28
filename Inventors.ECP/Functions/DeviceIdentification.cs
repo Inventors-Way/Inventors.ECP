@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 using Inventors.ECP;
 using Inventors.ECP.Communication;
 
@@ -30,6 +31,7 @@ namespace Inventors.ECP.Functions
             return listener.Accept(this);
         }
 
+        [XmlIgnore]
         [Category("Manufacturer")]
         [Description("The identifier of the manufacturer")]
         public Manufacturer ManufactureID
@@ -44,6 +46,7 @@ namespace Inventors.ECP.Functions
             }
         }
 
+        [XmlIgnore]
         [Category("Manufacturer")]
         [Description("The name of the manufacturer")]
         public string Manufacture
@@ -58,6 +61,7 @@ namespace Inventors.ECP.Functions
             }
         }
 
+        [XmlIgnore]
         [Category("Device")]
         [Description("The identifier of the device")]
         public UInt16 DeviceID
@@ -72,6 +76,7 @@ namespace Inventors.ECP.Functions
             }
         }
 
+        [XmlIgnore]
         [Category("Device")]
         [Description("The name of the device")]
         public string Device
@@ -87,6 +92,7 @@ namespace Inventors.ECP.Functions
         }
 
 
+        [XmlIgnore]
         [Category("Firmware")]
         [Description("Major Version")]
         public byte MajorVersion
@@ -101,6 +107,7 @@ namespace Inventors.ECP.Functions
             }
         }
 
+        [XmlIgnore]
         [Category("Firmware")]
         [Description("Major Version")]
         public byte MinorVersion
@@ -115,6 +122,7 @@ namespace Inventors.ECP.Functions
             }
         }
 
+        [XmlIgnore]
         [Category("Firmware")]
         [Description("Patch Version")]
         public byte PatchVersion
@@ -129,6 +137,7 @@ namespace Inventors.ECP.Functions
             }
         }
 
+        [XmlIgnore]
         [Category("Firmware")]
         [Description("Engineering Version")]
         public byte EngineeringVersion
@@ -143,6 +152,7 @@ namespace Inventors.ECP.Functions
             }
         }
 
+        [XmlIgnore]
         [Category("Firmware")]
         [Description("Version")]
         public string Version
@@ -160,6 +170,7 @@ namespace Inventors.ECP.Functions
             }
         }
 
+        [XmlIgnore]
         [Category("Device")]
         [Description("The serial number of device that is connected")]
         public UInt32 SerialNumber
@@ -174,6 +185,7 @@ namespace Inventors.ECP.Functions
             }
         }
 
+        [XmlIgnore]
         [Category("Firmware")]
         [Description("The checksum number of device that is connected")]
         public UInt16 Checksum

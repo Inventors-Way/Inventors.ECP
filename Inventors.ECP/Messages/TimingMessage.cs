@@ -23,7 +23,6 @@ namespace Inventors.ECP.Messages
             {
                 throw new InvalidMessageException("TimingMessage is shorter than 16 bytes");
             }
-
         }
 
         public uint Time => Packet.GetUInt32(0);

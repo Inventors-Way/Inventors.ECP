@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="script" nillable="true" type="DefaultScript" />
+  <xs:complexType name="DefaultScript">
+    <xs:sequence>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element minOccurs="0" maxOccurs="1" name="identification" type="DeviceIdentification" />
+        <xs:element minOccurs="0" maxOccurs="1" name="endianness" type="GetEndianness" />
+        <xs:element minOccurs="0" maxOccurs="1" name="ping" type="Ping" />
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="DeviceIdentification">
+    <xs:complexContent mixed="false">
+      <xs:extension base="DeviceFunction" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="DeviceFunction" abstract="true" />
+  <xs:complexType name="Ping">
+    <xs:complexContent mixed="false">
+      <xs:extension base="DeviceFunction" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="GetEndianness">
+    <xs:complexContent mixed="false">
+      <xs:extension base="DeviceFunction" />
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>
