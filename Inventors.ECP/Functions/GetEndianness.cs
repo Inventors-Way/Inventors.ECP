@@ -29,9 +29,6 @@ namespace Inventors.ECP.Functions
 
         public override string ReportResponse() => $"Equal endianess: {EqualEndianness}";
 
-        public override string ToString()
-        {
-            return "[0x03] GetEndianness";
-        }
+        public override string ToString() => "[0x03] GetEndianness";
     }
 }
