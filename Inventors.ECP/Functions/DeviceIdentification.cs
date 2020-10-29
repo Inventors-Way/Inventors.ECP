@@ -21,29 +21,18 @@ namespace Inventors.ECP.Functions
         { 
         }
 
-        public override FunctionDispatcher CreateDispatcher()
-        {
-            return new FunctionDispatcher(CODE, () => new DeviceIdentification());
-        }
+        public override FunctionDispatcher CreateDispatcher() =>
+            new FunctionDispatcher(CODE, () => new DeviceIdentification());
 
-        public override int Dispatch(dynamic listener)
-        {
-            return listener.Accept(this);
-        }
+        public override int Dispatch(dynamic listener) => listener.Accept(this);
 
         [XmlIgnore]
         [Category("Manufacturer")]
         [Description("The identifier of the manufacturer")]
         public Manufacturer ManufactureID
         {
-            get
-            {
-                return (Manufacturer) Response.GetUInt32(0);
-            }
-            set
-            {
-                Response.InsertUInt32(0, (UInt32) value);
-            }
+            get => (Manufacturer) Response.GetUInt32(0);
+            set => Response.InsertUInt32(0, (UInt32) value);
         }
 
         [XmlIgnore]
@@ -51,14 +40,8 @@ namespace Inventors.ECP.Functions
         [Description("The name of the manufacturer")]
         public string Manufacture
         {
-            get
-            {
-                return Response.GetString(16, 24);
-            }
-            set
-            {
-                Response.InsertString(16, 24, value);
-            }
+            get => Response.GetString(16, 24);
+            set => Response.InsertString(16, 24, value);
         }
 
         [XmlIgnore]
@@ -66,14 +49,8 @@ namespace Inventors.ECP.Functions
         [Description("The identifier of the device")]
         public UInt16 DeviceID
         {
-            get
-            {
-                return Response.GetUInt16(4);
-            }
-            set
-            {
-                Response.InsertUInt16(4, value);
-            }
+            get => Response.GetUInt16(4);
+            set => Response.InsertUInt16(4, value);
         }
 
         [XmlIgnore]
@@ -81,14 +58,8 @@ namespace Inventors.ECP.Functions
         [Description("The name of the device")]
         public string Device
         {
-            get
-            {
-                return Response.GetString(40, 24);
-            }
-            set
-            {
-                Response.InsertString(40, 24, value);
-            }
+            get => Response.GetString(40, 24);
+            set => Response.InsertString(40, 24, value);
         }
 
 
@@ -97,14 +68,8 @@ namespace Inventors.ECP.Functions
         [Description("Major Version")]
         public byte MajorVersion
         {
-            get
-            {
-                return Response.GetByte(10);
-            }
-            set
-            {
-                Response.InsertByte(10, value);
-            }
+            get => Response.GetByte(10);
+            set => Response.InsertByte(10, value);
         }
 
         [XmlIgnore]
@@ -112,14 +77,8 @@ namespace Inventors.ECP.Functions
         [Description("Major Version")]
         public byte MinorVersion
         {
-            get
-            {
-                return Response.GetByte(11);
-            }
-            set
-            {
-                Response.InsertByte(11, value);
-            }
+            get => Response.GetByte(11);
+            set => Response.InsertByte(11, value);
         }
 
         [XmlIgnore]
@@ -127,14 +86,8 @@ namespace Inventors.ECP.Functions
         [Description("Patch Version")]
         public byte PatchVersion
         {
-            get
-            {
-                return Response.GetByte(12);
-            }
-            set
-            {
-                Response.InsertByte(12, value);
-            }
+            get => Response.GetByte(12);
+            set => Response.InsertByte(12, value);
         }
 
         [XmlIgnore]
@@ -142,47 +95,24 @@ namespace Inventors.ECP.Functions
         [Description("Engineering Version")]
         public byte EngineeringVersion
         {
-            get
-            {
-                return Response.GetByte(13);
-            }
-            set
-            {
-                Response.InsertByte(13, value);
-            }
+            get => Response.GetByte(13);
+            set => Response.InsertByte(13, value);
         }
 
         [XmlIgnore]
         [Category("Firmware")]
         [Description("Version")]
-        public string Version
-        {
-            get
-            {
-                if (Response != null)
-                {
-                    return EngineeringVersion == 0 ?
-                           String.Format(CultureInfo.CurrentCulture, "{0}.{1}.{2}", MajorVersion, MinorVersion, PatchVersion) :
-                           String.Format(CultureInfo.CurrentCulture, "{0}.{1}.{2}.r{3}", MajorVersion, MinorVersion, PatchVersion, EngineeringVersion);
-                }
-                else
-                    return "";
-            }
-        }
+        public string Version => EngineeringVersion == 0 ?
+                                 $"{MajorVersion}.{MinorVersion}.{PatchVersion}" :
+                                 $"{MajorVersion}.{MinorVersion}.{PatchVersion}.r{EngineeringVersion}";
 
         [XmlIgnore]
         [Category("Device")]
         [Description("The serial number of device that is connected")]
         public UInt32 SerialNumber
         {
-            get
-            {
-                return Response.GetUInt32(6);
-            }
-            set
-            {
-                Response.InsertUInt32(6, value);
-            }
+            get => Response.GetUInt32(6);
+            set => Response.InsertUInt32(6, value);
         }
 
         [XmlIgnore]
@@ -190,14 +120,8 @@ namespace Inventors.ECP.Functions
         [Description("The checksum number of device that is connected")]
         public UInt16 Checksum
         {
-            get
-            {
-                return Response.GetUInt16(14);
-            }
-            set
-            {
-                Response.InsertUInt16(14, value);
-            }
+            get => Response.GetUInt16(14);
+            set => Response.InsertUInt16(14, value);
         }
 
         public override string ReportResponse()
@@ -213,9 +137,6 @@ namespace Inventors.ECP.Functions
             return retValue.ToString();
         }
 
-        public override string ToString()
-        {
-            return "[0x01] Device Identification";
-        }
+        public override string ToString() => "[0x01] Device Identification";
     }
 }
