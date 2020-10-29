@@ -44,25 +44,13 @@ namespace Inventors.ECP
             Response = new Packet(code, responseLength);
         }
 
-        internal byte[] GetRequest()
-        {
-            return GetRequestPacket().ToArray();
-        }
+        internal byte[] GetRequest() => GetRequestPacket().ToArray();
 
-        internal byte[] GetResponse()
-        {
-            return GetResponsePacket().ToArray();
-        }
+        internal byte[] GetResponse() => GetResponsePacket().ToArray();
 
-        internal virtual Packet GetRequestPacket()
-        {
-            return Request;
-        }
+        internal virtual Packet GetRequestPacket() => Request;
 
-        internal virtual Packet GetResponsePacket()
-        {
-            return Response;
-        }
+        internal virtual Packet GetResponsePacket() => Response;
 
         internal void SetResponse(Packet packet)
         {
@@ -92,19 +80,13 @@ namespace Inventors.ECP
         /// Default response verification. Override this function if more than length verification is required.
         /// </summary>
         /// <returns>True if valid, otherwise false.</returns>
-        protected virtual bool IsResponseValid()
-        {
-            return Response.Length == ResponseLength;
-        }
+        protected virtual bool IsResponseValid() => Response.Length == ResponseLength;
 
         /// <summary>
         /// Default request verification. Override this function in a slave if more than length verification is required.
         /// </summary>
         /// <returns>True if valid, otherwise false.</returns>
-        protected virtual bool IsRequestValid()
-        {
-            return Request.Length == RequestLength;
-        }
+        protected virtual bool IsRequestValid() => Request.Length == RequestLength;
 
         /// <summary>
         /// Override this function to build the request packet (Request), when the function is executed.
@@ -131,9 +113,9 @@ namespace Inventors.ECP
         public abstract int Dispatch(dynamic listener);
 
         /// <summary>
-        /// 
+        /// This function is responsible for formatting a report of the response returned by the slave.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A formatted report of the response</returns>
         public abstract string ReportResponse();
 
         [XmlIgnore]
@@ -141,15 +123,14 @@ namespace Inventors.ECP
         [Description("The time it took to transmit the function and get a response from the slave")]
         public long TransmissionTime { get; internal set; } = 0;
 
-        protected Packet Request { get; set; } = null;
+        protected Packet Request { get; set; }
 
-        protected Packet Response { get; set; } = null;
+        protected Packet Response { get; set; }
 
-        private readonly byte functionCode = 0x00;
+        private readonly byte functionCode;
 
-        protected int ResponseLength { get; } = 0;
+        protected int ResponseLength { get; }
 
-        protected int RequestLength { get; } = 0;
-
+        protected int RequestLength { get; }
     }
 }
