@@ -43,11 +43,12 @@ namespace Inventors.ECP.Communication
         {
             lock (lockObject)
             {
-                if (port != null)
+                if (port is object)
                 {
                     Close();
                 }
-                else
+
+                if (port is null)
                 {
                     port = new SerialPort(Location.Address)
                     {
@@ -59,8 +60,8 @@ namespace Inventors.ECP.Communication
                         DtrEnable = ResetOnConnection,
                         ReadTimeout = 10
                     };
-
                 }
+
                 port.PortName = Location.Address;
                 port.BaudRate = BaudRate;
 
