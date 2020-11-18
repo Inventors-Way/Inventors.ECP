@@ -18,7 +18,6 @@ namespace Inventors.ECP.UnitTests
         public void Initialize() { }
 
         [AssemblyInitialize]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Required by MSTests")]
         public static void OnAssemblyInitialize(TestContext _) => Log.SetLogger(log);
     }
 }

@@ -75,9 +75,10 @@ namespace Inventors.ECP
         private void InitializeRead()
         {
             byte[] buffer = new byte[BlockLimit];
+
             void reader()
             {
-                if (port != null)
+                if (port is object)
                 {
                     if (port.IsOpen)
                     {
@@ -85,20 +86,29 @@ namespace Inventors.ECP
                         {
                             port.BaseStream.BeginRead(buffer, 0, buffer.Length, delegate (IAsyncResult ar)
                             {
-                                try
+                                if (port.IsOpen)
                                 {
-                                    int bytesRead = port.BaseStream.EndRead(ar);
-                                    byte[] received = new byte[bytesRead];
-                                    Buffer.BlockCopy(buffer, 0, received, 0, bytesRead);
-                                    Destuffer.Add(bytesRead, received);
-                                    BytesReceived += bytesRead;
-                                }
-                                catch { }
+                                    try
+                                    {
+                                        int bytesRead = port.BaseStream.EndRead(ar);
+                                        byte[] received = new byte[bytesRead];
+                                        Buffer.BlockCopy(buffer, 0, received, 0, bytesRead);
+                                        Destuffer.Add(bytesRead, received);
+                                        BytesReceived += bytesRead;
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        Log.Error(e.Message);
+                                    }
 
-                                reader();
+                                    reader();
+                                }
                             }, null);
                         }
-                        catch { }
+                        catch (Exception e)
+                        {
+                            Log.Error(e.Message);
+                        }
                     }
                 }
             }
