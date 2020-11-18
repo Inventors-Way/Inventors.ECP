@@ -1,5 +1,4 @@
-﻿using Inventors.ECP.Communication;
-using Inventors.ECP.Profiling.Analysis;
+﻿using Inventors.ECP.Profiling.Analysis;
 using Inventors.ECP.Utility;
 using System;
 using System.Collections.Generic;

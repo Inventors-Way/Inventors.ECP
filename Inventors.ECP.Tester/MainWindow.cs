@@ -16,7 +16,6 @@ using System.Threading;
 using System.IO;
 using System.Reflection;
 using Inventors.ECP.Profiling;
-using Inventors.ECP.Communication;
 using Inventors.ECP.Tester.Profiling;
 
 namespace Inventors.ECP.Tester
@@ -35,7 +34,7 @@ namespace Inventors.ECP.Tester
         private delegate void InvokeDelegate();
 
         private Device device = null;
-        private Location selectedDevice = null;
+        private string selectedDevice = null;
         private AppState state = AppState.APP_STATE_UNINITIALIZED;
         private readonly ProfilerWindow profilerWindow;
         private readonly CommTester commTester;
@@ -162,7 +161,7 @@ namespace Inventors.ECP.Tester
             }
         }
 
-        private bool CheckDevicesChanged(List<Location> locations)
+        private bool CheckDevicesChanged(List<string> locations)
         {
             if (locations.Count != portMenuItem.DropDownItems.Count)
                 return true;
@@ -171,7 +170,7 @@ namespace Inventors.ECP.Tester
             {
                 for (int n = 0; n < locations.Count; ++n)
                 {
-                    if (portMenuItem.DropDownItems[n].Tag is Location menuDevice)
+                    if (portMenuItem.DropDownItems[n].Tag is string menuDevice)
                     {
                         if (menuDevice.ToString() != locations[n].ToString())
                         {
@@ -188,7 +187,7 @@ namespace Inventors.ECP.Tester
             return false;
         }
 
-        private string CreatePortDescription(Location location, string description)
+        private string CreatePortDescription(string location, string description)
         {
             if (description is object)
             {
@@ -196,7 +195,7 @@ namespace Inventors.ECP.Tester
             }
             else
             {
-                return location.ToString();
+                return location;
             }
         }
 
@@ -215,7 +214,7 @@ namespace Inventors.ECP.Tester
                     for (int n = 0; n < devices.Count; ++n)
                     {
                         var location = devices[n];
-                        var menuName = CreatePortDescription(location, portInfo.GetDescription(location.Address));
+                        var menuName = CreatePortDescription(location, portInfo.GetDescription(location));
                         var item = new ToolStripMenuItem(menuName) 
                         { 
                             Tag = devices[n] 
@@ -304,7 +303,7 @@ namespace Inventors.ECP.Tester
             {
                 if (!device.IsOpen)
                 {
-                    if (e.ClickedItem.Tag is Location current)
+                    if (e.ClickedItem.Tag is string current)
                     {
                         Log.Debug("Port changed to: {0}", e.ClickedItem.Text);
                         device.Location = current;

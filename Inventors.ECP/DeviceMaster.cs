@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Inventors.ECP.Communication;
 using Inventors.ECP.Profiling;
 
 namespace Inventors.ECP
@@ -24,7 +23,7 @@ namespace Inventors.ECP
 
         public int Timeout { get; set; }
 
-        public Location Location
+        public string Location
         {
             get => connection.Location;
             set => connection.Location = value;
@@ -232,7 +231,7 @@ namespace Inventors.ECP
 
         private Dictionary<byte, MessageDispatcher> Dispatchers { get; } = new Dictionary<byte, MessageDispatcher>();
 
-        public List<Location> GetLocations() => connection.GetLocations();
+        public List<string> GetLocations() => connection.GetLocations();
 
         #region Dispose Pattern
         private bool disposedValue;

@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Inventors.ECP;
-using Inventors.ECP.Communication;
 
 namespace Inventors.ECP.UnitTests.TransportLayer
 {

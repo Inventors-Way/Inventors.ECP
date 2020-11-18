@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Inventors.ECP.Communication
+namespace Inventors.ECP
 {
     public class SerialPortLayer :
         CommunicationLayer,
@@ -50,7 +50,7 @@ namespace Inventors.ECP.Communication
 
                 if (port is null)
                 {
-                    port = new SerialPort(Location.Address)
+                    port = new SerialPort(Location)
                     {
                         BaudRate = BaudRate,
                         Parity = Parity.None,
@@ -62,7 +62,7 @@ namespace Inventors.ECP.Communication
                     };
                 }
 
-                port.PortName = Location.Address;
+                port.PortName = Location;
                 port.BaudRate = BaudRate;
 
                 Destuffer.Reset();
@@ -141,14 +141,13 @@ namespace Inventors.ECP.Communication
             }
         }
 
-        public override List<Location> GetLocations() =>
-            (from port in SerialPort.GetPortNames() select Location.Parse(port)).ToList();
+        public override List<string> GetLocations() => SerialPort.GetPortNames().ToList();
 
         public override bool IsOpen => port is object && port.IsOpen;
 
         public override bool IsConnected => IsOpen;
 
-        public override Location Location { get; set; }
+        public override string Location { get; set; }
 
         public override int BaudRate { get; set; }
 

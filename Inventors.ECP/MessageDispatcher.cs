@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Inventors.ECP.Communication
+namespace Inventors.ECP
 {
     public class MessageDispatcher
     {

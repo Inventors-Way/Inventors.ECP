@@ -7,7 +7,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Inventors.ECP.Communication
+namespace Inventors.ECP
 {
     public abstract class CommunicationLayer
     {
@@ -15,7 +15,7 @@ namespace Inventors.ECP.Communication
 
         public abstract int BaudRate { get; set; }
 
-        public abstract Location Location { get; set; }
+        public abstract string Location { get; set; }
 
         public bool ResetOnConnection { get; set; }
 
@@ -36,9 +36,9 @@ namespace Inventors.ECP.Communication
         /// 
         /// </summary>
         /// <returns>A list of device locations</returns>
-        public abstract List<Location> GetLocations();
+        public abstract List<string> GetLocations();
 
-        public CommunicationLayer SetLocation(Location location)
+        public CommunicationLayer SetLocation(string location)
         {
             Location = location;
             return this;

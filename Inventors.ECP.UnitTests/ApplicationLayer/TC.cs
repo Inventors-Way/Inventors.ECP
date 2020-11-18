@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Net;
 using System.Threading;
-using Inventors.ECP.Communication;
-using Inventors.ECP.Communication.Discovery;
 
 namespace Inventors.ECP.UnitTests.ApplicationLayer
 {
@@ -26,26 +24,16 @@ namespace Inventors.ECP.UnitTests.ApplicationLayer
             }
         }
 
-        public static DefaultTcpSlave Slave => Instance._slave;
-
-        public static DefaultTcpDevice Device => Instance._device;
+        public static DefaultSerialDevice Device => Instance._device;
 
         private TC()
         {
-            var location = Location.Parse("tcp://loopback:9000/4294967295.1/100");
-            _slave = new DefaultTcpSlave().SetLocation(location); 
-            _device = new DefaultTcpDevice(_slave.Beacon) { Location = _slave.Location };
-            _slave.Start();
-            Thread.Sleep(100);
-            _device.Connect();
+            _device = new DefaultSerialDevice() { Location = "COM14" };
         }
 
         private static TC _instance;
-        private readonly DefaultTcpSlave _slave = null;
-        private readonly DefaultTcpDevice _device = null;
-
-        #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
+        private bool disposedValue;
+        private readonly DefaultSerialDevice _device;
 
         protected virtual void Dispose(bool disposing)
         {
@@ -53,19 +41,30 @@ namespace Inventors.ECP.UnitTests.ApplicationLayer
             {
                 if (disposing)
                 {
-                    _slave.Stop();
-                    _device.Close();
+                    if (_device is object)
+                    {
+                        _device.Dispose();
+                    }
                 }
 
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
                 disposedValue = true;
             }
         }
 
-        // This code added to correctly implement the disposable pattern.
+        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        // ~TC()
+        // {
+        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        //     Dispose(disposing: false);
+        // }
+
         public void Dispose()
         {
-            Dispose(true);
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
-        #endregion
     }
 }

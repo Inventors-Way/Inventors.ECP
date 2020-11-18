@@ -13,9 +13,6 @@
     <None Update="device-serial.ddfx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="device-tcp.ddfx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="device.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

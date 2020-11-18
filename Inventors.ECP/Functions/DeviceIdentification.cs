@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Inventors.ECP;
-using Inventors.ECP.Communication;
 
 namespace Inventors.ECP.Functions
 {

@@ -1,5 +1,4 @@
-﻿using Inventors.ECP.Communication;
-using Inventors.ECP.Functions;
+﻿using Inventors.ECP.Functions;
 using Inventors.ECP.Messages;
 using Inventors.ECP.Profiling;
 using Inventors.ECP.Utility;
@@ -86,7 +85,7 @@ namespace Inventors.ECP
         #region Port
         [Browsable(false)]
         [XmlIgnore]
-        public Location Location
+        public string Location
         {
             get => Master.Location;
             set => Master.Location = NotifyIfChanged(Master.Location, value);
@@ -129,7 +128,7 @@ namespace Inventors.ECP
             Master.Add(new PrintfMessage());
         }
 
-        public List<Location> GetLocationsDevices() => Master.GetLocations();
+        public List<string> GetLocationsDevices() => Master.GetLocations();
 
         /// <summary>
         /// Create a new message script from a text string

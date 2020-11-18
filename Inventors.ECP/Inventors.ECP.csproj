@@ -20,7 +20,6 @@
     <AssemblyVersion>1.6.2.0</AssemblyVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="Communication\Tcp\" />
     <Folder Include="Functions\" />
   </ItemGroup>
 

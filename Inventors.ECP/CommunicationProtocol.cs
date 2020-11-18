@@ -6,7 +6,6 @@ namespace Inventors.ECP
 {
     public enum CommunicationProtocol
     {
-        SERIAL = 0,
-        NETWORK
+        SERIAL = 0
     }
 }
