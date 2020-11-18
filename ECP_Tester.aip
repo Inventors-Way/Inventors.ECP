@@ -12,10 +12,10 @@
     <ROW Property="ARPNOREPAIR" MultiBuildValue="DefaultBuild:1"/>
     <ROW Property="ARPPRODUCTICON" Value="icons8_usb_on_96_k8q_icon.exe" Type="8"/>
     <ROW Property="Manufacturer" Value="Inventors Way"/>
-    <ROW Property="ProductCode" Value="1033:{F322A2C8-EBCA-41A5-9534-802A738D59F3} " Type="16"/>
+    <ROW Property="ProductCode" Value="1033:{C2CC9543-4D51-46BE-8EB1-86FB9FCB0753} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="ECP Tester"/>
-    <ROW Property="ProductVersion" Value="1.6.3" Type="32"/>
+    <ROW Property="ProductVersion" Value="1.6.4" Type="32"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND;AI_SETUPEXEPATH;SETUPEXEDIR"/>
     <ROW Property="UpgradeCode" Value="{7AF47BB0-E218-41DD-B835-61EC033F35ED}"/>
     <ROW Property="WindowsType9X" MultiBuildValue="DefaultBuild:Windows 9x/ME" ValueLocId="-"/>

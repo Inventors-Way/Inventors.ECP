@@ -39,31 +39,28 @@ namespace Inventors.ECP
         #endregion
         private readonly object lockObject = new object();
 
+        public SerialPortLayer()
+        {
+            port = new SerialPort();
+        }
+
         protected override void DoOpen()
         {
             lock (lockObject)
             {
-                if (port is object)
+                if (port.IsOpen)
                 {
                     Close();
                 }
 
-                if (port is null)
-                {
-                    port = new SerialPort(Location)
-                    {
-                        BaudRate = BaudRate,
-                        Parity = Parity.None,
-                        StopBits = StopBits.One,
-                        DataBits = 8,
-                        Handshake = Handshake.None,
-                        DtrEnable = ResetOnConnection,
-                        ReadTimeout = 10
-                    };
-                }
-
                 port.PortName = Location;
                 port.BaudRate = BaudRate;
+                port.Parity = Parity.None;
+                port.StopBits = StopBits.One;
+                port.DataBits = 8;
+                port.Handshake = Handshake.None;
+                port.DtrEnable = ResetOnConnection;
+                port.ReadTimeout = 10;
 
                 Destuffer.Reset();
                 port.Open();
@@ -78,37 +75,34 @@ namespace Inventors.ECP
 
             void reader()
             {
-                if (port is object)
+                if (port.IsOpen)
                 {
-                    if (port.IsOpen)
+                    try
                     {
-                        try
+                        port.BaseStream.BeginRead(buffer, 0, buffer.Length, delegate (IAsyncResult ar)
                         {
-                            port.BaseStream.BeginRead(buffer, 0, buffer.Length, delegate (IAsyncResult ar)
+                            if (port.IsOpen)
                             {
-                                if (port.IsOpen)
+                                try
                                 {
-                                    try
-                                    {
-                                        int bytesRead = port.BaseStream.EndRead(ar);
-                                        byte[] received = new byte[bytesRead];
-                                        Buffer.BlockCopy(buffer, 0, received, 0, bytesRead);
-                                        Destuffer.Add(bytesRead, received);
-                                        BytesReceived += bytesRead;
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        Log.Error(e.Message);
-                                    }
-
-                                    reader();
+                                    int bytesRead = port.BaseStream.EndRead(ar);
+                                    byte[] received = new byte[bytesRead];
+                                    Buffer.BlockCopy(buffer, 0, received, 0, bytesRead);
+                                    Destuffer.Add(bytesRead, received);
+                                    BytesReceived += bytesRead;
                                 }
-                            }, null);
-                        }
-                        catch (Exception e)
-                        {
-                            Log.Error(e.Message);
-                        }
+                                catch (Exception e)
+                                {
+                                    Log.Error(e.Message);
+                                }
+
+                                reader();
+                            }
+                        }, null);
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error(e.Message);
                     }
                 }
             }
@@ -120,18 +114,9 @@ namespace Inventors.ECP
         {
             lock (lockObject)
             {
-                if (port is object)
+                if (port.IsOpen)
                 {
-                    if (port.IsOpen)
-                    {
-                        port.Close();
-                        port.Dispose();
-                        port = null;
-                    }
-                    else
-                    {
-                        port = null;
-                    }
+                    port.Close();
                 }
             }
         }
