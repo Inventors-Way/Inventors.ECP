@@ -13,21 +13,17 @@ namespace Inventors.ECP
         private List<MessageDispatcher> MessageDispatchers { get; } = new List<MessageDispatcher>();
         private List<FunctionDispatcher> FunctionDispatchers { get; } = new List<FunctionDispatcher>();
 
-        public dynamic MessageListener { get; set; } = null;
+        public dynamic MessageListener { get; set; } 
 
-        public dynamic FunctionListener { get; set; } = null;
+        public dynamic FunctionListener { get; set; }
 
         public DeviceSlave(CommunicationLayer layer)
         {
-            if (layer is object)
-            {
-                _connection = layer;
-                _connection.Destuffer.OnReceive += HandleIncommingFrame;
-            }
-            else
-            {
+            if (layer is null)
                 throw new ArgumentException(Resources.LAYER_OR_DEVICE_DATA_IS_NULL);
-            }
+
+            _connection = layer;
+            _connection.Destuffer.OnReceive += HandleIncommingFrame;
         }
 
         public void Open()

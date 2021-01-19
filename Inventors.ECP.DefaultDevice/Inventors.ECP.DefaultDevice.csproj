@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFrameworks>net48;netstandard2.1</TargetFrameworks>
     <Version>1.6.4</Version>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xsd $(TargetPath) /type:Inventors.ECP.DefaultDevice.DefaultScript /out:$(ProjectDir)Schema&#xD;&#xA;move $(ProjectDir)Schema\schema0.xsd $(ProjectDir)Schema\script.xsd&#xD;&#xA;" />
+    <Exec Command="REM xsd $(TargetPath) /type:Inventors.ECP.DefaultDevice.DefaultScript /out:$(ProjectDir)Schema&#xD;&#xA;REM move $(ProjectDir)Schema\schema0.xsd $(ProjectDir)Schema\script.xsd&#xD;&#xA;" />
   </Target>
 
 </Project>

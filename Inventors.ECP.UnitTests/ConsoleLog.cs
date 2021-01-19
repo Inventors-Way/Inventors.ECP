@@ -9,7 +9,7 @@ namespace Inventors.ECP.UnitTests
     public class ConsoleLog :
         ILogger
     {
-        public static ConsoleLog log = new ConsoleLog();
+        private readonly static ConsoleLog log = new ConsoleLog();
 
         public void Add(DateTime time, LogLevel level, string str) => Console.WriteLine($"[{level}: {str}");
 
