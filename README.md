@@ -1,2 +1,1 @@
-# ITLS-ECP
-The Embedded Communication Protocol (ECP)
+# Embedded Communication Protocol (ECP)
