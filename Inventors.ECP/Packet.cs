@@ -243,21 +243,23 @@ namespace Inventors.ECP
             return retValue;
         }
 
-        private static int DecodeLength(byte[] frame)
+        private int DecodeLength(byte[] frame)
         {
-            int retValue;
+            int retValue = 0;
 
-            if (frame[1] == (byte)LengthEncodingType.UInt32Encoding)
+            switch (LengthEncoding)
             {
-                retValue = (int)BitConverter.ToUInt32(frame, 2);
-            }
-            else if (frame[1] == (byte)LengthEncodingType.UInt16Encoding)
-            {
-                retValue = BitConverter.ToUInt16(frame, 2);
-            }
-            else
-            {
-                retValue = frame[2];
+                case LengthEncodingType.UInt8Encoding:
+                    retValue = frame[2];
+                    break;
+
+                case LengthEncodingType.UInt16Encoding:
+                    retValue = BitConverter.ToUInt16(frame, 2);
+                    break;
+
+                case LengthEncodingType.UInt32Encoding:
+                    retValue = (int)BitConverter.ToUInt32(frame, 2);
+                    break;
             }
 
             return retValue;

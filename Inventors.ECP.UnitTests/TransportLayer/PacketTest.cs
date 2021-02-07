@@ -73,6 +73,27 @@ namespace Inventors.ECP.UnitTests.TransportLayer
             Assert.ThrowsException<InvalidOperationException>(() => Send(destuffer, Frame.Encode(frame)));
         }
 
+        [TestMethod]
+        public void TC04_UInt16SizedPacket()
+        {
+            int length = 2000;
+            var destuffer = new Destuffer();
+            destuffer.OnReceive += Destruffer_OnReceive;
+            Packet packet = new Packet(0x10, length);
+            Assert.AreEqual(expected: length, actual: packet.Length);
+
+            for (int n = 0; n < length; ++n)
+            {
+                packet.InsertByte(n, (byte)n);
+            }
+
+            Send(destuffer, Frame.Encode(packet.ToArray()));
+
+            Assert.IsTrue(_received is object);
+            Assert.AreEqual<Byte>(expected: 0x10, actual: _received.Code);
+            Assert.AreEqual<int>(expected: length, actual: _received.Length);
+        }
+
         /*
         [TestMethod]
         public void Length16bit()
