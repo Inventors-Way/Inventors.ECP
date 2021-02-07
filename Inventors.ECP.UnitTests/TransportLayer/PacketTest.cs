@@ -59,13 +59,18 @@ namespace Inventors.ECP.UnitTests.TransportLayer
             Assert.AreEqual(expected: 4, actual: packet.Length);
             packet.InsertUInt32(0, 1);
 
-            Send(destuffer, Frame.Encode(packet.ToArray()));
+            var frame = packet.ToArray();
+            Send(destuffer, Frame.Encode(frame));
 
             Assert.IsTrue(_received is object);
             Assert.AreEqual<Byte>(expected: 0x10, actual: _received.Code);
             Assert.AreEqual<int>(expected: 4, actual: _received.Length);
             Assert.AreEqual<Byte>(expected: packet.Checksum, actual: _received.Checksum);
             Assert.AreEqual<UInt32>(expected: 1, actual: _received.GetUInt32(0));
+
+            frame[frame.Length - 1] = ++frame[frame.Length - 1];
+
+            Assert.ThrowsException<InvalidOperationException>(() => Send(destuffer, Frame.Encode(frame)));
         }
 
         /*
