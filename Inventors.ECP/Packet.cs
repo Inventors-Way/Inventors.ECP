@@ -82,6 +82,19 @@ namespace Inventors.ECP
             _addressEnabled = false;
             _checksumType = checksum;
             Extended = true;
+            data = new byte[length];
+        }
+
+        public Packet(byte code, int length, byte address)
+        {
+            _code = code;
+            _length = length;
+            _lengthEncoding = GetLengthEncoding(length);
+            _address = address;
+            _addressEnabled = true;
+            _checksumType = ChecksumAlgorithmType.None;
+            Extended = true;
+            data = new byte[length];
         }
 
         public Packet (byte code, int length, byte address, ChecksumAlgorithmType checksum)
@@ -93,6 +106,7 @@ namespace Inventors.ECP
             _addressEnabled = true;
             _checksumType = checksum;
             Extended = true;
+            data = new byte[length];
         }
 
         public Packet(byte[] frame)
@@ -113,6 +127,7 @@ namespace Inventors.ECP
                 _lengthEncoding = LengthEncodingType.UInt8Encoding;
                 _addressEnabled = false;
                 _checksumType = ChecksumAlgorithmType.None;
+                Extended = false;
             }
             else
             {
@@ -133,7 +148,7 @@ namespace Inventors.ECP
                 }
 
                 // Parse the checksum field
-                switch ((ChecksumAlgorithmType) (0xC0 & frame[1]))
+                switch ((ChecksumAlgorithmType) (0x0C & frame[1]))
                 {
                     case ChecksumAlgorithmType.None:
                         _checksumType = ChecksumAlgorithmType.None;
@@ -145,18 +160,24 @@ namespace Inventors.ECP
                         _checksumType = ChecksumAlgorithmType.CRC8CCIT;
                         break;
                     default:
-                        throw new InvalidOperationException($"Invalid checksum type [ {0xC0 & frame[1]} ]");
+                        throw new InvalidOperationException($"Invalid checksum type [ {0x0C & frame[1]} ]");
                 }
 
                 // Parse the address bit.
                 _addressEnabled = (0x10 & frame[1]) != 0;
+                Extended = true;
             }
 
             if (Extended)
             {
-                int offset = 0;
+                int offset = GetDataOffset();
                 _length = DecodeLength(frame);
                 data = new byte[_length];
+
+                if (AddressEnabled)
+                {
+                    _address = frame[2 + GetLengthSize()];
+                }
 
                 for (int i = 0; i < _length; ++i)
                 {
@@ -197,7 +218,7 @@ namespace Inventors.ECP
             else // Standard frame
             {
                 data = new byte[_length];
-                int offset = GetDataOffset();
+                int offset = 2;
 
                 for (int i = 0; i < _length; ++i)
                 {
@@ -292,7 +313,7 @@ namespace Inventors.ECP
 
         private void EncodeFormat(byte[] frame)
         {
-            int format = ((int)LengthEncoding) + ((int)ChecksumAlgorithm) + (AddressEnabled ? 0x10 : 0x00);
+            int format = ((int)LengthEncoding) + ((int)ChecksumAlgorithm) + (AddressEnabled ? 0x10 : 0x00) + 0x80;
             frame[1] = (byte)format;
         }
 
@@ -310,7 +331,7 @@ namespace Inventors.ECP
 
                 if (AddressEnabled)
                 {
-
+                    retValue[2 + GetLengthSize()] = _address;
                 }
 
                 for (int i = 0; i < _length; ++i)
