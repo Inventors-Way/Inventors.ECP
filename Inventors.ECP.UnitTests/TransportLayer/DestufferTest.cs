@@ -15,7 +15,7 @@ namespace Inventors.ECP.UnitTests.TransportLayer
             var destuffer = new Destuffer();
             destuffer.OnReceive += Destruffer_OnReceive;
             Packet packet = new Packet(0x10, 64);
-            Assert.AreEqual(expected: PacketType.LENGTH_UINT8_ENCODED, actual: packet.PacketType);
+            Assert.AreEqual(expected: 64, actual: packet.Length);
 
             packet.InsertByte(0, 20);
             packet.InsertInt16(1, -100);
@@ -41,7 +41,7 @@ namespace Inventors.ECP.UnitTests.TransportLayer
             destuffer.OnReceive += Destruffer_OnReceive;
             int numberOfEntries = 1000;
             Packet packet = new Packet(0x10, numberOfEntries * 4);
-            Assert.AreEqual(expected: PacketType.LENGTH_UINT16_ENCODED, actual: packet.PacketType);
+            Assert.AreEqual(expected: LengthEncodingType.UInt16Encoding, actual: packet.LengthEncoding);
 
             for (int n = 0; n < numberOfEntries; ++n)
             {
@@ -65,7 +65,7 @@ namespace Inventors.ECP.UnitTests.TransportLayer
             destuffer.OnReceive += Destruffer_OnReceive;
             int length = 2 * UInt16.MaxValue;
             Packet packet = new Packet(0x10, length);
-            Assert.AreEqual(expected: PacketType.LENGTH_UINT32_ENCODED, actual: packet.PacketType);
+            Assert.AreEqual(expected: LengthEncodingType.UInt32Encoding, actual: packet.LengthEncoding);
 
             for (int n = 0; n < length; ++n)
             {

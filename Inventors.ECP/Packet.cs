@@ -8,13 +8,20 @@ using Inventors.ECP.Utility;
 
 namespace Inventors.ECP
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores", Justification = "<Pending>")]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1028:Enum Storage should be Int32", Justification = "<Pending>")]
-    public enum PacketType : byte
+    public enum LengthEncodingType
     {
-        LENGTH_UINT8_ENCODED = 0,
-        LENGTH_UINT16_ENCODED = 0xFE,
-        LENGTH_UINT32_ENCODED = 0xFF
+        UInt8Encoding  = 0x00,
+        UInt16Encoding = 0x01,
+        UInt32Encoding = 0x02
+    }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1028:Enum Storage should be Int32", Justification = "<Pending>")]
+    public enum ChecksumAlgorithmType
+    { 
+        None     = 0x00,
+        Additive = 0x04,
+        CRC8CCIT = 0x08
     }
 
     public class Packet
@@ -26,163 +33,317 @@ namespace Inventors.ECP
 
         public int Length => _length;
 
+        public LengthEncodingType LengthEncoding => _lengthEncoding;
+
         public bool Empty => _length == 0;
 
-        public bool ReverseEndianity { get; set; } = false;
+        public byte Address => _address;
 
-        public PacketType PacketType => _type;
+        public bool AddressEnabled => _addressEnabled;
+
+        public byte Checksum => _checksum;
+
+        public ChecksumAlgorithmType ChecksumAlgorithm => _checksumType;
+
+        public bool ReverseEndianity { get; set; }
+
+        public bool Extended { get; }
 
         #endregion
 
         public Packet(byte code, int length)
         {
-            this._code = code;
-            this._length = length;
-            this._type = GetLengthEncoding(length);
+            _code = code;
+            _length = length;
+            _lengthEncoding = GetLengthEncoding(length);
+            _addressEnabled = false;
+            _checksumType = ChecksumAlgorithmType.None;
+
+            switch (_lengthEncoding)
+            {
+                case LengthEncodingType.UInt16Encoding:
+                case LengthEncodingType.UInt32Encoding:
+                    Extended = true;
+                    break;
+                case LengthEncodingType.UInt8Encoding:
+                    Extended = length >= 128;
+                    break;
+            }
+
             data = new byte[length];
         }
 
-        private static PacketType GetLengthEncoding(int length)
+        public Packet(byte code, int length, ChecksumAlgorithmType checksum)
         {
-            var retValue = PacketType.LENGTH_UINT8_ENCODED;
+            _code = code;
+            _length = length;
+            _lengthEncoding = GetLengthEncoding(length);
+            _address = 0;
+            _addressEnabled = false;
+            _checksumType = checksum;
+            Extended = true;
+        }
 
-            if (length > UInt16.MaxValue)
-            {
-                retValue = PacketType.LENGTH_UINT32_ENCODED;
-            }
-            else if (length >= 0xFE)
-            {
-                retValue = PacketType.LENGTH_UINT16_ENCODED;
-            }
-
-            return retValue;
+        public Packet (byte code, int length, byte address, ChecksumAlgorithmType checksum)
+        {
+            _code = code;
+            _length = length;
+            _lengthEncoding = GetLengthEncoding(length);
+            _address = address;
+            _addressEnabled = true;
+            _checksumType = checksum;
+            Extended = true;
         }
 
         public Packet(byte[] frame)
         {
             if (!(frame is object))
-            {
-                Log.Debug(Resources.FRAME_IS_NULL);
                 throw new ArgumentException(Resources.FRAME_IS_NULL);
-            }
 
             if (frame.Length < 2)
-            {
-                Log.Debug(Resources.INVALID_FRAME_TOO_SHORT);
                 throw new PacketFormatException(Resources.INVALID_FRAME_TOO_SHORT);
-            }
 
+            // Parsing the code byte
             _code = frame[0];
-            _length = DecodeLength(frame);
-            _type = GetLengthEncoding(_length);
-            int offset = GetOverhead(_type);
-            data = new byte[_length];
 
-            for (int i = 0; i < _length; ++i)
+            // Parsing the format byte
+            if (frame[1] < 128)
             {
-                data[i] = frame[i + offset];
-            }
-        }
-
-        private static int GetOverhead(PacketType type)
-        {
-            switch (type)
-            {
-                case PacketType.LENGTH_UINT8_ENCODED: return 2;
-                case PacketType.LENGTH_UINT16_ENCODED: return 4;
-                case PacketType.LENGTH_UINT32_ENCODED: return 6;
-                default:
-                    throw new InvalidOperationException(Resources.UNKNOWN_PACKET_ENCODING + (byte) type);
-            }
-        }
-
-        private int DecodeLength(byte[] frame)
-        {
-            int retValue;
-
-            if (frame[1] == (byte) PacketType.LENGTH_UINT32_ENCODED)
-            {
-                retValue = (int) BitConverter.ToUInt32(frame, 2);
-            }
-            else if (frame[1] == (byte) PacketType.LENGTH_UINT16_ENCODED)
-            {
-                retValue = (int)BitConverter.ToUInt16(frame, 2);
+                _length = frame[1];
+                _lengthEncoding = LengthEncodingType.UInt8Encoding;
+                _addressEnabled = false;
+                _checksumType = ChecksumAlgorithmType.None;
             }
             else
             {
-                retValue = (int)frame[1];
+                // Parse the length encoding
+                switch ((LengthEncodingType) (0x03 & frame[1]))
+                {
+                    case LengthEncodingType.UInt8Encoding:
+                        _lengthEncoding = LengthEncodingType.UInt8Encoding;
+                        break;
+                    case LengthEncodingType.UInt16Encoding:
+                        _lengthEncoding = LengthEncodingType.UInt16Encoding;
+                        break;
+                    case LengthEncodingType.UInt32Encoding:
+                        _lengthEncoding = LengthEncodingType.UInt32Encoding;
+                        break;
+                    default:
+                        throw new InvalidOperationException($"Invalid length encoding [ {0x03 & frame[1]} ]");
+                }
+
+                // Parse the checksum field
+                switch ((ChecksumAlgorithmType) (0xC0 & frame[1]))
+                {
+                    case ChecksumAlgorithmType.None:
+                        _checksumType = ChecksumAlgorithmType.None;
+                        break;
+                    case ChecksumAlgorithmType.Additive:
+                        _checksumType = ChecksumAlgorithmType.Additive;
+                        break;
+                    case ChecksumAlgorithmType.CRC8CCIT:
+                        _checksumType = ChecksumAlgorithmType.CRC8CCIT;
+                        break;
+                    default:
+                        throw new InvalidOperationException($"Invalid checksum type [ {0xC0 & frame[1]} ]");
+                }
+
+                // Parse the address bit.
+                _addressEnabled = (0x10 & frame[1]) != 0;
             }
 
-            if (retValue + GetOverhead(GetLengthEncoding(retValue)) != frame.Length)
+            if (Extended)
             {
-                var msg = String.Format(CultureInfo.CurrentCulture, 
-                                        Resources.INVALID_PACKET_LENGTH, 
-                                        retValue, 
-                                        frame.Length);
+                int offset = 0;
+                _length = DecodeLength(frame);
+                data = new byte[_length];
 
-                Log.Debug(msg);
-                throw new PacketFormatException(msg);
+                for (int i = 0; i < _length; ++i)
+                {
+                    data[i] = frame[i + offset];
+                }
+
+                // Validate checksum
+                switch (ChecksumAlgorithm)
+                {
+                    case ChecksumAlgorithmType.Additive:
+                        {
+                            _checksum = frame[GetChecksumOffset()];
+                            byte actualChecksum = AdditiveChecksum.Calculate(frame, frame.Length - 1);
+
+                            if (_checksum != actualChecksum)
+                            {
+                                throw new InvalidOperationException($"Checksum incorrect (expected: {_checksum}, actual: {actualChecksum})");
+                            }
+                        }
+                        break;
+
+                    case ChecksumAlgorithmType.CRC8CCIT:
+                        {
+                            _checksum = frame[GetChecksumOffset()];
+                            byte actualChecksum = CRC8CCITT.Calculate(frame, frame.Length - 1);
+
+                            if (_checksum != actualChecksum)
+                            {
+                                throw new InvalidOperationException($"Checksum incorrect (expected: {_checksum}, actual: {actualChecksum})");
+                            }
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+            else // Standard frame
+            {
+                data = new byte[_length];
+                int offset = GetDataOffset();
+
+                for (int i = 0; i < _length; ++i)
+                {
+                    data[i] = frame[i + offset];
+                }
+            }
+        }
+
+        private static LengthEncodingType GetLengthEncoding(int length)
+        {
+            var retValue = LengthEncodingType.UInt8Encoding;
+
+            if (length > UInt16.MaxValue)
+            {
+                retValue = LengthEncodingType.UInt32Encoding;
+            }
+            else if (length > Byte.MaxValue)
+            {
+                retValue = LengthEncodingType.UInt16Encoding;
             }
 
             return retValue;
         }
 
-        private void EncodeLength(byte[] frame)
+        private static int DecodeLength(byte[] frame)
         {
-            if (_type == PacketType.LENGTH_UINT8_ENCODED)
+            int retValue;
+
+            if (frame[1] == (byte)LengthEncodingType.UInt32Encoding)
             {
-                frame[1] = (byte)_length;
+                retValue = (int)BitConverter.ToUInt32(frame, 2);
             }
-            else if (_type == PacketType.LENGTH_UINT16_ENCODED)
+            else if (frame[1] == (byte)LengthEncodingType.UInt16Encoding)
             {
-                frame[1] = (byte)PacketType.LENGTH_UINT16_ENCODED;
-                Serialize(frame, 2, BitConverter.GetBytes((UInt16)_length));
-            }
-            else if (_type == PacketType.LENGTH_UINT32_ENCODED)
-            {
-                frame[1] = (byte) PacketType.LENGTH_UINT32_ENCODED;
-                Serialize(frame, 2, BitConverter.GetBytes((UInt32)_length));
+                retValue = BitConverter.ToUInt16(frame, 2);
             }
             else
             {
-                throw new InvalidOperationException(Resources.INVALID_PACKET_TYPE);
+                retValue = frame[2];
+            }
+
+            return retValue;
+        }
+
+        private int GetLengthSize()
+        {
+            switch (LengthEncoding)
+            {
+                case LengthEncodingType.UInt8Encoding: return 1;
+                case LengthEncodingType.UInt16Encoding: return 2;
+                case LengthEncodingType.UInt32Encoding: return 4;
+                default:
+                    throw new InvalidOperationException($"Unknown length encoding [ {(byte)LengthEncoding} ]");
             }
         }
 
-        public Packet CreateResponse(byte length)
+        private int GetDataOffset()
         {
-            return new Packet(_code, length);
+            int retValue = GetLengthSize() + 2;
+
+            if (AddressEnabled)
+            {
+                retValue += 1;
+            }
+
+            return retValue;
+        }
+
+        private int GetChecksumOffset() => GetDataOffset() + Length;
+
+        private int GetPacketSize() => ChecksumAlgorithm == ChecksumAlgorithmType.None ?  
+                                       GetChecksumOffset() + 1 : 
+                                       GetChecksumOffset();
+
+        private void EncodeLength(byte[] frame)
+        {
+            switch (LengthEncoding)
+            {
+                case LengthEncodingType.UInt8Encoding:
+                    frame[2] = (byte)_length;
+                    break;
+                case LengthEncodingType.UInt16Encoding:
+                    Serialize(frame, 2, BitConverter.GetBytes((UInt16)_length));
+                    break;
+                case LengthEncodingType.UInt32Encoding:
+                    Serialize(frame, 2, BitConverter.GetBytes((UInt32)_length));
+                    break;
+                default:
+                    throw new InvalidOperationException(Resources.INVALID_PACKET_TYPE);
+            }
+        }
+
+        private void EncodeFormat(byte[] frame)
+        {
+            int format = ((int)LengthEncoding) + ((int)ChecksumAlgorithm) + (AddressEnabled ? 0x10 : 0x00);
+            frame[1] = (byte)format;
         }
 
         public byte[] ToArray()
         {
-            int offset = GetOverhead(_type);
-            byte[] retValue = new byte[_length + offset];
-            retValue[0] = _code;
-            EncodeLength(retValue);
+            byte[] retValue;
 
-            for (int i = 0; i < _length; ++i)
+            if (Extended)
             {
-                retValue[i + offset] = data[i];
-            }
+                int offset = GetDataOffset();
+                retValue = new byte[GetPacketSize()];
+                retValue[0] = Code;
+                EncodeFormat(retValue);
+                EncodeLength(retValue);
 
-            return retValue;
-        }
-
-        public byte CalculateChecksum(int offset, int length)
-        {
-            byte retValue = 0;
-
-            if (offset + length <= Length)
-            {
-                byte[] input = new byte[length];
-
-                for (int n = 0; n < length; ++n)
+                if (AddressEnabled)
                 {
-                    input[n] = data[n + offset];
+
                 }
 
-                retValue = CRC8CCITT.Calculate(input);
+                for (int i = 0; i < _length; ++i)
+                {
+                    retValue[i + offset] = data[i];
+                }
+
+                switch (ChecksumAlgorithm)
+                {
+                    case ChecksumAlgorithmType.Additive:
+                        _checksum = AdditiveChecksum.Calculate(retValue, retValue.Length - 1);
+                        retValue[retValue.Length - 1] = _checksum;
+                        break;
+                    case ChecksumAlgorithmType.CRC8CCIT:
+                        _checksum = CRC8CCITT.Calculate(retValue, retValue.Length - 1);
+                        retValue[retValue.Length - 1] = _checksum;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+                int offset = 2;
+                retValue = new byte[_length + offset];
+                retValue[0] = Code;
+                retValue[1] = (byte)_length;
+
+                for (int i = 0; i < _length; ++i)
+                {
+                    retValue[i + offset] = data[i];
+                }
+
             }
 
             return retValue;
@@ -245,30 +406,11 @@ namespace Inventors.ECP
             return data[position];
         }
 
-        public sbyte GetSByte(int position)
-        {
-            return (sbyte) (data[position]);
-        }
-
-        public UInt16 GetUInt16(int position)
-        {
-            return BitConverter.ToUInt16(Deserialize(position, 2, data), 0);
-        }
-
-        public Int16 GetInt16(int position)
-        {
-            return BitConverter.ToInt16(Deserialize(position, 2, data), 0);
-        }
-
-        public UInt32 GetUInt32(int position)
-        {
-            return BitConverter.ToUInt32(Deserialize(position, 4, data), 0);
-        }
-
-        public Int32 GetInt32(int position)
-        {
-            return BitConverter.ToInt32(Deserialize(position, 4, data), 0);
-        }
+        public sbyte GetSByte(int position) => (sbyte) (data[position]);
+        public UInt16 GetUInt16(int position) => BitConverter.ToUInt16(Deserialize(position, 2, data), 0);
+        public Int16 GetInt16(int position) => BitConverter.ToInt16(Deserialize(position, 2, data), 0);
+        public UInt32 GetUInt32(int position) => BitConverter.ToUInt32(Deserialize(position, 4, data), 0);
+        public Int32 GetInt32(int position) => BitConverter.ToInt32(Deserialize(position, 4, data), 0);
 
         public String GetString(int position, int size)
         {
@@ -334,8 +476,12 @@ namespace Inventors.ECP
         }
 
         private readonly byte _code;
+        private byte _checksum;
+        private readonly ChecksumAlgorithmType _checksumType;
+        private readonly byte _address;
+        private readonly bool _addressEnabled;
         private readonly int _length;
-        private readonly PacketType _type;
+        private readonly LengthEncodingType _lengthEncoding;
         private readonly byte[] data;
     }
 }
