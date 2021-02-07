@@ -50,6 +50,24 @@ namespace Inventors.ECP.UnitTests.TransportLayer
             Assert.AreEqual<UInt32>(expected: 1, actual: _received.GetUInt32(0));
         }
 
+        [TestMethod]
+        public void TC03_CRC8CCITChecksum()
+        {
+            var destuffer = new Destuffer();
+            destuffer.OnReceive += Destruffer_OnReceive;
+            Packet packet = new Packet(0x10, 4, ChecksumAlgorithmType.CRC8CCIT);
+            Assert.AreEqual(expected: 4, actual: packet.Length);
+            packet.InsertUInt32(0, 1);
+
+            Send(destuffer, Frame.Encode(packet.ToArray()));
+
+            Assert.IsTrue(_received is object);
+            Assert.AreEqual<Byte>(expected: 0x10, actual: _received.Code);
+            Assert.AreEqual<int>(expected: 4, actual: _received.Length);
+            Assert.AreEqual<Byte>(expected: packet.Checksum, actual: _received.Checksum);
+            Assert.AreEqual<UInt32>(expected: 1, actual: _received.GetUInt32(0));
+        }
+
         /*
         [TestMethod]
         public void Length16bit()

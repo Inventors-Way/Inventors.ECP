@@ -290,8 +290,8 @@ namespace Inventors.ECP
         private int GetChecksumOffset() => GetDataOffset() + Length;
 
         private int GetPacketSize() => ChecksumAlgorithm == ChecksumAlgorithmType.None ?  
-                                       GetChecksumOffset() + 1 : 
-                                       GetChecksumOffset();
+                                       GetChecksumOffset() : 
+                                       GetChecksumOffset() + 1;
 
         private void EncodeLength(byte[] frame)
         {
