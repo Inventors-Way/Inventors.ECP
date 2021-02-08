@@ -37,7 +37,10 @@ namespace Inventors.ECP.UnitTests.TransportLayer
         {
             var destuffer = new Destuffer();
             destuffer.OnReceive += Destruffer_OnReceive;
-            Packet packet = new Packet(0x10, 4, 0x01);
+            Packet packet = new Packet(0x10, 4)
+            {
+                Address = 0x01
+            };
             Assert.AreEqual(expected: 4, actual: packet.Length);
             packet.InsertUInt32(0, 1);
 
@@ -92,6 +95,37 @@ namespace Inventors.ECP.UnitTests.TransportLayer
             Assert.IsTrue(_received is object);
             Assert.AreEqual<Byte>(expected: 0x10, actual: _received.Code);
             Assert.AreEqual<int>(expected: length, actual: _received.Length);
+
+            for (int n = 0; n < length; ++n)
+            {
+                Assert.AreEqual((byte)n, _received.GetByte(n));
+            }
+        }
+
+        [TestMethod]
+        public void TC05_UInt32SizedPacket()
+        {
+            int length = 120000;
+            var destuffer = new Destuffer();
+            destuffer.OnReceive += Destruffer_OnReceive;
+            Packet packet = new Packet(0x10, length);
+            Assert.AreEqual(expected: length, actual: packet.Length);
+
+            for (int n = 0; n < length; ++n)
+            {
+                packet.InsertByte(n, (byte)n);
+            }
+
+            Send(destuffer, Frame.Encode(packet.ToArray()));
+
+            Assert.IsTrue(_received is object);
+            Assert.AreEqual<Byte>(expected: 0x10, actual: _received.Code);
+            Assert.AreEqual<int>(expected: length, actual: _received.Length);
+
+            for (int n = 0; n < length; ++n)
+            {
+                Assert.AreEqual((byte)n, _received.GetByte(n));
+            }
         }
 
         /*

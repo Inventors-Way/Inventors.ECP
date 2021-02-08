@@ -111,10 +111,7 @@ namespace Inventors.ECP
             }
         }
 
-        private void NotifyListeners()
-        {
-            OnReceive?.Invoke(this, buffer.ToArray());
-        }
+        private void NotifyListeners() => OnReceive?.Invoke(this, buffer.ToArray());
 
         private State state = State.WAITING_FOR_DLE;
         private readonly List<byte> buffer = new List<byte>();

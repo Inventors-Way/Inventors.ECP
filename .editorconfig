@@ -5,3 +5,6 @@ dotnet_style_predefined_type_for_member_access = true:none
 
 # IDE0049: Simplify Names
 dotnet_style_predefined_type_for_locals_parameters_members = true:none
+
+# Default severity for analyzer diagnostics with category 'Naming'
+dotnet_analyzer_diagnostic.category-Naming.severity = none

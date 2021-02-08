@@ -37,9 +37,9 @@ namespace Inventors.ECP
 
         public bool Empty => _length == 0;
 
-        public byte Address => _address;
+        public byte Address { get; set; }
 
-        public bool AddressEnabled => _addressEnabled;
+        public bool AddressEnabled => Address != 0;
 
         public byte Checksum => _checksum;
 
@@ -47,7 +47,29 @@ namespace Inventors.ECP
 
         public bool ReverseEndianity { get; set; }
 
-        public bool Extended { get; }
+        public bool Extended 
+        { 
+            get
+            {
+                if (AddressEnabled)
+                    return true;
+
+                if (ChecksumAlgorithm != ChecksumAlgorithmType.None)
+                    return true;
+
+                switch (_lengthEncoding)
+                {
+                    case LengthEncodingType.UInt16Encoding:
+                    case LengthEncodingType.UInt32Encoding:
+                        return true;
+                    case LengthEncodingType.UInt8Encoding:
+                        return Length >= 128;
+                    default:
+                        throw new InvalidOperationException($"Invalid length encoding: {_lengthEncoding}");
+
+                }
+            }
+        }
 
         #endregion
 
@@ -56,20 +78,8 @@ namespace Inventors.ECP
             _code = code;
             _length = length;
             _lengthEncoding = GetLengthEncoding(length);
-            _addressEnabled = false;
+            Address = 0;
             _checksumType = ChecksumAlgorithmType.None;
-
-            switch (_lengthEncoding)
-            {
-                case LengthEncodingType.UInt16Encoding:
-                case LengthEncodingType.UInt32Encoding:
-                    Extended = true;
-                    break;
-                case LengthEncodingType.UInt8Encoding:
-                    Extended = length >= 128;
-                    break;
-            }
-
             data = new byte[length];
         }
 
@@ -78,34 +88,8 @@ namespace Inventors.ECP
             _code = code;
             _length = length;
             _lengthEncoding = GetLengthEncoding(length);
-            _address = 0;
-            _addressEnabled = false;
+            Address = 0;
             _checksumType = checksum;
-            Extended = true;
-            data = new byte[length];
-        }
-
-        public Packet(byte code, int length, byte address)
-        {
-            _code = code;
-            _length = length;
-            _lengthEncoding = GetLengthEncoding(length);
-            _address = address;
-            _addressEnabled = true;
-            _checksumType = ChecksumAlgorithmType.None;
-            Extended = true;
-            data = new byte[length];
-        }
-
-        public Packet (byte code, int length, byte address, ChecksumAlgorithmType checksum)
-        {
-            _code = code;
-            _length = length;
-            _lengthEncoding = GetLengthEncoding(length);
-            _address = address;
-            _addressEnabled = true;
-            _checksumType = checksum;
-            Extended = true;
             data = new byte[length];
         }
 
@@ -125,9 +109,8 @@ namespace Inventors.ECP
             {
                 _length = frame[1];
                 _lengthEncoding = LengthEncodingType.UInt8Encoding;
-                _addressEnabled = false;
+                Address = 0;
                 _checksumType = ChecksumAlgorithmType.None;
-                Extended = false;
             }
             else
             {
@@ -164,8 +147,10 @@ namespace Inventors.ECP
                 }
 
                 // Parse the address bit.
-                _addressEnabled = (0x10 & frame[1]) != 0;
-                Extended = true;
+                if ((0x10 & frame[1]) != 0)
+                {
+                    Address = frame[2 + GetLengthSize()];
+                }
             }
 
             if (Extended)
@@ -174,10 +159,6 @@ namespace Inventors.ECP
                 _length = DecodeLength(frame);
                 data = new byte[_length];
 
-                if (AddressEnabled)
-                {
-                    _address = frame[2 + GetLengthSize()];
-                }
 
                 for (int i = 0; i < _length; ++i)
                 {
@@ -333,7 +314,7 @@ namespace Inventors.ECP
 
                 if (AddressEnabled)
                 {
-                    retValue[2 + GetLengthSize()] = _address;
+                    retValue[2 + GetLengthSize()] = Address;
                 }
 
                 for (int i = 0; i < _length; ++i)
@@ -501,8 +482,6 @@ namespace Inventors.ECP
         private readonly byte _code;
         private byte _checksum;
         private readonly ChecksumAlgorithmType _checksumType;
-        private readonly byte _address;
-        private readonly bool _addressEnabled;
         private readonly int _length;
         private readonly LengthEncodingType _lengthEncoding;
         private readonly byte[] data;
