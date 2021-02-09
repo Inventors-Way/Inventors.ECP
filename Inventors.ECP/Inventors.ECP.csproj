@@ -19,9 +19,6 @@
     <PackageIcon>Logo128x128.png</PackageIcon>
     <AssemblyVersion>1.6.4.0</AssemblyVersion>
   </PropertyGroup>
-  <ItemGroup>
-    <Folder Include="Functions\" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="1.3.0">
