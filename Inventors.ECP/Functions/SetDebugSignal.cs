@@ -16,6 +16,8 @@ namespace Inventors.ECP.Functions
         { 
         }
 
+        protected override bool IsRequestValid() => (Request.Length > 0) && ((Request.Length % sizeof(UInt32)) == 0);
+
         public override FunctionDispatcher CreateDispatcher() => new FunctionDispatcher(FUNCTION_CODE, () => new SetDebugSignal());
 
         public override int Dispatch(dynamic listener) => listener.Accept(this);
@@ -29,6 +31,16 @@ namespace Inventors.ECP.Functions
             for (int n = 0; n < Signals.Count; ++n)
             {
                 Request.InsertUInt32(n * sizeof(UInt32), Signals[n]);
+            }
+        }
+
+        public override void OnSlaveReceived()
+        {
+            Signals.Clear();
+
+            for (int n = 0; n < Request.Length / sizeof(UInt32); ++n)
+            {
+                Signals.Add(Request.GetUInt32(n * sizeof(UInt32)));
             }
         }
 
