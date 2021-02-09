@@ -18,6 +18,7 @@ namespace Inventors.ECP.DefaultDevice
             Add(new DeviceIdentification());
             Add(new Ping());
             Add(new GetEndianness());
+            Add(new SetDebugSignal());
 
             FunctionListener = this;
             MessageListener = this;
@@ -50,6 +51,18 @@ namespace Inventors.ECP.DefaultDevice
             return 0;
         }
 
-        public int Accept(GetEndianness func) => 0;
+        public int Accept(GetEndianness func)
+        {
+            Log.Debug("Peripheral: GetEndinanness");
+
+            return 0;
+        }
+
+        public int Accept(SetDebugSignal func)
+        {
+            Log.Debug("Peripheral: SetDebugSignal");
+
+            return 0;
+        }
     }
 }

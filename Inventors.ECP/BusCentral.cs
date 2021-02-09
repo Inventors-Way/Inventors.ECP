@@ -89,9 +89,9 @@ namespace Inventors.ECP
 
                     while (!IsCompleted()) ;
 
-                    state = CommState.WAITING;
+                    state = CommState.IDLE;
 
-                    if (currentException != null)
+                    if (currentException is object)
                         throw currentException;
                 }
             }

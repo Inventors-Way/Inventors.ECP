@@ -41,5 +41,16 @@ namespace Inventors.ECP.UnitTests.TransportLayer
             device.Execute(id);
             Console.WriteLine($"Equal endinness: {id.EqualEndianness}");
         }
+
+        [TestMethod]
+        public void SetDebugSignal()
+        {
+            var device = TC.CentralDevice;
+            var id = new SetDebugSignal();
+            id.Signals.Add(0);
+            id.Signals.Add(1);
+
+            device.Execute(id);
+        }
     }
 }

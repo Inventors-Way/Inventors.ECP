@@ -42,7 +42,7 @@ namespace Inventors.ECP.UnitTests
             {
                 Location = CentralPort,
                 BaudRate = 115200,
-                Timeout = 500,
+                Timeout = 300,
                 Retries = 3
             };
             Peripheral = new DefaultPeripheral()
