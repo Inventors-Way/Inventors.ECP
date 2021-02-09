@@ -16,7 +16,6 @@ namespace Inventors.ECP
             WAITING_FOR_ETX
         }
 
-
         public event Action<Destuffer, byte[]> OnReceive;
 
         public void Reset()

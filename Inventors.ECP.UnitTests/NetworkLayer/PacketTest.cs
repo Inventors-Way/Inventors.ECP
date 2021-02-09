@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using Inventors.ECP;
 
-namespace Inventors.ECP.UnitTests.TransportLayer
+namespace Inventors.ECP.UnitTests.NetworkLayer
 {
     [TestClass]
     public class PacketTest
@@ -77,7 +77,30 @@ namespace Inventors.ECP.UnitTests.TransportLayer
         }
 
         [TestMethod]
-        public void TC04_UInt16SizedPacket()
+        public void TC04_AdditiveChecksum()
+        {
+            var destuffer = new Destuffer();
+            destuffer.OnReceive += Destruffer_OnReceive;
+            Packet packet = new Packet(0x10, 4, ChecksumAlgorithmType.Additive);
+            Assert.AreEqual(expected: 4, actual: packet.Length);
+            packet.InsertUInt32(0, 1);
+
+            var frame = packet.ToArray();
+            Send(destuffer, Frame.Encode(frame));
+
+            Assert.IsTrue(_received is object);
+            Assert.AreEqual<Byte>(expected: 0x10, actual: _received.Code);
+            Assert.AreEqual<int>(expected: 4, actual: _received.Length);
+            Assert.AreEqual<Byte>(expected: packet.Checksum, actual: _received.Checksum);
+            Assert.AreEqual<UInt32>(expected: 1, actual: _received.GetUInt32(0));
+
+            frame[frame.Length - 1] = ++frame[frame.Length - 1];
+
+            Assert.ThrowsException<InvalidOperationException>(() => Send(destuffer, Frame.Encode(frame)));
+        }
+
+        [TestMethod]
+        public void TC05_UInt16SizedPacket()
         {
             int length = 2000;
             var destuffer = new Destuffer();
@@ -103,7 +126,7 @@ namespace Inventors.ECP.UnitTests.TransportLayer
         }
 
         [TestMethod]
-        public void TC05_UInt32SizedPacket()
+        public void TC06_UInt32SizedPacket()
         {
             int length = 120000;
             var destuffer = new Destuffer();
@@ -128,56 +151,6 @@ namespace Inventors.ECP.UnitTests.TransportLayer
             }
         }
 
-        /*
-        [TestMethod]
-        public void Length16bit()
-        {
-            var destuffer = new Destuffer();
-            destuffer.OnReceive += Destruffer_OnReceive;
-            int numberOfEntries = 1000;
-            Packet packet = new Packet(0x10, numberOfEntries * 4);
-            Assert.AreEqual(expected: LengthEncodingType.UInt16Encoding, actual: packet.LengthEncoding);
-
-            for (int n = 0; n < numberOfEntries; ++n)
-            {
-                packet.InsertInt32(n * 4, n);
-            }
-
-            Send(destuffer, Frame.Encode(packet.ToArray()));
-            Assert.AreEqual<Byte>(expected: 0x10, actual: _received.Code);
-            Assert.AreEqual<int>(expected: numberOfEntries * 4, actual: _received.Length);
-
-            for (int n = 0; n < numberOfEntries; ++n)
-            {
-                Assert.AreEqual<Int32>(expected: n, actual: _received.GetInt32(n * 4));
-            }
-        }
-
-        [TestMethod]
-        public void Length32bit()
-        {
-            var destuffer = new Destuffer();
-            destuffer.OnReceive += Destruffer_OnReceive;
-            int length = 2 * UInt16.MaxValue;
-            Packet packet = new Packet(0x10, length);
-            Assert.AreEqual(expected: LengthEncodingType.UInt32Encoding, actual: packet.LengthEncoding);
-
-            for (int n = 0; n < length; ++n)
-            {
-                packet.InsertByte(n, (byte) n);
-            }
-
-            Send(destuffer, Frame.Encode(packet.ToArray()));
-            Assert.AreEqual<Byte>(expected: 0x10, actual: _received.Code);
-            Assert.AreEqual<int>(expected: length, actual: _received.Length);
-
-            for (int n = 0; n < length; ++n)
-            {
-                Assert.AreEqual<byte>(expected: (byte) n, actual: _received.GetByte(n));
-            }
-        }
-
-        */
         private void Send(Destuffer destuffer, byte[] frame)
         {
             _received = null;

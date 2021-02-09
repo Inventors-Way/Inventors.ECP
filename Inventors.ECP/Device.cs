@@ -52,7 +52,7 @@ namespace Inventors.ECP
         #region DeviceMaster
         [Browsable(false)]
         [XmlIgnore]
-        public DeviceMaster Master { get; }
+        public BusCentral Master { get; }
         #endregion
         #region ResetOnConnected
         [Category("Communication Layer")]
@@ -117,11 +117,27 @@ namespace Inventors.ECP
         [XmlIgnore]
         public Profiler Profiler => Master.Profiler;
         #endregion
+        #region AvailableAdresses
+
+        public virtual List<DeviceAddress> AvailableAddress => null;
+
+        #endregion
+        #region CurrentAddress
+        private DeviceAddress _address;
+
+        [Browsable(false)]
+        [XmlIgnore]
+        public DeviceAddress CurrentAddress
+        {
+            get => _address;
+            set => SetProperty(ref _address, value);
+        }
+        #endregion
         #endregion
 
         protected Device(CommunicationLayer commLayer, Profiler profiler)
         {
-            Master = new DeviceMaster(commLayer, profiler)
+            Master = new BusCentral(commLayer, profiler)
             {
                 MessageListener = this
             };
@@ -261,7 +277,7 @@ namespace Inventors.ECP
                     try
                     {
                         watch.Restart();
-                        Master.Execute(function);
+                        Master.Execute(function, CurrentAddress);
                         watch.Stop();
                         function.TransmissionTime = watch.ElapsedMilliseconds;
                         break;
@@ -273,7 +289,7 @@ namespace Inventors.ECP
 
         public void Send(DeviceMessage message)
         {
-            Master.Send(message);
+            Master.Send(message, CurrentAddress);
         }
 
         public void Accept(PrintfMessage message)

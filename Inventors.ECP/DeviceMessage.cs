@@ -27,8 +27,13 @@ namespace Inventors.ECP
             Packet = new Packet(code, length);
         }
 
-        internal byte[] GetPacket()
+        internal byte[] GetPacket(DeviceAddress address)
         {
+            if (address is object)
+            {
+                Packet.Address = address.Value;
+            }
+
             return Packet.ToArray();
         }
 

@@ -20,7 +20,7 @@ namespace Inventors.ECP.Tester.Profiling
 
         public int TestDelay { get; set; } = 50;
 
-        public DeviceMaster Master { get; set; }
+        public BusCentral Master { get; set; }
 
         public CommunicationReport Test(DeviceFunction function)
         {
@@ -37,7 +37,7 @@ namespace Inventors.ECP.Tester.Profiling
             {
                 try
                 {
-                    Master.Execute(function);
+                    Master.Execute(function, null);
                     Time.Add(function.TransmissionTime);
                 }
                 catch

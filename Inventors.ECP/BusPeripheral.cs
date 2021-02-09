@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Inventors.ECP
 {
-    public class DeviceSlave :
+    public class BusPeripheral :
         IDisposable
     {
         private List<MessageDispatcher> MessageDispatchers { get; } = new List<MessageDispatcher>();
@@ -17,7 +17,9 @@ namespace Inventors.ECP
 
         public dynamic FunctionListener { get; set; }
 
-        public DeviceSlave(CommunicationLayer layer)
+        public virtual DeviceAddress Address => null;
+
+        public BusPeripheral(CommunicationLayer layer)
         {
             if (layer is null)
                 throw new ArgumentException(Resources.LAYER_OR_DEVICE_DATA_IS_NULL);
@@ -69,7 +71,7 @@ namespace Inventors.ECP
             if (_connection.IsOpen && (message is object))
             {
                 message.OnSend();
-                _connection.Transmit(Frame.Encode(message.GetPacket()));
+                _connection.Transmit(Frame.Encode(message.GetPacket(Address)));
             }
         }
 

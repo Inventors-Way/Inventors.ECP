@@ -43,7 +43,12 @@ namespace Inventors.ECP
             Response = new Packet(code, responseLength);
         }
 
-        internal byte[] GetRequest() => GetRequestPacket().ToArray();
+        internal byte[] GetRequest(byte address)
+        {
+            Packet packet = GetRequestPacket();
+            packet.Address = address;
+            return packet.ToArray();
+        }
 
         internal byte[] GetResponse() => GetResponsePacket().ToArray();
 

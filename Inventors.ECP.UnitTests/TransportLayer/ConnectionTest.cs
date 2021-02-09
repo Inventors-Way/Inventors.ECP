@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Inventors.ECP.UnitTests.NetworkLayer
+namespace Inventors.ECP.UnitTests.TransportLayer
 {
     [TestClass]
     public class ConnectionTest
