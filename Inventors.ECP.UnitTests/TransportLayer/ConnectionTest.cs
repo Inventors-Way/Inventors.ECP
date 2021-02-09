@@ -13,22 +13,33 @@ namespace Inventors.ECP.UnitTests.TransportLayer
     public class ConnectionTest
     {
         [TestMethod]
-        public void Baudrate38400()
+        public void DeviceIdentification()
         {
-            using (var device = new DefaultSerialDevice() { Location = "COM14", BaudRate = 38400 })
-            {
-                for (int n = 0; n < 10; ++n)
-                {
-                    var id = new DeviceIdentification();
+            var device = TC.CentralDevice;
+            var id = new DeviceIdentification();
 
-                    device.Open();
-                    device.Execute(id);
-                    Console.WriteLine($"Device: {id.Device}");
-                    device.Close();
-                    Console.WriteLine($"Iteration: {n+1}");
-                }
-            }
+            device.Execute(id);
+            Console.WriteLine($"Device: {id.Device}");
         }
 
+        [TestMethod]
+        public void Ping()
+        {
+            var device = TC.CentralDevice;
+            var id = new Ping();
+
+            device.Execute(id);
+            Console.WriteLine($"Ping: {id.Count}");
+        }
+
+        [TestMethod]
+        public void Endianness()
+        {
+            var device = TC.CentralDevice;
+            var id = new GetEndianness();
+
+            device.Execute(id);
+            Console.WriteLine($"Equal endinness: {id.EqualEndianness}");
+        }
     }
 }

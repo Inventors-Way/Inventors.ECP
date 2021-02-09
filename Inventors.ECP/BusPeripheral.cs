@@ -17,6 +17,28 @@ namespace Inventors.ECP
 
         public dynamic FunctionListener { get; set; }
 
+        public string Location
+        {
+            get => _connection.Location;
+            set => _connection.Location = value;
+        }
+
+        public int BaudRate
+        {
+            get => _connection.BaudRate;
+            set => _connection.BaudRate = value;
+        }
+
+        public bool ResetOnConnection
+        {
+            get => _connection.ResetOnConnection;
+            set => _connection.ResetOnConnection = value;
+        }
+
+        public bool IsConnected => _connection.IsConnected;
+
+        public bool IsOpen => _connection.IsOpen;
+
         public virtual DeviceAddress Address => null;
 
         public BusPeripheral(CommunicationLayer layer)
@@ -44,26 +66,6 @@ namespace Inventors.ECP
             {
                 DebugMessage = String.Format(CultureInfo.CurrentCulture, format, args)
             });
-        }
-
-        public bool IsOpen
-        {
-            get
-            {
-                return _connection.IsOpen;
-            }
-        }
-
-        public bool ResetOnConnection
-        {
-            get
-            {
-                return _connection.ResetOnConnection;
-            }
-            set
-            {
-                _connection.ResetOnConnection = value;
-            }
         }
 
         public void Send(DeviceMessage message)

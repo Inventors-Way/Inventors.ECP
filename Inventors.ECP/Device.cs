@@ -282,7 +282,13 @@ namespace Inventors.ECP
                         function.TransmissionTime = watch.ElapsedMilliseconds;
                         break;
                     }
-                    catch { if (n == Retries - 1) { throw; } }
+                    catch 
+                    { 
+                        if (n == Retries - 1) 
+                        { 
+                            throw; 
+                        } 
+                    }
                 }
             }
         }

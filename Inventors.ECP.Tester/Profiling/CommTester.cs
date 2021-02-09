@@ -22,6 +22,8 @@ namespace Inventors.ECP.Tester.Profiling
 
         public BusCentral Master { get; set; }
 
+        public DeviceAddress Address { get; set; }
+
         public CommunicationReport Test(DeviceFunction function)
         {
             if (Master is null)
@@ -37,7 +39,7 @@ namespace Inventors.ECP.Tester.Profiling
             {
                 try
                 {
-                    Master.Execute(function, null);
+                    Master.Execute(function, Address);
                     Time.Add(function.TransmissionTime);
                 }
                 catch
