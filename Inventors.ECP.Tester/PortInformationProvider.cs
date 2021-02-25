@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-//using System.Management;
+using System.Management;
 
 namespace Inventors.ECP.Tester
-{/*
+{
     public class PortInformationProvider
     {
         private readonly ManagementObjectSearcher searcher;
@@ -41,6 +41,6 @@ namespace Inventors.ECP.Tester
 
             return retValue;
         }
-    }*/
+    }
 }
 
