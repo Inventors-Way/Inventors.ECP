@@ -20,9 +20,9 @@ namespace Inventors.ECP.Tester.Profiling
 
         public int TestDelay { get; set; } = 50;
 
-        public BusCentral Master { get; set; }
+        public DeviceAddress Address { get; set; } = null;
 
-        public DeviceAddress Address { get; set; }
+        public BusCentral Master { get; set; }
 
         public CommunicationReport Test(DeviceFunction function)
         {
