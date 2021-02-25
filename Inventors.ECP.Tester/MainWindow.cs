@@ -207,14 +207,15 @@ namespace Inventors.ECP.Tester
 
                 if (CheckDevicesChanged(devices))
                 {
-                    var portInfo = new PortInformationProvider();
+                    //var portInfo = new PortInformationProvider();
                     Log.Debug("Available devices changed:");
                     portMenuItem.DropDownItems.Clear();
 
                     for (int n = 0; n < devices.Count; ++n)
                     {
                         var location = devices[n];
-                        var menuName = CreatePortDescription(location, portInfo.GetDescription(location));
+                        //var menuName = CreatePortDescription(location, portInfo.GetDescription(location));
+                        var menuName = location;
                         var item = new ToolStripMenuItem(menuName) 
                         { 
                             Tag = devices[n] 
