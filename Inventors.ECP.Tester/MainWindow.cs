@@ -136,6 +136,31 @@ namespace Inventors.ECP.Tester
                     commTester.Trials,
                     commTester.TestDelay);
 
+                if (device.AvailableAddress is object)
+                {
+                    foreach (var address in device.AvailableAddress)
+                    {
+                        var menuItem = new ToolStripMenuItem(address.Name)
+                        {
+                            Tag = address
+                        };
+                        menuItem.Click += (sender, e) =>
+                        {
+                            if (sender is ToolStripMenuItem item)
+                            {
+                                if (item.Tag is DeviceAddress current)
+                                {
+                                    device.CurrentAddress = current;
+                                    Log.Status($"CURRENT ADDRESS: {current.Name} [ {current.Value} ]");
+                                }
+
+                            }
+                        };
+
+                        addressMenu.DropDownItems.Add(menuItem);
+                    };
+                }
+
                 UpdateProfiling();
                 InitializeFunctions();
                 UpdatePorts();
