@@ -66,11 +66,11 @@
             this.vSplitContainer = new System.Windows.Forms.SplitContainer();
             this.functionList = new System.Windows.Forms.ListBox();
             this.propertyGrid = new System.Windows.Forms.PropertyGrid();
-            this.logControl = new Inventors.ECP.Tester.LogControl();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.msgTimer = new System.Windows.Forms.Timer(this.components);
             this.deviceTimer = new System.Windows.Forms.Timer(this.components);
             this.addressMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.logControl = new Inventors.ECP.Tester.LogControl();
             this.statusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.hSplitContainer)).BeginInit();
@@ -400,19 +400,6 @@
             this.propertyGrid.Size = new System.Drawing.Size(929, 469);
             this.propertyGrid.TabIndex = 0;
             // 
-            // logControl
-            // 
-            this.logControl.DebugColor = System.Drawing.Color.Blue;
-            this.logControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.logControl.ErrorColor = System.Drawing.Color.Red;
-            this.logControl.Level = Inventors.ECP.LogLevel.STATUS;
-            this.logControl.Location = new System.Drawing.Point(0, 0);
-            this.logControl.Margin = new System.Windows.Forms.Padding(5);
-            this.logControl.Name = "logControl";
-            this.logControl.Size = new System.Drawing.Size(1155, 200);
-            this.logControl.StatusColor = System.Drawing.Color.Black;
-            this.logControl.TabIndex = 0;
-            // 
             // imageList
             // 
             this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList.ImageStream")));
@@ -450,6 +437,19 @@
             this.addressMenu.Name = "addressMenu";
             this.addressMenu.Size = new System.Drawing.Size(76, 24);
             this.addressMenu.Text = "Address";
+            // 
+            // logControl
+            // 
+            this.logControl.DebugColor = System.Drawing.Color.Blue;
+            this.logControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.logControl.ErrorColor = System.Drawing.Color.Red;
+            this.logControl.Level = Inventors.ECP.LogLevel.STATUS;
+            this.logControl.Location = new System.Drawing.Point(0, 0);
+            this.logControl.Margin = new System.Windows.Forms.Padding(5);
+            this.logControl.Name = "logControl";
+            this.logControl.Size = new System.Drawing.Size(1155, 200);
+            this.logControl.StatusColor = System.Drawing.Color.Black;
+            this.logControl.TabIndex = 0;
             // 
             // MainWindow
             // 

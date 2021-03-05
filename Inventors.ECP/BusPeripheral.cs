@@ -88,17 +88,27 @@ namespace Inventors.ECP
                 {
                     if (response.IsFunction)
                     {
-                        int errorCode = DispatchFunction(response, out DeviceFunction function);
-
-                        if (errorCode == 0)
+                        try
                         {
-                            function.OnSlaveSend();
-                            _connection.Transmit(Frame.Encode(function.GetResponse()));
+                            int errorCode = DispatchFunction(response, out DeviceFunction function);
+
+                            if (errorCode == 0)
+                            {
+                                function.OnSlaveSend();
+                                _connection.Transmit(Frame.Encode(function.GetResponse()));
+                            }
+                            else
+                            {
+                                Packet nack = new Packet(0, 1);
+                                nack.InsertByte(0, (byte)errorCode);
+
+                                _connection.Transmit(Frame.Encode(nack.ToArray()));
+                            }
                         }
-                        else
+                        catch
                         {
                             Packet nack = new Packet(0, 1);
-                            nack.InsertByte(0, (byte) errorCode);
+                            nack.InsertByte(0, (byte)99);
 
                             _connection.Transmit(Frame.Encode(nack.ToArray()));
                         }

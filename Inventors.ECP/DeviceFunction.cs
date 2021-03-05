@@ -127,6 +127,8 @@ namespace Inventors.ECP
         [Description("The time it took to transmit the function and get a response from the slave")]
         public long TransmissionTime { get; internal set; } = 0;
 
+        public int Address => Request.AddressEnabled ? Request.Address : -1;
+
         protected Packet Request { get; set; }
 
         protected Packet Response { get; set; }

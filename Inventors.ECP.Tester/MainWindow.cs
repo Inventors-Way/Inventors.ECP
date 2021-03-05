@@ -152,13 +152,16 @@ namespace Inventors.ECP.Tester
                                 {
                                     device.CurrentAddress = current;
                                     Log.Status($"CURRENT ADDRESS: {current.Name} [ {current.Value} ]");
+                                    UpdateAddressMenu();
                                 }
-
                             }
                         };
 
                         addressMenu.DropDownItems.Add(menuItem);
                     };
+
+                    device.CurrentAddress = device.AvailableAddress[0];
+                    UpdateAddressMenu();
                 }
 
                 UpdateProfiling();
@@ -171,6 +174,29 @@ namespace Inventors.ECP.Tester
                 UpdateAppStates(AppState.APP_STATE_UNINITIALIZED);
                 Log.Error(e.Message);
                 MessageBox.Show(e.Message, "Error loading device");
+            }
+        }
+
+        private void UpdateAddressMenu()
+        {
+            foreach (var iterator in addressMenu.DropDownItems)
+            {
+                if (iterator is ToolStripMenuItem item)
+                {
+                    if (device.CurrentAddress is DeviceAddress current)
+                    {
+                        if (item.Tag is DeviceAddress address)
+                        {
+                            var state = current.Value == address.Value;
+                            item.Checked = state;
+
+                        }
+                        else
+                            item.Checked = false;
+                    }
+                    else
+                        item.Checked = false;
+                }
             }
         }
 

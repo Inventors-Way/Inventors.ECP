@@ -52,6 +52,8 @@ namespace Inventors.ECP
         /// </summary>
         public virtual void OnReceived() { }
 
+        public int Address => Packet.AddressEnabled ? Packet.Address : -1;
+
         protected Packet Packet { get; set; }
 
         public abstract MessageDispatcher CreateDispatcher();
