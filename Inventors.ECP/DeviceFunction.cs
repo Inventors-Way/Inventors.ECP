@@ -43,7 +43,12 @@ namespace Inventors.ECP
             Response = new Packet(code, responseLength);
         }
 
-        internal byte[] GetRequest() => GetRequestPacket().ToArray();
+        internal byte[] GetRequest(byte address)
+        {
+            Packet packet = GetRequestPacket();
+            packet.Address = address;
+            return packet.ToArray();
+        }
 
         internal byte[] GetResponse() => GetResponsePacket().ToArray();
 
@@ -121,6 +126,8 @@ namespace Inventors.ECP
         [Category("Statistics")]
         [Description("The time it took to transmit the function and get a response from the slave")]
         public long TransmissionTime { get; internal set; } = 0;
+
+        public int Address => Request.AddressEnabled ? Request.Address : -1;
 
         protected Packet Request { get; set; }
 

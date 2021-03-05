@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Inventors.ECP
 {
-    public class DeviceSlave :
+    public class BusPeripheral :
         IDisposable
     {
         private List<MessageDispatcher> MessageDispatchers { get; } = new List<MessageDispatcher>();
@@ -17,7 +17,31 @@ namespace Inventors.ECP
 
         public dynamic FunctionListener { get; set; }
 
-        public DeviceSlave(CommunicationLayer layer)
+        public string Location
+        {
+            get => _connection.Location;
+            set => _connection.Location = value;
+        }
+
+        public int BaudRate
+        {
+            get => _connection.BaudRate;
+            set => _connection.BaudRate = value;
+        }
+
+        public bool ResetOnConnection
+        {
+            get => _connection.ResetOnConnection;
+            set => _connection.ResetOnConnection = value;
+        }
+
+        public bool IsConnected => _connection.IsConnected;
+
+        public bool IsOpen => _connection.IsOpen;
+
+        public virtual DeviceAddress Address => null;
+
+        public BusPeripheral(CommunicationLayer layer)
         {
             if (layer is null)
                 throw new ArgumentException(Resources.LAYER_OR_DEVICE_DATA_IS_NULL);
@@ -44,32 +68,12 @@ namespace Inventors.ECP
             });
         }
 
-        public bool IsOpen
-        {
-            get
-            {
-                return _connection.IsOpen;
-            }
-        }
-
-        public bool ResetOnConnection
-        {
-            get
-            {
-                return _connection.ResetOnConnection;
-            }
-            set
-            {
-                _connection.ResetOnConnection = value;
-            }
-        }
-
         public void Send(DeviceMessage message)
         {
             if (_connection.IsOpen && (message is object))
             {
                 message.OnSend();
-                _connection.Transmit(Frame.Encode(message.GetPacket()));
+                _connection.Transmit(Frame.Encode(message.GetPacket(Address)));
             }
         }
 
@@ -84,17 +88,27 @@ namespace Inventors.ECP
                 {
                     if (response.IsFunction)
                     {
-                        int errorCode = DispatchFunction(response, out DeviceFunction function);
-
-                        if (errorCode == 0)
+                        try
                         {
-                            function.OnSlaveSend();
-                            _connection.Transmit(Frame.Encode(function.GetResponse()));
+                            int errorCode = DispatchFunction(response, out DeviceFunction function);
+
+                            if (errorCode == 0)
+                            {
+                                function.OnSlaveSend();
+                                _connection.Transmit(Frame.Encode(function.GetResponse()));
+                            }
+                            else
+                            {
+                                Packet nack = new Packet(0, 1);
+                                nack.InsertByte(0, (byte)errorCode);
+
+                                _connection.Transmit(Frame.Encode(nack.ToArray()));
+                            }
                         }
-                        else
+                        catch
                         {
                             Packet nack = new Packet(0, 1);
-                            nack.InsertByte(0, (byte) errorCode);
+                            nack.InsertByte(0, (byte)99);
 
                             _connection.Transmit(Frame.Encode(nack.ToArray()));
                         }

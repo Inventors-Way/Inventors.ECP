@@ -11,8 +11,6 @@ namespace Inventors.ECP
 {
     public abstract class CommunicationLayer
     {
-        public abstract CommunicationProtocol Protocol { get; }
-
         public abstract int BaudRate { get; set; }
 
         public abstract string Location { get; set; }

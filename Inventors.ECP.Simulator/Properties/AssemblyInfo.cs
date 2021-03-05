@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Inventors.ECP.Tester")]
+[assembly: AssemblyTitle("Inventors.ECP.Simulator")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Inventors' Way ApS")]
-[assembly: AssemblyProduct("Inventors.ECP.Tester")]
-[assembly: AssemblyCopyright("Copyright ©  2019")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("Inventors.ECP.Simulator")]
+[assembly: AssemblyCopyright("Copyright ©  2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("65aee582-a214-4465-bdd5-8f92690e89e0")]
+[assembly: Guid("586e522a-bbc8-4b0b-af1d-dcbb9327a8df")]
 
 // Version information for an assembly consists of the following four values:
 //

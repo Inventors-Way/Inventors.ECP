@@ -10,7 +10,7 @@ using Inventors.ECP.Profiling;
 
 namespace Inventors.ECP
 {
-    public class DeviceMaster :
+    public class BusCentral :
         IDisposable
     {
         private enum CommState
@@ -51,7 +51,7 @@ namespace Inventors.ECP
 
         public double TxRate => connection.TxRate;
 
-        public DeviceMaster(CommunicationLayer connection, Profiler profiler)
+        public BusCentral(CommunicationLayer connection, Profiler profiler)
         {
             if (connection is null)
                 throw new ArgumentException(Resources.CONNECTION_NULL);
@@ -78,20 +78,20 @@ namespace Inventors.ECP
         /// Execute a function.
         /// </summary>
         /// <param name="function">The function to execute.</param>
-        public void Execute(DeviceFunction function)
+        public void Execute(DeviceFunction function, DeviceAddress address)
         {
             if (function is object)
             {
                 lock (commLock)
                 {
                     function.OnSend();
-                    Initiate(function);
+                    Initiate(function, address);
 
                     while (!IsCompleted()) ;
 
-                    state = CommState.WAITING;
+                    state = CommState.IDLE;
 
-                    if (currentException != null)
+                    if (currentException is object)
                         throw currentException;
                 }
             }
@@ -120,9 +120,9 @@ namespace Inventors.ECP
             return retValue;
         }
 
-        private void Initiate(DeviceFunction function)
+        private void Initiate(DeviceFunction function, DeviceAddress address)
         {
-            var bytes = function.GetRequest();
+            var bytes = function.GetRequest((byte) (address is object ? address.Value : 0));
 
             lock (lockObject)
             {
@@ -142,13 +142,13 @@ namespace Inventors.ECP
         /// Send an unacknowledged message to the device.
         /// </summary>
         /// <param name="message">The message to send</param>
-        public void Send(DeviceMessage message)
+        public void Send(DeviceMessage message, DeviceAddress address)
         {
             if (connection.IsOpen && (message is object))
             {
                 lock (commLock)
                 {
-                    connection.Transmit(Frame.Encode(message.GetPacket()));
+                    connection.Transmit(Frame.Encode(message.GetPacket(address)));
                 }
             }
         }

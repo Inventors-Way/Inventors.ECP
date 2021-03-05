@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>net48;netstandard2.1</TargetFrameworks>
-    <Version>1.6.4</Version>
+    <Version>2.0.0</Version>
     <Authors>Inventors' Way</Authors>
     <Company>Inventors' Way ApS</Company>
     <Description>Library implementing the Embedded Communication Protocol (ECP)</Description>
@@ -12,16 +12,13 @@
     <RepositoryUrl>https://github.com/Inventors-Way/Inventors.ECP</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>Communication</PackageTags>
-    <PackageReleaseNotes>Added profiling</PackageReleaseNotes>
+    <PackageReleaseNotes>Added extended frames</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageIconUrl></PackageIconUrl>
     <NeutralLanguage>en</NeutralLanguage>
     <PackageIcon>Logo128x128.png</PackageIcon>
-    <AssemblyVersion>1.6.4.0</AssemblyVersion>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </PropertyGroup>
-  <ItemGroup>
-    <Folder Include="Functions\" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="1.3.0">

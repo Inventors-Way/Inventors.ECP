@@ -146,9 +146,7 @@ namespace Inventors.ECP
 
         public override int BaudRate { get; set; }
 
-        public override CommunicationProtocol Protocol => CommunicationProtocol.SERIAL;
-
-        private SerialPort port;
+        private readonly SerialPort port;
         private readonly int BlockLimit = 1024;
     }
 }

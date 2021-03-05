@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Inventors.ECP.Utility
 {
-    public static class CRC8CCITT
+    public static class AdditiveChecksum
     {
         public static byte Calculate(byte[] data)
         {
@@ -16,7 +16,7 @@ namespace Inventors.ECP.Utility
             {
                 foreach (byte d in data)
                 {
-                    retValue = Update(retValue, d);
+                    retValue += d;
                 }
             }
 
@@ -31,31 +31,11 @@ namespace Inventors.ECP.Utility
             {
                 for (int n = 0; n < length; ++n)
                 {
-                    retValue = Update(retValue, data[n]);
+                    retValue += data[n];
                 }
             }
 
             return retValue;
-        }
-
-        public static byte Update(byte inCrc, byte inData)
-        {
-            byte data = (byte) (inCrc ^ inData);
-
-            for (byte i = 0; i < 8; i++)
-            {
-                if ((data & 0x80) != 0)
-                {
-                    data <<= 1;
-                    data ^= 0x07;
-                }
-                else
-                {
-                    data <<= 1;
-                }
-            }
-
-            return data;
         }
     }
 }
