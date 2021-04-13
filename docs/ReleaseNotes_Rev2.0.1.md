@@ -12,7 +12,7 @@ The release contains the following major changes:
 * Update to the handling of opening device and opening and closing connections
 * Performance improvement of the log window
 * Possibility to pause the log window
-
+* ECP Tester will display creation time for the loaded dll
 ### Minor changes
 
 The release contains the following minor changes:
@@ -69,3 +69,12 @@ will be added to the log window.
 This is implemented with a menu item in:
 
 * File Menu => Pause (Ctrl + P)
+
+### ECP Tester will display creation time for the loaded dll
+
+Previously the ECP tester only displayed the name of the loaded device dll. This could
+course uncertainty whether the correct device was loaded when working on a device library.
+
+Now the ECP tester will display creation time for the loaded dll. In that way it is
+possible to see that it has been recently been created and hence that it is the correct
+dll that has been loaded.
