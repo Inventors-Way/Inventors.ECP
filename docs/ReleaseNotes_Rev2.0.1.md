@@ -1,5 +1,7 @@
 # Release Notes, Rev. 2.0.1
 
+## Content
+
 This is a release that is backwards compatible with Rev. 2.0.0, and is a release that
 is focused on the usability of the ECP Tester.
 
@@ -13,7 +15,8 @@ The release contains the following major changes:
 
 The release contains the following minor changes:
 
- * None
+* DebugSignals will now show their signal also as decimal and hex.
+* Property grids will refresh for functions
 
 ## Changes
 
