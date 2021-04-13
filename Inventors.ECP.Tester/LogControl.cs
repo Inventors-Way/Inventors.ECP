@@ -105,7 +105,22 @@ namespace Inventors.ECP.Tester
             }
         }
 
-        internal void Clear() => logBox.Text = "";
+        internal void Clear()
+        {
+            logBox.Text = "";
+
+            if (!string.IsNullOrEmpty(logFile))
+            {
+                try
+                {
+                    if (File.Exists(logFile))
+                    {
+                        File.Delete(logFile);
+                    }
+                }
+                catch { } // eat everything
+            }
+        }
 
         private void LogControl_SizeChanged(object sender, EventArgs e) =>
             ResizeLogBox();

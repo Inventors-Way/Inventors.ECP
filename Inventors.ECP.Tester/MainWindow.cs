@@ -621,12 +621,26 @@ namespace Inventors.ECP.Tester
         {
             if (!string.IsNullOrEmpty(logControl.Content))
             {
-                if (MessageBox.Show(this, 
-                                    "This will delete all content in the log, do you intend to do this", 
-                                    "Deleting Log", 
-                                    MessageBoxButtons.YesNo, 
-                                    MessageBoxIcon.Question, 
-                                    MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                bool deleteLog = false;
+
+                if (confirmLogDeletion)
+                {
+                    if (MessageBox.Show(this,
+                                        "This will delete all content in the log, do you intend to do this",
+                                        "Deleting Log",
+                                        MessageBoxButtons.YesNo,
+                                        MessageBoxIcon.Question,
+                                        MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                    {
+                        deleteLog = true;
+                    }
+                }
+                else
+                {
+                    deleteLog = true;
+                }
+
+                if (deleteLog)
                 {
                     logControl.Clear();
                 }
