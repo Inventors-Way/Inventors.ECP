@@ -14,6 +14,7 @@ The release contains the following major changes:
 * Possibility to pause the log window
 * ECP Tester will display creation time for the loaded dll
 * Start positions for FileDialogs are now remembered
+* Auto save of device logs
 
 ### Minor changes
 
@@ -82,4 +83,6 @@ possible to see that it has been recently been created and hence that it is the 
 dll that has been loaded.
 
 ### Start positions for FileDialogs are now remembered
+
+### Auto save of device logs
 

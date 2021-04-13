@@ -34,6 +34,7 @@ namespace Inventors.ECP.Tester
         private delegate void InvokeDelegate();
 
         private Device device = null;
+        private string deviceId = null;
         private string selectedDevice = null;
         private AppState state = AppState.APP_STATE_UNINITIALIZED;
         private readonly ProfilerWindow profilerWindow;
@@ -120,9 +121,13 @@ namespace Inventors.ECP.Tester
             try
             {
                 var loader = DeviceLoader.Load(fileName);
+                deviceId = loader.Factory;
+                var directory = Settings.GetDeviceDefaultLoggingDirectory(deviceId);
                 logControl.Paused = false;
                 Log.Status("Loaded assembly: {0}", loader.FileName);
                 Log.Status("Device: {0} [Creation time: {1}]", loader.Factory, loader.CreationTime);
+                Log.Status("Logging directory: {0}", directory);
+                logControl.InitializeLogFile(directory);
                 device = loader.Create();
                 scriptRunner = new ScriptRunner(device);
                 scriptRunner.Completed += OnScriptCompleted;

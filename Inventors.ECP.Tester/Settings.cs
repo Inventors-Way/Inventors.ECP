@@ -62,8 +62,21 @@ namespace Inventors.ECP.Tester
         private static string LoggingDirectory =>
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ECP Logs");
 
-        private static string GetDeviceLoggingDirectory(string id) =>
-            Path.Combine(LoggingDirectory, id);
+        public static string GetDeviceDefaultLoggingDirectory(string id)
+        {
+            var directory = Path.Combine(LoggingDirectory, id);
+            CheckLoggingDirectory(directory);
+            return directory;
+        }
+
+        private static void CheckLoggingDirectory(string directory)
+        {
+            if (!Directory.Exists(LoggingDirectory))
+                Directory.CreateDirectory(LoggingDirectory);
+
+            if (!Directory.Exists(directory))
+                Directory.CreateDirectory(directory);
+        }
 
         private static string StateFile => Path.Combine(SystemDirectory, "settings.xml");
 
@@ -85,16 +98,18 @@ namespace Inventors.ECP.Tester
         public static string GetLoggingDirectory(string id)
         {
             var file = Instance.Load();
+            var directory = GetLoggingDirectory(id);
 
             if (file.LoggingDirectories.Any((d) => d.ID == id))
             {
+
             }
             else
             {
 
             }
 
-            return "";
+            return directory;
         }
 
         #endregion
