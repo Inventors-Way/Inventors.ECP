@@ -19,6 +19,7 @@ The release contains the following minor changes:
 
 * DebugSignals will now show their signal also as decimal and hex.
 * Property grids will refresh for functions
+* When a device definition file is loaded the creation time of the loaded dll will be displayed.
 
 ## Changes
 

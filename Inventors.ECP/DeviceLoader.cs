@@ -49,6 +49,9 @@ namespace Inventors.ECP
         public int TestDelay { get; set; }
 
         [XmlIgnore]
+        public string CreationTime { get; set; } = "Unknown";
+
+        [XmlIgnore]
         public string FileName { get; private set; } = null;
 
         public static DeviceLoader Load(string filename)
@@ -56,7 +59,7 @@ namespace Inventors.ECP
             DeviceLoader retValue = null;
             XmlSerializer serializer = new XmlSerializer(typeof(DeviceLoader));
             XmlReaderSettings settings = new XmlReaderSettings() { };
-
+            
             using (var file = File.Open(filename, FileMode.Open, FileAccess.Read))
             {
                 using (var reader = XmlReader.Create(file, settings))
@@ -65,6 +68,7 @@ namespace Inventors.ECP
                 }
             }
             retValue.FileName = filename;
+            retValue.CreationTime = File.GetCreationTime(filename).ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
 
             return retValue;
         }
