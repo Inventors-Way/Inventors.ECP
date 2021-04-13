@@ -13,6 +13,8 @@ The release contains the following major changes:
 * Performance improvement of the log window
 * Possibility to pause the log window
 * ECP Tester will display creation time for the loaded dll
+* Start positions for FileDialogs are now remembered
+
 ### Minor changes
 
 The release contains the following minor changes:
@@ -78,3 +80,6 @@ course uncertainty whether the correct device was loaded when working on a devic
 Now the ECP tester will display creation time for the loaded dll. In that way it is
 possible to see that it has been recently been created and hence that it is the correct
 dll that has been loaded.
+
+### Start positions for FileDialogs are now remembered
+
