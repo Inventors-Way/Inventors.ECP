@@ -114,15 +114,5 @@ namespace Inventors.ECP.Tester
                 ScrollToEnd();
             }
         }
-
-        private void LogBox_MouseEnter(object sender, EventArgs e)
-        {
-            updateControl = false;
-        }
-
-        private void LogBox_MouseLeave(object sender, EventArgs e)
-        {
-            updateControl = true;
-        }
     }
 }

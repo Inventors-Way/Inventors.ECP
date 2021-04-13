@@ -70,8 +70,6 @@
             this.Name = "LogControl";
             this.Size = new System.Drawing.Size(1048, 502);
             this.SizeChanged += new System.EventHandler(this.LogControl_SizeChanged);
-            this.MouseEnter += new System.EventHandler(this.LogBox_MouseEnter);
-            this.MouseLeave += new System.EventHandler(this.LogBox_MouseLeave);
             this.ResumeLayout(false);
             this.PerformLayout();
 
