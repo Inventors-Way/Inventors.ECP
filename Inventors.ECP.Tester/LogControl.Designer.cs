@@ -28,8 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.logEntry = new System.Windows.Forms.TextBox();
             this.logBox = new System.Windows.Forms.TextBox();
+            this.timer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // logEntry
@@ -44,12 +46,19 @@
             // 
             // logBox
             // 
+            this.logBox.BackColor = System.Drawing.Color.White;
             this.logBox.Font = new System.Drawing.Font("Courier New", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.logBox.Location = new System.Drawing.Point(0, 0);
             this.logBox.Multiline = true;
             this.logBox.Name = "logBox";
-            this.logBox.Size = new System.Drawing.Size(962, 423);
+            this.logBox.ReadOnly = true;
+            this.logBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.logBox.Size = new System.Drawing.Size(1045, 473);
             this.logBox.TabIndex = 2;
+            // 
+            // timer
+            // 
+            this.timer.Tick += new System.EventHandler(this.Timer_Tick);
             // 
             // LogControl
             // 
@@ -69,5 +78,6 @@
         #endregion
         private System.Windows.Forms.TextBox logEntry;
         private System.Windows.Forms.TextBox logBox;
+        private System.Windows.Forms.Timer timer;
     }
 }

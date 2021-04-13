@@ -15,6 +15,9 @@ namespace Inventors.ECP.Tester
         UserControl,
         ILogger
     {
+        private StringBuilder logBuffer = new StringBuilder();
+        private object lockObject = new object();
+
         public delegate void InvokeDelegate();
 
         public LogLevel Level { get; set; } = LogLevel.STATUS;
@@ -26,6 +29,7 @@ namespace Inventors.ECP.Tester
             InitializeComponent();
             logBox.VisibleChanged += (o, e) => ScrollToEnd();
             ResizeLogBox();
+            timer.Enabled = true;
         }
 
         private void ScrollToEnd()
@@ -41,23 +45,14 @@ namespace Inventors.ECP.Tester
 
         public void Add(DateTime time, LogLevel level, string message)
         {
-            if (logBox.InvokeRequired)
+            lock (lockObject)
             {
-                logBox.BeginInvoke(new InvokeDelegate(() => LogText(FormatMessage(time, level, message))));
+                logBuffer.AppendLine(String.Format(CultureInfo.CurrentCulture, 
+                                                   "{0} {1, -6} {2}", 
+                                                   time, 
+                                                   level, 
+                                                   message));
             }
-            else
-            {
-                LogText(FormatMessage(time, level, message));
-            }
-        }
-
-        private static string FormatMessage(DateTime time, LogLevel level, string message) =>
-            String.Format(CultureInfo.CurrentCulture, "{0} {1, -6} {2}", time, level, message);
-
-        public void LogText(string text)
-        {
-            logBox.AppendText(text + System.Environment.NewLine);
-            ScrollToEnd();
         }
 
         private void LogEntry_KeyDown(object sender, KeyEventArgs e)
@@ -96,6 +91,24 @@ namespace Inventors.ECP.Tester
         private void ResizeLogBox()
         {
             logBox.Size = new Size(width: Width, height: Height - logEntry.Height);
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            lock (lockObject)
+            {
+                if (logBuffer is null)
+                    return;
+
+                var content = logBuffer.ToString();
+                logBuffer.Clear();
+
+                if (string.IsNullOrEmpty(content))
+                    return;
+
+                logBox.AppendText(content);
+                ScrollToEnd();
+            }
         }
     }
 }
