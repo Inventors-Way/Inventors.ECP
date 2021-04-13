@@ -10,6 +10,8 @@ is focused on the usability of the ECP Tester.
 The release contains the following major changes:
 
 * Update to the handling of opening device and opening and closing connections
+* Performance improvement of the log window
+* Possibility to pause the log window
 
 ### Minor changes
 
@@ -34,3 +36,35 @@ As a consequence this has been refectored to:
 
 The rationale for Ctrl + X is that this is usually used for terminating an action, and the shortcut Ctrl + C has been discontinued because it prevented the use of the shortcut to be used for copying text from the ECP Tester. For example, to copy snippets of the log out into emails.
 
+### Performance improvement of the log window
+
+Previously, the log window in the ECP tester was updated for each log entry, and the
+log entries was color coded according to their level in a RichTextBox control.
+
+With exessive logging occured this caused the log window to be unable to keep up
+with the incomming log entries. When this happened it could cause the UI of the ECP
+Tester to freeze and become unresponsive to the point where the only way to recover
+from the problem would be to kill the program.
+
+This has been refactored in the current with this release:
+
+1. Log entries are now cached, and the log window is only updated every 100ms.
+2. Log entries are no longer color coded and a TextBox, which offer superior performance are used insted.
+
+### Possibility to pause the log window
+
+Previously, it was not possible to scroll in the log to inspect it while log entries
+was received. This was because when a log entry is received the log scrolls automatically
+to the end so the new log entry can be seen by the user.
+
+However, this had the side effect to make it impossible to scroll in the log while log
+entries are received, because it would immediately scroll to the end of the log.
+
+To solve this problem it is now possible to pause the log from updating, so it is possible
+to scroll in the log to inspect it. New log entries are cached in the background, so they
+are not lost while the log window is paused. When the pause is removed these log entries
+will be added to the log window.
+
+This is implemented with a menu item in:
+
+* File Menu => Pause (Ctrl + P)
