@@ -13,7 +13,7 @@ The release contains the following major changes:
 
 The release contains the following minor changes:
 
- * None
+* DebugSignals will now show their signal also as decimal and hex.
 
 ## Changes
 
