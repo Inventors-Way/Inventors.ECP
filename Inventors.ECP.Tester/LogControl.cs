@@ -18,13 +18,7 @@ namespace Inventors.ECP.Tester
         public delegate void InvokeDelegate();
 
         public LogLevel Level { get; set; } = LogLevel.STATUS;
-
-        public Color DebugColor { get; set; } = Color.Blue;
-
-        public Color StatusColor { get; set; } = Color.Black;
-
-        public Color ErrorColor { get; set; } = Color.Red;
-        
+      
         public string Content => logBox.Text;
 
         public LogControl()
@@ -49,20 +43,20 @@ namespace Inventors.ECP.Tester
         {
             if (logBox.InvokeRequired)
             {
-                logBox.BeginInvoke(new InvokeDelegate(() => LogText(FormatMessage(time, message), GetColor(level))));
+                logBox.BeginInvoke(new InvokeDelegate(() => LogText(FormatMessage(time, level, message))));
             }
             else
             {
-                LogText(FormatMessage(time, message), GetColor(level));
+                LogText(FormatMessage(time, level, message));
             }
         }
 
-        private static string FormatMessage(DateTime time, string message) =>
-            String.Format(CultureInfo.CurrentCulture, "{0}| {1}", time, message);
+        private static string FormatMessage(DateTime time, LogLevel level, string message) =>
+            String.Format(CultureInfo.CurrentCulture, "{0} {1, -6} {2}", time, level, message);
 
-        public void LogText(string text, Color color)
+        public void LogText(string text)
         {
-            logBox.AppendText(text, color);
+            logBox.AppendText(text + System.Environment.NewLine);
             ScrollToEnd();
         }
 
@@ -94,28 +88,6 @@ namespace Inventors.ECP.Tester
             }
         }
 
-        public Color GetColor(LogLevel level)
-        {
-            Color retValue = StatusColor;
-
-            switch (level)
-            {
-                case LogLevel.DEBUG:
-                    retValue = DebugColor;
-                    break;
-
-                case LogLevel.STATUS:
-                    retValue = StatusColor;
-                    break;
-
-                case LogLevel.ERROR:
-                    retValue = ErrorColor;
-                    break;
-            }
-
-            return retValue;
-        }
-
         internal void Clear() => logBox.Text = "";
 
         private void LogControl_SizeChanged(object sender, EventArgs e) =>
@@ -124,23 +96,6 @@ namespace Inventors.ECP.Tester
         private void ResizeLogBox()
         {
             logBox.Size = new Size(width: Width, height: Height - logEntry.Height);
-        }
-    }
-
-    public static class RichTextBoxExtensions
-    {
-        public static void AppendText(this RichTextBox box, string text, Color color)
-        {
-            if (box is null)
-                throw new ArgumentNullException(nameof(box));
-
-            box.SelectionStart = box.TextLength;
-            box.SelectionLength = 0;
-
-            box.SelectionColor = color;
-            box.AppendText(text);
-            box.AppendText(Environment.NewLine);
-            box.SelectionColor = box.ForeColor;
         }
     }
 }

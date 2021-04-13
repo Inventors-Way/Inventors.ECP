@@ -440,15 +440,12 @@
             // 
             // logControl
             // 
-            this.logControl.DebugColor = System.Drawing.Color.Blue;
             this.logControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.logControl.ErrorColor = System.Drawing.Color.Red;
             this.logControl.Level = Inventors.ECP.LogLevel.STATUS;
             this.logControl.Location = new System.Drawing.Point(0, 0);
             this.logControl.Margin = new System.Windows.Forms.Padding(5);
             this.logControl.Name = "logControl";
             this.logControl.Size = new System.Drawing.Size(1155, 200);
-            this.logControl.StatusColor = System.Drawing.Color.Black;
             this.logControl.TabIndex = 0;
             // 
             // MainWindow
