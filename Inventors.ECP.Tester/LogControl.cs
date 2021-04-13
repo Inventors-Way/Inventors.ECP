@@ -17,6 +17,7 @@ namespace Inventors.ECP.Tester
     {
         private StringBuilder logBuffer = new StringBuilder();
         private object lockObject = new object();
+        private bool updateControl = true;
 
         public delegate void InvokeDelegate();
 
@@ -95,6 +96,9 @@ namespace Inventors.ECP.Tester
 
         private void Timer_Tick(object sender, EventArgs e)
         {
+            if (!updateControl)
+                return;
+
             lock (lockObject)
             {
                 if (logBuffer is null)
@@ -109,6 +113,16 @@ namespace Inventors.ECP.Tester
                 logBox.AppendText(content);
                 ScrollToEnd();
             }
+        }
+
+        private void LogBox_MouseEnter(object sender, EventArgs e)
+        {
+            updateControl = false;
+        }
+
+        private void LogBox_MouseLeave(object sender, EventArgs e)
+        {
+            updateControl = true;
         }
     }
 }
