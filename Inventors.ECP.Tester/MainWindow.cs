@@ -725,5 +725,11 @@ namespace Inventors.ECP.Tester
             Log.Level = level;
             Settings.Level = level;
         }
+
+        private void PauseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            logControl.Paused = !logControl.Paused;
+            pauseToolStripMenuItem.Checked = logControl.Paused;
+        }
     }
 }

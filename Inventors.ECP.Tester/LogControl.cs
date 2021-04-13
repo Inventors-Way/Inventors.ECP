@@ -15,9 +15,9 @@ namespace Inventors.ECP.Tester
         UserControl,
         ILogger
     {
-        private StringBuilder logBuffer = new StringBuilder();
-        private object lockObject = new object();
-        private bool updateControl = true;
+        private readonly StringBuilder logBuffer = new StringBuilder();
+        private readonly object lockObject = new object();
+        private bool _paused = false;
 
         public delegate void InvokeDelegate();
 
@@ -31,6 +31,12 @@ namespace Inventors.ECP.Tester
             logBox.VisibleChanged += (o, e) => ScrollToEnd();
             ResizeLogBox();
             timer.Enabled = true;
+        }
+
+        public bool Paused
+        {
+            get => _paused;
+            set => _paused = value;
         }
 
         private void ScrollToEnd()
@@ -96,7 +102,7 @@ namespace Inventors.ECP.Tester
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            if (!updateControl)
+            if (_paused)
                 return;
 
             lock (lockObject)

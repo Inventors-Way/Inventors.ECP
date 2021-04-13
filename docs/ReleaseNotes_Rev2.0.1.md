@@ -11,6 +11,7 @@ The release contains the following major changes:
 
 * Update to the handling of opening device and opening and closing connections
 * Performance improvement of the log window
+* Possibility to pause the log window
 
 ### Minor changes
 
@@ -50,3 +51,20 @@ This has been refactored in the current with this release:
 1. Log entries are now cached, and the log window is only updated every 100ms.
 2. Log entries are no longer color coded and a TextBox, which offer superior performance are used insted.
 
+### Possibility to pause the log window
+
+Previously, it was not possible to scroll in the log to inspect it while log entries
+was received. This was because when a log entry is received the log scrolls automatically
+to the end so the new log entry can be seen by the user.
+
+However, this had the side effect to make it impossible to scroll in the log while log
+entries are received, because it would immediately scroll to the end of the log.
+
+To solve this problem it is now possible to pause the log from updating, so it is possible
+to scroll in the log to inspect it. New log entries are cached in the background, so they
+are not lost while the log window is paused. When the pause is removed these log entries
+will be added to the log window.
+
+This is implemented with a menu item in:
+
+* File Menu => Pause (Ctrl + P)
