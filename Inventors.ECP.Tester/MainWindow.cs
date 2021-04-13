@@ -36,6 +36,7 @@ namespace Inventors.ECP.Tester
         private Device device = null;
         private string deviceId = null;
         private string selectedDevice = null;
+        private bool confirmLogDeletion = true;
         private AppState state = AppState.APP_STATE_UNINITIALIZED;
         private readonly ProfilerWindow profilerWindow;
         private readonly CommTester commTester;
@@ -128,8 +129,11 @@ namespace Inventors.ECP.Tester
                 Log.Status("Device: {0} [Creation time: {1}]", loader.Factory, loader.CreationTime);
                 Log.Status("Logging directory: {0}", directory);
                 Log.Status("Log settings [Auto save: {0}, Confirm deletion: {1}]", loader.AutoSaveLog, loader.ConfirmLogDeletion);
+
                 autoSaveLogToolStripMenuItem.Checked = logControl.AutoSave = loader.AutoSaveLog;
                 logControl.InitializeLogFile(directory);
+                confirmLogDeletion = loader.ConfirmLogDeletion;
+
                 device = loader.Create();
                 scriptRunner = new ScriptRunner(device);
                 scriptRunner.Completed += OnScriptCompleted;
