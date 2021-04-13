@@ -48,6 +48,12 @@ namespace Inventors.ECP
         [XmlAttribute("test-delay")]
         public int TestDelay { get; set; }
 
+        [XmlAttribute("confirm-log-deletion")]
+        public bool ConfirmLogDeletion { get; set; }
+
+        [XmlAttribute("auto-save-log")]
+        public bool AutoSaveLog { get; set; }
+
         [XmlIgnore]
         public string CreationTime { get; set; } = "Unknown";
 

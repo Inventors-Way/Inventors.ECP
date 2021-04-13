@@ -127,6 +127,8 @@ namespace Inventors.ECP.Tester
                 Log.Status("Loaded assembly: {0}", loader.FileName);
                 Log.Status("Device: {0} [Creation time: {1}]", loader.Factory, loader.CreationTime);
                 Log.Status("Logging directory: {0}", directory);
+                Log.Status("Log settings [Auto save: {0}, Confirm deletion: {1}]", loader.AutoSaveLog, loader.ConfirmLogDeletion);
+                autoSaveLogToolStripMenuItem.Checked = logControl.AutoSave = loader.AutoSaveLog;
                 logControl.InitializeLogFile(directory);
                 device = loader.Create();
                 scriptRunner = new ScriptRunner(device);
@@ -737,6 +739,12 @@ namespace Inventors.ECP.Tester
         {
             logControl.Paused = !logControl.Paused;
             pauseToolStripMenuItem.Checked = logControl.Paused;
+        }
+
+        private void AutoSaveLogToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            logControl.AutoSave = !logControl.AutoSave;
+            autoSaveLogToolStripMenuItem.Checked = logControl.AutoSave;
         }
     }
 }

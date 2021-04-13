@@ -71,6 +71,7 @@
             this.msgTimer = new System.Windows.Forms.Timer(this.components);
             this.deviceTimer = new System.Windows.Forms.Timer(this.components);
             this.pauseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.autoSaveLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logControl = new Inventors.ECP.Tester.LogControl();
             this.statusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
@@ -130,6 +131,7 @@
             this.clearLogToolStripMenuItem,
             this.saveLogToolStripMenuItem,
             this.pauseToolStripMenuItem,
+            this.autoSaveLogToolStripMenuItem,
             this.toolStripSeparator7,
             this.runScriptToolStripMenuItem,
             this.toolStripSeparator6,
@@ -187,21 +189,21 @@
             // debugToolStripMenuItem
             // 
             this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
-            this.debugToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.debugToolStripMenuItem.Size = new System.Drawing.Size(137, 26);
             this.debugToolStripMenuItem.Text = "Debug";
             this.debugToolStripMenuItem.Click += new System.EventHandler(this.DebugToolStripMenuItem_Click);
             // 
             // statusToolStripMenuItem
             // 
             this.statusToolStripMenuItem.Name = "statusToolStripMenuItem";
-            this.statusToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.statusToolStripMenuItem.Size = new System.Drawing.Size(137, 26);
             this.statusToolStripMenuItem.Text = "Status";
             this.statusToolStripMenuItem.Click += new System.EventHandler(this.StatusToolStripMenuItem_Click);
             // 
             // errorToolStripMenuItem
             // 
             this.errorToolStripMenuItem.Name = "errorToolStripMenuItem";
-            this.errorToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.errorToolStripMenuItem.Size = new System.Drawing.Size(137, 26);
             this.errorToolStripMenuItem.Text = "Error";
             this.errorToolStripMenuItem.Click += new System.EventHandler(this.ErrorToolStripMenuItem_Click);
             // 
@@ -447,8 +449,16 @@
             this.pauseToolStripMenuItem.Text = "Pause";
             this.pauseToolStripMenuItem.Click += new System.EventHandler(this.PauseToolStripMenuItem_Click);
             // 
+            // autoSaveLogToolStripMenuItem
+            // 
+            this.autoSaveLogToolStripMenuItem.Name = "autoSaveLogToolStripMenuItem";
+            this.autoSaveLogToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.autoSaveLogToolStripMenuItem.Text = "Auto Save Log";
+            this.autoSaveLogToolStripMenuItem.Click += new System.EventHandler(this.AutoSaveLogToolStripMenuItem_Click);
+            // 
             // logControl
             // 
+            this.logControl.AutoSave = true;
             this.logControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.logControl.Level = Inventors.ECP.LogLevel.STATUS;
             this.logControl.Location = new System.Drawing.Point(0, 0);
@@ -533,6 +543,7 @@
         private System.Windows.Forms.ToolStripMenuItem runScriptToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addressMenu;
         private System.Windows.Forms.ToolStripMenuItem pauseToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem autoSaveLogToolStripMenuItem;
     }
 }
 
