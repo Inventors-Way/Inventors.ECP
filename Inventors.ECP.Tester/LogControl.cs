@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Globalization;
+using System.IO;
 
 namespace Inventors.ECP.Tester
 {
@@ -18,10 +19,12 @@ namespace Inventors.ECP.Tester
         private readonly StringBuilder logBuffer = new StringBuilder();
         private readonly object lockObject = new object();
         private bool _paused = false;
+        private bool _autosave = true;
+        private string logFile = null;
 
         public delegate void InvokeDelegate();
 
-        public LogLevel Level { get; set; } = LogLevel.STATUS;
+        public LogLevel Level { get; set; } = LogLevel.STATUS;      
       
         public string Content => logBox.Text;
 
@@ -33,10 +36,22 @@ namespace Inventors.ECP.Tester
             timer.Enabled = true;
         }
 
+        public void InitializeLogFile(string directory)
+        {
+            var time = DateTime.Now;
+            logFile = Path.Combine(directory, $"ECPLOG-{time.Year}.{time.Month}.{time.Day}-{time.Hour}h{time.Minute}m{time.Second}s.txt");
+        }
+
         public bool Paused
         {
             get => _paused;
             set => _paused = value;
+        }
+
+        public bool AutoSave
+        {
+            get => _autosave;
+            set => _autosave = value;
         }
 
         private void ScrollToEnd()
@@ -90,7 +105,22 @@ namespace Inventors.ECP.Tester
             }
         }
 
-        internal void Clear() => logBox.Text = "";
+        internal void Clear()
+        {
+            logBox.Text = "";
+
+            if (!string.IsNullOrEmpty(logFile))
+            {
+                try
+                {
+                    if (File.Exists(logFile))
+                    {
+                        File.Delete(logFile);
+                    }
+                }
+                catch { } // eat everything
+            }
+        }
 
         private void LogControl_SizeChanged(object sender, EventArgs e) =>
             ResizeLogBox();
@@ -117,6 +147,10 @@ namespace Inventors.ECP.Tester
                     return;
 
                 logBox.AppendText(content);
+
+                if (_autosave)
+                    File.AppendAllText(logFile, content);
+
                 ScrollToEnd();
             }
         }

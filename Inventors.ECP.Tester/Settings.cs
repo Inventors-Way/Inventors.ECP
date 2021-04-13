@@ -36,30 +36,52 @@ namespace Inventors.ECP.Tester
             Load();
         }
 
+        public class StartupDirectory
+        {
+            [XmlAttribute("id")]
+            public string ID { get; set; }
 
+            [XmlAttribute("startup-path")]
+            public string StartupPath { get; set; }
+        }
 
         [XmlRoot("settings")]
         public class SettingsFile
         {
             [XmlAttribute("level")]
             public LogLevel Level { get; set; } = LogLevel.STATUS;
+
+            [XmlAttribute("device-directory")]
+            public string DeviceDirectory { get; set; }
+
+            [XmlArray("logging-directories")]
+            [XmlArrayItem("directory")]
+            public List<StartupDirectory> LoggingDirectories { get; } = new List<StartupDirectory>();
         }
 
-        private static string SystemDirectory
+        private static string SystemDirectory => 
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ecp_tester");
+
+        private static string LoggingDirectory =>
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ECP Logs");
+
+        public static string GetDeviceDefaultLoggingDirectory(string id)
         {
-            get
-            {
-                return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ecp_tester");
-            }
+            var directory = Path.Combine(LoggingDirectory, id);
+            CheckLoggingDirectory(directory);
+            return directory;
         }
 
-        private static string StateFile
+        private static void CheckLoggingDirectory(string directory)
         {
-            get
-            {
-                return Path.Combine(SystemDirectory, "settings.xml");
-            }
+            if (!Directory.Exists(LoggingDirectory))
+                Directory.CreateDirectory(LoggingDirectory);
+
+            if (!Directory.Exists(directory))
+                Directory.CreateDirectory(directory);
         }
+
+        private static string StateFile => Path.Combine(SystemDirectory, "settings.xml");
 
         public static LogLevel Level
         {
@@ -74,6 +96,64 @@ namespace Inventors.ECP.Tester
             }
         }
 
+        public static string DeviceDirectory
+        {
+            get
+            {
+                var retValue = Instance.Load().DeviceDirectory;
+
+                return retValue is string ? retValue : "";
+            }
+            set
+            {
+                if (value != Instance.Load().DeviceDirectory)
+                {
+                    Instance.Load().DeviceDirectory = value;
+                    Instance.Save();
+                }
+            }
+        }
+
+        #region Handle logging directories
+
+        public static string GetLoggingDirectory(string id)
+        {
+            var file = Instance.Load();
+            var directory = GetDeviceDefaultLoggingDirectory(id);
+
+            if (file.LoggingDirectories.Any((d) => d.ID == id))
+            {
+                directory = file.LoggingDirectories.Find((d) => d.ID == id).StartupPath;
+            }
+
+            return directory;
+        }
+
+        public static void UpdateLoggingDirectory(string id, string directory)
+        {
+            var current = GetLoggingDirectory(id);
+            var file = Instance.Load();
+
+            if (current != directory)
+            {
+                if (file.LoggingDirectories.Any((d) => d.ID == id))
+                {
+                    file.LoggingDirectories.Find((d) => d.ID == id).StartupPath = directory;
+                    Instance.Save();
+                }
+                else
+                {
+                    file.LoggingDirectories.Add(new StartupDirectory()
+                    {
+                        ID = id,
+                        StartupPath = directory
+                    });
+                    Instance.Save();
+                }
+            }
+        }
+
+        #endregion
 
         private SettingsFile Load()
         {

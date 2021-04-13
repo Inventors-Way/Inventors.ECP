@@ -13,6 +13,10 @@ The release contains the following major changes:
 * Performance improvement of the log window
 * Possibility to pause the log window
 * ECP Tester will display creation time for the loaded dll
+* Initial directory for FileDialogs are now remembered
+* Auto save of device logs
+* Configuration of confirmation for log deletion
+
 ### Minor changes
 
 The release contains the following minor changes:
@@ -78,3 +82,26 @@ course uncertainty whether the correct device was loaded when working on a devic
 Now the ECP tester will display creation time for the loaded dll. In that way it is
 possible to see that it has been recently been created and hence that it is the correct
 dll that has been loaded.
+
+### Initial directory for FileDialogs are now remembered
+
+The directory in which logs are saved are now remembered by the ECP tester, this means
+that the next time a log is saved for a particular device the Save File Dialog will
+start from the directory a log was last saved to.
+
+### Auto save of device logs
+
+The ECP Tester will not auto save the log to a text file, if either the
+```confirm-log-deletion``` attribute is true in the ddfx file, or if it has been
+enabled with the ```File=>Auto Save Log``` menu item.
+
+The log will be saved in a ```ECP Logs``` folder in the ```My Documents``` directory,
+which can be assessed with the ```File=>Open Logs``` menu item in the ECP Tester.
+
+### Configuration of confirmation for log deletion
+
+It is now possible to configure whether the ECP Tester should confirm deletion of logs.
+
+This is done in the ddfx file with a ```confirm-log-deletion="true"``` attribute. If this
+attribute it set to true deletion needs to be confirmed before the log is deleted, otherwise
+it will be deleted immediately if it is set to false.

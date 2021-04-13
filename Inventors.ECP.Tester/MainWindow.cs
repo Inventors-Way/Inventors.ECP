@@ -34,7 +34,10 @@ namespace Inventors.ECP.Tester
         private delegate void InvokeDelegate();
 
         private Device device = null;
+        private string deviceId = null;
+        private string logDirectory = null;
         private string selectedDevice = null;
+        private bool confirmLogDeletion = true;
         private AppState state = AppState.APP_STATE_UNINITIALIZED;
         private readonly ProfilerWindow profilerWindow;
         private readonly CommTester commTester;
@@ -98,7 +101,8 @@ namespace Inventors.ECP.Tester
             OpenFileDialog dialog = new OpenFileDialog()
             {
                 Filter = "Device Definition Files (*.ddfx)|*.ddfx",
-                Title = "Open Device Definition File"
+                Title = "Open Device Definition File",
+                InitialDirectory = Settings.DeviceDirectory
             };
 
             if (dialog.ShowDialog() == DialogResult.OK)
@@ -106,12 +110,13 @@ namespace Inventors.ECP.Tester
                 try
                 {
                     LoadDevice(dialog.FileName);
+                    var directory = Path.GetDirectoryName(dialog.FileName);
+                    Settings.DeviceDirectory = directory;
                 }
                 catch (Exception ex)
                 {
                     Log.Error(ex.Message);
                 }
-
             }
         }
 
@@ -120,7 +125,18 @@ namespace Inventors.ECP.Tester
             try
             {
                 var loader = DeviceLoader.Load(fileName);
-                Log.Status("Device: {0} [Creation time: {1}]", loader.AssemblyName, loader.CreationTime);
+                deviceId = loader.Factory;
+                logDirectory = Settings.GetDeviceDefaultLoggingDirectory(deviceId);
+                logControl.Paused = false;
+                Log.Status("Loaded assembly: {0}", loader.FileName);
+                Log.Status("Device: {0} [Creation time: {1}]", loader.Factory, loader.CreationTime);
+                Log.Status("Logging directory: {0}", logDirectory);
+                Log.Status("Log settings [Auto save: {0}, Confirm deletion: {1}]", loader.AutoSaveLog, loader.ConfirmLogDeletion);
+
+                autoSaveLogToolStripMenuItem.Checked = logControl.AutoSave = loader.AutoSaveLog;
+                logControl.InitializeLogFile(logDirectory);
+                confirmLogDeletion = loader.ConfirmLogDeletion;
+
                 device = loader.Create();
                 scriptRunner = new ScriptRunner(device);
                 scriptRunner.Completed += OnScriptCompleted;
@@ -473,6 +489,12 @@ namespace Inventors.ECP.Tester
             switch (state)
             {
                 case AppState.APP_STATE_UNINITIALIZED:
+                    clearLogToolStripMenuItem.Enabled = false;
+                    saveLogToolStripMenuItem.Enabled = false;
+                    pauseToolStripMenuItem.Enabled = false;
+                    autoSaveLogToolStripMenuItem.Enabled = false;
+                    openLogsToolStripMenuItem.Enabled = false;
+
                     functionList.Enabled = false;
                     connectToolStripMenuItem.Enabled = false;
                     disconnectToolStripMenuItem.Enabled = false;
@@ -483,6 +505,12 @@ namespace Inventors.ECP.Tester
                     runScriptToolStripMenuItem.Enabled = false;
                     break;
                 case AppState.APP_STATE_INITIALIZED:
+                    clearLogToolStripMenuItem.Enabled = true;
+                    saveLogToolStripMenuItem.Enabled = true;
+                    pauseToolStripMenuItem.Enabled = true;
+                    autoSaveLogToolStripMenuItem.Enabled = true;
+                    openLogsToolStripMenuItem.Enabled = true;
+
                     functionList.Enabled = true;
                     connectToolStripMenuItem.Enabled = true;
                     disconnectToolStripMenuItem.Enabled = false;
@@ -493,6 +521,12 @@ namespace Inventors.ECP.Tester
                     runScriptToolStripMenuItem.Enabled = false;
                     break;
                 case AppState.APP_STATE_CONNECTED:
+                    clearLogToolStripMenuItem.Enabled = true;
+                    saveLogToolStripMenuItem.Enabled = true;
+                    pauseToolStripMenuItem.Enabled = true;
+                    autoSaveLogToolStripMenuItem.Enabled = true;
+                    openLogsToolStripMenuItem.Enabled = true;
+
                     functionList.Enabled = true;
                     connectToolStripMenuItem.Enabled = false;
                     disconnectToolStripMenuItem.Enabled = true;
@@ -503,6 +537,12 @@ namespace Inventors.ECP.Tester
                     runScriptToolStripMenuItem.Enabled = true;
                     break;
                 case AppState.APP_STATE_ACTIVE:
+                    clearLogToolStripMenuItem.Enabled = true;
+                    saveLogToolStripMenuItem.Enabled = true;
+                    pauseToolStripMenuItem.Enabled = true;
+                    autoSaveLogToolStripMenuItem.Enabled = true;
+                    openLogsToolStripMenuItem.Enabled = true;
+
                     functionList.Enabled = false;
                     connectToolStripMenuItem.Enabled = false;
                     disconnectToolStripMenuItem.Enabled = false;
@@ -608,12 +648,26 @@ namespace Inventors.ECP.Tester
         {
             if (!string.IsNullOrEmpty(logControl.Content))
             {
-                if (MessageBox.Show(this, 
-                                    "This will delete all content in the log, do you intend to do this", 
-                                    "Deleting Log", 
-                                    MessageBoxButtons.YesNo, 
-                                    MessageBoxIcon.Question, 
-                                    MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                bool deleteLog = false;
+
+                if (confirmLogDeletion)
+                {
+                    if (MessageBox.Show(this,
+                                        "This will delete all content in the log, do you intend to do this",
+                                        "Deleting Log",
+                                        MessageBoxButtons.YesNo,
+                                        MessageBoxIcon.Question,
+                                        MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                    {
+                        deleteLog = true;
+                    }
+                }
+                else
+                {
+                    deleteLog = true;
+                }
+
+                if (deleteLog)
                 {
                     logControl.Clear();
                 }
@@ -627,12 +681,14 @@ namespace Inventors.ECP.Tester
                 using (var dialog = new SaveFileDialog()
                 {
                     Filter = "Text Files|*.txt",
-                    Title = "Save Log File"
+                    Title = "Save Log File",
+                    InitialDirectory = Settings.GetLoggingDirectory(deviceId)                    
                 })
                 {
                     if (dialog.ShowDialog() == DialogResult.OK)
                     {
                         File.WriteAllText(dialog.FileName, logControl.Content);
+                        Settings.UpdateLoggingDirectory(deviceId, Path.GetDirectoryName(dialog.FileName));
                     }
                 }
             }
@@ -730,6 +786,20 @@ namespace Inventors.ECP.Tester
         {
             logControl.Paused = !logControl.Paused;
             pauseToolStripMenuItem.Checked = logControl.Paused;
+        }
+
+        private void AutoSaveLogToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            logControl.AutoSave = !logControl.AutoSave;
+            autoSaveLogToolStripMenuItem.Checked = logControl.AutoSave;
+        }
+
+        private void OpenLogsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (logDirectory is string)
+            {
+                Process.Start(logDirectory);
+            }
         }
     }
 }
