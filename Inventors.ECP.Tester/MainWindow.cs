@@ -35,6 +35,7 @@ namespace Inventors.ECP.Tester
 
         private Device device = null;
         private string deviceId = null;
+        private string logDirectory = null;
         private string selectedDevice = null;
         private bool confirmLogDeletion = true;
         private AppState state = AppState.APP_STATE_UNINITIALIZED;
@@ -125,15 +126,15 @@ namespace Inventors.ECP.Tester
             {
                 var loader = DeviceLoader.Load(fileName);
                 deviceId = loader.Factory;
-                var directory = Settings.GetDeviceDefaultLoggingDirectory(deviceId);
+                logDirectory = Settings.GetDeviceDefaultLoggingDirectory(deviceId);
                 logControl.Paused = false;
                 Log.Status("Loaded assembly: {0}", loader.FileName);
                 Log.Status("Device: {0} [Creation time: {1}]", loader.Factory, loader.CreationTime);
-                Log.Status("Logging directory: {0}", directory);
+                Log.Status("Logging directory: {0}", logDirectory);
                 Log.Status("Log settings [Auto save: {0}, Confirm deletion: {1}]", loader.AutoSaveLog, loader.ConfirmLogDeletion);
 
                 autoSaveLogToolStripMenuItem.Checked = logControl.AutoSave = loader.AutoSaveLog;
-                logControl.InitializeLogFile(directory);
+                logControl.InitializeLogFile(logDirectory);
                 confirmLogDeletion = loader.ConfirmLogDeletion;
 
                 device = loader.Create();
@@ -488,6 +489,12 @@ namespace Inventors.ECP.Tester
             switch (state)
             {
                 case AppState.APP_STATE_UNINITIALIZED:
+                    clearLogToolStripMenuItem.Enabled = false;
+                    saveLogToolStripMenuItem.Enabled = false;
+                    pauseToolStripMenuItem.Enabled = false;
+                    autoSaveLogToolStripMenuItem.Enabled = false;
+                    openLogsToolStripMenuItem.Enabled = false;
+
                     functionList.Enabled = false;
                     connectToolStripMenuItem.Enabled = false;
                     disconnectToolStripMenuItem.Enabled = false;
@@ -498,6 +505,12 @@ namespace Inventors.ECP.Tester
                     runScriptToolStripMenuItem.Enabled = false;
                     break;
                 case AppState.APP_STATE_INITIALIZED:
+                    clearLogToolStripMenuItem.Enabled = true;
+                    saveLogToolStripMenuItem.Enabled = true;
+                    pauseToolStripMenuItem.Enabled = true;
+                    autoSaveLogToolStripMenuItem.Enabled = true;
+                    openLogsToolStripMenuItem.Enabled = true;
+
                     functionList.Enabled = true;
                     connectToolStripMenuItem.Enabled = true;
                     disconnectToolStripMenuItem.Enabled = false;
@@ -508,6 +521,12 @@ namespace Inventors.ECP.Tester
                     runScriptToolStripMenuItem.Enabled = false;
                     break;
                 case AppState.APP_STATE_CONNECTED:
+                    clearLogToolStripMenuItem.Enabled = true;
+                    saveLogToolStripMenuItem.Enabled = true;
+                    pauseToolStripMenuItem.Enabled = true;
+                    autoSaveLogToolStripMenuItem.Enabled = true;
+                    openLogsToolStripMenuItem.Enabled = true;
+
                     functionList.Enabled = true;
                     connectToolStripMenuItem.Enabled = false;
                     disconnectToolStripMenuItem.Enabled = true;
@@ -518,6 +537,12 @@ namespace Inventors.ECP.Tester
                     runScriptToolStripMenuItem.Enabled = true;
                     break;
                 case AppState.APP_STATE_ACTIVE:
+                    clearLogToolStripMenuItem.Enabled = true;
+                    saveLogToolStripMenuItem.Enabled = true;
+                    pauseToolStripMenuItem.Enabled = true;
+                    autoSaveLogToolStripMenuItem.Enabled = true;
+                    openLogsToolStripMenuItem.Enabled = true;
+
                     functionList.Enabled = false;
                     connectToolStripMenuItem.Enabled = false;
                     disconnectToolStripMenuItem.Enabled = false;
@@ -767,6 +792,14 @@ namespace Inventors.ECP.Tester
         {
             logControl.AutoSave = !logControl.AutoSave;
             autoSaveLogToolStripMenuItem.Checked = logControl.AutoSave;
+        }
+
+        private void OpenLogsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (logDirectory is string)
+            {
+                Process.Start(logDirectory);
+            }
         }
     }
 }

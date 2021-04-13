@@ -69,10 +69,11 @@
             this.vSplitContainer = new System.Windows.Forms.SplitContainer();
             this.functionList = new System.Windows.Forms.ListBox();
             this.propertyGrid = new System.Windows.Forms.PropertyGrid();
-            this.logControl = new Inventors.ECP.Tester.LogControl();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.msgTimer = new System.Windows.Forms.Timer(this.components);
             this.deviceTimer = new System.Windows.Forms.Timer(this.components);
+            this.logControl = new Inventors.ECP.Tester.LogControl();
+            this.openLogsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.hSplitContainer)).BeginInit();
@@ -132,6 +133,7 @@
             this.saveLogToolStripMenuItem,
             this.pauseToolStripMenuItem,
             this.autoSaveLogToolStripMenuItem,
+            this.openLogsToolStripMenuItem,
             this.toolStripSeparator7,
             this.runScriptToolStripMenuItem,
             this.toolStripSeparator6,
@@ -424,18 +426,6 @@
             this.propertyGrid.Size = new System.Drawing.Size(929, 469);
             this.propertyGrid.TabIndex = 0;
             // 
-            // logControl
-            // 
-            this.logControl.AutoSave = true;
-            this.logControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.logControl.Level = Inventors.ECP.LogLevel.STATUS;
-            this.logControl.Location = new System.Drawing.Point(0, 0);
-            this.logControl.Margin = new System.Windows.Forms.Padding(5);
-            this.logControl.Name = "logControl";
-            this.logControl.Paused = true;
-            this.logControl.Size = new System.Drawing.Size(1155, 200);
-            this.logControl.TabIndex = 0;
-            // 
             // imageList
             // 
             this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList.ImageStream")));
@@ -467,6 +457,25 @@
             this.deviceTimer.Enabled = true;
             this.deviceTimer.Interval = 1000;
             this.deviceTimer.Tick += new System.EventHandler(this.DeviceTimer_Tick);
+            // 
+            // logControl
+            // 
+            this.logControl.AutoSave = true;
+            this.logControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.logControl.Level = Inventors.ECP.LogLevel.STATUS;
+            this.logControl.Location = new System.Drawing.Point(0, 0);
+            this.logControl.Margin = new System.Windows.Forms.Padding(5);
+            this.logControl.Name = "logControl";
+            this.logControl.Paused = true;
+            this.logControl.Size = new System.Drawing.Size(1155, 200);
+            this.logControl.TabIndex = 0;
+            // 
+            // openLogsToolStripMenuItem
+            // 
+            this.openLogsToolStripMenuItem.Name = "openLogsToolStripMenuItem";
+            this.openLogsToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.openLogsToolStripMenuItem.Text = "Open Logs";
+            this.openLogsToolStripMenuItem.Click += new System.EventHandler(this.OpenLogsToolStripMenuItem_Click);
             // 
             // MainWindow
             // 
@@ -544,6 +553,7 @@
         private System.Windows.Forms.ToolStripMenuItem addressMenu;
         private System.Windows.Forms.ToolStripMenuItem pauseToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem autoSaveLogToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openLogsToolStripMenuItem;
     }
 }
 
