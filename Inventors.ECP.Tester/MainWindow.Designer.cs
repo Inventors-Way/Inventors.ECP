@@ -67,11 +67,11 @@
             this.vSplitContainer = new System.Windows.Forms.SplitContainer();
             this.functionList = new System.Windows.Forms.ListBox();
             this.propertyGrid = new System.Windows.Forms.PropertyGrid();
-            this.logControl = new Inventors.ECP.Tester.LogControl();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.msgTimer = new System.Windows.Forms.Timer(this.components);
             this.deviceTimer = new System.Windows.Forms.Timer(this.components);
             this.pauseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.logControl = new Inventors.ECP.Tester.LogControl();
             this.statusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.hSplitContainer)).BeginInit();
@@ -187,21 +187,21 @@
             // debugToolStripMenuItem
             // 
             this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
-            this.debugToolStripMenuItem.Size = new System.Drawing.Size(137, 26);
+            this.debugToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.debugToolStripMenuItem.Text = "Debug";
             this.debugToolStripMenuItem.Click += new System.EventHandler(this.DebugToolStripMenuItem_Click);
             // 
             // statusToolStripMenuItem
             // 
             this.statusToolStripMenuItem.Name = "statusToolStripMenuItem";
-            this.statusToolStripMenuItem.Size = new System.Drawing.Size(137, 26);
+            this.statusToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.statusToolStripMenuItem.Text = "Status";
             this.statusToolStripMenuItem.Click += new System.EventHandler(this.StatusToolStripMenuItem_Click);
             // 
             // errorToolStripMenuItem
             // 
             this.errorToolStripMenuItem.Name = "errorToolStripMenuItem";
-            this.errorToolStripMenuItem.Size = new System.Drawing.Size(137, 26);
+            this.errorToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.errorToolStripMenuItem.Text = "Error";
             this.errorToolStripMenuItem.Click += new System.EventHandler(this.ErrorToolStripMenuItem_Click);
             // 
@@ -292,26 +292,26 @@
             // testToolStripMenuItem
             // 
             this.testToolStripMenuItem.Name = "testToolStripMenuItem";
-            this.testToolStripMenuItem.Size = new System.Drawing.Size(190, 26);
+            this.testToolStripMenuItem.Size = new System.Drawing.Size(140, 26);
             this.testToolStripMenuItem.Text = "Test";
             this.testToolStripMenuItem.Click += new System.EventHandler(this.TestToolStripMenuItem_Click);
             // 
             // trialsToolStripMenuItem
             // 
             this.trialsToolStripMenuItem.Name = "trialsToolStripMenuItem";
-            this.trialsToolStripMenuItem.Size = new System.Drawing.Size(190, 26);
+            this.trialsToolStripMenuItem.Size = new System.Drawing.Size(140, 26);
             this.trialsToolStripMenuItem.Text = "Trials";
             this.trialsToolStripMenuItem.Click += new System.EventHandler(this.TrialsToolStripMenuItem_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(187, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(137, 6);
             // 
             // profilerMenuItem
             // 
             this.profilerMenuItem.Name = "profilerMenuItem";
-            this.profilerMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.profilerMenuItem.Size = new System.Drawing.Size(140, 26);
             this.profilerMenuItem.Text = "Profiler";
             this.profilerMenuItem.Click += new System.EventHandler(this.ProfilerMenuItem_Click);
             // 
@@ -407,16 +407,6 @@
             this.propertyGrid.Size = new System.Drawing.Size(929, 469);
             this.propertyGrid.TabIndex = 0;
             // 
-            // logControl
-            // 
-            this.logControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.logControl.Level = Inventors.ECP.LogLevel.STATUS;
-            this.logControl.Location = new System.Drawing.Point(0, 0);
-            this.logControl.Margin = new System.Windows.Forms.Padding(5);
-            this.logControl.Name = "logControl";
-            this.logControl.Size = new System.Drawing.Size(1155, 200);
-            this.logControl.TabIndex = 0;
-            // 
             // imageList
             // 
             this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList.ImageStream")));
@@ -456,6 +446,17 @@
             this.pauseToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.pauseToolStripMenuItem.Text = "Pause";
             this.pauseToolStripMenuItem.Click += new System.EventHandler(this.PauseToolStripMenuItem_Click);
+            // 
+            // logControl
+            // 
+            this.logControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.logControl.Level = Inventors.ECP.LogLevel.STATUS;
+            this.logControl.Location = new System.Drawing.Point(0, 0);
+            this.logControl.Margin = new System.Windows.Forms.Padding(5);
+            this.logControl.Name = "logControl";
+            this.logControl.Paused = true;
+            this.logControl.Size = new System.Drawing.Size(1155, 200);
+            this.logControl.TabIndex = 0;
             // 
             // MainWindow
             // 

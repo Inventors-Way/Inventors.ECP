@@ -120,7 +120,9 @@ namespace Inventors.ECP.Tester
             try
             {
                 var loader = DeviceLoader.Load(fileName);
-                Log.Status("Device: {0} [Creation time: {1}]", loader.AssemblyName, loader.CreationTime);
+                logControl.Paused = false;
+                Log.Status("Loaded assembly: {0}", loader.FileName);
+                Log.Status("Device: {0} [Creation time: {1}]", loader.Factory, loader.CreationTime);
                 device = loader.Create();
                 scriptRunner = new ScriptRunner(device);
                 scriptRunner.Completed += OnScriptCompleted;

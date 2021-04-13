@@ -36,30 +36,36 @@ namespace Inventors.ECP.Tester
             Load();
         }
 
+        public class StartupDirectory
+        {
+            [XmlAttribute("id")]
+            public string ID { get; set; }
 
+            [XmlAttribute("startup-path")]
+            public string StartupPath { get; set; }
+        }
 
         [XmlRoot("settings")]
         public class SettingsFile
         {
             [XmlAttribute("level")]
             public LogLevel Level { get; set; } = LogLevel.STATUS;
+
+            [XmlArray("logging-directories")]
+            [XmlArrayItem("directory")]
+            public List<StartupDirectory> LoggingDirectories { get; } = new List<StartupDirectory>();
         }
 
-        private static string SystemDirectory
-        {
-            get
-            {
-                return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ecp_tester");
-            }
-        }
+        private static string SystemDirectory => 
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ecp_tester");
 
-        private static string StateFile
-        {
-            get
-            {
-                return Path.Combine(SystemDirectory, "settings.xml");
-            }
-        }
+        private static string LoggingDirectory =>
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ECP Logs");
+
+        private static string GetDeviceLoggingDirectory(string id) =>
+            Path.Combine(LoggingDirectory, id);
+
+        private static string StateFile => Path.Combine(SystemDirectory, "settings.xml");
 
         public static LogLevel Level
         {
@@ -74,6 +80,24 @@ namespace Inventors.ECP.Tester
             }
         }
 
+        #region Handle logging directories
+
+        public static string GetLoggingDirectory(string id)
+        {
+            var file = Instance.Load();
+
+            if (file.LoggingDirectories.Any((d) => d.ID == id))
+            {
+            }
+            else
+            {
+
+            }
+
+            return "";
+        }
+
+        #endregion
 
         private SettingsFile Load()
         {
