@@ -100,7 +100,8 @@ namespace Inventors.ECP.Tester
             OpenFileDialog dialog = new OpenFileDialog()
             {
                 Filter = "Device Definition Files (*.ddfx)|*.ddfx",
-                Title = "Open Device Definition File"
+                Title = "Open Device Definition File",
+                InitialDirectory = Settings.DeviceDirectory
             };
 
             if (dialog.ShowDialog() == DialogResult.OK)
@@ -108,12 +109,13 @@ namespace Inventors.ECP.Tester
                 try
                 {
                     LoadDevice(dialog.FileName);
+                    var directory = Path.GetDirectoryName(dialog.FileName);
+                    Settings.DeviceDirectory = directory;
                 }
                 catch (Exception ex)
                 {
                     Log.Error(ex.Message);
                 }
-
             }
         }
 
@@ -654,12 +656,14 @@ namespace Inventors.ECP.Tester
                 using (var dialog = new SaveFileDialog()
                 {
                     Filter = "Text Files|*.txt",
-                    Title = "Save Log File"
+                    Title = "Save Log File",
+                    InitialDirectory = Settings.GetLoggingDirectory(deviceId)                    
                 })
                 {
                     if (dialog.ShowDialog() == DialogResult.OK)
                     {
                         File.WriteAllText(dialog.FileName, logControl.Content);
+                        Settings.UpdateLoggingDirectory(deviceId, Path.GetDirectoryName(dialog.FileName));
                     }
                 }
             }

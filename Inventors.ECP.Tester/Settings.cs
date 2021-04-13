@@ -51,6 +51,9 @@ namespace Inventors.ECP.Tester
             [XmlAttribute("level")]
             public LogLevel Level { get; set; } = LogLevel.STATUS;
 
+            [XmlAttribute("device-directory")]
+            public string DeviceDirectory { get; set; }
+
             [XmlArray("logging-directories")]
             [XmlArrayItem("directory")]
             public List<StartupDirectory> LoggingDirectories { get; } = new List<StartupDirectory>();
@@ -93,23 +96,61 @@ namespace Inventors.ECP.Tester
             }
         }
 
+        public static string DeviceDirectory
+        {
+            get
+            {
+                var retValue = Instance.Load().DeviceDirectory;
+
+                return retValue is string ? retValue : "";
+            }
+            set
+            {
+                if (value != Instance.Load().DeviceDirectory)
+                {
+                    Instance.Load().DeviceDirectory = value;
+                    Instance.Save();
+                }
+            }
+        }
+
         #region Handle logging directories
 
         public static string GetLoggingDirectory(string id)
         {
             var file = Instance.Load();
-            var directory = GetLoggingDirectory(id);
+            var directory = GetDeviceDefaultLoggingDirectory(id);
 
             if (file.LoggingDirectories.Any((d) => d.ID == id))
             {
-
-            }
-            else
-            {
-
+                directory = file.LoggingDirectories.Find((d) => d.ID == id).StartupPath;
             }
 
             return directory;
+        }
+
+        public static void UpdateLoggingDirectory(string id, string directory)
+        {
+            var current = GetLoggingDirectory(id);
+            var file = Instance.Load();
+
+            if (current != directory)
+            {
+                if (file.LoggingDirectories.Any((d) => d.ID == id))
+                {
+                    file.LoggingDirectories.Find((d) => d.ID == id).StartupPath = directory;
+                    Instance.Save();
+                }
+                else
+                {
+                    file.LoggingDirectories.Add(new StartupDirectory()
+                    {
+                        ID = id,
+                        StartupPath = directory
+                    });
+                    Instance.Save();
+                }
+            }
         }
 
         #endregion
