@@ -163,7 +163,7 @@ namespace Inventors.ECP
 
             try
             {
-                var ping = new Ping();
+                dynamic ping = CreatePing();
                 Execute(ping);
                 retValue = (int) ping.Count;
             }
@@ -179,13 +179,40 @@ namespace Inventors.ECP
         /// <returns>The DeviceFunction that performs device identification for the device</returns>
         public virtual DeviceFunction CreateIdentificationFunction() => new DeviceIdentification();
 
+        /// <summary>
+        /// Create the SetDebugSignal function for setting which debug signals are currently active on target
+        /// </summary>
+        /// <param name="signals">the debug signals that should be active</param>
+        /// <returns>the SetDebugSignal function to be executed on target</returns>
+        public virtual DeviceFunction CreateSetDebugSignal(List<DebugSignal> signals)
+        {
+            var function = new SetDebugSignal();
+            function.Signals.AddRange(signals);
+            return function;
+        }
+
+        /// <summary>
+        /// Create the Ping for testing the connection 
+        /// </summary>
+        /// <returns>Ping function</returns>
+        public virtual DeviceFunction CreatePing() => new Ping();
+
+        public virtual List<DebugSignal> GetSupportedDebugSignals() =>
+            new List<DebugSignal>()
+            {
+                new DebugSignal() { Code = 1, Name = "Polling Loop", Description = "Timing measurement for the main polling loop" },
+                new DebugSignal() { Code = 1, Name = "Message Processing", Description = "Measurement for processing of messages" }
+            };
+
+        public virtual int NumberOfSupportedDebugSignals => 1;
+
         public bool Connect()
         {
             bool retValue = false;
 
             if (!Master.IsOpen)
             {
-                var identification = CreateIdentificationFunction();
+                DeviceFunction identification = CreateIdentificationFunction();
                 var retries = Retries;
                 Retries = Retries > 3 ? Retries : 3;
 
