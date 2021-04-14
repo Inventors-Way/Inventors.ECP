@@ -72,8 +72,8 @@
             this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.msgTimer = new System.Windows.Forms.Timer(this.components);
             this.deviceTimer = new System.Windows.Forms.Timer(this.components);
-            this.logControl = new Inventors.ECP.Tester.LogControl();
             this.openLogsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.logControl = new Inventors.ECP.Tester.LogControl();
             this.statusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.hSplitContainer)).BeginInit();
@@ -458,6 +458,13 @@
             this.deviceTimer.Interval = 1000;
             this.deviceTimer.Tick += new System.EventHandler(this.DeviceTimer_Tick);
             // 
+            // openLogsToolStripMenuItem
+            // 
+            this.openLogsToolStripMenuItem.Name = "openLogsToolStripMenuItem";
+            this.openLogsToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.openLogsToolStripMenuItem.Text = "Open Logs";
+            this.openLogsToolStripMenuItem.Click += new System.EventHandler(this.OpenLogsToolStripMenuItem_Click);
+            // 
             // logControl
             // 
             this.logControl.AutoSave = true;
@@ -469,13 +476,6 @@
             this.logControl.Paused = true;
             this.logControl.Size = new System.Drawing.Size(1155, 200);
             this.logControl.TabIndex = 0;
-            // 
-            // openLogsToolStripMenuItem
-            // 
-            this.openLogsToolStripMenuItem.Name = "openLogsToolStripMenuItem";
-            this.openLogsToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
-            this.openLogsToolStripMenuItem.Text = "Open Logs";
-            this.openLogsToolStripMenuItem.Click += new System.EventHandler(this.OpenLogsToolStripMenuItem_Click);
             // 
             // MainWindow
             // 
