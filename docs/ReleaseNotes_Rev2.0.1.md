@@ -91,7 +91,7 @@ start from the directory a log was last saved to.
 
 ### Auto save of device logs
 
-The ECP Tester will not auto save the log to a text file, if either the
+The ECP Tester will auto save the log to a text file, if either the
 ```confirm-log-deletion``` attribute is true in the ddfx file, or if it has been
 enabled with the ```File=>Auto Save Log``` menu item.
 
