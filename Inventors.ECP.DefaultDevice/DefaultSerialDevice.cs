@@ -18,6 +18,7 @@ namespace Inventors.ECP.DefaultDevice
             FunctionList.Add(new DeviceIdentification());
             FunctionList.Add(new Ping());
             FunctionList.Add(new GetEndianness());
+            FunctionList.Add(new SetDebugSignal());
 
             Master.Add(new TimingViolationMessage());
             Master.Add(new TimingMessage());
