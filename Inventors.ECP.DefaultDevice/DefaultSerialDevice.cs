@@ -26,11 +26,15 @@ namespace Inventors.ECP.DefaultDevice
 
         public override IScript CreateScript(string content) => content.ToObject<DefaultScript>();
 
-        public void Accept(TimingViolationMessage msg) =>
-            Profiler.Add(new TimingViolation(msg.Name, msg.Time, msg.TimeLimit, msg.Context));
+        public void Accept(TimingViolationMessage msg)
+        {
+            Profiler.Add(new TimingViolation(msg.DebugSignal.ToString(), msg.Time, msg.TimeLimit, 0));
+        }
 
-        public void Accept(TimingMessage msg) =>
-            Profiler.Add(new TimingRecord(msg.Name, msg.AverageTime, msg.Min, msg.Max));
+        public void Accept(TimingMessage msg)
+        {
+            Profiler.Add(new TimingRecord(msg.DebugSignal, msg.AverageTime, msg.Min, msg.Max));
+        }
 
         public override bool IsCompatible(DeviceFunction identification) => true;
     }

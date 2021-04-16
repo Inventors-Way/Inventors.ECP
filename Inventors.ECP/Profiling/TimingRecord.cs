@@ -9,9 +9,9 @@ namespace Inventors.ECP.Profiling
     public class TimingRecord :
         Record
     {
-        public TimingRecord(string id, double average, double min, double max)
+        public TimingRecord(UInt32 code, double average, double min, double max)
         {
-            ID = id;
+            ID = code.ToString();
             Average = average;
             Min = min;
             Max = max;
