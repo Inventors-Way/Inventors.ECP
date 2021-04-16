@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>net48;netstandard2.1</TargetFrameworks>
-    <Version>2.0.1</Version>
+    <Version>2.1.0</Version>
     <Authors>Inventors' Way</Authors>
     <Company>Inventors' Way ApS</Company>
     <Description>Library implementing the Embedded Communication Protocol (ECP)</Description>
@@ -12,12 +12,12 @@
     <RepositoryUrl>https://github.com/Inventors-Way/Inventors.ECP</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>Communication</PackageTags>
-    <PackageReleaseNotes>Added extended frames</PackageReleaseNotes>
+    <PackageReleaseNotes>https://github.com/Inventors-Way/Inventors.ECP/releases</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageIconUrl></PackageIconUrl>
     <NeutralLanguage>en</NeutralLanguage>
     <PackageIcon>Logo128x128.png</PackageIcon>
-    <AssemblyVersion>2.0.1.0</AssemblyVersion>
+    <AssemblyVersion>2.1.0.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
