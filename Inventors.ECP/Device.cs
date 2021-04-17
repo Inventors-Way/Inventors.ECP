@@ -133,6 +133,18 @@ namespace Inventors.ECP
             set => SetProperty(ref _address, value);
         }
         #endregion
+        #region Retries property
+
+        private int _retries = 1;
+
+        [Category("Retries")]
+        public int Retries
+        {
+            get => _retries;
+            set => SetProperty(ref _retries, value);
+        }
+
+        #endregion
         #endregion
 
         protected Device(CommunicationLayer commLayer, Profiler profiler)
@@ -193,7 +205,6 @@ namespace Inventors.ECP
             function.Signals.AddRange(signals);
             return function;
         }
-
 
         public virtual List<DebugSignal> GetSupportedDebugSignals() =>
             new List<DebugSignal>()
@@ -358,15 +369,6 @@ namespace Inventors.ECP
 
         [Browsable(false)]
         public List<DeviceFunction> Functions => FunctionList;
-
-        private int _retries = 1;
-
-        [Category("Retries")]
-        public int Retries 
-        {
-            get => _retries;
-            set => SetProperty(ref _retries, value);
-        }
 
         [XmlIgnore]
         [Browsable(false)]
