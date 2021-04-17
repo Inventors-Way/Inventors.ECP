@@ -164,7 +164,6 @@ namespace Inventors.ECP
             try
             {
                 var response = new Packet(frame);
-                Profiler.Add(response);
 
                 if (response.Code != 0x00)
                 {
