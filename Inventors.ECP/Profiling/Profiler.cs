@@ -30,9 +30,22 @@ namespace Inventors.ECP.Profiling
             public T Value { get; }
         }
 
-        private interface IFilter<T>
+        private interface IFilter
         {
             bool IsIncluded(Record value);
+        }
+
+        private class TimeFilter :
+            IFilter
+        {
+            public double End { get; set; }
+
+            public double Start { get; set; }
+
+            public bool IsIncluded(Record value)
+            {
+                return (value.Time >= Start) && (value.Time <= End);
+            }
         }
 
         private class DataSet<T>
@@ -41,11 +54,16 @@ namespace Inventors.ECP.Profiling
             private DataNode<T> last;
             private DataNode<T> start;
             private DataNode<T> end;
-            private readonly IFilter<T> filter;
+            private readonly IFilter filter;
 
-            public DataSet(IFilter<T> filter)
+            public DataSet(IFilter filter)
             {
                 this.filter = filter;
+            }
+
+            public void Clear()
+            {
+                last = start = end = null;
             }
 
             public void Add(T value)
@@ -106,10 +124,10 @@ namespace Inventors.ECP.Profiling
             }
         }
 
-        private readonly List<TargetEvent> events = new List<TargetEvent>();
-        private readonly Dictionary<string, List<TimingRecord>> timing = new Dictionary<string, List<TimingRecord>>();
-        private readonly Dictionary<string, List<TimingViolation>> violations = new Dictionary<string, List<TimingViolation>>();
-        private double time;
+        private readonly TimeFilter filter = new TimeFilter();
+        private readonly DataSet<TargetEvent> events;
+        private readonly Dictionary<UInt32, DataSet<TimingRecord>> timings = new Dictionary<uint, DataSet<TimingRecord>>();
+        private readonly Dictionary<UInt32, DataSet<TimingViolation>> violations= new Dictionary<uint, DataSet<TimingViolation>>();
 
         #region Properties
         #region Enabled Property
@@ -134,6 +152,10 @@ namespace Inventors.ECP.Profiling
         #endregion
         #endregion
 
+        public Profiler()
+        {
+            events = new DataSet<TargetEvent>(filter);
+        }
 
         public void Reset()
         {
@@ -141,10 +163,8 @@ namespace Inventors.ECP.Profiling
             {
                 ProfileTiming.Reset();
                 events.Clear();
-                timing.Clear();
+                timings.Clear();
                 violations.Clear();
-                
-                time = 0;
             }
         }
 
@@ -160,7 +180,6 @@ namespace Inventors.ECP.Profiling
                 lock (LockObject)
                 {
                     events.Add(e);
-                    time = e.Time;
                 }
             }
         }
@@ -174,6 +193,16 @@ namespace Inventors.ECP.Profiling
             {
                 lock (LockObject)
                 {
+                    if (timings.ContainsKey(record.Signal))
+                    {
+                        timings[record.Signal].Add(record);
+                    }
+                    else
+                    {
+                        var set = new DataSet<TimingRecord>(filter);
+                        set.Add(record);
+                        timings.Add(record.Signal, set);                        
+                    }                    
                 }
             }
         }
@@ -187,6 +216,16 @@ namespace Inventors.ECP.Profiling
             {
                 lock (LockObject)
                 {
+                    if (violations.ContainsKey(violation.Signal))
+                    {
+                        violations[violation.Signal].Add(violation);
+                    }
+                    else
+                    {
+                        var set = new DataSet<TimingViolation>(filter);
+                        set.Add(violation);
+                        violations.Add(violation.Signal, set);
+                    }
                 }
             }
         }
