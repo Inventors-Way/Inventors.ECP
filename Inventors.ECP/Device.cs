@@ -153,6 +153,8 @@ namespace Inventors.ECP
         /// <returns></returns>
         public abstract IScript CreateScript(string content);
 
+        #region Implementation of ping
+
         /// <summary>
         /// Ping the connected device.
         /// </summary>
@@ -173,11 +175,12 @@ namespace Inventors.ECP
         }
 
         /// <summary>
-        /// Create the DeviceFunction for identifying the device. After it has been successfully executed the 
-        /// IsCompatible() function can be used to check if the connected device is compatible.
+        /// Create the Ping for testing the connection 
         /// </summary>
-        /// <returns>The DeviceFunction that performs device identification for the device</returns>
-        public virtual DeviceFunction CreateIdentificationFunction() => new DeviceIdentification();
+        /// <returns>Ping function</returns>
+        public virtual DeviceFunction CreatePing() => new Ping();
+
+        #endregion
 
         /// <summary>
         /// Create the SetDebugSignal function for setting which debug signals are currently active on target
@@ -191,11 +194,6 @@ namespace Inventors.ECP
             return function;
         }
 
-        /// <summary>
-        /// Create the Ping for testing the connection 
-        /// </summary>
-        /// <returns>Ping function</returns>
-        public virtual DeviceFunction CreatePing() => new Ping();
 
         public virtual List<DebugSignal> GetSupportedDebugSignals() =>
             new List<DebugSignal>()
@@ -205,6 +203,8 @@ namespace Inventors.ECP
             };
 
         public virtual int NumberOfSupportedDebugSignals => 1;
+
+        #region Implementation of connect and disconnect
 
         public bool Connect()
         {
@@ -246,6 +246,15 @@ namespace Inventors.ECP
             return retValue;
         }
 
+        /// <summary>
+        /// Create the DeviceFunction for identifying the device. After it has been successfully executed the 
+        /// IsCompatible() function can be used to check if the connected device is compatible.
+        /// </summary>
+        /// <returns>The DeviceFunction that performs device identification for the device</returns>
+        public virtual DeviceFunction CreateIdentificationFunction() => new DeviceIdentification();
+
+        public abstract bool IsCompatible(DeviceFunction function);
+
         private void WaitOnConnected(int timeout)
         {
             var watch = new Stopwatch();
@@ -272,6 +281,8 @@ namespace Inventors.ECP
                 Connected = false;
             }
         }
+
+        #endregion
 
         /// <summary>
         /// Open the location of device, but does not check if a device is present by connecting to it.
@@ -348,10 +359,7 @@ namespace Inventors.ECP
         [Browsable(false)]
         public List<DeviceFunction> Functions => FunctionList;
 
-        public abstract bool IsCompatible(DeviceFunction function);
-
         private int _retries = 1;
-        private bool disposedValue;
 
         [Category("Retries")]
         public int Retries 
@@ -369,6 +377,10 @@ namespace Inventors.ECP
         protected List<MessageDispatcher> Dispatchers { get; } = new List<MessageDispatcher>();
 
         private readonly Stopwatch watch = new Stopwatch();
+
+        #region Implementation of dispose pattern 
+
+        private bool disposedValue;
 
         protected virtual void Dispose(bool disposing)
         {
@@ -388,5 +400,7 @@ namespace Inventors.ECP
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
+
+        #endregion
     }
 }
