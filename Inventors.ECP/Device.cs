@@ -206,14 +206,9 @@ namespace Inventors.ECP
             return function;
         }
 
-        public virtual List<DebugSignal> GetSupportedDebugSignals() =>
-            new List<DebugSignal>()
-            {
-                new DebugSignal() { Code = 1, Name = "Polling Loop", Description = "Timing measurement for the main polling loop" },
-                new DebugSignal() { Code = 1, Name = "Message Processing", Description = "Measurement for processing of messages" }
-            };
+        public abstract List<DebugSignal> GetSupportedDebugSignals();
 
-        public virtual int NumberOfSupportedDebugSignals => 1;
+        public abstract int NumberOfSupportedDebugSignals { get; }
 
         #region Implementation of connect and disconnect
 
