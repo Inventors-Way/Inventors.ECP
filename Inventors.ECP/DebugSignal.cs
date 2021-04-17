@@ -18,5 +18,7 @@ namespace Inventors.ECP
 
         [XmlAttribute("description")]
         public string Description { get; set; } = "";
+
+        public override string ToString() => $"[ {Code} ] {Name}";
     }
 }

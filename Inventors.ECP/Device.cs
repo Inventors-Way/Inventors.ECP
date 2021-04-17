@@ -147,7 +147,8 @@ namespace Inventors.ECP
         #endregion
         #endregion
 
-        protected Device(CommunicationLayer commLayer, Profiler profiler)
+        protected Device(CommunicationLayer commLayer, 
+                         Profiler profiler)
         {
             Master = new BusCentral(commLayer, profiler)
             {
@@ -156,7 +157,7 @@ namespace Inventors.ECP
             Master.Add(new PrintfMessage());
         }
 
-        public List<string> GetLocationsDevices() => Master.GetLocations();
+        #region Support for scripts 
 
         /// <summary>
         /// Create a new message script from a text string
@@ -165,6 +166,7 @@ namespace Inventors.ECP
         /// <returns></returns>
         public abstract IScript CreateScript(string content);
 
+        #endregion
         #region Implementation of ping
 
         /// <summary>
@@ -193,24 +195,57 @@ namespace Inventors.ECP
         public virtual DeviceFunction CreatePing() => new Ping();
 
         #endregion
+        #region Debugging
+        private readonly List<DebugSpecification> _debugSpecifications = new List<DebugSpecification>();
 
-        /// <summary>
-        /// Create the SetDebugSignal function for setting which debug signals are currently active on target
-        /// </summary>
-        /// <param name="signals">the debug signals that should be active</param>
-        /// <returns>the SetDebugSignal function to be executed on target</returns>
-        public virtual DeviceFunction CreateSetDebugSignal(List<DebugSignal> signals)
+        internal void AddDebugSpecification(DebugSpecification specification)
         {
-            var function = new SetDebugSignal();
-            function.Signals.AddRange(signals);
-            return function;
+            if (specification is null)
+                throw new ArgumentNullException(nameof(specification));
+
+            if (_debugSpecifications.Any((s) => s.Address == specification.Address))
+                throw new ArgumentException($"Debug specification for address {specification.Address} allready exists");
+
+            _debugSpecifications.Add(specification);
         }
 
-        public abstract List<DebugSignal> GetSupportedDebugSignals();
+        public DebugSpecification GetActiveDebugSpecification()
+        {
+            if (_debugSpecifications.Count == 0)
+                return null;
+
+            if (CurrentAddress is null)
+                return _debugSpecifications[0];
+
+            if (!_debugSpecifications.Any((s) => s.Address == CurrentAddress.Value))
+                return null;
+
+            return _debugSpecifications.Find((s) => s.Address == CurrentAddress.Value);
+        }
+
+        /// <summary>
+        /// Set the active debug signals
+        /// </summary>
+        /// <param name="signals">the debug signals that should be active</param>
+        public virtual void SetActiveDebugSignals(List<DebugSignal> signals)
+        {
+            if (signals is null)
+                throw new ArgumentNullException(nameof(signals));
+
+            if (signals.Count != NumberOfSupportedDebugSignals)
+                throw new ArgumentException($"Invalid number of debug signals [ {signals.Count} ] must be {NumberOfSupportedDebugSignals}");
+
+            var function = new SetDebugSignal();
+            function.Signals.AddRange(signals);
+            Execute(function);
+        }
 
         public abstract int NumberOfSupportedDebugSignals { get; }
 
+        #endregion
         #region Implementation of connect and disconnect
+
+        public List<string> GetLocationsDevices() => Master.GetLocations();
 
         public bool Connect()
         {
@@ -289,6 +324,7 @@ namespace Inventors.ECP
         }
 
         #endregion
+        #region Open and closing of the device
 
         /// <summary>
         /// Open the location of device, but does not check if a device is present by connecting to it.
@@ -311,6 +347,8 @@ namespace Inventors.ECP
                 Master.Close();
             }
         }
+
+        #endregion
 
         public void Execute(DeviceFunction function)
         {

@@ -5,4 +5,13 @@
         profiling="false"
         number-of-trials="100"
         test-delay="0">
+  <debug-specifications>
+    <debug-specification address="0" name="Default Device">
+      <debug-signal code="1" name="Polling Loop" description="Timing measurement for the main polling loop" />
+      <debug-signal code="2" name="Hal Layer" description="Timing measurement for the Run() function in the HAL layer" />
+      <debug-signal code="3" name="System Layer" description="Timing measurement for the Run() function in the System layer" />
+      <debug-signal code="4" name="Debug Signal Timer" description="Timing measurement for the Debug Signal timer that sends the timing profiles" />
+      <debug-signal code="5" name="Heartbeat Timer" description="Timing measurement for the Heartbeat timer that sends the 'Beat' printf every second" />
+    </debug-specification>    
+  </debug-specifications>
 </device>

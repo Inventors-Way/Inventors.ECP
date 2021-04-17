@@ -54,6 +54,10 @@ namespace Inventors.ECP
         [XmlAttribute("auto-save-log")]
         public bool AutoSaveLog { get; set; }
 
+        [XmlArray("debug-specifications")]
+        [XmlArrayItem("debug-specification")]
+        public List<DebugSpecification> DebugSpecifications { get; } = new List<DebugSpecification>();
+
         [XmlIgnore]
         public string CreationTime { get; set; } = "Unknown";
 
@@ -74,7 +78,7 @@ namespace Inventors.ECP
                 }
             }
             retValue.FileName = filename;
-            retValue.CreationTime = File.GetCreationTime(filename).ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+            retValue.CreationTime = File.GetLastWriteTime(filename).ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
 
             return retValue;
         }
@@ -95,6 +99,12 @@ namespace Inventors.ECP
                 {
                     retValue.BaudRate = BaudRate;
                     Log.Debug("Baudrate set to: {0}", BaudRate);
+                }
+
+
+                if (DebugSpecifications.Count > 0)
+                {
+                    DebugSpecifications.ForEach((s) => retValue.AddDebugSpecification(s));
                 }
             }
 
