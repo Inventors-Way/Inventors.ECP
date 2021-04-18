@@ -34,7 +34,7 @@ namespace Inventors.ECP.DefaultDevice
         };
 
         public void Accept(TimingViolationMessage msg) =>
-            Profiler.Add(new TimingViolation(msg.DebugSignal.ToString(), msg.Time, msg.TimeLimit, 0));
+            Profiler.Add(new TimingViolation(msg.DebugSignal, msg.Time, msg.TimeLimit, 0));
 
         public void Accept(TimingMessage msg) =>
             Profiler.Add(new TimingRecord(msg.DebugSignal, msg.AverageTime, msg.Min, msg.Max));
