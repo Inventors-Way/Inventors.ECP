@@ -18,6 +18,7 @@ namespace Inventors.ECP.Tester.Profiling
         public readonly Dictionary<int, CheckedListBox> signalLists = new Dictionary<int, CheckedListBox>();
         private Device device;
         private Profiler profiler;
+        private UInt32[] activeSignals;
 
         public ProfilerWindow()
         {
@@ -37,7 +38,13 @@ namespace Inventors.ECP.Tester.Profiling
 
             analysisMenu.Enabled = true;
             fileMenu.Enabled = true;
-            InitializeDebugSignals();    
+            InitializeDebugSignals();
+            activeSignals = new UInt32[device.NumberOfSupportedDebugSignals];            
+
+            for (int n = 0; n < device.NumberOfSupportedDebugSignals; ++n)
+            {
+                activeSignals[n] = 0;
+            }
         }
 
         private void InitializeDebugSignals()
