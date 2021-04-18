@@ -146,7 +146,7 @@
             // 
             // signalSplitContainer
             // 
-            this.signalSplitContainer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.signalSplitContainer.BackColor = System.Drawing.Color.White;
             this.signalSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.signalSplitContainer.Location = new System.Drawing.Point(0, 0);
             this.signalSplitContainer.Name = "signalSplitContainer";
@@ -160,7 +160,7 @@
             // 
             this.signalSplitContainer.Panel2.Controls.Add(this.descriptionTextBox);
             this.signalSplitContainer.Size = new System.Drawing.Size(281, 632);
-            this.signalSplitContainer.SplitterDistance = 523;
+            this.signalSplitContainer.SplitterDistance = 425;
             this.signalSplitContainer.TabIndex = 0;
             // 
             // debugSignalTabControl
@@ -169,8 +169,9 @@
             this.debugSignalTabControl.Location = new System.Drawing.Point(0, 0);
             this.debugSignalTabControl.Name = "debugSignalTabControl";
             this.debugSignalTabControl.SelectedIndex = 0;
-            this.debugSignalTabControl.Size = new System.Drawing.Size(279, 521);
+            this.debugSignalTabControl.Size = new System.Drawing.Size(281, 425);
             this.debugSignalTabControl.TabIndex = 0;
+            this.debugSignalTabControl.SelectedIndexChanged += new System.EventHandler(this.DebugSignalTabControl_SelectedIndexChanged);
             // 
             // descriptionTextBox
             // 
@@ -180,7 +181,7 @@
             this.descriptionTextBox.Multiline = true;
             this.descriptionTextBox.Name = "descriptionTextBox";
             this.descriptionTextBox.ReadOnly = true;
-            this.descriptionTextBox.Size = new System.Drawing.Size(279, 103);
+            this.descriptionTextBox.Size = new System.Drawing.Size(281, 203);
             this.descriptionTextBox.TabIndex = 0;
             // 
             // pictureBox
