@@ -202,5 +202,11 @@ namespace Inventors.ECP.Tester.Profiling
                 device.Profiler.Reset();
             }
         }
+
+        private void SplitContainer_Panel2_Resize(object sender, EventArgs e)
+        {
+            pictureBox.Width = hScrollBar.Width;
+            pictureBox.Height = splitContainer.Panel2.Height - hScrollBar.Height;
+        }
     }
 }

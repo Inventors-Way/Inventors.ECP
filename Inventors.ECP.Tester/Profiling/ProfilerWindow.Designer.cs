@@ -44,6 +44,7 @@
             this.debugSignalTabControl = new System.Windows.Forms.TabControl();
             this.descriptionTextBox = new System.Windows.Forms.TextBox();
             this.pictureBox = new System.Windows.Forms.PictureBox();
+            this.hScrollBar = new System.Windows.Forms.HScrollBar();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
@@ -139,7 +140,9 @@
             // 
             // splitContainer.Panel2
             // 
+            this.splitContainer.Panel2.Controls.Add(this.hScrollBar);
             this.splitContainer.Panel2.Controls.Add(this.pictureBox);
+            this.splitContainer.Panel2.Resize += new System.EventHandler(this.SplitContainer_Panel2_Resize);
             this.splitContainer.Size = new System.Drawing.Size(1067, 636);
             this.splitContainer.SplitterDistance = 285;
             this.splitContainer.TabIndex = 2;
@@ -186,12 +189,21 @@
             // 
             // pictureBox
             // 
-            this.pictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox.BackColor = System.Drawing.Color.White;
             this.pictureBox.Location = new System.Drawing.Point(0, 0);
             this.pictureBox.Name = "pictureBox";
-            this.pictureBox.Size = new System.Drawing.Size(774, 632);
+            this.pictureBox.Size = new System.Drawing.Size(749, 589);
             this.pictureBox.TabIndex = 0;
             this.pictureBox.TabStop = false;
+            // 
+            // hScrollBar
+            // 
+            this.hScrollBar.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.hScrollBar.Location = new System.Drawing.Point(0, 611);
+            this.hScrollBar.Name = "hScrollBar";
+            this.hScrollBar.Size = new System.Drawing.Size(774, 21);
+            this.hScrollBar.TabIndex = 1;
+            this.hScrollBar.Value = 20;
             // 
             // ProfilerWindow
             // 
@@ -240,5 +252,6 @@
         private System.Windows.Forms.TabControl debugSignalTabControl;
         private System.Windows.Forms.ToolStripMenuItem debugSignalToolStripMenuItem;
         private System.Windows.Forms.TextBox descriptionTextBox;
+        private System.Windows.Forms.HScrollBar hScrollBar;
     }
 }
