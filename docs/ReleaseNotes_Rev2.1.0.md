@@ -21,4 +21,8 @@ The release contains the following minor changes:
 
 ### Refactoring of DebugSignals and the Profiler
 
+The profiler has been refactored for speed and it's UI for usability.
+
 ### Port Monitor
+
+There has been implemented a port monitor that can monitor the low level data transfer to and from the target.
