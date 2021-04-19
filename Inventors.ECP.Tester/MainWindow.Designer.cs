@@ -70,10 +70,11 @@
             this.vSplitContainer = new System.Windows.Forms.SplitContainer();
             this.functionList = new System.Windows.Forms.ListBox();
             this.propertyGrid = new System.Windows.Forms.PropertyGrid();
+            this.logControl = new Inventors.ECP.Tester.LogControl();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.msgTimer = new System.Windows.Forms.Timer(this.components);
             this.deviceTimer = new System.Windows.Forms.Timer(this.components);
-            this.logControl = new Inventors.ECP.Tester.LogControl();
+            this.portMonitorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.hSplitContainer)).BeginInit();
@@ -122,7 +123,7 @@
             this.helpToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(1159, 28);
+            this.menuStrip.Size = new System.Drawing.Size(1159, 30);
             this.menuStrip.TabIndex = 1;
             this.menuStrip.Text = "menuStrip1";
             // 
@@ -141,7 +142,7 @@
             this.toolStripSeparator1,
             this.exitToolStripMenuItem});
             this.fileMenuItem.Name = "fileMenuItem";
-            this.fileMenuItem.Size = new System.Drawing.Size(46, 24);
+            this.fileMenuItem.Size = new System.Drawing.Size(46, 26);
             this.fileMenuItem.Text = "File";
             // 
             // clearLogToolStripMenuItem
@@ -253,7 +254,7 @@
             this.toolStripSeparator2,
             this.portMenuItem});
             this.connectMenuItem.Name = "connectMenuItem";
-            this.connectMenuItem.Size = new System.Drawing.Size(98, 24);
+            this.connectMenuItem.Size = new System.Drawing.Size(98, 26);
             this.connectMenuItem.Text = "Connection";
             // 
             // openDeviceToolStripMenuItem
@@ -301,7 +302,7 @@
             // addressMenu
             // 
             this.addressMenu.Name = "addressMenu";
-            this.addressMenu.Size = new System.Drawing.Size(76, 24);
+            this.addressMenu.Size = new System.Drawing.Size(76, 26);
             this.addressMenu.Text = "Address";
             // 
             // profilerToolStripMenuItem
@@ -310,34 +311,35 @@
             this.testToolStripMenuItem,
             this.trialsToolStripMenuItem,
             this.toolStripSeparator4,
-            this.profilerMenuItem});
+            this.profilerMenuItem,
+            this.portMonitorToolStripMenuItem});
             this.profilerToolStripMenuItem.Name = "profilerToolStripMenuItem";
-            this.profilerToolStripMenuItem.Size = new System.Drawing.Size(71, 24);
-            this.profilerToolStripMenuItem.Text = "Profiler";
+            this.profilerToolStripMenuItem.Size = new System.Drawing.Size(76, 26);
+            this.profilerToolStripMenuItem.Text = "Analysis";
             // 
             // testToolStripMenuItem
             // 
             this.testToolStripMenuItem.Name = "testToolStripMenuItem";
-            this.testToolStripMenuItem.Size = new System.Drawing.Size(140, 26);
+            this.testToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.testToolStripMenuItem.Text = "Test";
             this.testToolStripMenuItem.Click += new System.EventHandler(this.TestToolStripMenuItem_Click);
             // 
             // trialsToolStripMenuItem
             // 
             this.trialsToolStripMenuItem.Name = "trialsToolStripMenuItem";
-            this.trialsToolStripMenuItem.Size = new System.Drawing.Size(140, 26);
+            this.trialsToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.trialsToolStripMenuItem.Text = "Trials";
             this.trialsToolStripMenuItem.Click += new System.EventHandler(this.TrialsToolStripMenuItem_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(137, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(221, 6);
             // 
             // profilerMenuItem
             // 
             this.profilerMenuItem.Name = "profilerMenuItem";
-            this.profilerMenuItem.Size = new System.Drawing.Size(140, 26);
+            this.profilerMenuItem.Size = new System.Drawing.Size(224, 26);
             this.profilerMenuItem.Text = "Profiler";
             this.profilerMenuItem.Click += new System.EventHandler(this.ProfilerMenuItem_Click);
             // 
@@ -348,7 +350,7 @@
             this.toolStripSeparator5,
             this.aboutECPTesterToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(55, 24);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(55, 26);
             this.helpToolStripMenuItem.Text = "Help";
             // 
             // documentationToolStripMenuItem
@@ -374,7 +376,7 @@
             // 
             this.hSplitContainer.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.hSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.hSplitContainer.Location = new System.Drawing.Point(0, 28);
+            this.hSplitContainer.Location = new System.Drawing.Point(0, 30);
             this.hSplitContainer.Margin = new System.Windows.Forms.Padding(4);
             this.hSplitContainer.Name = "hSplitContainer";
             this.hSplitContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -386,8 +388,8 @@
             // hSplitContainer.Panel2
             // 
             this.hSplitContainer.Panel2.Controls.Add(this.logControl);
-            this.hSplitContainer.Size = new System.Drawing.Size(1159, 682);
-            this.hSplitContainer.SplitterDistance = 473;
+            this.hSplitContainer.Size = new System.Drawing.Size(1159, 680);
+            this.hSplitContainer.SplitterDistance = 471;
             this.hSplitContainer.SplitterWidth = 5;
             this.hSplitContainer.TabIndex = 2;
             // 
@@ -406,7 +408,7 @@
             // vSplitContainer.Panel2
             // 
             this.vSplitContainer.Panel2.Controls.Add(this.propertyGrid);
-            this.vSplitContainer.Size = new System.Drawing.Size(1159, 473);
+            this.vSplitContainer.Size = new System.Drawing.Size(1159, 471);
             this.vSplitContainer.SplitterDistance = 221;
             this.vSplitContainer.SplitterWidth = 5;
             this.vSplitContainer.TabIndex = 0;
@@ -419,7 +421,7 @@
             this.functionList.Location = new System.Drawing.Point(0, 0);
             this.functionList.Margin = new System.Windows.Forms.Padding(4);
             this.functionList.Name = "functionList";
-            this.functionList.Size = new System.Drawing.Size(217, 469);
+            this.functionList.Size = new System.Drawing.Size(217, 467);
             this.functionList.TabIndex = 0;
             this.functionList.SelectedIndexChanged += new System.EventHandler(this.FunctionList_SelectedIndexChanged);
             this.functionList.DoubleClick += new System.EventHandler(this.FunctionList_DoubleClick);
@@ -430,8 +432,20 @@
             this.propertyGrid.Location = new System.Drawing.Point(0, 0);
             this.propertyGrid.Margin = new System.Windows.Forms.Padding(4);
             this.propertyGrid.Name = "propertyGrid";
-            this.propertyGrid.Size = new System.Drawing.Size(929, 469);
+            this.propertyGrid.Size = new System.Drawing.Size(929, 467);
             this.propertyGrid.TabIndex = 0;
+            // 
+            // logControl
+            // 
+            this.logControl.AutoSave = true;
+            this.logControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.logControl.Level = Inventors.ECP.LogLevel.STATUS;
+            this.logControl.Location = new System.Drawing.Point(0, 0);
+            this.logControl.Margin = new System.Windows.Forms.Padding(5);
+            this.logControl.Name = "logControl";
+            this.logControl.Paused = true;
+            this.logControl.Size = new System.Drawing.Size(1155, 200);
+            this.logControl.TabIndex = 0;
             // 
             // imageList
             // 
@@ -465,17 +479,12 @@
             this.deviceTimer.Interval = 1000;
             this.deviceTimer.Tick += new System.EventHandler(this.DeviceTimer_Tick);
             // 
-            // logControl
+            // portMonitorToolStripMenuItem
             // 
-            this.logControl.AutoSave = true;
-            this.logControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.logControl.Level = Inventors.ECP.LogLevel.STATUS;
-            this.logControl.Location = new System.Drawing.Point(0, 0);
-            this.logControl.Margin = new System.Windows.Forms.Padding(5);
-            this.logControl.Name = "logControl";
-            this.logControl.Paused = true;
-            this.logControl.Size = new System.Drawing.Size(1155, 200);
-            this.logControl.TabIndex = 0;
+            this.portMonitorToolStripMenuItem.Name = "portMonitorToolStripMenuItem";
+            this.portMonitorToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.portMonitorToolStripMenuItem.Text = "Port Monitor";
+            this.portMonitorToolStripMenuItem.Click += new System.EventHandler(this.PortMonitorToolStripMenuItem_Click);
             // 
             // MainWindow
             // 
@@ -554,6 +563,7 @@
         private System.Windows.Forms.ToolStripMenuItem pauseToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem autoSaveLogToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openLogsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem portMonitorToolStripMenuItem;
     }
 }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Inventors.ECP.Monitor;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,7 +22,7 @@ namespace Inventors.ECP
         public void Reset()
         {
             state = State.WAITING_FOR_DLE;
-            buffer.Clear();
+            Discard();
         }
 
         public void Add(int length, byte[] buffer)
@@ -31,6 +32,11 @@ namespace Inventors.ECP
                 for (int n = 0; n < length; ++n)
                 {
                     var data = buffer[n];
+
+                    if (PortMonitor.Enabled)
+                    {
+                        raw.Add(data);
+                    }
 
                     switch (state)
                     {
@@ -72,6 +78,7 @@ namespace Inventors.ECP
             else if (data != Frame.DLE)
             {
                 state = State.WAITING_FOR_DLE;
+                Discard();
             }
         }
 
@@ -96,17 +103,37 @@ namespace Inventors.ECP
             }
             else if (data == Frame.ETX)
             {
-                state = State.WAITING_FOR_DLE;
+                state = State.WAITING_FOR_DLE;                
                 NotifyListeners();
+                Discard();
             }
             else if (data == Frame.STX)
             {
                 state = State.RECEIVING_DATA;
-                buffer.Clear();
+                Discard();
             }
             else
             {
                 state = State.WAITING_FOR_DLE;
+                Discard();
+            }
+        }
+
+        private void Discard()
+        {
+            if (buffer.Count > 0)
+            {
+                buffer.Clear();
+            }
+
+            if (raw.Count > 0)
+            {
+                if (PortMonitor.Enabled)
+                {
+                    PortMonitor.Add(rx: true, raw.ToArray());
+                }
+
+                raw.Clear();
             }
         }
 
@@ -114,5 +141,6 @@ namespace Inventors.ECP
 
         private State state = State.WAITING_FOR_DLE;
         private readonly List<byte> buffer = new List<byte>();
+        private readonly List<byte> raw = new List<byte>();
     }
 }

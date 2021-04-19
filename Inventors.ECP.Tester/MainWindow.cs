@@ -17,6 +17,8 @@ using System.IO;
 using System.Reflection;
 using Inventors.ECP.Profiling;
 using Inventors.ECP.Tester.Profiling;
+using Inventors.ECP.Tester.Monitoring;
+using Inventors.ECP.Monitor;
 
 namespace Inventors.ECP.Tester
 {
@@ -40,6 +42,7 @@ namespace Inventors.ECP.Tester
         private bool confirmLogDeletion = true;
         private AppState state = AppState.APP_STATE_UNINITIALIZED;
         private readonly ProfilerWindow profilerWindow;
+        private readonly MonitorWindow monitorWindow;
         private readonly CommTester commTester;
         private ScriptRunner scriptRunner = null;
 
@@ -55,6 +58,10 @@ namespace Inventors.ECP.Tester
 
             profilerWindow = new ProfilerWindow();
             profilerWindow.OnProfilerClosed += ProfilerWindow_OnClosed;
+            monitorWindow = new MonitorWindow();
+            monitorWindow.OnMonitorClosed += PortMonitorWindow_OnClosed;
+            PortMonitor.SetMonitor(monitorWindow);
+
             commTester = new CommTester();
         }
 
@@ -756,6 +763,7 @@ namespace Inventors.ECP.Tester
             }
         }
 
+
         private void ProfilerWindow_OnClosed(object sender, bool close)
         {
             if (device is object)
@@ -766,6 +774,40 @@ namespace Inventors.ECP.Tester
             }
         }
 
+        private void UpdatePortMonitor()
+        {
+            if (device is object)
+            {
+                portMonitorToolStripMenuItem.Checked = PortMonitor.Enabled;
+
+                if (PortMonitor.Enabled)
+                {
+                    monitorWindow.Show();
+                }
+                else
+                {
+                    monitorWindow.Visible = false;
+                }
+            }
+        }
+
+        private void PortMonitorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (device is object)
+            {
+                PortMonitor.Enabled = !device.Profiler.Enabled;
+                UpdatePortMonitor();
+            }
+        }
+
+        private void PortMonitorWindow_OnClosed(object sender, bool close)
+        {
+            if (device is object)
+            {
+                PortMonitor.Enabled = false;
+                UpdatePortMonitor();
+            }
+        }
 
         private void DebugToolStripMenuItem_Click(object sender, EventArgs e) => SetLoggingLevel(LogLevel.DEBUG);
 

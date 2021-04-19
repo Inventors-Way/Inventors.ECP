@@ -87,6 +87,12 @@
     <Compile Include="LogControl.Designer.cs">
       <DependentUpon>LogControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Monitoring\MonitorWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Monitoring\MonitorWindow.Designer.cs">
+      <DependentUpon>MonitorWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="PortInformationProvider.cs" />
     <Compile Include="Profiling\ColorSet.cs" />
     <Compile Include="Profiling\CommTester.cs" />
@@ -125,6 +131,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="LogControl.resx">
       <DependentUpon>LogControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Monitoring\MonitorWindow.resx">
+      <DependentUpon>MonitorWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Profiling\ProfilerWindow.resx">
       <DependentUpon>ProfilerWindow.cs</DependentUpon>

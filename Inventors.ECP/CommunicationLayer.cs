@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Inventors.ECP.Monitor;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -62,7 +63,17 @@ namespace Inventors.ECP
 
         public abstract bool IsConnected { get; }
 
-        public abstract void Transmit(byte[] frame);
+        public void Transmit(byte[] frame)
+        {
+            if (PortMonitor.Enabled)
+            {
+                PortMonitor.Add(rx: false, data: frame);
+            }
+
+            DoTransmit(frame);
+        }
+
+        protected abstract void DoTransmit(byte[] frame);
 
         internal Destuffer Destuffer { get; } = new Destuffer();
 
