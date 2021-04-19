@@ -229,6 +229,7 @@ namespace Inventors.ECP.Tester.Profiling
             {
                 device.SetActiveDebugSignals(GetActiveSignals());
                 profiler.Reset();
+                colors.Reset();
             }
             catch (Exception e)
             {
@@ -413,8 +414,28 @@ namespace Inventors.ECP.Tester.Profiling
             {
                 profiler.Paused = !profiler.Paused;
                 pausedToolStripMenuItem.Checked = profiler.Paused;
+                hScrollBar.Enabled = profiler.Paused && profiler.End > profiler.TimeSpan;
+
+                if (hScrollBar.Enabled)
+                {
+                    hScrollBar.Value = 0;
+                    hScrollBar.Maximum = (int) (Math.Round(profiler.End - profiler.TimeSpan + 0.5));
+                    hScrollBar.Value = hScrollBar.Maximum;
+                }
             }
         }
+
+        private void HScrollBar_Scroll(object sender, ScrollEventArgs e)
+        {
+            if (profiler is object)
+            {
+                if (profiler.Paused)
+                {
+                    profiler.End = e.NewValue + profiler.TimeSpan;
+                }
+            }
+        }
+
 
         private void SplitContainer_Panel2_Resize(object sender, EventArgs e) => ResizePlot();
 

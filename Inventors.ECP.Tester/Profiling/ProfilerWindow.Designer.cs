@@ -228,7 +228,6 @@
             // timer
             // 
             this.timer.Enabled = true;
-            this.timer.Interval = 500;
             this.timer.Tick += new System.EventHandler(this.Timer_Tick);
             // 
             // splitContainer
@@ -294,11 +293,13 @@
             // hScrollBar
             // 
             this.hScrollBar.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.hScrollBar.Enabled = false;
             this.hScrollBar.Location = new System.Drawing.Point(0, 636);
             this.hScrollBar.Name = "hScrollBar";
             this.hScrollBar.Size = new System.Drawing.Size(774, 21);
             this.hScrollBar.TabIndex = 1;
             this.hScrollBar.Value = 20;
+            this.hScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.HScrollBar_Scroll);
             // 
             // pictureBox
             // 

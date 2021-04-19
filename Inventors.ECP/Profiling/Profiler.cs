@@ -15,6 +15,8 @@ namespace Inventors.ECP.Profiling
     public class Profiler :
         NotifyPropertyChanged
     {
+        private double time = 0;
+
         private class DataNode<T>
             where T : Record
         {
@@ -85,7 +87,7 @@ namespace Inventors.ECP.Profiling
                         Updated = true;
                     }
 
-                    if (!filter.IsIncluded(start.Value))
+                    while (!filter.IsIncluded(start.Value))
                     {
                         if (start.Next is object)
                         {
@@ -173,20 +175,7 @@ namespace Inventors.ECP.Profiling
                 lock (LockObject)
                 {
                     filter.Duration = value;
-                    events.Refilter();
-                    Updated = events.Updated;
-
-                    foreach (var pair in timings)
-                    {
-                        pair.Value.Refilter();
-                        Updated = pair.Value.Updated;
-                    }
-
-                    foreach (var pair in violations)
-                    {
-                        pair.Value.Refilter();
-                        Updated = pair.Value.Updated;
-                    }
+                    Refilter();
                     SetProperty(ref _timeSpan, value);
                 }
             }
@@ -207,9 +196,44 @@ namespace Inventors.ECP.Profiling
 
         public bool Paused
         {
-            get => GetPropertyLocked(ref _paused);
-            set => SetPropertyLocked(ref _paused, value);
+            get =>GetPropertyLocked(ref _paused);
+            set
+            {
+                lock(LockObject)
+                {
+                    _paused = value;
+                    Refilter();
+                }
+            }
         }
+
+        #endregion
+        #region End Property
+
+        public double End
+        {
+            get
+            {
+                lock (LockObject)
+                {
+                    return filter.End;
+                }
+            }
+            set
+            {
+                lock (LockObject)
+                {
+                    filter.End = value;
+                    Refilter();
+                }
+            }
+        }
+
+        #endregion
+        #region MaximalTime Property
+
+        public double MaximalTime => time;
+
         #endregion
         #endregion
 
@@ -231,6 +255,25 @@ namespace Inventors.ECP.Profiling
                 events.Clear();
                 timings.Clear();
                 violations.Clear();
+                time = 0;
+            }
+        }
+
+        private void Refilter()
+        {
+            events.Refilter();
+            Updated = events.Updated;
+
+            foreach (var pair in timings)
+            {
+                pair.Value.Refilter();
+                Updated = pair.Value.Updated;
+            }
+
+            foreach (var pair in violations)
+            {
+                pair.Value.Refilter();
+                Updated = pair.Value.Updated;
             }
         }
 
@@ -242,13 +285,8 @@ namespace Inventors.ECP.Profiling
             {
                 filter.End = time;
             }
-            else
-            {
-                if (filter.End < filter.Duration)
-                {
-                    filter.End = time;
-                }
-            }
+
+            this.time = time;
         }
 
 
