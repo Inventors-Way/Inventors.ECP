@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ScottPlot;
 
 namespace Inventors.ECP.Tester.Profiling
 {
@@ -18,6 +19,9 @@ namespace Inventors.ECP.Tester.Profiling
         public readonly Dictionary<int, ListBox> signalLists = new Dictionary<int, ListBox>();
         private Device device;
         private Profiler profiler;
+        private Plot plot;
+        public PropertyBinder<Device> binder;
+
 
         public ProfilerWindow()
         {
@@ -27,17 +31,49 @@ namespace Inventors.ECP.Tester.Profiling
             clearProfilerToolStripMenuItem.Checked = false;
         }
 
+        private bool MaximumEnabled
+        {
+            get => maximumToolStripMenuItem.Checked;
+            set => maximumToolStripMenuItem.Checked = value;
+        }
+
+        private bool MinimumEnabled
+        {
+            get => minimumToolStripMenuItem.Checked;
+            set => minimumToolStripMenuItem.Checked = value;
+        }
+
+        private bool EventsEnabled
+        {
+            get => eventsToolStripMenuItem.Checked;
+            set => eventsToolStripMenuItem.Checked = value;
+        }
+
+        private bool ViolationsEnabled
+        {
+            get => timeViolationsToolStripMenuItem.Checked;
+            set => timeViolationsToolStripMenuItem.Checked = value;
+        }
+
+
         public void SetDevice(Device device)
         {
             if (device is null)
                 throw new ArgumentNullException(nameof(device));
 
-            this.device = device;
-            this.profiler = device.Profiler;
+            if (this.device is null)
+            {
+                binder = new PropertyBinder<Device>(device, this);
+                this.device = device;
+                this.profiler = device.Profiler;
 
-            analysisMenu.Enabled = true;
-            fileMenu.Enabled = true;
-            InitializeDebugSignals();
+                analysisMenu.Enabled = true;
+                fileMenu.Enabled = true;
+                InitializeDebugSignals();
+            }
+
+            plot = new Plot(width: pictureBox.Width, height: pictureBox.Height);
+            Redraw();
         }
 
         private void InitializeDebugSignals()
@@ -192,6 +228,7 @@ namespace Inventors.ECP.Tester.Profiling
             try
             {
                 device.SetActiveDebugSignals(GetActiveSignals());
+                profiler.Reset();
             }
             catch (Exception e)
             {
@@ -212,6 +249,33 @@ namespace Inventors.ECP.Tester.Profiling
 
         private void Timer_Tick(object sender, EventArgs e)
         {
+            if (profiler is object)
+            {
+                if (profiler.Updated)
+                {
+                    Redraw();
+                    Log.Debug("Profiler Update");
+                }
+            }
+        }
+
+        private void Redraw()
+        {
+            if (plot is object)
+            {
+                if (profiler is object)
+                {
+                    var report = profiler.GetReport();
+                    plot.Clear();
+
+                    foreach (var signal in report.Timing)
+                    {
+                        plot.PlotScatter(signal.Time, signal.Average, label: $"{signal.Code}");
+                    }
+                }
+
+                pictureBox.Image = plot.GetBitmap();
+            }
         }
 
         private void ResetToolStripMenuItem_Click(object sender, EventArgs e)
@@ -237,6 +301,77 @@ namespace Inventors.ECP.Tester.Profiling
         {
             pictureBox.Width = hScrollBar.Width;
             pictureBox.Height = splitContainer.Panel2.Height - hScrollBar.Height;
+
+            if (plot is object)
+            {
+                plot.Resize(width: pictureBox.Width, height: pictureBox.Height);
+                pictureBox.Image = plot.GetBitmap();
+            }
+        }
+
+        private void s60timeChanged_Click(object sender, EventArgs e)
+        {
+            if (profiler is object)
+            {
+                profiler.TimeSpan = 60;
+
+                s60timeToolStripMenuItem.Checked = true;
+                s300timeToolStripMenuItem.Checked = false;
+                s600timeToolStripMenuItem.Checked = false;
+            }
+        }
+
+        private void s300timeChanged_Click(object sender, EventArgs e)
+        {
+            if (profiler is object)
+            {
+                profiler.TimeSpan = 300;
+
+                s60timeToolStripMenuItem.Checked = false;
+                s300timeToolStripMenuItem.Checked = true;
+                s600timeToolStripMenuItem.Checked = false;
+            }
+        }
+
+        private void s600timeChanged_Click(object sender, EventArgs e)
+        {
+            if (profiler is object)
+            {
+                profiler.TimeSpan = 600;
+
+                s60timeToolStripMenuItem.Checked = false;
+                s300timeToolStripMenuItem.Checked = false;
+                s600timeToolStripMenuItem.Checked = true;
+            }
+        }
+
+        private void MaximumToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MaximumEnabled = !MaximumEnabled;
+        }
+
+        private void MinimumToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MinimumEnabled = !MinimumEnabled;
+        }
+
+        private void EventsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            EventsEnabled = !EventsEnabled;
+        }
+
+        private void TimeViolationsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ViolationsEnabled = !ViolationsEnabled;
+        }
+
+        private void PausedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (profiler is object)
+            {
+                profiler.Paused = !profiler.Paused;
+                pausedToolStripMenuItem.Checked = profiler.Paused;
+            }
         }
     }
 }

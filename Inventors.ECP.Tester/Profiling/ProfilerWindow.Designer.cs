@@ -37,14 +37,25 @@
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.debugSignalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.analysisMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.timeSpanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.s60timeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.s300timeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.s600timeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.maximumToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.minimumToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.eventsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.timeViolationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.pausedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timer = new System.Windows.Forms.Timer(this.components);
-            this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.signalSplitContainer = new System.Windows.Forms.SplitContainer();
             this.debugSignalTabControl = new System.Windows.Forms.TabControl();
             this.descriptionTextBox = new System.Windows.Forms.TextBox();
-            this.pictureBox = new System.Windows.Forms.PictureBox();
             this.hScrollBar = new System.Windows.Forms.HScrollBar();
+            this.pictureBox = new System.Windows.Forms.PictureBox();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
@@ -83,20 +94,20 @@
             // clearProfilerToolStripMenuItem
             // 
             this.clearProfilerToolStripMenuItem.Name = "clearProfilerToolStripMenuItem";
-            this.clearProfilerToolStripMenuItem.Size = new System.Drawing.Size(178, 26);
-            this.clearProfilerToolStripMenuItem.Text = "Clear Profiler";
+            this.clearProfilerToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Delete)));
+            this.clearProfilerToolStripMenuItem.Size = new System.Drawing.Size(193, 26);
+            this.clearProfilerToolStripMenuItem.Text = "Reset";
             this.clearProfilerToolStripMenuItem.Click += new System.EventHandler(this.ClearProfilerToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(175, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(190, 6);
             // 
             // closeToolStripMenuItem
             // 
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(178, 26);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(193, 26);
             this.closeToolStripMenuItem.Text = "Close";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.CloseToolStripMenuItem_Click);
             // 
@@ -108,9 +119,111 @@
             // 
             // analysisMenu
             // 
+            this.analysisMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.timeSpanToolStripMenuItem,
+            this.toolStripSeparator4,
+            this.maximumToolStripMenuItem,
+            this.minimumToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.eventsToolStripMenuItem,
+            this.timeViolationsToolStripMenuItem,
+            this.toolStripSeparator3,
+            this.pausedToolStripMenuItem});
             this.analysisMenu.Name = "analysisMenu";
             this.analysisMenu.Size = new System.Drawing.Size(76, 24);
             this.analysisMenu.Text = "Analysis";
+            // 
+            // timeSpanToolStripMenuItem
+            // 
+            this.timeSpanToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.s60timeToolStripMenuItem,
+            this.s300timeToolStripMenuItem,
+            this.s600timeToolStripMenuItem});
+            this.timeSpanToolStripMenuItem.Name = "timeSpanToolStripMenuItem";
+            this.timeSpanToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.timeSpanToolStripMenuItem.Text = "Time span";
+            // 
+            // s60timeToolStripMenuItem
+            // 
+            this.s60timeToolStripMenuItem.Checked = true;
+            this.s60timeToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.s60timeToolStripMenuItem.Name = "s60timeToolStripMenuItem";
+            this.s60timeToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.s60timeToolStripMenuItem.Text = "60s";
+            this.s60timeToolStripMenuItem.Click += new System.EventHandler(this.s60timeChanged_Click);
+            // 
+            // s300timeToolStripMenuItem
+            // 
+            this.s300timeToolStripMenuItem.Name = "s300timeToolStripMenuItem";
+            this.s300timeToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.s300timeToolStripMenuItem.Text = "300s";
+            this.s300timeToolStripMenuItem.Click += new System.EventHandler(this.s300timeChanged_Click);
+            // 
+            // s600timeToolStripMenuItem
+            // 
+            this.s600timeToolStripMenuItem.Name = "s600timeToolStripMenuItem";
+            this.s600timeToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.s600timeToolStripMenuItem.Text = "600s";
+            this.s600timeToolStripMenuItem.Click += new System.EventHandler(this.s600timeChanged_Click);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(221, 6);
+            // 
+            // maximumToolStripMenuItem
+            // 
+            this.maximumToolStripMenuItem.Checked = true;
+            this.maximumToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.maximumToolStripMenuItem.Name = "maximumToolStripMenuItem";
+            this.maximumToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.maximumToolStripMenuItem.Text = "Maximum";
+            this.maximumToolStripMenuItem.Click += new System.EventHandler(this.MaximumToolStripMenuItem_Click);
+            // 
+            // minimumToolStripMenuItem
+            // 
+            this.minimumToolStripMenuItem.Checked = true;
+            this.minimumToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.minimumToolStripMenuItem.Name = "minimumToolStripMenuItem";
+            this.minimumToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.minimumToolStripMenuItem.Text = "Minimum";
+            this.minimumToolStripMenuItem.Click += new System.EventHandler(this.MinimumToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(221, 6);
+            // 
+            // eventsToolStripMenuItem
+            // 
+            this.eventsToolStripMenuItem.Checked = true;
+            this.eventsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.eventsToolStripMenuItem.Name = "eventsToolStripMenuItem";
+            this.eventsToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.eventsToolStripMenuItem.Text = "Events";
+            this.eventsToolStripMenuItem.Click += new System.EventHandler(this.EventsToolStripMenuItem_Click);
+            // 
+            // timeViolationsToolStripMenuItem
+            // 
+            this.timeViolationsToolStripMenuItem.Checked = true;
+            this.timeViolationsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.timeViolationsToolStripMenuItem.Name = "timeViolationsToolStripMenuItem";
+            this.timeViolationsToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.timeViolationsToolStripMenuItem.Text = "Time violations";
+            this.timeViolationsToolStripMenuItem.Click += new System.EventHandler(this.TimeViolationsToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(221, 6);
+            // 
+            // pausedToolStripMenuItem
+            // 
+            this.pausedToolStripMenuItem.Name = "pausedToolStripMenuItem";
+            this.pausedToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
+            this.pausedToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.pausedToolStripMenuItem.Text = "Paused";
+            this.pausedToolStripMenuItem.Click += new System.EventHandler(this.PausedToolStripMenuItem_Click);
             // 
             // timer
             // 
@@ -118,20 +231,11 @@
             this.timer.Interval = 500;
             this.timer.Tick += new System.EventHandler(this.Timer_Tick);
             // 
-            // toolStrip
-            // 
-            this.toolStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.toolStrip.Location = new System.Drawing.Point(0, 28);
-            this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Size = new System.Drawing.Size(1067, 25);
-            this.toolStrip.TabIndex = 1;
-            this.toolStrip.Text = "toolStrip1";
-            // 
             // splitContainer
             // 
             this.splitContainer.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.splitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer.Location = new System.Drawing.Point(0, 53);
+            this.splitContainer.Location = new System.Drawing.Point(0, 28);
             this.splitContainer.Name = "splitContainer";
             // 
             // splitContainer.Panel1
@@ -143,7 +247,7 @@
             this.splitContainer.Panel2.Controls.Add(this.hScrollBar);
             this.splitContainer.Panel2.Controls.Add(this.pictureBox);
             this.splitContainer.Panel2.Resize += new System.EventHandler(this.SplitContainer_Panel2_Resize);
-            this.splitContainer.Size = new System.Drawing.Size(1067, 636);
+            this.splitContainer.Size = new System.Drawing.Size(1067, 661);
             this.splitContainer.SplitterDistance = 285;
             this.splitContainer.TabIndex = 2;
             // 
@@ -162,8 +266,8 @@
             // signalSplitContainer.Panel2
             // 
             this.signalSplitContainer.Panel2.Controls.Add(this.descriptionTextBox);
-            this.signalSplitContainer.Size = new System.Drawing.Size(281, 632);
-            this.signalSplitContainer.SplitterDistance = 425;
+            this.signalSplitContainer.Size = new System.Drawing.Size(281, 657);
+            this.signalSplitContainer.SplitterDistance = 440;
             this.signalSplitContainer.TabIndex = 0;
             // 
             // debugSignalTabControl
@@ -172,7 +276,7 @@
             this.debugSignalTabControl.Location = new System.Drawing.Point(0, 0);
             this.debugSignalTabControl.Name = "debugSignalTabControl";
             this.debugSignalTabControl.SelectedIndex = 0;
-            this.debugSignalTabControl.Size = new System.Drawing.Size(281, 425);
+            this.debugSignalTabControl.Size = new System.Drawing.Size(281, 440);
             this.debugSignalTabControl.TabIndex = 0;
             this.debugSignalTabControl.SelectedIndexChanged += new System.EventHandler(this.DebugSignalTabControl_SelectedIndexChanged);
             // 
@@ -184,8 +288,17 @@
             this.descriptionTextBox.Multiline = true;
             this.descriptionTextBox.Name = "descriptionTextBox";
             this.descriptionTextBox.ReadOnly = true;
-            this.descriptionTextBox.Size = new System.Drawing.Size(281, 203);
+            this.descriptionTextBox.Size = new System.Drawing.Size(281, 213);
             this.descriptionTextBox.TabIndex = 0;
+            // 
+            // hScrollBar
+            // 
+            this.hScrollBar.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.hScrollBar.Location = new System.Drawing.Point(0, 636);
+            this.hScrollBar.Name = "hScrollBar";
+            this.hScrollBar.Size = new System.Drawing.Size(774, 21);
+            this.hScrollBar.TabIndex = 1;
+            this.hScrollBar.Value = 20;
             // 
             // pictureBox
             // 
@@ -196,22 +309,12 @@
             this.pictureBox.TabIndex = 0;
             this.pictureBox.TabStop = false;
             // 
-            // hScrollBar
-            // 
-            this.hScrollBar.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.hScrollBar.Location = new System.Drawing.Point(0, 611);
-            this.hScrollBar.Name = "hScrollBar";
-            this.hScrollBar.Size = new System.Drawing.Size(774, 21);
-            this.hScrollBar.TabIndex = 1;
-            this.hScrollBar.Value = 20;
-            // 
             // ProfilerWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1067, 689);
             this.Controls.Add(this.splitContainer);
-            this.Controls.Add(this.toolStrip);
             this.Controls.Add(this.menuStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip;
@@ -245,7 +348,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem clearProfilerToolStripMenuItem;
-        private System.Windows.Forms.ToolStrip toolStrip;
         private System.Windows.Forms.SplitContainer splitContainer;
         private System.Windows.Forms.SplitContainer signalSplitContainer;
         private System.Windows.Forms.PictureBox pictureBox;
@@ -253,5 +355,17 @@
         private System.Windows.Forms.ToolStripMenuItem debugSignalToolStripMenuItem;
         private System.Windows.Forms.TextBox descriptionTextBox;
         private System.Windows.Forms.HScrollBar hScrollBar;
+        private System.Windows.Forms.ToolStripMenuItem timeSpanToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem s60timeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem s300timeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem s600timeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripMenuItem maximumToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem minimumToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem eventsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem timeViolationsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripMenuItem pausedToolStripMenuItem;
     }
 }
