@@ -17,6 +17,11 @@ namespace Inventors.ECP.Tester.Monitoring
     {
         public event EventHandler<bool> OnMonitorClosed;
 
+        private bool paused;
+        private bool updated;
+        private StringBuilder buffer = new StringBuilder();
+        private readonly object lockObject = new object();
+
         public MonitorWindow()
         {
             InitializeComponent();
@@ -32,16 +37,12 @@ namespace Inventors.ECP.Tester.Monitoring
 
         public void Receive(DataChunk chunk)
         {
-            listView.Items.Add(CreateItem(chunk));
-        }
-
-        private ListViewItem CreateItem(DataChunk chunk)
-        {
-            var dir = chunk.Rx ? "Rx" : "Tx";
-            var retValue = new ListViewItem(chunk.Time.ToShortTimeString());
-            retValue.SubItems.Add(dir);
-            retValue.SubItems.Add(chunk.ToString());
-            return retValue;
+            lock (lockObject)
+            {
+                var dir = chunk.Rx ? "RX" : "TX";
+                buffer.AppendLine($"{chunk.Time.ToLongTimeString()} | {dir} | DATA: {chunk}");
+                updated = true;
+            }
         }
 
         private void MonitorWindow_FormClosing(object sender, FormClosingEventArgs e)
@@ -50,6 +51,38 @@ namespace Inventors.ECP.Tester.Monitoring
             {
                 e.Cancel = true;
                 OnMonitorClosed?.Invoke(this, false);
+            }
+        }
+
+        private void PausedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            paused = !paused;
+            pausedToolStripMenuItem.Checked = paused;
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            if (paused)
+                return;
+
+            lock (lockObject)
+            {
+                if (updated)
+                {
+                    textBox.AppendText(buffer.ToString());
+                    updated = false;
+                    buffer.Clear();
+                    ScrollToEnd();
+                }
+            }
+        }
+
+        private void ScrollToEnd()
+        {
+            if (textBox.Visible)
+            {
+                textBox.SelectionStart = textBox.Text.Length;
+                textBox.ScrollToCaret();
             }
         }
     }

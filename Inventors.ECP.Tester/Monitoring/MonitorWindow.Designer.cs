@@ -29,13 +29,12 @@ namespace Inventors.ECP.Tester.Monitoring
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
-            this.listView = new System.Windows.Forms.ListView();
-            this.TimeColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.DirectionColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.DataColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pausedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.textBox = new System.Windows.Forms.TextBox();
+            this.timer = new System.Windows.Forms.Timer(this.components);
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -50,39 +49,6 @@ namespace Inventors.ECP.Tester.Monitoring
             this.menuStrip.TabIndex = 0;
             this.menuStrip.Text = "menuStrip1";
             // 
-            // listView
-            // 
-            this.listView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.TimeColumn,
-            this.DirectionColumn,
-            this.DataColumn});
-            this.listView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listView.FullRowSelect = true;
-            this.listView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.listView.HideSelection = false;
-            this.listView.Location = new System.Drawing.Point(0, 28);
-            this.listView.MultiSelect = false;
-            this.listView.Name = "listView";
-            this.listView.Size = new System.Drawing.Size(989, 732);
-            this.listView.TabIndex = 1;
-            this.listView.UseCompatibleStateImageBehavior = false;
-            this.listView.View = System.Windows.Forms.View.Details;
-            // 
-            // TimeColumn
-            // 
-            this.TimeColumn.Text = "Time";
-            this.TimeColumn.Width = 100;
-            // 
-            // DirectionColumn
-            // 
-            this.DirectionColumn.Text = "Rx/Tx";
-            this.DirectionColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // DataColumn
-            // 
-            this.DataColumn.Text = "Data";
-            this.DataColumn.Width = 793;
-            // 
             // viewToolStripMenuItem
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -95,15 +61,34 @@ namespace Inventors.ECP.Tester.Monitoring
             // 
             this.pausedToolStripMenuItem.Name = "pausedToolStripMenuItem";
             this.pausedToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-            this.pausedToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.pausedToolStripMenuItem.Size = new System.Drawing.Size(188, 26);
             this.pausedToolStripMenuItem.Text = "Paused";
+            this.pausedToolStripMenuItem.Click += new System.EventHandler(this.PausedToolStripMenuItem_Click);
+            // 
+            // textBox
+            // 
+            this.textBox.BackColor = System.Drawing.Color.White;
+            this.textBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBox.Location = new System.Drawing.Point(0, 28);
+            this.textBox.Multiline = true;
+            this.textBox.Name = "textBox";
+            this.textBox.ReadOnly = true;
+            this.textBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.textBox.Size = new System.Drawing.Size(989, 732);
+            this.textBox.TabIndex = 1;
+            this.textBox.WordWrap = false;
+            // 
+            // timer
+            // 
+            this.timer.Enabled = true;
+            this.timer.Tick += new System.EventHandler(this.Timer_Tick);
             // 
             // MonitorWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(989, 760);
-            this.Controls.Add(this.listView);
+            this.Controls.Add(this.textBox);
             this.Controls.Add(this.menuStrip);
             this.MainMenuStrip = this.menuStrip;
             this.Name = "MonitorWindow";
@@ -119,11 +104,9 @@ namespace Inventors.ECP.Tester.Monitoring
         #endregion
 
         private System.Windows.Forms.MenuStrip menuStrip;
-        private System.Windows.Forms.ListView listView;
-        private System.Windows.Forms.ColumnHeader TimeColumn;
-        private System.Windows.Forms.ColumnHeader DirectionColumn;
-        private System.Windows.Forms.ColumnHeader DataColumn;
         private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem pausedToolStripMenuItem;
+        private System.Windows.Forms.TextBox textBox;
+        private System.Windows.Forms.Timer timer;
     }
 }
