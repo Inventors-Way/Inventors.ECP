@@ -69,6 +69,8 @@ namespace Inventors.ECP.Tester.Profiling
 
                 listBox.SelectedIndexChanged += ListBox_SelectedIndexChanged;
 
+                listBox.Items.Add(DebugSignal.None);
+
                 foreach (var signal in debugSpecification.Signals)
                 {
                     listBox.Items.Add(signal);
@@ -172,6 +174,10 @@ namespace Inventors.ECP.Tester.Profiling
                     {
                         retValue[n] = DebugSignal.None;
                     }
+                }
+                else
+                {
+                    retValue[n] = DebugSignal.None;
                 }
             }
 
