@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Inventors.ECP.Monitor;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,7 +22,7 @@ namespace Inventors.ECP
         public void Reset()
         {
             state = State.WAITING_FOR_DLE;
-            buffer.Clear();
+            Discard();
         }
 
         public void Add(int length, byte[] buffer)
@@ -57,7 +58,7 @@ namespace Inventors.ECP
         {
             if (data == Frame.DLE)
             {
-                buffer.Clear();
+                Discard();
                 state = State.WAITING_FOR_STX;
             }
         }
@@ -67,7 +68,7 @@ namespace Inventors.ECP
             if (data == Frame.STX)
             {
                 state = State.RECEIVING_DATA;
-                buffer.Clear();
+                Discard();
             }
             else if (data != Frame.DLE)
             {
@@ -96,17 +97,31 @@ namespace Inventors.ECP
             }
             else if (data == Frame.ETX)
             {
-                state = State.WAITING_FOR_DLE;
+                state = State.WAITING_FOR_DLE;                
                 NotifyListeners();
+                Discard();
             }
             else if (data == Frame.STX)
             {
                 state = State.RECEIVING_DATA;
-                buffer.Clear();
+                Discard();
             }
             else
             {
                 state = State.WAITING_FOR_DLE;
+            }
+        }
+
+        private void Discard()
+        {
+            if (buffer.Count > 0)
+            {
+                if (PortMonitor.Enabled)
+                {
+                    PortMonitor.Add(rx: true, buffer.ToArray());
+                }
+
+                buffer.Clear();
             }
         }
 

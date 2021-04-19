@@ -121,7 +121,7 @@ namespace Inventors.ECP
             }
         }
 
-        public override void Transmit(byte[] frame)
+        protected override void DoTransmit(byte[] frame)
         {
             lock (lockObject)
             {
