@@ -33,6 +33,11 @@ namespace Inventors.ECP
                 {
                     var data = buffer[n];
 
+                    if (PortMonitor.Enabled)
+                    {
+                        raw.Add(data);
+                    }
+
                     switch (state)
                     {
                         case State.WAITING_FOR_DLE:
@@ -58,7 +63,7 @@ namespace Inventors.ECP
         {
             if (data == Frame.DLE)
             {
-                Discard();
+                buffer.Clear();
                 state = State.WAITING_FOR_STX;
             }
         }
@@ -68,11 +73,12 @@ namespace Inventors.ECP
             if (data == Frame.STX)
             {
                 state = State.RECEIVING_DATA;
-                Discard();
+                buffer.Clear();
             }
             else if (data != Frame.DLE)
             {
                 state = State.WAITING_FOR_DLE;
+                Discard();
             }
         }
 
@@ -109,6 +115,7 @@ namespace Inventors.ECP
             else
             {
                 state = State.WAITING_FOR_DLE;
+                Discard();
             }
         }
 
@@ -116,12 +123,17 @@ namespace Inventors.ECP
         {
             if (buffer.Count > 0)
             {
+                buffer.Clear();
+            }
+
+            if (raw.Count > 0)
+            {
                 if (PortMonitor.Enabled)
                 {
-                    PortMonitor.Add(rx: true, buffer.ToArray());
+                    PortMonitor.Add(rx: true, raw.ToArray());
                 }
 
-                buffer.Clear();
+                raw.Clear();
             }
         }
 
@@ -129,5 +141,6 @@ namespace Inventors.ECP
 
         private State state = State.WAITING_FOR_DLE;
         private readonly List<byte> buffer = new List<byte>();
+        private readonly List<byte> raw = new List<byte>();
     }
 }

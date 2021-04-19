@@ -45,7 +45,7 @@ namespace Inventors.ECP.Tester.Monitoring
             this.viewToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(989, 28);
+            this.menuStrip.Size = new System.Drawing.Size(989, 30);
             this.menuStrip.TabIndex = 0;
             this.menuStrip.Text = "menuStrip1";
             // 
@@ -69,12 +69,13 @@ namespace Inventors.ECP.Tester.Monitoring
             // 
             this.textBox.BackColor = System.Drawing.Color.White;
             this.textBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBox.Location = new System.Drawing.Point(0, 28);
+            this.textBox.Font = new System.Drawing.Font("Courier New", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox.Location = new System.Drawing.Point(0, 30);
             this.textBox.Multiline = true;
             this.textBox.Name = "textBox";
             this.textBox.ReadOnly = true;
             this.textBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox.Size = new System.Drawing.Size(989, 732);
+            this.textBox.Size = new System.Drawing.Size(989, 730);
             this.textBox.TabIndex = 1;
             this.textBox.WordWrap = false;
             // 
