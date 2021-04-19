@@ -10,6 +10,24 @@ namespace Inventors.ECP
     [XmlRoot("debug-signal")]
     public class DebugSignal
     {
+        private static DebugSignal noneInstance;
+
+        public static DebugSignal None 
+        { 
+            get
+            {
+                if (noneInstance is null)
+                    noneInstance = new DebugSignal()
+                    {
+                        Code = 0,
+                        Name = "None",
+                        Description = "Represent a debug signal that is not enabled"
+                    };
+
+                return noneInstance;
+            }            
+        }
+
         [XmlAttribute("code")]
         public UInt32 Code { get; set; } = 1;
 

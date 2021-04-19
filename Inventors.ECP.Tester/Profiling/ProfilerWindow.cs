@@ -15,10 +15,9 @@ namespace Inventors.ECP.Tester.Profiling
     public partial class ProfilerWindow : Form
     {
         public event EventHandler<bool> OnProfilerClosed;
-        public readonly Dictionary<int, CheckedListBox> signalLists = new Dictionary<int, CheckedListBox>();
+        public readonly Dictionary<int, ListBox> signalLists = new Dictionary<int, ListBox>();
         private Device device;
         private Profiler profiler;
-        private UInt32[] activeSignals;
 
         public ProfilerWindow()
         {
@@ -39,12 +38,6 @@ namespace Inventors.ECP.Tester.Profiling
             analysisMenu.Enabled = true;
             fileMenu.Enabled = true;
             InitializeDebugSignals();
-            activeSignals = new UInt32[device.NumberOfSupportedDebugSignals];            
-
-            for (int n = 0; n < device.NumberOfSupportedDebugSignals; ++n)
-            {
-                activeSignals[n] = 0;
-            }
         }
 
         private void InitializeDebugSignals()
@@ -59,7 +52,7 @@ namespace Inventors.ECP.Tester.Profiling
                 {
                     BackColor = Color.White
                 };
-                var listBox = new CheckedListBox()
+                var listBox = new ListBox()
                 {
                     Dock = DockStyle.Fill,
                     BorderStyle = BorderStyle.None,
@@ -74,7 +67,6 @@ namespace Inventors.ECP.Tester.Profiling
                 };
                 menuItem.Click += MenuItem_Click;
 
-                listBox.ItemCheck += ListBox_ItemCheck;
                 listBox.SelectedIndexChanged += ListBox_SelectedIndexChanged;
 
                 foreach (var signal in debugSpecification.Signals)
@@ -106,22 +98,21 @@ namespace Inventors.ECP.Tester.Profiling
 
         private void ListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (sender is CheckedListBox listBox)
+            if (sender is ListBox listBox)
             {
-                if (listBox.Tag is int index)
+                if (listBox.SelectedIndex >= 0)
                 {
-                    if (listBox.SelectedIndex >= 0)
+                    if (listBox.Items[listBox.SelectedIndex] is DebugSignal signal)
                     {
-                        if (listBox.Items[listBox.SelectedIndex] is DebugSignal signal)
-                        {
-                            descriptionTextBox.Text = signal.Description;
-                        }
-                    }
-                    else
-                    {
-                        descriptionTextBox.Text = "";
+                        descriptionTextBox.Text = signal.Description;
                     }
                 }
+                else
+                {
+                    descriptionTextBox.Text = "";
+                }
+
+                SetDebugSignals();
             }
         }
 
@@ -161,22 +152,48 @@ namespace Inventors.ECP.Tester.Profiling
             }
         }
 
-        private void ListBox_ItemCheck(object sender, ItemCheckEventArgs e)
+        #region Updating of debug signals
+
+        private DebugSignal[] GetActiveSignals()
         {
-            if (sender is CheckedListBox listBox)
+            DebugSignal[] retValue = new DebugSignal[device.NumberOfSupportedDebugSignals];
+
+            for (int n = 0; n < device.NumberOfSupportedDebugSignals; ++n)
             {
-                if (listBox.Tag is int index)
+                var list = signalLists[n];
+
+                if (list.SelectedIndex >= 0)
                 {
-                    if (listBox.Items[e.Index] is DebugSignal signal)
+                    if (list.Items[list.SelectedIndex] is DebugSignal signal)
                     {
-                        if (e.NewValue == CheckState.Checked)
-                            Log.Status($"[ {index} ] {signal}");
-                        else
-                            Log.Status($"[ {index} ] None");
+                        retValue[n] = signal;
+                    }
+                    else
+                    {
+                        retValue[n] = DebugSignal.None;
                     }
                 }
             }
+
+            return retValue;
         }
+
+        private void SetDebugSignals()
+        {
+            if (device is null)
+                return;
+
+            try
+            {
+                device.SetActiveDebugSignals(GetActiveSignals());
+            }
+            catch (Exception e)
+            {
+                Log.Error(e.Message);
+            }
+        }
+
+        #endregion
 
         private void ProfilerWindow_FormClosing(object sender, FormClosingEventArgs e)
         {

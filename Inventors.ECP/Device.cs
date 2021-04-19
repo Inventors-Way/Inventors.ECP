@@ -227,13 +227,13 @@ namespace Inventors.ECP
         /// Set the active debug signals
         /// </summary>
         /// <param name="signals">the debug signals that should be active</param>
-        public virtual void SetActiveDebugSignals(List<DebugSignal> signals)
+        public virtual void SetActiveDebugSignals(DebugSignal[] signals)
         {
             if (signals is null)
                 throw new ArgumentNullException(nameof(signals));
 
-            if (signals.Count != NumberOfSupportedDebugSignals)
-                throw new ArgumentException($"Invalid number of debug signals [ {signals.Count} ] must be {NumberOfSupportedDebugSignals}");
+            if (signals.Length != NumberOfSupportedDebugSignals)
+                throw new ArgumentException($"Invalid number of debug signals [ {signals.Length} ] must be {NumberOfSupportedDebugSignals}");
 
             var function = new SetDebugSignal();
             function.Signals.AddRange(signals);
