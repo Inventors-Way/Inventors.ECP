@@ -140,7 +140,7 @@
             this.s300timeToolStripMenuItem,
             this.s600timeToolStripMenuItem});
             this.timeSpanToolStripMenuItem.Name = "timeSpanToolStripMenuItem";
-            this.timeSpanToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.timeSpanToolStripMenuItem.Size = new System.Drawing.Size(193, 26);
             this.timeSpanToolStripMenuItem.Text = "Time span";
             // 
             // s60timeToolStripMenuItem
@@ -148,35 +148,35 @@
             this.s60timeToolStripMenuItem.Checked = true;
             this.s60timeToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.s60timeToolStripMenuItem.Name = "s60timeToolStripMenuItem";
-            this.s60timeToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.s60timeToolStripMenuItem.Size = new System.Drawing.Size(122, 26);
             this.s60timeToolStripMenuItem.Text = "60s";
             this.s60timeToolStripMenuItem.Click += new System.EventHandler(this.s60timeChanged_Click);
             // 
             // s300timeToolStripMenuItem
             // 
             this.s300timeToolStripMenuItem.Name = "s300timeToolStripMenuItem";
-            this.s300timeToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.s300timeToolStripMenuItem.Size = new System.Drawing.Size(122, 26);
             this.s300timeToolStripMenuItem.Text = "300s";
             this.s300timeToolStripMenuItem.Click += new System.EventHandler(this.s300timeChanged_Click);
             // 
             // s600timeToolStripMenuItem
             // 
             this.s600timeToolStripMenuItem.Name = "s600timeToolStripMenuItem";
-            this.s600timeToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.s600timeToolStripMenuItem.Size = new System.Drawing.Size(122, 26);
             this.s600timeToolStripMenuItem.Text = "600s";
             this.s600timeToolStripMenuItem.Click += new System.EventHandler(this.s600timeChanged_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(221, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(190, 6);
             // 
             // maximumToolStripMenuItem
             // 
             this.maximumToolStripMenuItem.Checked = true;
             this.maximumToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.maximumToolStripMenuItem.Name = "maximumToolStripMenuItem";
-            this.maximumToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.maximumToolStripMenuItem.Size = new System.Drawing.Size(193, 26);
             this.maximumToolStripMenuItem.Text = "Maximum";
             this.maximumToolStripMenuItem.Click += new System.EventHandler(this.MaximumToolStripMenuItem_Click);
             // 
@@ -185,21 +185,21 @@
             this.minimumToolStripMenuItem.Checked = true;
             this.minimumToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.minimumToolStripMenuItem.Name = "minimumToolStripMenuItem";
-            this.minimumToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.minimumToolStripMenuItem.Size = new System.Drawing.Size(193, 26);
             this.minimumToolStripMenuItem.Text = "Minimum";
             this.minimumToolStripMenuItem.Click += new System.EventHandler(this.MinimumToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(221, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(190, 6);
             // 
             // eventsToolStripMenuItem
             // 
             this.eventsToolStripMenuItem.Checked = true;
             this.eventsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.eventsToolStripMenuItem.Name = "eventsToolStripMenuItem";
-            this.eventsToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.eventsToolStripMenuItem.Size = new System.Drawing.Size(193, 26);
             this.eventsToolStripMenuItem.Text = "Events";
             this.eventsToolStripMenuItem.Click += new System.EventHandler(this.EventsToolStripMenuItem_Click);
             // 
@@ -208,20 +208,20 @@
             this.timeViolationsToolStripMenuItem.Checked = true;
             this.timeViolationsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.timeViolationsToolStripMenuItem.Name = "timeViolationsToolStripMenuItem";
-            this.timeViolationsToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.timeViolationsToolStripMenuItem.Size = new System.Drawing.Size(193, 26);
             this.timeViolationsToolStripMenuItem.Text = "Time violations";
             this.timeViolationsToolStripMenuItem.Click += new System.EventHandler(this.TimeViolationsToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(221, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(190, 6);
             // 
             // pausedToolStripMenuItem
             // 
             this.pausedToolStripMenuItem.Name = "pausedToolStripMenuItem";
             this.pausedToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-            this.pausedToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.pausedToolStripMenuItem.Size = new System.Drawing.Size(193, 26);
             this.pausedToolStripMenuItem.Text = "Paused";
             this.pausedToolStripMenuItem.Click += new System.EventHandler(this.PausedToolStripMenuItem_Click);
             // 
@@ -322,6 +322,7 @@
             this.Name = "ProfilerWindow";
             this.Text = "Profiler";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ProfilerWindow_FormClosing);
+            this.SizeChanged += new System.EventHandler(this.ProfilerWindow_SizeChanged);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
             this.splitContainer.Panel1.ResumeLayout(false);

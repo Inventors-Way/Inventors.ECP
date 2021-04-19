@@ -16,12 +16,12 @@ namespace Inventors.ECP.Tester.Profiling
     public partial class ProfilerWindow : Form
     {
         public event EventHandler<bool> OnProfilerClosed;
-        public readonly Dictionary<int, ListBox> signalLists = new Dictionary<int, ListBox>();
+
+        private readonly Dictionary<int, ListBox> signalLists = new Dictionary<int, ListBox>();
         private Device device;
         private Profiler profiler;
         private Plot plot;
-        public PropertyBinder<Device> binder;
-
+        private ColorSet colors = new ColorSet();
 
         public ProfilerWindow()
         {
@@ -63,13 +63,13 @@ namespace Inventors.ECP.Tester.Profiling
 
             if (this.device is null)
             {
-                binder = new PropertyBinder<Device>(device, this);
                 this.device = device;
                 this.profiler = device.Profiler;
 
                 analysisMenu.Enabled = true;
                 fileMenu.Enabled = true;
                 InitializeDebugSignals();
+                SetDebugSignals();
             }
 
             plot = new Plot(width: pictureBox.Width, height: pictureBox.Height);
@@ -254,7 +254,6 @@ namespace Inventors.ECP.Tester.Profiling
                 if (profiler.Updated)
                 {
                     Redraw();
-                    Log.Debug("Profiler Update");
                 }
             }
         }
@@ -270,8 +269,63 @@ namespace Inventors.ECP.Tester.Profiling
 
                     foreach (var signal in report.Timing)
                     {
-                        plot.PlotScatter(signal.Time, signal.Average, label: $"{signal.Code}");
+                        plot.PlotScatter(xs: signal.Time, 
+                                         ys: signal.Average, 
+                                         markerShape: MarkerShape.none,
+                                         label: $"{signal.Code}", 
+                                         color: colors.GetColor(signal.Code));
+
+                        if (MaximumEnabled)
+                        {
+                            plot.PlotScatter(xs: signal.Time,
+                                             ys: signal.Maximum,
+                                             lineStyle: LineStyle.Dot,
+                                             markerShape: MarkerShape.none,
+                                             color: colors.GetColor(signal.Code));
+                        }
+
+                        if (MinimumEnabled)
+                        {
+                            plot.PlotScatter(xs: signal.Time,
+                                             ys: signal.Minimum,
+                                             lineStyle: LineStyle.Dot,
+                                             markerShape: MarkerShape.none,
+                                             color: colors.GetColor(signal.Code));
+                        }
                     }
+
+                    if (EventsEnabled)
+                    {
+                        foreach (var e in report.Events)
+                        {
+                            plot.PlotVLine(e.Time, color: Color.Black);
+                            plot.PlotText(text: e.Description, 
+                                          x: e.Time, 
+                                          y: 0,                                           
+                                          alignment: TextAlignment.lowerLeft,
+                                          color: Color.Black,
+                                          rotation: -90);
+                        }
+                    }
+
+                    if (ViolationsEnabled)
+                    {
+                        foreach (var t in report.Violation)
+                        {
+                            plot.PlotVLine(t.Time, color: Color.Black);
+                            plot.PlotText(text: $"{t.Time}us",
+                                          x: t.Time,
+                                          y: 0,
+                                          alignment: TextAlignment.lowerLeft,
+                                          color: Color.Black,
+                                          rotation: -90);
+                        }
+                    }
+
+                    plot.Legend(location: legendLocation.lowerLeft);
+                    plot.XLabel("Time [s]");
+                    plot.YLabel("Elapsed Time [us]");
+                    plot.Frame(right: false, top: false);
                 }
 
                 pictureBox.Image = plot.GetBitmap();
@@ -294,18 +348,6 @@ namespace Inventors.ECP.Tester.Profiling
             if (device is object)
             {
                 device.Profiler.Reset();
-            }
-        }
-
-        private void SplitContainer_Panel2_Resize(object sender, EventArgs e)
-        {
-            pictureBox.Width = hScrollBar.Width;
-            pictureBox.Height = splitContainer.Panel2.Height - hScrollBar.Height;
-
-            if (plot is object)
-            {
-                plot.Resize(width: pictureBox.Width, height: pictureBox.Height);
-                pictureBox.Image = plot.GetBitmap();
             }
         }
 
@@ -373,5 +415,21 @@ namespace Inventors.ECP.Tester.Profiling
                 pausedToolStripMenuItem.Checked = profiler.Paused;
             }
         }
+
+        private void SplitContainer_Panel2_Resize(object sender, EventArgs e) => ResizePlot();
+
+        private void ResizePlot()
+        {
+            pictureBox.Width = hScrollBar.Width;
+            pictureBox.Height = splitContainer.Panel2.Height - hScrollBar.Height;
+
+            if (plot is object)
+            {
+                plot.Resize(width: pictureBox.Width, height: pictureBox.Height);
+                pictureBox.Image = plot.GetBitmap();
+            }
+        }
+
+        private void ProfilerWindow_SizeChanged(object sender, EventArgs e) => ResizePlot();
     }
 }

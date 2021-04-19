@@ -135,7 +135,7 @@ namespace Inventors.ECP.Profiling
                     {
                         retValue.Add(current.Value);
                         current = current.Next;
-                    } while (current != end);
+                    } while ((current != end) && (current is object));
 
                     retValue.Add(end.Value);
                 }
@@ -352,6 +352,13 @@ namespace Inventors.ECP.Profiling
                                                         );
 
                     report.Timing.Add(signalTiming);
+                }
+
+                report.Violation = new List<TimingViolation>();
+                foreach (var pair in violations)
+                {
+                    var set = pair.Value;
+                    report.Violation.AddRange(set.GetValues());
                 }
             }
 

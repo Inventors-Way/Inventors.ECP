@@ -392,6 +392,8 @@ namespace Inventors.ECP
                     default:
                         break;
                 }
+
+                Profiler.Add(new TargetEvent(message.DebugMessage));
             }
         }
 
