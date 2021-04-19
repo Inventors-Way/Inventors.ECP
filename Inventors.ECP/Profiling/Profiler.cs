@@ -15,35 +15,145 @@ namespace Inventors.ECP.Profiling
     public class Profiler :
         NotifyPropertyChanged
     {
-        private readonly List<TargetEvent> events = new List<TargetEvent>();
-        private readonly Dictionary<string, List<TimingRecord>> timing = new Dictionary<string, List<TimingRecord>>();
-        private readonly Dictionary<string, List<TimingViolation>> violations = new Dictionary<string, List<TimingViolation>>();
-        private readonly Dictionary<byte, long> packets = new Dictionary<byte, long>();
-        private readonly List<CommRecord> commRecords = new List<CommRecord>();
-        private readonly Dictionary<string, double> timingMax = new Dictionary<string, double>();
-        private double time;
+        private double time = 0;
+
+        private class DataNode<T>
+            where T : Record
+        {
+            public DataNode(T value)
+            {
+                Value = value;
+            }
+
+            public DataNode<T> Next { get; set; }
+
+            public DataNode<T> Previous { get; set; }
+
+            public T Value { get; }
+        }
+
+        private interface IFilter
+        {
+            bool IsIncluded(Record value);
+        }
+
+        private class TimeFilter :
+            IFilter
+        {
+            public double End { get; set; }
+
+            public double Duration { get; set; }
+
+            public bool IsIncluded(Record value)
+            {
+                return (value.Time >= (End - Duration)) && (value.Time <= End);
+            }
+        }
+
+        private class DataSet<T>
+            where T : Record
+        {
+            private DataNode<T> last;
+            private DataNode<T> start;
+            private DataNode<T> end;
+            private readonly IFilter filter;
+
+            public bool Updated { get; private set; }
+
+            public DataSet(IFilter filter)
+            {
+                this.filter = filter;
+            }
+
+            public void Clear()
+            {
+                last = start = end = null;
+                Updated = true;
+            }
+
+            public void Add(T value)
+            {
+                var current = new DataNode<T>(value);
+
+                if (last is object)
+                {
+                    last.Next = current;
+                    current.Previous = last;
+                    last = current;
+
+                    if (filter.IsIncluded(last.Value))
+                    {
+                        end = last;
+                        Updated = true;
+                    }
+
+                    while (!filter.IsIncluded(start.Value))
+                    {
+                        if (start.Next is object)
+                        {
+                            start = start.Next;
+                            Updated = true;
+                        }
+                    }
+                }
+                else
+                {
+                    last = start = end = current;
+                }
+            }
+
+            public void Refilter()
+            {
+                if (last is null)
+                    return;
+
+                // First we find the end of the window
+                end = last;
+
+                while (!filter.IsIncluded(end.Value) && (end.Previous is object))
+                {
+                    end = end.Previous;
+                }
+
+                start = end;
+
+                while (filter.IsIncluded(start.Value) && (start.Previous is object))
+                {
+                    start = start.Previous;
+                }
+
+                Updated = true;
+            }
+
+            public List<T> GetValues()
+            {
+                List<T> retValue = new List<T>();
+
+                if ((start is object) && (end is object))
+                {
+                    var current = start;
+
+                    do
+                    {
+                        retValue.Add(current.Value);
+                        current = current.Next;
+                    } while ((current != end) && (current is object));
+
+                    retValue.Add(end.Value);
+                }
+
+                Updated = false;
+
+                return retValue;
+            }
+        }
+
+        private readonly TimeFilter filter;
+        private readonly DataSet<TargetEvent> events;
+        private readonly Dictionary<UInt32, DataSet<TimingRecord>> timings = new Dictionary<uint, DataSet<TimingRecord>>();
+        private readonly Dictionary<UInt32, DataSet<TimingViolation>> violations= new Dictionary<uint, DataSet<TimingViolation>>();
 
         #region Properties
-        #region OverviewUpdated Property
-        private bool _overviewUpdated;
-
-        public bool OverviewUpdated
-        {
-            get => GetPropertyLocked(ref _overviewUpdated);
-            private set => SetPropertyLocked(ref _overviewUpdated, value);
-        }
-
-        #endregion
-        #region TaskUpdated Property
-        private bool _taskUpdated;
-
-        public bool TaskUpdated
-        {
-            get => GetPropertyLocked(ref _taskUpdated);
-            private set => SetPropertyLocked(ref _taskUpdated, value);
-        }
-
-        #endregion
         #region Enabled Property
         private bool _enabled;
 
@@ -54,241 +164,131 @@ namespace Inventors.ECP.Profiling
         }
 
         #endregion
-        #region ActiveProfile Property
-        private string _activeProfile;
-
-        public string ActiveProfile
-        {
-            get => GetPropertyLocked(ref _activeProfile);
-            set
-            {
-                if (ActiveProfile != value)
-                {
-                    SetPropertyLocked(ref _activeProfile, value);
-                    TaskUpdated = true;
-                }
-            }
-        }
-
-        #endregion
-        #region AvailableProfiles
-        private readonly List<string> profiles = new List<string>();
-
-        public IList<string> AvailableProfiles
-        {
-            get
-            {
-                lock (LockObject)
-                {
-                    return profiles.AsReadOnly();
-                }
-            }
-        }
-
-        private void ClearProfiles()
-        {
-            lock (LockObject)
-            {
-                profiles.Clear();
-            }
-
-            Notify(nameof(AvailableProfiles));
-        }
-
-        private void AddProfile(string profile)
-        {
-            lock (LockObject)
-            {
-                profiles.Add(profile);
-            }
-
-            Notify(nameof(AvailableProfiles));
-        }
-
-        private bool ProfileExists(string profile)
-        {
-            lock (LockObject)
-            {
-                return profiles.Any((p) => p == profile);
-            }
-        }
-
-        #endregion
         #region TimeSpan Property
-        private double _timeSpan = Double.NaN;
+        private double _timeSpan = 60;
 
         public double TimeSpan
         {
             get => GetPropertyLocked(ref _timeSpan);
             set
             {
-                SetPropertyLocked(ref _timeSpan, value);
-                TaskUpdated = true;
+                lock (LockObject)
+                {
+                    filter.Duration = value;
+                    Refilter();
+                    SetProperty(ref _timeSpan, value);
+                }
             }
         }
 
         #endregion
-        #region Overview Property
-        private OverviewAnalysis _overview;
+        #region Updated Property
+        private bool _updated;
 
-        public OverviewAnalysis Overview
+        public bool Updated 
         {
-            get => GetPropertyLocked(ref _overview);
-            private set
-            {
-                SetPropertyLocked(ref _overview, value);
-                OverviewUpdated = false;
-            }
+            get => GetPropertyLocked(ref _updated);
+            private set => SetPropertyLocked(ref _updated, value);
         }
         #endregion
-        #region TaskProfile Property
-        private TaskAnalysis _taskProfile;
+        #region Paused Property
+        private bool _paused;
 
-        public TaskAnalysis TaskProfile
+        public bool Paused
         {
-            get => GetPropertyLocked(ref _taskProfile);
-            private set
+            get =>GetPropertyLocked(ref _paused);
+            set
             {
-                SetProperty(ref _taskProfile, value);
-                TaskUpdated = false;
+                lock(LockObject)
+                {
+                    _paused = value;
+                    Refilter();
+                }
             }
         }
 
         #endregion
-        #endregion
-        #region Overview Analysis
+        #region End Property
 
-        private TimingRecord GetCurrentTiming(string id) =>
-            timing[id][timing[id].Count - 1];
-
-        private List<TimingRecord> Current
+        public double End
         {
             get
             {
-                List<TimingRecord> retValue = new List<TimingRecord>();
-
-                foreach (var pair in timing)
+                lock (LockObject)
                 {
-                    retValue.Add(GetCurrentTiming(pair.Key));
+                    return filter.End;
                 }
-
-                return retValue;
             }
-        }
-
-        public void UpdateOverview()
-        {
-            OverviewAnalysis analysis = null;
-
-            lock (LockObject)
-            {
-                var current = Current;
-                var x = (from v in Enumerable.Range(0, timing.Count) select (double)v).ToList();
-                var average = (from record in current select record.Average).ToList();
-                var max = (from record in current select record.Max).ToList();
-                var min = (from record in current select record.Min).ToList();
-                var labels = (from record in current select record.ID).ToList();
-
-                foreach (var r in current)
-                {
-                    if (timingMax.ContainsKey(r.ID))
-                    {
-                        if (timingMax[r.ID] < r.Max)
-                        {
-                            timingMax[r.ID] = r.Max;
-                        }
-                    }
-                    else
-                    {
-                        timingMax.Add(r.ID, r.Max);
-                    }
-                }
-
-                var globalMax = (from r in current select timingMax[r.ID]).ToList();
-
-                analysis = new OverviewAnalysis(x: x, 
-                                                average: average, 
-                                                maximum: max, 
-                                                minimum: min, 
-                                                labels: labels, 
-                                                scaleMaximum: globalMax);
-            }
-
-            Overview = analysis;
-        }
-
-        #endregion
-        #region Task Analysis
-
-        public void UpdateTaskProfile()
-        {
-            TaskAnalysis analysis = null;
-
-            if (!string.IsNullOrEmpty(ActiveProfile) && timing.ContainsKey(ActiveProfile))
+            set
             {
                 lock (LockObject)
                 {
-                    var records = from r in timing[ActiveProfile]
-                                  where IsIncuded(r)
-                                  select r;
-                    var violationRecords = violations.ContainsKey(ActiveProfile) ?
-                                           (from r in violations[ActiveProfile]
-                                           where IsIncuded(r)
-                                           select r).ToList() :
-                                           null;
-                    var selectedEvents = (from e in events
-                                          where IsIncuded(e)
-                                          select e).ToList();
-
-                    var time = records.Select((r) => r.Time).ToList();
-                    var average = records.Select((r) => r.Average).ToList();
-                    var max = records.Select((r) => r.Max).ToList();
-                    var min = records.Select((r) => r.Min).ToList();
-
-                    analysis = new TaskAnalysis(ActiveProfile, average, max, min, time, violationRecords, selectedEvents);
+                    filter.End = value;
+                    Refilter();
                 }
             }
-
-            TaskProfile = analysis;
         }
+
+        #endregion
+        #region MaximalTime Property
+
+        public double MaximalTime => time;
+
+        #endregion
         #endregion
 
-        private bool IsIncuded(Record record)
+        public Profiler()
         {
-            bool retValue = true;
-
-            if (!Double.IsNaN(TimeSpan))
-            {
-                retValue = record.Time > time - TimeSpan;
-            }
-
-            return retValue;
+            filter = new TimeFilter() 
+            { 
+                End = 0, 
+                Duration = TimeSpan 
+            };
+            events = new DataSet<TargetEvent>(filter);
         }
-
 
         public void Reset()
         {
             lock (LockObject)
             {
                 ProfileTiming.Reset();
-                timingMax.Clear();
                 events.Clear();
-                timing.Clear();
+                timings.Clear();
                 violations.Clear();
-                packets.Clear();
-                commRecords.Clear();
-                
-                // Reset analysis
-                Overview = null;
-                ActiveProfile = "";
-                ClearProfiles();
-
                 time = 0;
-                TaskUpdated = OverviewUpdated = true;
+            }
+        }
+
+        private void Refilter()
+        {
+            events.Refilter();
+            Updated = events.Updated;
+
+            foreach (var pair in timings)
+            {
+                pair.Value.Refilter();
+                Updated = pair.Value.Updated;
+            }
+
+            foreach (var pair in violations)
+            {
+                pair.Value.Refilter();
+                Updated = pair.Value.Updated;
             }
         }
 
         #region Adding Profiling
+
+        private void UpdateTime(double time)
+        {
+            if (!Paused)
+            {
+                filter.End = time;
+            }
+
+            this.time = time;
+        }
+
 
         public void Add(TargetEvent e)
         {
@@ -297,12 +297,15 @@ namespace Inventors.ECP.Profiling
 
             if (Enabled)
             {
+                UpdateTime(e.Time);
+
                 lock (LockObject)
                 {
                     events.Add(e);
-                    time = e.Time;
                 }
             }
+
+            Updated = events.Updated;
         }
 
         public void Add(TimingRecord record)
@@ -312,37 +315,26 @@ namespace Inventors.ECP.Profiling
 
             if (Enabled)
             {
+                DataSet<TimingRecord> set;
+
                 lock (LockObject)
                 {
-                    if (timing.ContainsKey(record.ID))
+                    UpdateTime(record.Time);
+
+                    if (timings.ContainsKey(record.Signal))
                     {
-                        timing[record.ID].Add(record);
+                        timings[record.Signal].Add(record);
+                        set = timings[record.Signal];
                     }
                     else
                     {
-                        timing.Add(record.ID, new List<TimingRecord>());
-                        timing[record.ID].Add(record);
+                        set = new DataSet<TimingRecord>(filter);
+                        set.Add(record);
+                        timings.Add(record.Signal, set);
                     }
-
-                    time = record.Time;
                 }
 
-                if (!ProfileExists(record.ID))
-                {
-                    AddProfile(record.ID);
-                }
-
-                if (string.IsNullOrEmpty(ActiveProfile))
-                {
-                    ActiveProfile = record.ID;
-                }
-
-                if (record.ID == ActiveProfile)
-                {
-                    TaskUpdated = true;
-                }
-
-                OverviewUpdated = true;
+                Updated = set.Updated;
             }
         }
 
@@ -353,59 +345,64 @@ namespace Inventors.ECP.Profiling
 
             if (Enabled)
             {
+                DataSet<TimingViolation> set;
                 lock (LockObject)
                 {
-                    if (violations.ContainsKey(violation.ID))
+                    UpdateTime(violation.Time);
+
+                    if (violations.ContainsKey(violation.Signal))
                     {
-                        violations[violation.ID].Add(violation);
+                        violations[violation.Signal].Add(violation);
+                        set = violations[violation.Signal];
                     }
                     else
                     {
-                        violations.Add(violation.ID, new List<TimingViolation>());
-                        violations[violation.ID].Add(violation);
-                    }
-
-                    time = violation.Time;
-                }
-            }
-        }
-
-        public void Add(Packet packet)
-        {
-            if (packet is null)
-                throw new ArgumentNullException(nameof(packet));
-
-            if (Enabled)
-            {
-                lock (LockObject)
-                {
-                    if (packets.ContainsKey(packet.Code))
-                    {
-                        ++packets[packet.Code];
-                    }
-                    else
-                    {
-                        packets.Add(packet.Code, 1);
+                        set = new DataSet<TimingViolation>(filter);
+                        set.Add(violation);
+                        violations.Add(violation.Signal, set);
                     }
                 }
-            }
-        }
 
-        public void Add(double elapsedTime, CommRecord record)
-        {
-            if (record is null)
-                throw new ArgumentNullException(nameof(record));
-
-            if (Enabled)
-            {
-                lock (LockObject)
-                {
-                    commRecords.Add(record);
-                    time = record.Time;
-                }
+                Updated = set.Updated;
             }
         }
 
         #endregion
+
+        public ProfileReport GetReport()
+        {
+            var report = new ProfileReport();
+
+            lock (LockObject)
+            {
+                report.Events = events.GetValues();
+
+                foreach (var pair in timings)
+                {
+                    var set = pair.Value;
+                    var values = set.GetValues();
+                    var signalTiming = new SignalTiming(signal: "Foo",
+                                                        code: (int) pair.Key,
+                                                        time: (from e in values select e.Time).ToArray(),
+                                                        average: (from e in values select e.Average).ToArray(),
+                                                        maximum: (from e in values select e.Max).ToArray(),
+                                                        minimum: (from e in values select e.Min).ToArray()
+                                                        );
+
+                    report.Timing.Add(signalTiming);
+                }
+
+                report.Violation = new List<TimingViolation>();
+                foreach (var pair in violations)
+                {
+                    var set = pair.Value;
+                    report.Violation.AddRange(set.GetValues());
+                }
+            }
+
+            Updated = false;
+
+            return report;
+        }
     }
 }

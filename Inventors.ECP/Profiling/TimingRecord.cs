@@ -9,15 +9,15 @@ namespace Inventors.ECP.Profiling
     public class TimingRecord :
         Record
     {
-        public TimingRecord(string id, double average, double min, double max)
+        public TimingRecord(UInt32 signal, double average, double min, double max)
         {
-            ID = id;
+            Signal = signal;
             Average = average;
             Min = min;
             Max = max;
         }
 
-        public string ID { get; }
+        public UInt32 Signal { get; }
 
         public double Max { get; }
 
@@ -26,6 +26,6 @@ namespace Inventors.ECP.Profiling
         public double Average { get; }
 
         public override string ToString() =>
-            $"TIMING [ { ID } ] Time: { Time }s, Average { Average }us, Max: { Max }us, Min: { Min }us";
+            $"TIMING [ { Signal } ] Time: { Time }s, Average { Average }us, Max: { Max }us, Min: { Min }us";
     }
 }

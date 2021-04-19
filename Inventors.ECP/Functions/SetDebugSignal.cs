@@ -22,7 +22,7 @@ namespace Inventors.ECP.Functions
 
         public override int Dispatch(dynamic listener) => listener.Accept(this);
 
-        public List<UInt32> Signals { get; } = new List<UInt32>();
+        public List<DebugSignal> Signals { get; } = new List<DebugSignal>();
 
         public override void OnSend()
         {
@@ -30,7 +30,7 @@ namespace Inventors.ECP.Functions
 
             for (int n = 0; n < Signals.Count; ++n)
             {
-                Request.InsertUInt32(n * sizeof(UInt32), Signals[n]);
+                Request.InsertUInt32(n * sizeof(UInt32), Signals[n].Code);
             }
         }
 
@@ -40,7 +40,10 @@ namespace Inventors.ECP.Functions
 
             for (int n = 0; n < Request.Length / sizeof(UInt32); ++n)
             {
-                Signals.Add(Request.GetUInt32(n * sizeof(UInt32)));
+                Signals.Add(new DebugSignal()
+                {
+                    Code = Request.GetUInt32(n * sizeof(UInt32))
+                });
             }
         }
 

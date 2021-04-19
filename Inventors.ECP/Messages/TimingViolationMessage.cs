@@ -18,19 +18,17 @@ namespace Inventors.ECP.Messages
         public TimingViolationMessage(Packet response) :
             base(response)
         {
-            if (Packet.Length <= 12)
+            if (Packet.Length != 12)
             {
-                throw new InvalidMessageException("TimingViolation is shorter than 12 bytes");
+                throw new InvalidMessageException("TimingViolation has an invalid length");
             }
         }
 
-        public string Name => Packet.GetString(12, Packet.Length - 12);
+        public uint DebugSignal => Packet.GetUInt32(0);
 
-        public uint TimeLimit => Packet.GetUInt32(0);
+        public uint TimeLimit => Packet.GetUInt32(4);
 
-        public uint Time => Packet.GetUInt32(4);
-
-        public uint Context => Packet.GetUInt32(8);
+        public uint Time => Packet.GetUInt32(8);
 
         public override void Dispatch(dynamic listener) => listener.Accept(this);
 

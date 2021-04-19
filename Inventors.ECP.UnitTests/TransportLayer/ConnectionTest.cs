@@ -47,8 +47,8 @@ namespace Inventors.ECP.UnitTests.TransportLayer
         {
             var device = TC.CentralDevice;
             var id = new SetDebugSignal();
-            id.Signals.Add(0);
-            id.Signals.Add(1);
+            id.Signals.Add(new DebugSignal() { Code = 0 });
+            id.Signals.Add(new DebugSignal() { Code = 1 });
 
             device.Execute(id);
         }

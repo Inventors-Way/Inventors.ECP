@@ -9,15 +9,15 @@ namespace Inventors.ECP.Profiling
     public class TimingViolation : 
         Record
     {
-        public TimingViolation(string id, double elapsedTime, double timeLimit, UInt32 context)
+        public TimingViolation(UInt32 signal, double elapsedTime, double timeLimit, UInt32 context)
         {
-            ID = id;
+            Signal = signal;
             ElapsedTime = elapsedTime;
             TimeLimit = timeLimit;
             Context = context;
         }
 
-        public string ID { get; }
+        public UInt32 Signal { get; }
 
         public UInt32 Context { get; }
 

@@ -133,9 +133,22 @@ namespace Inventors.ECP
             set => SetProperty(ref _address, value);
         }
         #endregion
+        #region Retries property
+
+        private int _retries = 1;
+
+        [Category("Retries")]
+        public int Retries
+        {
+            get => _retries;
+            set => SetProperty(ref _retries, value);
+        }
+
+        #endregion
         #endregion
 
-        protected Device(CommunicationLayer commLayer, Profiler profiler)
+        protected Device(CommunicationLayer commLayer, 
+                         Profiler profiler)
         {
             Master = new BusCentral(commLayer, profiler)
             {
@@ -144,7 +157,7 @@ namespace Inventors.ECP
             Master.Add(new PrintfMessage());
         }
 
-        public List<string> GetLocationsDevices() => Master.GetLocations();
+        #region Support for scripts 
 
         /// <summary>
         /// Create a new message script from a text string
@@ -152,6 +165,9 @@ namespace Inventors.ECP
         /// <param name="content"></param>
         /// <returns></returns>
         public abstract IScript CreateScript(string content);
+
+        #endregion
+        #region Implementation of ping
 
         /// <summary>
         /// Ping the connected device.
@@ -163,7 +179,7 @@ namespace Inventors.ECP
 
             try
             {
-                var ping = new Ping();
+                dynamic ping = CreatePing();
                 Execute(ping);
                 retValue = (int) ping.Count;
             }
@@ -173,11 +189,63 @@ namespace Inventors.ECP
         }
 
         /// <summary>
-        /// Create the DeviceFunction for identifying the device. After it has been successfully executed the 
-        /// IsCompatible() function can be used to check if the connected device is compatible.
+        /// Create the Ping for testing the connection 
         /// </summary>
-        /// <returns>The DeviceFunction that performs device identification for the device</returns>
-        public virtual DeviceFunction CreateIdentificationFunction() => new DeviceIdentification();
+        /// <returns>Ping function</returns>
+        public virtual DeviceFunction CreatePing() => new Ping();
+
+        #endregion
+        #region Debugging
+        private readonly List<DebugSpecification> _debugSpecifications = new List<DebugSpecification>();
+
+        internal void AddDebugSpecification(DebugSpecification specification)
+        {
+            if (specification is null)
+                throw new ArgumentNullException(nameof(specification));
+
+            if (_debugSpecifications.Any((s) => s.Address == specification.Address))
+                throw new ArgumentException($"Debug specification for address {specification.Address} allready exists");
+
+            _debugSpecifications.Add(specification);
+        }
+
+        public DebugSpecification GetActiveDebugSpecification()
+        {
+            if (_debugSpecifications.Count == 0)
+                return null;
+
+            if (CurrentAddress is null)
+                return _debugSpecifications[0];
+
+            if (!_debugSpecifications.Any((s) => s.Address == CurrentAddress.Value))
+                return null;
+
+            return _debugSpecifications.Find((s) => s.Address == CurrentAddress.Value);
+        }
+
+        /// <summary>
+        /// Set the active debug signals
+        /// </summary>
+        /// <param name="signals">the debug signals that should be active</param>
+        public virtual void SetActiveDebugSignals(DebugSignal[] signals)
+        {
+            if (signals is null)
+                throw new ArgumentNullException(nameof(signals));
+
+            if (signals.Length != NumberOfSupportedDebugSignals)
+                throw new ArgumentException($"Invalid number of debug signals [ {signals.Length} ] must be {NumberOfSupportedDebugSignals}");
+
+            var function = new SetDebugSignal();
+            function.Signals.AddRange(signals);
+            Execute(function);
+        }
+
+        public abstract int NumberOfSupportedDebugSignals { get; }
+
+        #endregion
+        #region Implementation of connect and disconnect
+
+        public List<string> GetLocationsDevices() => Master.GetLocations();
 
         public bool Connect()
         {
@@ -185,7 +253,7 @@ namespace Inventors.ECP
 
             if (!Master.IsOpen)
             {
-                var identification = CreateIdentificationFunction();
+                DeviceFunction identification = CreateIdentificationFunction();
                 var retries = Retries;
                 Retries = Retries > 3 ? Retries : 3;
 
@@ -219,6 +287,15 @@ namespace Inventors.ECP
             return retValue;
         }
 
+        /// <summary>
+        /// Create the DeviceFunction for identifying the device. After it has been successfully executed the 
+        /// IsCompatible() function can be used to check if the connected device is compatible.
+        /// </summary>
+        /// <returns>The DeviceFunction that performs device identification for the device</returns>
+        public virtual DeviceFunction CreateIdentificationFunction() => new DeviceIdentification();
+
+        public abstract bool IsCompatible(DeviceFunction function);
+
         private void WaitOnConnected(int timeout)
         {
             var watch = new Stopwatch();
@@ -246,6 +323,9 @@ namespace Inventors.ECP
             }
         }
 
+        #endregion
+        #region Open and closing of the device
+
         /// <summary>
         /// Open the location of device, but does not check if a device is present by connecting to it.
         /// </summary>
@@ -267,6 +347,8 @@ namespace Inventors.ECP
                 Master.Close();
             }
         }
+
+        #endregion
 
         public void Execute(DeviceFunction function)
         {
@@ -321,18 +403,6 @@ namespace Inventors.ECP
         [Browsable(false)]
         public List<DeviceFunction> Functions => FunctionList;
 
-        public abstract bool IsCompatible(DeviceFunction function);
-
-        private int _retries = 1;
-        private bool disposedValue;
-
-        [Category("Retries")]
-        public int Retries 
-        {
-            get => _retries;
-            set => SetProperty(ref _retries, value);
-        }
-
         [XmlIgnore]
         [Browsable(false)]
         protected List<DeviceFunction> FunctionList { get; } = new List<DeviceFunction>();
@@ -342,6 +412,10 @@ namespace Inventors.ECP
         protected List<MessageDispatcher> Dispatchers { get; } = new List<MessageDispatcher>();
 
         private readonly Stopwatch watch = new Stopwatch();
+
+        #region Implementation of dispose pattern 
+
+        private bool disposedValue;
 
         protected virtual void Dispose(bool disposing)
         {
@@ -361,5 +435,7 @@ namespace Inventors.ECP
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
+
+        #endregion
     }
 }
