@@ -10,6 +10,6 @@ namespace Inventors.ECP.Monitor
     {
         void Receive(DataChunk chunk);
 
-        bool Enabled { get; }
+        bool ProfilingEnabled { get; set; }
     }
 }

@@ -25,7 +25,10 @@ namespace Inventors.ECP.Monitor
             {
                 if (_monitor is object)
                 {
-                    _monitor.Receive(new DataChunk(rx, data));
+                    if (_monitor.ProfilingEnabled)
+                    {
+                        _monitor.Receive(new DataChunk(rx, data));
+                    }
                 }
             }
         }
@@ -37,7 +40,14 @@ namespace Inventors.ECP.Monitor
                 if (_monitor is null)
                     return false;
 
-                return _monitor.Enabled;
+                return _monitor.ProfilingEnabled;
+            }
+            set
+            {
+                if (_monitor is object)
+                {
+                    _monitor.ProfilingEnabled = value;
+                }
             }
         }
     }
