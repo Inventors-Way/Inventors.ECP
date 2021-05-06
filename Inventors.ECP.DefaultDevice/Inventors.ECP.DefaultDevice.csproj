@@ -16,9 +16,6 @@
     <None Update="device-serial.ddfx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="loader.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="Schema\test-script.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
