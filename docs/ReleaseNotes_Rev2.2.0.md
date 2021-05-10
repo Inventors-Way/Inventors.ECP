@@ -8,7 +8,8 @@ TODO DESCRIPTION
 
 The release contains the following major changes:
 
-* DEPRICATED: Scripting has been removed from Devices
+* DEPRECATED: Scripting has been removed from Devices
+* DEPRECATED: Connected state for BusCentrals
 
 ### Minor changes
 

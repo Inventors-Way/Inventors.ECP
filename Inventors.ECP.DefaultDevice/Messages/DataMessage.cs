@@ -9,7 +9,7 @@ namespace Inventors.ECP.DefaultDevice.Messages
     public class DataMessage :
         DeviceMessage
     {
-        public static readonly byte CODE = 0x80;
+        public static readonly byte CODE = 0x81;
 
         public override byte Code => CODE;
 

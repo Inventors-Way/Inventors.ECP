@@ -35,15 +35,13 @@ namespace Inventors.ECP
             set => connection.BaudRate = value;
         }
 
-        public bool IsConnected => connection.IsConnected;
-
-        public bool IsOpen => connection.IsOpen;
-
         public bool ResetOnConnection
         {
             get => connection.ResetOnConnection;
             set => connection.ResetOnConnection = value;
         }
+
+        public bool IsOpen => connection.IsOpen;
 
         public Profiler Profiler { get; }
 

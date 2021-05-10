@@ -35,8 +35,6 @@ namespace Inventors.ECP
             set => _connection.ResetOnConnection = value;
         }
 
-        public bool IsConnected => _connection.IsConnected;
-
         public bool IsOpen => _connection.IsOpen;
 
         public virtual DeviceAddress Address => null;

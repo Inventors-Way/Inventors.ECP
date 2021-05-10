@@ -15,12 +15,12 @@ namespace Inventors.ECP.DefaultDevice
         public DefaultCompositeSerialDevice() :
             base(new SerialPortLayer(), new Profiler())
         {
-            FunctionList.Add(new DeviceIdentification());
-            FunctionList.Add(new Ping());
-            FunctionList.Add(new GetEndianness());
+            Add(new DeviceIdentification());
+            Add(new Ping());
+            Add(new GetEndianness());
 
-            Master.Add(new TimingViolationMessage());
-            Master.Add(new TimingMessage());
+            Add(new TimingViolationMessage());
+            Add(new TimingMessage());
         }
 
         public override int NumberOfSupportedDebugSignals => 2;

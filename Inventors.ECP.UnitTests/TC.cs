@@ -13,7 +13,7 @@ namespace Inventors.ECP.UnitTests
 
         public static string CentralPort => "COM6";
 
-        public static string PeripheralPort => "COM4";
+        public static string PeripheralPort => "COM5";
 
         private static TC _instance;
 

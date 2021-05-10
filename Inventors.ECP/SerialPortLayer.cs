@@ -140,8 +140,6 @@ namespace Inventors.ECP
 
         public override bool IsOpen => port is object && port.IsOpen;
 
-        public override bool IsConnected => IsOpen;
-
         public override string Location { get; set; }
 
         public override int BaudRate { get; set; }

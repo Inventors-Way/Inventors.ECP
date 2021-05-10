@@ -87,8 +87,8 @@ namespace Inventors.ECP.Tester
             if (device is object)
             {
                 statusText.Text = String.Format("DATA [Rx: {0}, Tx: {1}]",
-                    Statistics.FormatRate(device.Master.RxRate),
-                    Statistics.FormatRate(device.Master.TxRate));
+                    Statistics.FormatRate(device.Central.RxRate),
+                    Statistics.FormatRate(device.Central.TxRate));
             }
         }
 
@@ -97,7 +97,7 @@ namespace Inventors.ECP.Tester
             if (device != null)
             {
                 UpdateStatus();
-                device.Master.RestartStatistics();
+                device.Central.RestartStatistics();
             }
         }
 
@@ -149,7 +149,7 @@ namespace Inventors.ECP.Tester
                 profilerWindow.SetDevice(device);
                 commTester.Trials = loader.Trials;
                 commTester.TestDelay = loader.TestDelay;
-                commTester.Master = device.Master;
+                commTester.Master = device.Central;
 
                 Log.Status("Profiler: {0} (Test Trials: {1}, Test Delay: {2})",
                     loader.Profiling ? "ENABLED" : "DISABLED",
@@ -363,7 +363,11 @@ namespace Inventors.ECP.Tester
         {
             functionList.Items.Clear();
             functionList.Items.Add(device);
-            device.Functions.ForEach((f) => functionList.Items.Add(f));
+
+            foreach (var function in device.Functions)
+            {
+                functionList.Items.Add(function);
+            }
         }
 
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e) => Application.Exit();
