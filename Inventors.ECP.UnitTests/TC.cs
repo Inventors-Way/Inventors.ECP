@@ -22,7 +22,9 @@ namespace Inventors.ECP.UnitTests
             get
             {
                 if (_instance is null)
+                {
                     _instance = new TC();
+                }
 
                 return _instance;
             }
