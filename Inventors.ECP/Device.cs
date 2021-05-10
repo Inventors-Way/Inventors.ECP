@@ -157,22 +157,13 @@ namespace Inventors.ECP
             Master.Add(new PrintfMessage());
         }
 
-        #region Support for scripts 
-
-        /// <summary>
-        /// Create a new message script from a text string
-        /// </summary>
-        /// <param name="content"></param>
-        /// <returns></returns>
-        public abstract IScript CreateScript(string content);
-
-        #endregion
         #region Implementation of ping
 
         /// <summary>
         /// Ping the connected device.
         /// </summary>
         /// <returns>the ping count of the connected the device</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         public virtual int Ping()
         {
             int retValue = -1;

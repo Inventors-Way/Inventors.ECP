@@ -48,7 +48,5 @@ namespace Inventors.ECP.Functions
         }
 
         public override string ToString() => "[0x04] SetDebugSignal";
-
-        public override string ReportResponse() => "Debug signals updated";
     }
 }

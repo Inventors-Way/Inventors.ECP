@@ -116,12 +116,6 @@ namespace Inventors.ECP
 
         public abstract int Dispatch(dynamic listener);
 
-        /// <summary>
-        /// This function is responsible for formatting a report of the response returned by the slave.
-        /// </summary>
-        /// <returns>A formatted report of the response</returns>
-        public abstract string ReportResponse();
-
         [XmlIgnore]
         [Category("Statistics")]
         [Description("The time it took to transmit the function and get a response from the slave")]

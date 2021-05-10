@@ -28,7 +28,7 @@ namespace Inventors.ECP.Monitor
 
             foreach (var b in Data)
             {
-                builder.AppendFormat("0x{0:X} ", b);
+                builder.AppendFormat(CultureInfo.InvariantCulture, "0x{0:X} ", b);
             }
 
             return builder.ToString();

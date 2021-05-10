@@ -25,8 +25,6 @@ namespace Inventors.ECP.DefaultDevice
 
         public override int NumberOfSupportedDebugSignals => 2;
 
-        public override IScript CreateScript(string content) => content.ToObject<DefaultScript>();
-
         public override List<DeviceAddress> AvailableAddress => new List<DeviceAddress>()
         {
             new DeviceAddress(1, "Sub-device 1"),

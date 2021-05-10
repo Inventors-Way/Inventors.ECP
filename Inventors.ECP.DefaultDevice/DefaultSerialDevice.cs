@@ -26,8 +26,6 @@ namespace Inventors.ECP.DefaultDevice
 
         public override int NumberOfSupportedDebugSignals => 2;
 
-        public override IScript CreateScript(string content) => content.ToObject<DefaultScript>();
-
         public void Accept(TimingViolationMessage msg)
         {
             Profiler.Add(new TimingViolation(msg.DebugSignal, msg.Time, msg.TimeLimit, 0));

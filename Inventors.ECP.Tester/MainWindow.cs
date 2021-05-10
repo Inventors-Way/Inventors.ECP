@@ -44,7 +44,6 @@ namespace Inventors.ECP.Tester
         private readonly ProfilerWindow profilerWindow;
         private readonly MonitorWindow monitorWindow;
         private readonly CommTester commTester;
-        private ScriptRunner scriptRunner = null;
 
         public MainWindow()
         {
@@ -145,8 +144,6 @@ namespace Inventors.ECP.Tester
                 confirmLogDeletion = loader.ConfirmLogDeletion;
 
                 device = loader.Create();
-                scriptRunner = new ScriptRunner(device);
-                scriptRunner.Completed += OnScriptCompleted;
 
                 device.Profiler.Enabled = loader.Profiling;
                 profilerWindow.SetDevice(device);
@@ -220,18 +217,6 @@ namespace Inventors.ECP.Tester
                     else
                         item.Checked = false;
                 }
-            }
-        }
-
-        private void OnScriptCompleted(object sender, bool status)
-        {
-            if (InvokeRequired)
-            {
-                BeginInvoke(new InvokeDelegate(() => UpdateAppStates(AppState.APP_STATE_CONNECTED)));
-            }
-            else
-            {
-                UpdateAppStates(AppState.APP_STATE_CONNECTED);
             }
         }
 
@@ -341,32 +326,6 @@ namespace Inventors.ECP.Tester
                             pingStatus.Text = String.Format($"| Ping count: { ping }");
                         }
                     }
-                }
-            }
-        }
-
-        private void RunScriptToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var dialog = new OpenFileDialog()
-            {
-                CheckFileExists = true,
-                Title = "Open Script",
-                DefaultExt = "xml",
-                Filter = "Script Files (*.xml)|*.xml"
-            };
-
-            if (dialog.ShowDialog(this) == DialogResult.OK)
-            {
-                Log.Status($"EXECUTING SCRIPT [ {dialog.FileName} ]");
-
-                try
-                {
-                    var script = device.CreateScript(File.ReadAllText(dialog.FileName));
-                    scriptRunner.Run(script);
-                }
-                catch (Exception ex)
-                {
-                    Log.Error($"Script error: {ex.Message}");
                 }
             }
         }
@@ -509,7 +468,6 @@ namespace Inventors.ECP.Tester
                     portMenuItem.Enabled = true;
                     testToolStripMenuItem.Enabled = false;
                     trialsToolStripMenuItem.Enabled = true;
-                    runScriptToolStripMenuItem.Enabled = false;
                     break;
                 case AppState.APP_STATE_INITIALIZED:
                     clearLogToolStripMenuItem.Enabled = true;
@@ -525,7 +483,6 @@ namespace Inventors.ECP.Tester
                     portMenuItem.Enabled = true;
                     testToolStripMenuItem.Enabled = false;
                     trialsToolStripMenuItem.Enabled = true;
-                    runScriptToolStripMenuItem.Enabled = false;
                     break;
                 case AppState.APP_STATE_CONNECTED:
                     clearLogToolStripMenuItem.Enabled = true;
@@ -541,7 +498,6 @@ namespace Inventors.ECP.Tester
                     portMenuItem.Enabled = false;
                     testToolStripMenuItem.Enabled = true;
                     trialsToolStripMenuItem.Enabled = true;
-                    runScriptToolStripMenuItem.Enabled = true;
                     break;
                 case AppState.APP_STATE_ACTIVE:
                     clearLogToolStripMenuItem.Enabled = true;
@@ -557,7 +513,6 @@ namespace Inventors.ECP.Tester
                     portMenuItem.Enabled = false;
                     testToolStripMenuItem.Enabled = false;
                     trialsToolStripMenuItem.Enabled = false;
-                    runScriptToolStripMenuItem.Enabled = false;
                     break;
             }
         }

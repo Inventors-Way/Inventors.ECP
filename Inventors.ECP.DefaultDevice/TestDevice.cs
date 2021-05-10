@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Inventors.ECP
+namespace Inventors.ECP.DefaultDevice
 {
-    public interface IScript
+    public class TestDevice
     {
-        IList<DeviceFunction> Functions { get; }
     }
 }
