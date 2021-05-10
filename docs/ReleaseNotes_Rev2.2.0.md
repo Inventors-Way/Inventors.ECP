@@ -2,14 +2,13 @@
 
 ## Content
 
-TODO DESCRIPTION
-
 ### Major changes
 
 The release contains the following major changes:
 
 * DEPRECATED: Scripting has been removed from Devices
 * DEPRECATED: Connected state for BusCentrals
+* Improved error reporting from the ECP Tester
 
 ### Minor changes
 
