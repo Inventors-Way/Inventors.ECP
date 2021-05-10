@@ -13,7 +13,7 @@ namespace Inventors.ECP.UnitTests
 
         public static string CentralPort => "COM6";
 
-        public static string PeripheralPort => "COM4";
+        public static string PeripheralPort => "COM5";
 
         private static TC _instance;
 
@@ -22,30 +22,32 @@ namespace Inventors.ECP.UnitTests
             get
             {
                 if (_instance is null)
+                {
                     _instance = new TC();
+                }
 
                 return _instance;
             }
         }
 
-        public static DefaultSerialDevice CentralDevice => Instance.Device;
+        public static TestDevice CentralDevice => Instance.Device;
 
-        public static DefaultPeripheral PeripheralDevice => Instance.Peripheral;
+        public static TestPeripheral PeripheralDevice => Instance.Peripheral;
 
-        public DefaultSerialDevice Device { get; }
+        public TestDevice Device { get; }
 
-        public DefaultPeripheral Peripheral { get; }
+        public TestPeripheral Peripheral { get; }
 
         private TC()
         {
-            Device = new DefaultSerialDevice()
+            Device = new TestDevice()
             {
                 Location = CentralPort,
                 BaudRate = 115200,
                 Timeout = 300,
                 Retries = 3
             };
-            Peripheral = new DefaultPeripheral()
+            Peripheral = new TestPeripheral()
             {
                 Location = PeripheralPort,
                 BaudRate = 115200

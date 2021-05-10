@@ -61,8 +61,6 @@ namespace Inventors.ECP
 
         public abstract bool IsOpen { get; }
 
-        public abstract bool IsConnected { get; }
-
         public void Transmit(byte[] frame)
         {
             if (PortMonitor.Enabled)

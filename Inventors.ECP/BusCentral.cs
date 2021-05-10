@@ -21,6 +21,8 @@ namespace Inventors.ECP
             ERROR
         };
 
+        #region Properties
+
         public int Timeout { get; set; }
 
         public string Location
@@ -35,21 +37,21 @@ namespace Inventors.ECP
             set => connection.BaudRate = value;
         }
 
-        public bool IsConnected => connection.IsConnected;
-
-        public bool IsOpen => connection.IsOpen;
-
         public bool ResetOnConnection
         {
             get => connection.ResetOnConnection;
             set => connection.ResetOnConnection = value;
         }
 
+        public bool IsOpen => connection.IsOpen;
+
         public Profiler Profiler { get; }
 
         public double RxRate => connection.RxRate;
 
         public double TxRate => connection.TxRate;
+
+        #endregion
 
         public BusCentral(CommunicationLayer connection, Profiler profiler)
         {
@@ -92,7 +94,9 @@ namespace Inventors.ECP
                     state = CommState.IDLE;
 
                     if (currentException is object)
+                    {
                         throw currentException;
+                    }
                 }
             }
         }
@@ -113,7 +117,7 @@ namespace Inventors.ECP
             }
             else
             {
-                currentException = new SlaveNotRespondingException(Resources.NO_RESPONSE);
+                currentException = new PeripheralNotRespondingException(Resources.NO_RESPONSE);
                 retValue = true;
             }
 
@@ -198,14 +202,14 @@ namespace Inventors.ECP
                     
                     lock (lockObject)
                     {
-                        currentException = new UnknownFunctionCallException(String.Format(CultureInfo.CurrentCulture, "{0}", response.GetByte(0)));
+                        currentException = new FunctionNotAcknowledgedException($"{response.GetByte(0)}");
                         state = CommState.ERROR;
                     }
                 }
             }
             catch (Exception e)
             {
-                Log.Debug("Error in creating Packet: {0}", e.Message);
+                Log.Debug("Error in HandleIncommingFrame: {0}", e.Message);
             }
         }
 

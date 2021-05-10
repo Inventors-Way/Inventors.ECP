@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Inventors.ECP
+namespace Inventors.ECP.DefaultDevice
 {
-    public interface IScript
+    public enum TestErrorCode
     {
-        IList<DeviceFunction> Functions { get; }
+        INVALID_OPERATION = 0x10,
+        INVALID_STATE = 0x11
     }
 }

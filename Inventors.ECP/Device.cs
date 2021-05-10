@@ -49,18 +49,25 @@ namespace Inventors.ECP
             set => SetPropertyLocked(ref _connected, value);
         }
         #endregion
-        #region DeviceMaster
+        #region BusCentral
         [Browsable(false)]
         [XmlIgnore]
-        public BusCentral Master { get; }
+        public BusCentral Central { get; }
+
+        /// <summary>
+        /// Add a message to be handled by the BusCentral.
+        /// </summary>
+        /// <param name="message">An instance of the message to be handled.</param>
+        protected void Add(DeviceMessage message) => Central.Add(message);
+
         #endregion
         #region ResetOnConnected
         [Category("Communication Layer")]
         [XmlIgnore]
         public bool ResetOnConnection
         {
-            get => Master.ResetOnConnection;
-            set => Master.ResetOnConnection = NotifyIfChanged(Master.ResetOnConnection, value);
+            get => Central.ResetOnConnection;
+            set => Central.ResetOnConnection = NotifyIfChanged(Central.ResetOnConnection, value);
         }
         #endregion
         #region Timeout
@@ -68,27 +75,22 @@ namespace Inventors.ECP
         [XmlIgnore]
         public int Timeout
         {
-            get => Master.Timeout;
-            set => Master.Timeout = NotifyIfChanged(Master.Timeout, value);
+            get => Central.Timeout;
+            set => Central.Timeout = NotifyIfChanged(Central.Timeout, value);
         }
         #endregion
         #region IsOpen
         [Browsable(false)]
         [XmlIgnore]
-        public bool IsOpen => Master.IsOpen;
-        #endregion
-        #region IsConnected
-        [Browsable(false)]
-        public bool IsConnected => Master.IsConnected;
-
+        public bool IsOpen => Central.IsOpen;
         #endregion
         #region Port
         [Browsable(false)]
         [XmlIgnore]
         public string Location
         {
-            get => Master.Location;
-            set => Master.Location = NotifyIfChanged(Master.Location, value);
+            get => Central.Location;
+            set => Central.Location = NotifyIfChanged(Central.Location, value);
         }
         #endregion
         #region BaudRate
@@ -96,8 +98,8 @@ namespace Inventors.ECP
         [XmlIgnore]
         public int BaudRate
         {
-            get => Master.BaudRate;
-            set => Master.BaudRate = NotifyIfChanged(Master.BaudRate, value);
+            get => Central.BaudRate;
+            set => Central.BaudRate = NotifyIfChanged(Central.BaudRate, value);
         }
         #endregion
         #region PingEnabled
@@ -115,7 +117,7 @@ namespace Inventors.ECP
         #region Profiler
         [Browsable(false)]
         [XmlIgnore]
-        public Profiler Profiler => Master.Profiler;
+        public Profiler Profiler => Central.Profiler;
         #endregion
         #region AvailableAdresses
 
@@ -145,34 +147,34 @@ namespace Inventors.ECP
         }
 
         #endregion
+        #region Functions property
+        private readonly List<DeviceFunction> functions = new List<DeviceFunction>();
+
+        [Browsable(false)]
+        public IList<DeviceFunction> Functions => functions;
+
+        protected void Add(DeviceFunction function) => functions.Add(function);
+
+        #endregion
         #endregion
 
         protected Device(CommunicationLayer commLayer, 
                          Profiler profiler)
         {
-            Master = new BusCentral(commLayer, profiler)
+            Central = new BusCentral(commLayer, profiler)
             {
                 MessageListener = this
             };
-            Master.Add(new PrintfMessage());
+            Central.Add(new PrintfMessage());
         }
 
-        #region Support for scripts 
-
-        /// <summary>
-        /// Create a new message script from a text string
-        /// </summary>
-        /// <param name="content"></param>
-        /// <returns></returns>
-        public abstract IScript CreateScript(string content);
-
-        #endregion
         #region Implementation of ping
 
         /// <summary>
         /// Ping the connected device.
         /// </summary>
         /// <returns>the ping count of the connected the device</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         public virtual int Ping()
         {
             int retValue = -1;
@@ -245,13 +247,13 @@ namespace Inventors.ECP
         #endregion
         #region Implementation of connect and disconnect
 
-        public List<string> GetLocationsDevices() => Master.GetLocations();
+        public List<string> GetLocationsDevices() => Central.GetLocations();
 
         public bool Connect()
         {
             bool retValue = false;
 
-            if (!Master.IsOpen)
+            if (!Central.IsOpen)
             {
                 DeviceFunction identification = CreateIdentificationFunction();
                 var retries = Retries;
@@ -259,13 +261,12 @@ namespace Inventors.ECP
 
                 try
                 {
-                    Master.Open();
-                    WaitOnConnected(200);
+                    Central.Open();
                     Execute(identification);
                 }
                 catch
                 {
-                    Master.Close();
+                    Central.Close();
                     Retries = retries;
                     throw;
                 }
@@ -279,7 +280,7 @@ namespace Inventors.ECP
                 }
                 else
                 {
-                    Master.Close();    
+                    Central.Close();    
                     throw new IncompatibleDeviceException(identification.ToString());
                 }
             }
@@ -294,31 +295,21 @@ namespace Inventors.ECP
         /// <returns>The DeviceFunction that performs device identification for the device</returns>
         public virtual DeviceFunction CreateIdentificationFunction() => new DeviceIdentification();
 
+        /// <summary>
+        /// Must be implemented by concrete Devices to test if the Peripheral is compatible.
+        /// </summary>
+        /// <param name="function">Function identifying of the Peripheral</param>
+        /// <returns>true if the peripheral is compatible, otherwise false.</returns>
         public abstract bool IsCompatible(DeviceFunction function);
-
-        private void WaitOnConnected(int timeout)
-        {
-            var watch = new Stopwatch();
-            watch.Restart();
-
-            while (!Master.IsConnected)
-            {
-                if (watch.ElapsedMilliseconds > timeout)
-                {
-                    throw new SlaveNotRespondingException(string.Format(CultureInfo.CurrentCulture, "Could not connect to: {0}", Location));
-                }
-            }
-            watch.Stop();
-        }
 
         /// <summary>
         /// Disconnects a device.
         /// </summary>
         public virtual void Disconnect()
         {
-            if (Master.IsOpen)
+            if (Central.IsOpen)
             {
-                Master.Close();
+                Central.Close();
                 Connected = false;
             }
         }
@@ -331,9 +322,9 @@ namespace Inventors.ECP
         /// </summary>
         public void Open()
         {
-            if (!Master.IsOpen)
+            if (!Central.IsOpen)
             {
-                Master.Open();                
+                Central.Open();                
             }
         }
 
@@ -342,9 +333,9 @@ namespace Inventors.ECP
         /// </summary>
         public void Close()
         {
-            if (Master.IsOpen)
+            if (Central.IsOpen)
             {
-                Master.Close();
+                Central.Close();
             }
         }
 
@@ -359,7 +350,7 @@ namespace Inventors.ECP
                     try
                     {
                         watch.Restart();
-                        Master.Execute(function, CurrentAddress);
+                        Central.Execute(function, CurrentAddress);
                         watch.Stop();
                         function.TransmissionTime = watch.ElapsedMilliseconds;
                         break;
@@ -377,7 +368,7 @@ namespace Inventors.ECP
 
         public void Send(DeviceMessage message)
         {
-            Master.Send(message, CurrentAddress);
+            Central.Send(message, CurrentAddress);
         }
 
         public void Accept(PrintfMessage message)
@@ -395,21 +386,23 @@ namespace Inventors.ECP
             }
         }
 
-        public override string ToString()
+        public string GetErrorString(int errorCode)
         {
-            return "ECP DEFAULT DEVICE";
+            if (ErrorCode.NO_ERROR == ((ErrorCode)errorCode))
+                return "No error (ErrorCode = 0x00)";
+
+            if (ErrorCode.UNKNOWN_FUNCTION_ERR == ((ErrorCode)errorCode))
+                return "Unknown function (ErrorCode = 0x01)";
+
+            if (ErrorCode.INVALID_CONTENT_ERR == ((ErrorCode)errorCode))
+                return "Invalid content (ErrorCode = 0x02)";
+
+            return GetPeripheralErrorString(errorCode);
         }
 
-        [Browsable(false)]
-        public List<DeviceFunction> Functions => FunctionList;
+        protected abstract string GetPeripheralErrorString(int errorCode);
 
-        [XmlIgnore]
-        [Browsable(false)]
-        protected List<DeviceFunction> FunctionList { get; } = new List<DeviceFunction>();
-
-        [XmlIgnore]
-        [Browsable(false)]
-        protected List<MessageDispatcher> Dispatchers { get; } = new List<MessageDispatcher>();
+        public override string ToString() => "ECP DEFAULT DEVICE";
 
         private readonly Stopwatch watch = new Stopwatch();
 
@@ -423,8 +416,8 @@ namespace Inventors.ECP
             {
                 if (disposing)
                 {
-                    if (Master is object)
-                        Master.Dispose();
+                    if (Central is object)
+                        Central.Dispose();
                 }
                 disposedValue = true;
             }

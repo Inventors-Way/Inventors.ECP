@@ -26,8 +26,6 @@ namespace Inventors.ECP.Functions
         [Description("Are the slave and master of the same endianness")]
         public bool EqualEndianness => Response == null || Response.GetUInt16(0) == 1;
 
-        public override string ReportResponse() => $"Equal endianess: {EqualEndianness}";
-
         public override string ToString() => "[0x03] GetEndianness";
     }
 }

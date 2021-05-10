@@ -15,7 +15,7 @@ namespace Inventors.ECP.Profiling
     public class Profiler :
         NotifyPropertyChanged
     {
-        private double time = 0;
+        private double time;
 
         private class DataNode<T>
             where T : Record

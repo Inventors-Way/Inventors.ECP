@@ -44,7 +44,6 @@ namespace Inventors.ECP.Tester
         private readonly ProfilerWindow profilerWindow;
         private readonly MonitorWindow monitorWindow;
         private readonly CommTester commTester;
-        private ScriptRunner scriptRunner = null;
 
         public MainWindow()
         {
@@ -88,8 +87,8 @@ namespace Inventors.ECP.Tester
             if (device is object)
             {
                 statusText.Text = String.Format("DATA [Rx: {0}, Tx: {1}]",
-                    Statistics.FormatRate(device.Master.RxRate),
-                    Statistics.FormatRate(device.Master.TxRate));
+                    Statistics.FormatRate(device.Central.RxRate),
+                    Statistics.FormatRate(device.Central.TxRate));
             }
         }
 
@@ -98,7 +97,7 @@ namespace Inventors.ECP.Tester
             if (device != null)
             {
                 UpdateStatus();
-                device.Master.RestartStatistics();
+                device.Central.RestartStatistics();
             }
         }
 
@@ -145,14 +144,12 @@ namespace Inventors.ECP.Tester
                 confirmLogDeletion = loader.ConfirmLogDeletion;
 
                 device = loader.Create();
-                scriptRunner = new ScriptRunner(device);
-                scriptRunner.Completed += OnScriptCompleted;
 
                 device.Profiler.Enabled = loader.Profiling;
                 profilerWindow.SetDevice(device);
                 commTester.Trials = loader.Trials;
                 commTester.TestDelay = loader.TestDelay;
-                commTester.Master = device.Master;
+                commTester.Master = device.Central;
 
                 Log.Status("Profiler: {0} (Test Trials: {1}, Test Delay: {2})",
                     loader.Profiling ? "ENABLED" : "DISABLED",
@@ -220,18 +217,6 @@ namespace Inventors.ECP.Tester
                     else
                         item.Checked = false;
                 }
-            }
-        }
-
-        private void OnScriptCompleted(object sender, bool status)
-        {
-            if (InvokeRequired)
-            {
-                BeginInvoke(new InvokeDelegate(() => UpdateAppStates(AppState.APP_STATE_CONNECTED)));
-            }
-            else
-            {
-                UpdateAppStates(AppState.APP_STATE_CONNECTED);
             }
         }
 
@@ -345,32 +330,6 @@ namespace Inventors.ECP.Tester
             }
         }
 
-        private void RunScriptToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var dialog = new OpenFileDialog()
-            {
-                CheckFileExists = true,
-                Title = "Open Script",
-                DefaultExt = "xml",
-                Filter = "Script Files (*.xml)|*.xml"
-            };
-
-            if (dialog.ShowDialog(this) == DialogResult.OK)
-            {
-                Log.Status($"EXECUTING SCRIPT [ {dialog.FileName} ]");
-
-                try
-                {
-                    var script = device.CreateScript(File.ReadAllText(dialog.FileName));
-                    scriptRunner.Run(script);
-                }
-                catch (Exception ex)
-                {
-                    Log.Error($"Script error: {ex.Message}");
-                }
-            }
-        }
-
         private void PortMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             if (device is object)
@@ -404,7 +363,11 @@ namespace Inventors.ECP.Tester
         {
             functionList.Items.Clear();
             functionList.Items.Add(device);
-            device.Functions.ForEach((f) => functionList.Items.Add(f));
+
+            foreach (var function in device.Functions)
+            {
+                functionList.Items.Add(function);
+            }
         }
 
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e) => Application.Exit();
@@ -432,7 +395,22 @@ namespace Inventors.ECP.Tester
                         UpdateAppStates(AppState.APP_STATE_ACTIVE);
                         Execute(function, true);
                     }
-                    catch { }
+                    catch (FunctionNotAcknowledgedException fnae)
+                    {
+                        Log.Status($"NACK: {device.GetErrorString(fnae.ErrorCode)}");
+                    }
+                    catch (PeripheralNotRespondingException snre)
+                    {
+                        Log.Status($"Slave not responding: {snre.Message}");
+                    }
+                    catch (PacketFormatException pfe)
+                    {
+                        Log.Status($"Invalid packet format: {pfe.Message}");
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Status($"Exception [ {ex.GetType()} ]: {ex.Message}");
+                    }
 
                     functionList.Enabled = true;
                     testToolStripMenuItem.Enabled = true;
@@ -509,7 +487,6 @@ namespace Inventors.ECP.Tester
                     portMenuItem.Enabled = true;
                     testToolStripMenuItem.Enabled = false;
                     trialsToolStripMenuItem.Enabled = true;
-                    runScriptToolStripMenuItem.Enabled = false;
                     break;
                 case AppState.APP_STATE_INITIALIZED:
                     clearLogToolStripMenuItem.Enabled = true;
@@ -525,7 +502,6 @@ namespace Inventors.ECP.Tester
                     portMenuItem.Enabled = true;
                     testToolStripMenuItem.Enabled = false;
                     trialsToolStripMenuItem.Enabled = true;
-                    runScriptToolStripMenuItem.Enabled = false;
                     break;
                 case AppState.APP_STATE_CONNECTED:
                     clearLogToolStripMenuItem.Enabled = true;
@@ -541,7 +517,6 @@ namespace Inventors.ECP.Tester
                     portMenuItem.Enabled = false;
                     testToolStripMenuItem.Enabled = true;
                     trialsToolStripMenuItem.Enabled = true;
-                    runScriptToolStripMenuItem.Enabled = true;
                     break;
                 case AppState.APP_STATE_ACTIVE:
                     clearLogToolStripMenuItem.Enabled = true;
@@ -557,7 +532,6 @@ namespace Inventors.ECP.Tester
                     portMenuItem.Enabled = false;
                     testToolStripMenuItem.Enabled = false;
                     trialsToolStripMenuItem.Enabled = false;
-                    runScriptToolStripMenuItem.Enabled = false;
                     break;
             }
         }

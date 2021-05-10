@@ -123,19 +123,6 @@ namespace Inventors.ECP.Functions
             set => Response.InsertUInt16(14, value);
         }
 
-        public override string ReportResponse()
-        {
-            var retValue = new StringBuilder();
-
-            retValue.AppendLine($"Manufactuer   : {ManufactureID}:{Manufacture}");
-            retValue.AppendLine($"Device        : {DeviceID}:{Device}");
-            retValue.AppendLine($"Serial Number : {SerialNumber}");
-            retValue.AppendLine($"Firmware      : {Version}");
-            retValue.Append($"Checksum      : {Checksum}");
-
-            return retValue.ToString();
-        }
-
         public override string ToString() => "[0x01] Device Identification";
     }
 }

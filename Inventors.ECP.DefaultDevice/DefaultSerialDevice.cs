@@ -15,18 +15,18 @@ namespace Inventors.ECP.DefaultDevice
         public DefaultSerialDevice() :
             base(new SerialPortLayer(), new Profiler())
         {
-            FunctionList.Add(new DeviceIdentification());
-            FunctionList.Add(new Ping());
-            FunctionList.Add(new GetEndianness());
-            FunctionList.Add(new SetDebugSignal());
+            Add(new DeviceIdentification());
+            Add(new Ping());
+            Add(new GetEndianness());
+            Add(new SetDebugSignal());
 
-            Master.Add(new TimingViolationMessage());
-            Master.Add(new TimingMessage());
+            Add(new TimingViolationMessage());
+            Add(new TimingMessage());
         }
 
-        public override int NumberOfSupportedDebugSignals => 2;
+        protected override string GetPeripheralErrorString(int errorCode) => $"Unknown error {errorCode:X}";
 
-        public override IScript CreateScript(string content) => content.ToObject<DefaultScript>();
+        public override int NumberOfSupportedDebugSignals => 2;
 
         public void Accept(TimingViolationMessage msg)
         {

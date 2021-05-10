@@ -29,8 +29,6 @@ namespace Inventors.ECP.Functions
             set => Response.InsertUInt32(0, value);
         }
 
-        public override string ReportResponse() => $"Count: {Count}";
-
         public override string ToString() => "[0x02] Ping";
     }
 }
