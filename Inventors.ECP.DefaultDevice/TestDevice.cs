@@ -38,6 +38,16 @@ namespace Inventors.ECP.DefaultDevice
 
         public void Accept(TimingMessage msg) =>  Profiler.Add(new TimingRecord(msg.DebugSignal, msg.AverageTime, msg.Min, msg.Max));
 
+        public void Accept(SimpleMessage msg)
+        {
+
+        }
+
+        public void Accept(DataMessage msg)
+        {
+
+        }
+
         public override bool IsCompatible(DeviceFunction identification) => true;
     }
 }

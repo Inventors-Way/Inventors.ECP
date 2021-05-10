@@ -18,13 +18,23 @@ namespace Inventors.ECP.DefaultDevice.Functions
         {
         }
 
-        public DataFunction(byte[] data) :
-            base(FUNCTION_CODE, requestLength: data.Length, responseLength: 0)
+        public DataFunction(List<int> data) :
+            base(FUNCTION_CODE, requestLength: data.Count * sizeof(int), responseLength: 0)
         {
-            ImageData = data;
+            Data.Clear();
+            Data.AddRange(data);
         }
 
-        protected override bool IsRequestValid() => Request.Length > 0;
+        protected override bool IsRequestValid()
+        {
+            if (Request.Length > 0)
+                return true;
+
+            if ((Request.Length % sizeof(int)) == 0)
+                return true;
+
+            return false;
+        }
 
         public override FunctionDispatcher CreateDispatcher() => new FunctionDispatcher(FUNCTION_CODE, () => new DataFunction());
 
@@ -32,18 +42,18 @@ namespace Inventors.ECP.DefaultDevice.Functions
 
         [Category("Data")]
         [XmlElement("data")]
-        public byte[] ImageData { get; private set; } = new byte[0];
+        public List<int> Data { get; } = new List<int>();
 
         public override void OnSend()
         {
-            if (ImageData is null)
+            if (Data is null)
                 throw new InvalidOperationException("No data to send");
 
-            Request = new Packet(FUNCTION_CODE, ImageData.Length);
+            Request = new Packet(FUNCTION_CODE, Data.Count*sizeof(int));
 
-            for (int n = 0; n < ImageData.Length; ++n)
+            for (int n = 0; n < Data.Count; ++n)
             {
-                Request.InsertByte(n, ImageData[n]);
+                Request.InsertInt32(n * sizeof(int), Data[n]);
             }
         }
 
@@ -51,16 +61,16 @@ namespace Inventors.ECP.DefaultDevice.Functions
         {
             if (Request.Length > 0)
             {
-                ImageData = new byte[Request.Length];
+                Data.Clear();
 
-                for (int n = 0; n < Request.Length; ++n)
+                for (int n = 0; n < Request.Length / 4; ++n)
                 {
-                    ImageData[n] = Request.GetByte(n);
+                    Data.Add(Request.GetInt32(n*sizeof(int)));
                 }
             }
             else
             {
-                ImageData = new byte[0];
+                Data.Clear();
             }
         }
 

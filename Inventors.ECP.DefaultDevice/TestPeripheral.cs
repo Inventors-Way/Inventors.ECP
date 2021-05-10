@@ -1,4 +1,6 @@
-﻿using Inventors.ECP.Functions;
+﻿using Inventors.ECP.DefaultDevice.Functions;
+using Inventors.ECP.DefaultDevice.Messages;
+using Inventors.ECP.Functions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +21,12 @@ namespace Inventors.ECP.DefaultDevice
             Add(new Ping());
             Add(new GetEndianness());
             Add(new SetDebugSignal());
+
+            Add(new SimpleFunction());
+            Add(new DataFunction());
+
+            Add(new SimpleMessage());
+            Add(new DataMessage());
 
             FunctionListener = this;
             MessageListener = this;
@@ -64,5 +72,35 @@ namespace Inventors.ECP.DefaultDevice
 
             return 0;
         }
+
+        public int Accept(SimpleFunction func)
+        {
+            func.Answer = func.Operand + 1;
+
+            return 0;
+        }
+
+        public int Accept(DataFunction func)
+        {
+            FuncData.Clear();
+            FuncData.AddRange(func.Data);
+
+            return 0;
+        }
+
+        public void Accept(SimpleMessage msg)
+        {
+            X = msg.X;
+        }
+
+        public void Accept(DataMessage msg)
+        {
+            MsgData.Clear();
+            MsgData.AddRange(msg.Data);
+        }
+
+        public List<int> FuncData { get; } = new List<int>();
+        public List<int> MsgData { get; } = new List<int>();
+        public int X { get; set; }
     }
 }
