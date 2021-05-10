@@ -11,12 +11,12 @@ namespace Inventors.ECP.Functions
     public class Ping : 
         DeviceFunction
     {
-        public static readonly byte CODE = 0x02;
+        public override byte Code => 0x02;
 
-        public Ping() : base(code: CODE, requestLength: 0, responseLength: 4) { }
+        public Ping() : base(requestLength: 0, responseLength: 4) { }
 
         public override FunctionDispatcher CreateDispatcher() =>
-            new FunctionDispatcher(CODE, () => new Ping());
+            new FunctionDispatcher(Code, () => new Ping());
 
         public override int Dispatch(dynamic listener) => listener.Accept(this);
 

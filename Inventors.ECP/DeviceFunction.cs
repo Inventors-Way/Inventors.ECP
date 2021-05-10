@@ -10,37 +10,30 @@ namespace Inventors.ECP
 {
     public abstract class DeviceFunction
     {
+        public abstract byte Code { get; }
+
         public DeviceFunction()
         {
-            Request = new Packet(functionCode, 0);
+            Request = new Packet(Code, 0);
+            Response = new Packet(Code, 0);
             ResponseLength = 0;
             RequestLength = 0;
         }
 
-        public DeviceFunction(byte code)
+        public DeviceFunction(int requestLength)
         {
-            functionCode = code;
-            ResponseLength = 0;
-            RequestLength = 0;
-            Request = new Packet(code, 0);
-        }
-
-        public DeviceFunction(byte code, int requestLength)
-        {
-            functionCode = code;
             RequestLength = requestLength;
             ResponseLength = 0;
-            Request = new Packet(code, requestLength);
-            Response = new Packet(code, 0);
+            Request = new Packet(Code, requestLength);
+            Response = new Packet(Code, 0);
         }
 
-        public DeviceFunction(byte code, int requestLength, int responseLength)
+        public DeviceFunction(int requestLength, int responseLength)
         {
-            functionCode = code;
             RequestLength = requestLength;
             ResponseLength = responseLength;
-            Request = new Packet(code, requestLength);
-            Response = new Packet(code, responseLength);
+            Request = new Packet(Code, requestLength);
+            Response = new Packet(Code, responseLength);
         }
 
         internal byte[] GetRequest(byte address)
@@ -75,7 +68,7 @@ namespace Inventors.ECP
         {
             Request = packet;
 
-            if (Request.Code != functionCode)
+            if (Request.Code != Code)
                 throw new InvalidMasterRequestException(Resources.INVALID_FUNCTION_CODE);
 
             if (!IsRequestValid())
@@ -131,8 +124,6 @@ namespace Inventors.ECP
         protected Packet Request { get; set; }
 
         protected Packet Response { get; set; }
-
-        private readonly byte functionCode;
 
         protected int ResponseLength { get; }
 

@@ -10,10 +10,12 @@ namespace Inventors.ECP.Functions
     public class GetEndianness :
         DeviceFunction
     {
+        public override byte Code => CODE;
+
         public static readonly byte CODE = 0x03;
 
         public GetEndianness() : 
-            base(code: CODE, requestLength: 0, responseLength: 2) 
+            base(requestLength: 0, responseLength: 2) 
         {
             Response.InsertUInt16(0, 1);
         }

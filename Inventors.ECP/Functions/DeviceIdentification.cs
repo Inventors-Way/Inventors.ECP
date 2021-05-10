@@ -13,15 +13,15 @@ namespace Inventors.ECP.Functions
     public class DeviceIdentification :
        DeviceFunction
     {
-        public static readonly byte CODE = 0x01;
+        public override byte Code => 0x01;
 
         public DeviceIdentification() : 
-            base(code: CODE, requestLength: 0, responseLength: 64) 
+            base(requestLength: 0, responseLength: 64) 
         { 
         }
 
         public override FunctionDispatcher CreateDispatcher() =>
-            new FunctionDispatcher(CODE, () => new DeviceIdentification());
+            new FunctionDispatcher(Code, () => new DeviceIdentification());
 
         public override int Dispatch(dynamic listener) => listener.Accept(this);
 

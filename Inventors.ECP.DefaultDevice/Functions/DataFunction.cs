@@ -11,15 +11,15 @@ namespace Inventors.ECP.DefaultDevice.Functions
     public class DataFunction :
         DeviceFunction
     {
-        public const byte FUNCTION_CODE = 0x11;
+        public override byte Code => 0x11;
 
         public DataFunction() :
-            base(FUNCTION_CODE, requestLength: 0, responseLength: 0)
+            base(requestLength: 0, responseLength: 0)
         {
         }
 
         public DataFunction(List<int> data) :
-            base(FUNCTION_CODE, requestLength: data.Count * sizeof(int), responseLength: 0)
+            base(requestLength: data.Count * sizeof(int), responseLength: 0)
         {
             Data.Clear();
             Data.AddRange(data);
@@ -36,7 +36,7 @@ namespace Inventors.ECP.DefaultDevice.Functions
             return false;
         }
 
-        public override FunctionDispatcher CreateDispatcher() => new FunctionDispatcher(FUNCTION_CODE, () => new DataFunction());
+        public override FunctionDispatcher CreateDispatcher() => new FunctionDispatcher(Code, () => new DataFunction());
 
         public override int Dispatch(dynamic listener) => listener.Accept(this);
 
@@ -49,7 +49,7 @@ namespace Inventors.ECP.DefaultDevice.Functions
             if (Data is null)
                 throw new InvalidOperationException("No data to send");
 
-            Request = new Packet(FUNCTION_CODE, Data.Count*sizeof(int));
+            Request = new Packet(Code, Data.Count*sizeof(int));
 
             for (int n = 0; n < Data.Count; ++n)
             {

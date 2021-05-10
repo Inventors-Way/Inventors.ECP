@@ -12,15 +12,15 @@ namespace Inventors.ECP.DefaultDevice.Functions
         public static readonly int REQUEST_SIZE = sizeof(int);
         public static readonly int RESPONSE_SIZE = sizeof(int);
 
-        public const byte FUNCTION_CODE = 0x10;
+        public override byte Code => 0x10;
 
-        public SimpleFunction() : base(FUNCTION_CODE, requestLength: REQUEST_SIZE, responseLength: RESPONSE_SIZE)
+        public SimpleFunction() : base(requestLength: REQUEST_SIZE, responseLength: RESPONSE_SIZE)
         {
             Operand = 0;
             Answer = 0;
         }
 
-        public override FunctionDispatcher CreateDispatcher() => new FunctionDispatcher(FUNCTION_CODE, () => new SimpleFunction());
+        public override FunctionDispatcher CreateDispatcher() => new FunctionDispatcher(Code, () => new SimpleFunction());
 
         public override int Dispatch(dynamic listener) => listener.Accept(this);
 

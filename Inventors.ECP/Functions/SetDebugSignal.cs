@@ -9,16 +9,16 @@ namespace Inventors.ECP.Functions
     public class SetDebugSignal :
         DeviceFunction
     {
-        public const byte FUNCTION_CODE = 0x04;
+        public override byte Code => 0x04;
 
         public SetDebugSignal() : 
-            base(FUNCTION_CODE, requestLength: 0, responseLength: 0) 
+            base(requestLength: 0, responseLength: 0) 
         { 
         }
 
         protected override bool IsRequestValid() => (Request.Length > 0) && ((Request.Length % sizeof(UInt32)) == 0);
 
-        public override FunctionDispatcher CreateDispatcher() => new FunctionDispatcher(FUNCTION_CODE, () => new SetDebugSignal());
+        public override FunctionDispatcher CreateDispatcher() => new FunctionDispatcher(Code, () => new SetDebugSignal());
 
         public override int Dispatch(dynamic listener) => listener.Accept(this);
 
@@ -26,7 +26,7 @@ namespace Inventors.ECP.Functions
 
         public override void OnSend()
         {
-            Request = new Packet(FUNCTION_CODE, Signals.Count * sizeof(UInt32));
+            Request = new Packet(Code, Signals.Count * sizeof(UInt32));
 
             for (int n = 0; n < Signals.Count; ++n)
             {
