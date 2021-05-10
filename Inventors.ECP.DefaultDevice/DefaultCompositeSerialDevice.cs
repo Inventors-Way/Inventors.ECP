@@ -25,6 +25,8 @@ namespace Inventors.ECP.DefaultDevice
 
         public override int NumberOfSupportedDebugSignals => 2;
 
+        protected override string GetPeripheralErrorString(int errorCode) => $"Unknown error {errorCode:X}";
+
         public override List<DeviceAddress> AvailableAddress => new List<DeviceAddress>()
         {
             new DeviceAddress(1, "Sub-device 1"),

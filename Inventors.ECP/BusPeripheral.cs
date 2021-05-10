@@ -103,12 +103,13 @@ namespace Inventors.ECP
                                 _connection.Transmit(Frame.Encode(nack.ToArray()));
                             }
                         }
-                        catch
+                        catch (Exception e)
                         {
                             Packet nack = new Packet(0, 1);
-                            nack.InsertByte(0, (byte)99);
+                            nack.InsertByte(0, (byte) ErrorCode.DISPATCH_ERR);
 
                             _connection.Transmit(Frame.Encode(nack.ToArray()));
+                            Log.Debug($"{e.GetType()} => {e.Message}");
                         }
                     }
                     else

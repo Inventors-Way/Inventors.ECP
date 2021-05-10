@@ -14,6 +14,14 @@ namespace Inventors.ECP.DefaultDevice
     {
         private UInt32 count;
 
+        public List<int> FuncData { get; } = new List<int>();
+
+        public List<int> MsgData { get; } = new List<int>();
+
+        public int X { get; set; }
+
+        public int ErrorCode { get; set; }
+
         public TestPeripheral() :
             base(new SerialPortLayer())
         {
@@ -56,28 +64,28 @@ namespace Inventors.ECP.DefaultDevice
             func.Count = count;
             ++count;
 
-            return 0;
+            return ErrorCode;
         }
 
         public int Accept(GetEndianness func)
         {
             Log.Debug("Peripheral: GetEndinanness");
 
-            return 0;
+            return ErrorCode;
         }
 
         public int Accept(SetDebugSignal func)
         {
             Log.Debug("Peripheral: SetDebugSignal");
 
-            return 0;
+            return ErrorCode;
         }
 
         public int Accept(SimpleFunction func)
         {
             func.Answer = func.Operand + 1;
 
-            return 0;
+            return ErrorCode;
         }
 
         public int Accept(DataFunction func)
@@ -85,7 +93,7 @@ namespace Inventors.ECP.DefaultDevice
             FuncData.Clear();
             FuncData.AddRange(func.Data);
 
-            return 0;
+            return ErrorCode;
         }
 
         public void Accept(SimpleMessage msg)
@@ -98,9 +106,5 @@ namespace Inventors.ECP.DefaultDevice
             MsgData.Clear();
             MsgData.AddRange(msg.Data);
         }
-
-        public List<int> FuncData { get; } = new List<int>();
-        public List<int> MsgData { get; } = new List<int>();
-        public int X { get; set; }
     }
 }

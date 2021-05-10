@@ -32,6 +32,17 @@ namespace Inventors.ECP.DefaultDevice
             Add(new TimingMessage());
         }
 
+        protected override string GetPeripheralErrorString(int errorCode)
+        {
+            switch ((TestErrorCode) errorCode)
+            {
+                case TestErrorCode.INVALID_OPERATION: return "Invalid operation";
+                case TestErrorCode.INVALID_STATE: return "Invalid state";
+                default:
+                    return "Unknown error";
+            }
+        }
+
         public override int NumberOfSupportedDebugSignals => 2;
 
         public void Accept(TimingViolationMessage msg) => Profiler.Add(new TimingViolation(msg.DebugSignal, msg.Time, msg.TimeLimit, 0));

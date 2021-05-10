@@ -20,10 +20,7 @@ namespace Inventors.ECP
     {
         public InvalidMasterRequestException(String message) : base(message) { }
         public InvalidMasterRequestException(String message, Exception inner) : base(message, inner) { }
-        protected InvalidMasterRequestException(SerializationInfo info, StreamingContext context)
-           : base(info, context)
-        { }
-
+        protected InvalidMasterRequestException(SerializationInfo info, StreamingContext context) : base(info, context) { }
         public InvalidMasterRequestException() { }
     }
 
@@ -43,7 +40,6 @@ namespace Inventors.ECP
         public InvalidSlaveResponseException(String message) : base(message) { }
         public InvalidSlaveResponseException(String message, Exception inner) : base(message, inner) { }
         protected InvalidSlaveResponseException(SerializationInfo info, StreamingContext context) : base(info, context) { }
-
         public InvalidSlaveResponseException() { }
     }
 
@@ -68,23 +64,25 @@ namespace Inventors.ECP
     }
 
     [Serializable]
-    public class UnknownFunctionCallException :
+    public class FunctionNotAcknowledgedException :
        Exception
     {
-        public UnknownFunctionCallException(String message) : base(message) { }
-        public UnknownFunctionCallException(String message, Exception inner) : base(message, inner) { }
-        protected UnknownFunctionCallException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+        public FunctionNotAcknowledgedException(String message) : base(message) { }
+        public FunctionNotAcknowledgedException(String message, Exception inner) : base(message, inner) { }
+        protected FunctionNotAcknowledgedException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+        public FunctionNotAcknowledgedException() { }
 
-        public UnknownFunctionCallException() { }
+        public int ErrorCode
+        {
+            get
+            {
+                if (int.TryParse(Message, out int result))
+                {
+                    return result;
+                }
+
+                return -1;
+            }
+        }
     }
-
-    [Serializable]
-    public class UnknownMessageReceivedException :
-        Exception
-    {
-        public UnknownMessageReceivedException(String message) : base(message) { }
-        public UnknownMessageReceivedException(String message, Exception inner) : base(message, inner) { }
-        protected UnknownMessageReceivedException(SerializationInfo info, StreamingContext context) : base(info, context) { }
-        public UnknownMessageReceivedException() { }
-    }    
 }

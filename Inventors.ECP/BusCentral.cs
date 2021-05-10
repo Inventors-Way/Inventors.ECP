@@ -21,6 +21,8 @@ namespace Inventors.ECP
             ERROR
         };
 
+        #region Properties
+
         public int Timeout { get; set; }
 
         public string Location
@@ -48,6 +50,8 @@ namespace Inventors.ECP
         public double RxRate => connection.RxRate;
 
         public double TxRate => connection.TxRate;
+
+        #endregion
 
         public BusCentral(CommunicationLayer connection, Profiler profiler)
         {
@@ -90,7 +94,9 @@ namespace Inventors.ECP
                     state = CommState.IDLE;
 
                     if (currentException is object)
+                    {
                         throw currentException;
+                    }
                 }
             }
         }
@@ -196,14 +202,14 @@ namespace Inventors.ECP
                     
                     lock (lockObject)
                     {
-                        currentException = new UnknownFunctionCallException(String.Format(CultureInfo.CurrentCulture, "{0}", response.GetByte(0)));
+                        currentException = new FunctionNotAcknowledgedException($"{response.GetByte(0)}");
                         state = CommState.ERROR;
                     }
                 }
             }
             catch (Exception e)
             {
-                Log.Debug("Error in creating Packet: {0}", e.Message);
+                Log.Debug("Error in HandleIncommingFrame: {0}", e.Message);
             }
         }
 

@@ -101,5 +101,27 @@ namespace Inventors.ECP.UnitTests.TransportLayer
             Thread.Sleep(200);
             Assert.AreEqual(12, TC.CentralDevice.X);
         }
+
+        [TestMethod]
+        public void T09_NACK()
+        {
+            var device = TC.CentralDevice;
+            TC.PeripheralDevice.ErrorCode = (int)TestErrorCode.INVALID_OPERATION;
+            var data = new List<int>() { 1, 2, 3, 4 };
+            var func = new DataFunction(data);
+            Assert.ThrowsException<FunctionNotAcknowledgedException>(() => device.Execute(func));
+
+            try
+            {
+                device.Execute(func);
+            }
+            catch (FunctionNotAcknowledgedException e)
+            {
+                Console.WriteLine($"NACK Received: {device.GetErrorString(e.ErrorCode)}");
+            }
+
+            TC.PeripheralDevice.ErrorCode = 0;
+            device.Execute(func);
+        }
     }
 }

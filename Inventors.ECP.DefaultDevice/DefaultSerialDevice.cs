@@ -24,6 +24,8 @@ namespace Inventors.ECP.DefaultDevice
             Add(new TimingMessage());
         }
 
+        protected override string GetPeripheralErrorString(int errorCode) => $"Unknown error {errorCode:X}";
+
         public override int NumberOfSupportedDebugSignals => 2;
 
         public void Accept(TimingViolationMessage msg)

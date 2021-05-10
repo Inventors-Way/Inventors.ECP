@@ -54,6 +54,10 @@ namespace Inventors.ECP
         [XmlIgnore]
         public BusCentral Central { get; }
 
+        /// <summary>
+        /// Add a message to be handled by the BusCentral.
+        /// </summary>
+        /// <param name="message">An instance of the message to be handled.</param>
         protected void Add(DeviceMessage message) => Central.Add(message);
 
         #endregion
@@ -291,6 +295,11 @@ namespace Inventors.ECP
         /// <returns>The DeviceFunction that performs device identification for the device</returns>
         public virtual DeviceFunction CreateIdentificationFunction() => new DeviceIdentification();
 
+        /// <summary>
+        /// Must be implemented by concrete Devices to test if the Peripheral is compatible.
+        /// </summary>
+        /// <param name="function">Function identifying of the Peripheral</param>
+        /// <returns>true if the peripheral is compatible, otherwise false.</returns>
         public abstract bool IsCompatible(DeviceFunction function);
 
         /// <summary>
@@ -376,6 +385,22 @@ namespace Inventors.ECP
                 }
             }
         }
+
+        public string GetErrorString(int errorCode)
+        {
+            if (ErrorCode.NO_ERROR == ((ErrorCode)errorCode))
+                return "No error (ErrorCode = 0x00)";
+
+            if (ErrorCode.UNKNOWN_FUNCTION_ERR == ((ErrorCode)errorCode))
+                return "Unknown function (ErrorCode = 0x01)";
+
+            if (ErrorCode.INVALID_CONTENT_ERR == ((ErrorCode)errorCode))
+                return "Invalid content (ErrorCode = 0x02)";
+
+            return GetPeripheralErrorString(errorCode);
+        }
+
+        protected abstract string GetPeripheralErrorString(int errorCode);
 
         public override string ToString() => "ECP DEFAULT DEVICE";
 

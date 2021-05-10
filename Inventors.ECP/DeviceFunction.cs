@@ -61,10 +61,14 @@ namespace Inventors.ECP
             Response = packet;
 
             if (Response.Code != GetRequestPacket().Code)
-                throw new InvalidSlaveResponseException(Resources.INVALID_FUNCTION_CODE);
+            {
+                throw new InvalidSlaveResponseException("Invalid function code");
+            }
 
             if (!IsResponseValid())
-                throw new InvalidSlaveResponseException(Resources.INVALID_RESPONSE_CONTENT);
+            {
+                throw new InvalidSlaveResponseException("Response if invalid (IsResponseValid() returned false)");
+            }
         }
 
         internal DeviceFunction SetRequest(Packet packet)
