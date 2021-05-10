@@ -9,11 +9,9 @@ namespace Inventors.ECP.Messages
     public class TimingMessage :
         DeviceMessage
     {
-        public static readonly byte CODE = 0xFD;
+        public override byte Code => 0xFD;
 
-        public override byte Code => CODE;
-
-        public TimingMessage() : base(CODE, 0) { }
+        public TimingMessage() : base(20) { }
 
         public TimingMessage(Packet response) :
             base(response)
@@ -24,15 +22,35 @@ namespace Inventors.ECP.Messages
             }
         }
 
-        public UInt32 DebugSignal => Packet.GetUInt32(0);
+        public UInt32 DebugSignal
+        {
+            get => Packet.GetUInt32(0);
+            set => Packet.InsertUInt32(0, value);
+        }
 
-        public UInt32 Time => Packet.GetUInt32(4);
+        public UInt32 Time
+        {
+            get => Packet.GetUInt32(4);
+            set => Packet.InsertUInt32(4, value);
+        }
 
-        public UInt32 Count => Packet.GetUInt32(8);
+        public UInt32 Count 
+        {
+            get => Packet.GetUInt32(8); 
+            set => Packet.InsertUInt32(8, value);
+        } 
 
-        public UInt32 Max => Packet.GetUInt32(12);
+        public UInt32 Max 
+        {
+            get => Packet.GetUInt32(12); 
+            set => Packet.InsertUInt32(12, value);
+        }
 
-        public UInt32 Min => Packet.GetUInt32(16);
+        public UInt32 Min 
+        {
+            get => Packet.GetUInt32(16); 
+            set => Packet.InsertUInt32(16, value);
+        }
 
 
         public double AverageTime => 
@@ -42,6 +60,6 @@ namespace Inventors.ECP.Messages
 
         public override void Dispatch(dynamic listener) => listener.Accept(this);
 
-        public override MessageDispatcher CreateDispatcher() => new MessageDispatcher(CODE, (p) => { return new TimingMessage(p); });
+        public override MessageDispatcher CreateDispatcher() => new MessageDispatcher(Code, (p) => { return new TimingMessage(p); });
     }
 }

@@ -9,11 +9,9 @@ namespace Inventors.ECP.DefaultDevice.Messages
     public class DataMessage :
         DeviceMessage
     {
-        public static readonly byte CODE = 0x81;
+        public override byte Code => 0x81;
 
-        public override byte Code => CODE;
-
-        public DataMessage() : base(CODE, length: 0)
+        public DataMessage() : base(length: 0)
         {
         }
         
@@ -31,7 +29,7 @@ namespace Inventors.ECP.DefaultDevice.Messages
 
         public override void OnSend()
         {
-            Packet = new Packet(CODE, sizeof(int) * Data.Count);
+            Packet = new Packet(Code, sizeof(int) * Data.Count);
 
             for (int n = 0; n < Data.Count; ++n)
             {
@@ -50,7 +48,7 @@ namespace Inventors.ECP.DefaultDevice.Messages
             }
         }
 
-        public override MessageDispatcher CreateDispatcher() => new MessageDispatcher(CODE, (p) => new DataMessage(p));
+        public override MessageDispatcher CreateDispatcher() => new MessageDispatcher(Code, (p) => new DataMessage(p));
 
         public override void Dispatch(dynamic listener) => listener.Accept(this);
     }

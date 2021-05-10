@@ -9,11 +9,9 @@ namespace Inventors.ECP.Messages
     public class TimingViolationMessage :
         DeviceMessage
     {
-        public static readonly byte CODE = 0xFE;
+        public override byte Code => 0xFE;
 
-        public override byte Code => CODE;
-
-        public TimingViolationMessage() : base(CODE, 0) { }
+        public TimingViolationMessage() : base(12) { }
 
         public TimingViolationMessage(Packet response) :
             base(response)
@@ -24,14 +22,26 @@ namespace Inventors.ECP.Messages
             }
         }
 
-        public uint DebugSignal => Packet.GetUInt32(0);
+        public uint DebugSignal
+        {
+            get => Packet.GetUInt32(0);
+            set => Packet.InsertUInt32(0, value);
+        }
 
-        public uint TimeLimit => Packet.GetUInt32(4);
+        public uint TimeLimit 
+        {
+            get => Packet.GetUInt32(4); 
+            set => Packet.InsertUInt32(4, value);
+        }
 
-        public uint Time => Packet.GetUInt32(8);
+        public uint Time 
+        {
+            get => Packet.GetUInt32(8); 
+            set => Packet.InsertUInt32(8, value);
+        }
 
         public override void Dispatch(dynamic listener) => listener.Accept(this);
 
-        public override MessageDispatcher CreateDispatcher() => new MessageDispatcher(CODE, (p) => { return new TimingViolationMessage(p); });
+        public override MessageDispatcher CreateDispatcher() => new MessageDispatcher(Code, (p) => { return new TimingViolationMessage(p); });
     }
 }

@@ -17,14 +17,14 @@ namespace Inventors.ECP
             Packet = response;
         }
 
-        public DeviceMessage(byte code)
+        public DeviceMessage()
         {
-            Packet = new Packet(code, 0);
+            Packet = new Packet(Code, 0);
         }
 
-        public DeviceMessage(byte code, int length)
+        public DeviceMessage(int length)
         {
-            Packet = new Packet(code, length);
+            Packet = new Packet(Code, length);
         }
 
         internal byte[] GetPacket(DeviceAddress address)

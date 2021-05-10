@@ -9,11 +9,9 @@ namespace Inventors.ECP.DefaultDevice.Messages
     public class SimpleMessage :
         DeviceMessage
     {
-        public static readonly byte CODE = 0x80;
+        public override byte Code => 0x80;
 
-        public override byte Code => CODE;
-
-        public SimpleMessage() : base(CODE, sizeof(int))
+        public SimpleMessage() : base(sizeof(int))
         {
             X = 0;
         }
@@ -33,7 +31,7 @@ namespace Inventors.ECP.DefaultDevice.Messages
             set => Packet.InsertInt32(0, value);
         }
 
-        public override MessageDispatcher CreateDispatcher() => new MessageDispatcher(CODE, (p) => new SimpleMessage(p));
+        public override MessageDispatcher CreateDispatcher() => new MessageDispatcher(Code, (p) => new SimpleMessage(p));
 
         public override void Dispatch(dynamic listener) => listener.Accept(this);
     }
