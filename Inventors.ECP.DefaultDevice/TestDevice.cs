@@ -40,14 +40,18 @@ namespace Inventors.ECP.DefaultDevice
 
         public void Accept(SimpleMessage msg)
         {
-
+            X = msg.X;
         }
 
         public void Accept(DataMessage msg)
         {
-
+            Data = msg.Data;
         }
 
         public override bool IsCompatible(DeviceFunction identification) => true;
+
+        public int X { get; set; }
+
+        public List<int> Data { get; set; }
     }
 }

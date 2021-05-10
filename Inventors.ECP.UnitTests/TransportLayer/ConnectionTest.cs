@@ -91,5 +91,15 @@ namespace Inventors.ECP.UnitTests.TransportLayer
             Thread.Sleep(200);
             Assert.AreEqual(12, TC.PeripheralDevice.X);
         }
+
+        [TestMethod]
+        public void T08_SimpleMessage2Central()
+        {
+            var peripheral = TC.PeripheralDevice;
+            var msg = new SimpleMessage() { X = 12 };
+            peripheral.Send(msg);
+            Thread.Sleep(200);
+            Assert.AreEqual(12, TC.CentralDevice.X);
+        }
     }
 }
