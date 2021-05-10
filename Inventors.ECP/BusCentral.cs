@@ -117,7 +117,7 @@ namespace Inventors.ECP
             }
             else
             {
-                currentException = new SlaveNotRespondingException(Resources.NO_RESPONSE);
+                currentException = new PeripheralNotRespondingException(Resources.NO_RESPONSE);
                 retValue = true;
             }
 

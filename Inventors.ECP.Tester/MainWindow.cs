@@ -395,7 +395,22 @@ namespace Inventors.ECP.Tester
                         UpdateAppStates(AppState.APP_STATE_ACTIVE);
                         Execute(function, true);
                     }
-                    catch { }
+                    catch (FunctionNotAcknowledgedException fnae)
+                    {
+                        Log.Status($"NACK: {device.GetErrorString(fnae.ErrorCode)}");
+                    }
+                    catch (PeripheralNotRespondingException snre)
+                    {
+                        Log.Status($"Slave not responding: {snre.Message}");
+                    }
+                    catch (PacketFormatException pfe)
+                    {
+                        Log.Status($"Invalid packet format: {pfe.Message}");
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Status($"Exception [ {ex.GetType()} ]: {ex.Message}");
+                    }
 
                     functionList.Enabled = true;
                     testToolStripMenuItem.Enabled = true;

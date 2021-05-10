@@ -54,13 +54,13 @@ namespace Inventors.ECP
     }
 
     [Serializable]
-    public class SlaveNotRespondingException :
+    public class PeripheralNotRespondingException :
        Exception
     {
-        public SlaveNotRespondingException(String message) : base(message) { }
-        public SlaveNotRespondingException(String message, Exception inner) : base(message, inner) { }
-        protected SlaveNotRespondingException(SerializationInfo info, StreamingContext context) : base(info, context) { }
-        public SlaveNotRespondingException() { }
+        public PeripheralNotRespondingException(String message) : base(message) { }
+        public PeripheralNotRespondingException(String message, Exception inner) : base(message, inner) { }
+        protected PeripheralNotRespondingException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+        public PeripheralNotRespondingException() { }
     }
 
     [Serializable]
