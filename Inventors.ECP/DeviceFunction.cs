@@ -55,7 +55,7 @@ namespace Inventors.ECP
 
             if (Response.Code != GetRequestPacket().Code)
             {
-                throw new InvalidSlaveResponseException("Invalid function code");
+                throw new InvalidSlaveResponseException($"Invalid function code ({Response.Code} != {GetRequestPacket().Code}");
             }
 
             if (!IsResponseValid())
