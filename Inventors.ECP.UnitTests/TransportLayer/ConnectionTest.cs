@@ -83,7 +83,24 @@ namespace Inventors.ECP.UnitTests.TransportLayer
         }
 
         [TestMethod]
-        public void T07_SimpleMessage2Peripheral()
+        public void T07_LargeDataFunction()
+        {
+            var device = TC.CentralDevice;
+            var data = new List<int>();
+
+            for (int n = 0; n < 800; ++n)
+                data.Add(n);
+
+            var func = new DataFunction(data);
+
+            device.Timeout = 500;
+            device.Execute(func);
+
+            CollectionAssert.AreEqual(data, TC.PeripheralDevice.FuncData);
+        }
+
+        [TestMethod]
+        public void T08_SimpleMessage2Peripheral()
         {
             var device = TC.CentralDevice;
             var msg = new SimpleMessage() { X = 12 };
@@ -93,7 +110,7 @@ namespace Inventors.ECP.UnitTests.TransportLayer
         }
 
         [TestMethod]
-        public void T08_SimpleMessage2Central()
+        public void T09_SimpleMessage2Central()
         {
             var peripheral = TC.PeripheralDevice;
             var msg = new SimpleMessage() { X = 12 };
@@ -103,7 +120,7 @@ namespace Inventors.ECP.UnitTests.TransportLayer
         }
 
         [TestMethod]
-        public void T09_NACK()
+        public void T10_NACK()
         {
             var device = TC.CentralDevice;
             TC.PeripheralDevice.ErrorCode = (int)TestErrorCode.INVALID_OPERATION;

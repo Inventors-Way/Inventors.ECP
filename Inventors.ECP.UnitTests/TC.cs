@@ -40,17 +40,19 @@ namespace Inventors.ECP.UnitTests
 
         private TC()
         {
+            int BaudRate = 2000000;
+
             Device = new TestDevice()
             {
                 Location = CentralPort,
-                BaudRate = 115200,
+                BaudRate = BaudRate,
                 Timeout = 300,
                 Retries = 3
             };
             Peripheral = new TestPeripheral()
             {
                 Location = PeripheralPort,
-                BaudRate = 115200
+                BaudRate = BaudRate
             };
 
             Device.Open();
