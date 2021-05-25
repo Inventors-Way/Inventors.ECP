@@ -6,9 +6,7 @@
 
 The release contains the following major changes:
 
-* DEPRECATED: Scripting has been removed from Devices
-* DEPRECATED: Connected state for BusCentrals
-* Improved error reporting from the ECP Tester
+* License has been changed to MIT
 
 ### Minor changes
 
@@ -18,4 +16,6 @@ The release contains the following minor changes:
 
 ## Changes
 
-### DEPRICATED: Scripting has been removed from Devices
+### License has been changed to MIT
+
+To make the library easier to use for 3rd parties the license has been changed to MIT
