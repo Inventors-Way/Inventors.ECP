@@ -69,10 +69,10 @@
             this.vSplitContainer = new System.Windows.Forms.SplitContainer();
             this.functionList = new System.Windows.Forms.ListBox();
             this.propertyGrid = new System.Windows.Forms.PropertyGrid();
-            this.logControl = new Inventors.ECP.Tester.LogControl();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.msgTimer = new System.Windows.Forms.Timer(this.components);
             this.deviceTimer = new System.Windows.Forms.Timer(this.components);
+            this.logControl = new Inventors.ECP.Tester.LogControl();
             this.statusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.hSplitContainer)).BeginInit();
@@ -380,7 +380,7 @@
             // 
             this.hSplitContainer.Panel2.Controls.Add(this.logControl);
             this.hSplitContainer.Size = new System.Drawing.Size(1159, 680);
-            this.hSplitContainer.SplitterDistance = 470;
+            this.hSplitContainer.SplitterDistance = 469;
             this.hSplitContainer.SplitterWidth = 5;
             this.hSplitContainer.TabIndex = 2;
             // 
@@ -399,7 +399,7 @@
             // vSplitContainer.Panel2
             // 
             this.vSplitContainer.Panel2.Controls.Add(this.propertyGrid);
-            this.vSplitContainer.Size = new System.Drawing.Size(1159, 470);
+            this.vSplitContainer.Size = new System.Drawing.Size(1159, 469);
             this.vSplitContainer.SplitterDistance = 221;
             this.vSplitContainer.SplitterWidth = 5;
             this.vSplitContainer.TabIndex = 0;
@@ -412,7 +412,7 @@
             this.functionList.Location = new System.Drawing.Point(0, 0);
             this.functionList.Margin = new System.Windows.Forms.Padding(4);
             this.functionList.Name = "functionList";
-            this.functionList.Size = new System.Drawing.Size(217, 466);
+            this.functionList.Size = new System.Drawing.Size(217, 465);
             this.functionList.TabIndex = 0;
             this.functionList.SelectedIndexChanged += new System.EventHandler(this.FunctionList_SelectedIndexChanged);
             this.functionList.DoubleClick += new System.EventHandler(this.FunctionList_DoubleClick);
@@ -423,20 +423,8 @@
             this.propertyGrid.Location = new System.Drawing.Point(0, 0);
             this.propertyGrid.Margin = new System.Windows.Forms.Padding(4);
             this.propertyGrid.Name = "propertyGrid";
-            this.propertyGrid.Size = new System.Drawing.Size(929, 466);
+            this.propertyGrid.Size = new System.Drawing.Size(929, 465);
             this.propertyGrid.TabIndex = 0;
-            // 
-            // logControl
-            // 
-            this.logControl.AutoSave = true;
-            this.logControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.logControl.Level = Inventors.ECP.LogLevel.STATUS;
-            this.logControl.Location = new System.Drawing.Point(0, 0);
-            this.logControl.Margin = new System.Windows.Forms.Padding(5);
-            this.logControl.Name = "logControl";
-            this.logControl.Paused = true;
-            this.logControl.Size = new System.Drawing.Size(1155, 201);
-            this.logControl.TabIndex = 0;
             // 
             // imageList
             // 
@@ -467,8 +455,20 @@
             // deviceTimer
             // 
             this.deviceTimer.Enabled = true;
-            this.deviceTimer.Interval = 1000;
+            this.deviceTimer.Interval = 500;
             this.deviceTimer.Tick += new System.EventHandler(this.DeviceTimer_Tick);
+            // 
+            // logControl
+            // 
+            this.logControl.AutoSave = true;
+            this.logControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.logControl.Level = Inventors.ECP.LogLevel.STATUS;
+            this.logControl.Location = new System.Drawing.Point(0, 0);
+            this.logControl.Margin = new System.Windows.Forms.Padding(5);
+            this.logControl.Name = "logControl";
+            this.logControl.Paused = true;
+            this.logControl.Size = new System.Drawing.Size(1155, 202);
+            this.logControl.TabIndex = 0;
             // 
             // MainWindow
             // 

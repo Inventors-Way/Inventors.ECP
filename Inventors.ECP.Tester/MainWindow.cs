@@ -326,6 +326,11 @@ namespace Inventors.ECP.Tester
                             pingStatus.Text = String.Format($"| Ping count: { ping }");
                         }
                     }
+
+                    if (!(functionList.SelectedItem is DeviceFunction))
+                    {
+                        propertyGrid.Refresh();
+                    }
                 }
             }
         }
