@@ -18,19 +18,15 @@ using System.Xml.Serialization;
 namespace Inventors.ECP
 {
     public abstract class Device :
-        NotifyPropertyChanged,
         IDisposable
     {
+        private readonly object lockObject = new object();
+
         #region Properties
         #region PrintLevel
-        private LogLevel _printLevel = LogLevel.DEBUG;
         [Category("Debug")]
         [XmlIgnore]
-        public LogLevel PrintLevel
-        {
-            get => _printLevel;
-            set => SetProperty(ref _printLevel, value);
-        }
+        public LogLevel PrintLevel { get; set; } = LogLevel.DEBUG;
         #endregion
         #region Connected
         private bool _connected;
@@ -41,12 +37,18 @@ namespace Inventors.ECP
         {
             get
             {
-                lock (LockObject)
+                lock (lockObject)
                 {
                     return _connected;
                 }
             }
-            set => SetPropertyLocked(ref _connected, value);
+            set
+            {
+                lock (lockObject)
+                {
+                    _connected = value;
+                }
+            }
         }
         #endregion
         #region BusCentral
@@ -67,7 +69,7 @@ namespace Inventors.ECP
         public bool ResetOnConnection
         {
             get => Central.ResetOnConnection;
-            set => Central.ResetOnConnection = NotifyIfChanged(Central.ResetOnConnection, value);
+            set => Central.ResetOnConnection = value;
         }
         #endregion
         #region Timeout
@@ -76,7 +78,7 @@ namespace Inventors.ECP
         public int Timeout
         {
             get => Central.Timeout;
-            set => Central.Timeout = NotifyIfChanged(Central.Timeout, value);
+            set => Central.Timeout = value;
         }
         #endregion
         #region IsOpen
@@ -90,7 +92,7 @@ namespace Inventors.ECP
         public string Location
         {
             get => Central.Location;
-            set => Central.Location = NotifyIfChanged(Central.Location, value);
+            set => Central.Location = value;
         }
         #endregion
         #region BaudRate
@@ -99,19 +101,14 @@ namespace Inventors.ECP
         public int BaudRate
         {
             get => Central.BaudRate;
-            set => Central.BaudRate = NotifyIfChanged(Central.BaudRate, value);
+            set => Central.BaudRate = value;
         }
         #endregion
         #region PingEnabled
-        private bool _pingEnabled;
 
         [Category("Debug")]
         [XmlIgnore]
-        public bool PingEnabled
-        {
-            get => _pingEnabled;
-            set => SetProperty(ref _pingEnabled, value);
-        }
+        public bool PingEnabled { get; set; }
 
         #endregion
         #region Profiler
@@ -125,26 +122,14 @@ namespace Inventors.ECP
 
         #endregion
         #region CurrentAddress
-        private DeviceAddress _address;
-
         [Browsable(false)]
         [XmlIgnore]
-        public DeviceAddress CurrentAddress
-        {
-            get => _address;
-            set => SetProperty(ref _address, value);
-        }
+        public DeviceAddress CurrentAddress { get; set; }
         #endregion
         #region Retries property
 
-        private int _retries = 1;
-
         [Category("Retries")]
-        public int Retries
-        {
-            get => _retries;
-            set => SetProperty(ref _retries, value);
-        }
+        public int Retries { get; set; } = 1;
 
         #endregion
         #region Functions property

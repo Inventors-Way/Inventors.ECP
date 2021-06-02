@@ -12,10 +12,10 @@ using System.Threading.Tasks;
 
 namespace Inventors.ECP.Profiling
 {
-    public class Profiler :
-        NotifyPropertyChanged
+    public class Profiler 
     {
         private double time;
+        private readonly object lockObject = new object();
 
         private class DataNode<T>
             where T : Record
@@ -159,8 +159,20 @@ namespace Inventors.ECP.Profiling
 
         public bool Enabled 
         {
-            get => GetPropertyLocked(ref _enabled);
-            set => SetPropertyLocked(ref _enabled, value);
+            get
+            {
+                lock (lockObject)
+                {
+                    return _enabled;
+                }
+            }
+            set
+            {
+                lock (lockObject)
+                {
+                    _enabled = value;
+                }
+            }
         }
 
         #endregion
@@ -169,14 +181,20 @@ namespace Inventors.ECP.Profiling
 
         public double TimeSpan
         {
-            get => GetPropertyLocked(ref _timeSpan);
+            get
+            {
+                lock (lockObject)
+                {
+                    return _timeSpan;
+                }
+            }
             set
             {
-                lock (LockObject)
+                lock (lockObject)
                 {
                     filter.Duration = value;
                     Refilter();
-                    SetProperty(ref _timeSpan, value);
+                    _timeSpan = value;
                 }
             }
         }
@@ -187,8 +205,20 @@ namespace Inventors.ECP.Profiling
 
         public bool Updated 
         {
-            get => GetPropertyLocked(ref _updated);
-            private set => SetPropertyLocked(ref _updated, value);
+            get
+            {
+                lock (lockObject)
+                {
+                    return _updated;
+                }
+            }
+            private set
+            {
+                lock (lockObject)
+                {
+                    _updated = value;
+                }
+            }
         }
         #endregion
         #region Paused Property
@@ -196,10 +226,16 @@ namespace Inventors.ECP.Profiling
 
         public bool Paused
         {
-            get =>GetPropertyLocked(ref _paused);
+            get
+            {
+                lock (lockObject)
+                {
+                    return _paused;
+                }
+            }
             set
             {
-                lock(LockObject)
+                lock(lockObject)
                 {
                     _paused = value;
                     Refilter();
@@ -214,14 +250,14 @@ namespace Inventors.ECP.Profiling
         {
             get
             {
-                lock (LockObject)
+                lock (lockObject)
                 {
                     return filter.End;
                 }
             }
             set
             {
-                lock (LockObject)
+                lock (lockObject)
                 {
                     filter.End = value;
                     Refilter();
@@ -249,7 +285,7 @@ namespace Inventors.ECP.Profiling
 
         public void Reset()
         {
-            lock (LockObject)
+            lock (lockObject)
             {
                 ProfileTiming.Reset();
                 events.Clear();
@@ -299,7 +335,7 @@ namespace Inventors.ECP.Profiling
             {
                 UpdateTime(e.Time);
 
-                lock (LockObject)
+                lock (lockObject)
                 {
                     events.Add(e);
                 }
@@ -317,7 +353,7 @@ namespace Inventors.ECP.Profiling
             {
                 DataSet<TimingRecord> set;
 
-                lock (LockObject)
+                lock (lockObject)
                 {
                     UpdateTime(record.Time);
 
@@ -346,7 +382,7 @@ namespace Inventors.ECP.Profiling
             if (Enabled)
             {
                 DataSet<TimingViolation> set;
-                lock (LockObject)
+                lock (lockObject)
                 {
                     UpdateTime(violation.Time);
 
@@ -373,7 +409,7 @@ namespace Inventors.ECP.Profiling
         {
             var report = new ProfileReport();
 
-            lock (LockObject)
+            lock (lockObject)
             {
                 report.Events = events.GetValues();
 
