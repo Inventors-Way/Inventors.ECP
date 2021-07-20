@@ -112,7 +112,7 @@ Messages consists of a single Packet that is either sent from an ECP Central or 
 
 They are unacknowledged and consequently they may be lost without the sender being made aware of that. They should be used for information that is transmitted repeatedly, so that if a message is lost the error will be recovered the next time the message is sent.
 
-Because the recipient can use the CODE to differentiate between Messages and the Response to an active Function, Messages can be sent at any time in between the execution of Functions.
+Because the recipient can use the CODE to differentiate between Messages and the Response to an active Function, Messages can be sent at any time also during the execution of Functions.
 
 #### Addressing and routing of functions and messages
 
