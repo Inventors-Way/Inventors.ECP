@@ -108,7 +108,7 @@ If these conditions are not meet bad things is likely to happen.
 
 #### Messages
 
-Messages consists of a single Packet that is either sent from the ECP Peripheral or the ECP Peripheral.
+Messages consists of a single Packet that is either sent from an ECP Central or an ECP Peripheral.
 
 They are unacknowledged and consequently they may be lost without the sender being made aware of that. They should be used for information that is transmitted repeatedly, so that if a message is lost the error will be recovered the next time the message is sent.
 
