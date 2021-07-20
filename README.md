@@ -95,7 +95,7 @@ However, if for some reason the ECP Peripheral was not able to execute the funct
 | 0x00 | No error                 |
 | 0x01 | Unknown function         |
 | 0x02 | Invalid content          |
-| 0xFF | Dispath error            |
+| 0xFF | Dispatch error           |
 
 An ECP implementation can defines as many extra error codes as required for its application.
 
