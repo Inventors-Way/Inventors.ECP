@@ -23,7 +23,7 @@ The data link layer is responsible for implement frames, which permits chunks of
 
 To separate STX [0xF1], and ETX [0xF2] data bytes from data bytes with the same values that are part of the data being transmitted, each STX/ETX is preceded with a Data Length Escape (DLE) [0xFF] byte. This DLE byte can then be used by the receiving software to distinguish between whether the 0xF1/0xF2 is either the beginning or end of a frame or whether it is part of the data being transmitted in the frame. 
 
-However, the DLE/STX and DLE/ETX combinations may also occur in the data being transmitted. Byte stuffing is used to distinguish between a DLE/STX or DLE/STX that is framing or which is part of the data being transmitted. This is done by for each DLE that is part of the data an extra DLE is inserted. Consequently, when the data is reived if a STX or ETX is preceded by an even number of DLE’s then it is part of the data and part of the framing of a frame. The extra DLE’s is discarded when the data is received.
+However, the DLE/STX and DLE/ETX combinations may also occur in the data being transmitted. Byte stuffing is used to distinguish between a DLE/STX or DLE/STX that is framing or which is part of the data being transmitted. This is done by for each DLE that is part of the data an extra DLE is inserted. Consequently, when the data is reived if a STX or ETX is preceded by an even number of DLEï¿½s then it is part of the data and part of the framing of a frame. The extra DLEï¿½s is discarded when the data is received.
 The advantage of this approach is that it is possible to transfer arbitrary binary data with the ECP protocol, the disadvantage is that the size of the frames in dependent on its data content and it makes it more challenging to calculate maximal data transfer rates for the protocol.
 
 ### Network Layer
@@ -49,13 +49,13 @@ In that case the MSB of the second byte in the packet must be set to 1, and in t
 
 This FORMAT byte has the following encoding:
 
-| Bit  | Name | Specification |
-|------|------|---------------|
-| 7    | EXT  | Extended Packet; 0) Standard Packet, 1) Extended Packet. |
-| 5..6 | RESERVED | Reserved for future use, invalid if different from zero. |
-| 4   | ADDRESS | 0: No address, 1: Address enabled |
-| 2..3 | CHKSUM | 0: No checksum, 1: ADDITIVE, 2): CRC8 CCIT, 3): Invalid |
-| 0..1 | LENGTH | 0: Length (UINT8), 1: Length (UINT16), 2: Length (UIN32), 3: Invalid |
+| Bit    | Name     | Specification                                                          |
+|:------:|----------|------------------------------------------------------------------------|
+| 7      | EXT      | Extended Packet; 0) Standard Packet, 1) Extended Packet.               |
+| 5 .. 6 | RESERVED | Reserved for future use, invalid if different from zero.               |
+| 4      | ADDRESS  | 0: No address, 1: Address enabled                                      |
+| 2 .. 3 | CHKSUM   | 0: No checksum, 1: ADDITIVE, 2): CRC8 CCIT, 3): Invalid                |
+| 0 .. 1 | LENGTH   | 0: Length (UINT8), 1: Length (UINT16), 2: Length (UIN32), 3: Invalid   |
 
 #### Device addressing
 
@@ -90,12 +90,12 @@ If the ECP Peripheral successfully executed the Request, then it will respond wi
 
 However, if for some reason the ECP Peripheral was not able to execute the function then it will respond with a NACK packet. The NACK packet has a CODE of 0x00 and a single data byte with an error code for why it was unable to execute the function. The ECP protocol defines the following standard error codes that must be implemented by all ECP compliant devices:
 
-| Code | Specification |
-|---|----|
-| 0x00 | No error |
-| 0x01 | Unknown function |
-| 0x02 | Invalid content |
-| 0xFF | Dispath error |
+| Code | Specification            |
+|------|--------------------------|
+| 0x00 | No error                 |
+| 0x01 | Unknown function         |
+| 0x02 | Invalid content          |
+| 0xFF | Dispath error            |
 
 An ECP implementation can defines as many extra error codes as required for its application.
 
