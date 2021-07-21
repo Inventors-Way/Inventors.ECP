@@ -134,7 +134,26 @@ Messages can like functions be retransmitted so a message from an up tree ECP Pe
 
 ### Application Layer
 
+The application layer consists of the functions and messages that are defines for a specific system. Most of them will be application specific but the ECP protocol also defines a set of standard functions and messages that can (should) be implemented for system implementing the ECP protocol. These functions and messages as well as the address space available for application specific functions and messages are shown in the figure below:
+
 ![Address Space](PacketAddressSpace.png)
+
+The ECP protocol specifies the following functions:
+
+| CODE | Name                  | Specification                                                                                                                                   |
+|:----:|-----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
+| 0x01 | Device Identification | Is used to identify the device. Consists of information about the Manufacture, Device, and firmware running on the device.                      |
+| 0x02 | Ping                  | Is used to ping for whether there is a device present or not.                                                                                   |
+| 0x03 | Get Endianness        | Is used to determine the endianness of the attached system.                                                                                     |
+| 0x04 | Set Debug Signal      | Is used to set debug signals, which are the toogling of an output pin/LED from a processor and the measurement of an associated execution time. |
+
+The ECP protocol specifies the following messages:
+
+| CODE | Name                  | Specification                                                                                                                                   |
+|:----:|-----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
+| 0xFF | Printf                | Is used to send strings from an ECP Peripheral to an ECP Central for debugging and status purposes.                                             |
+| 0xFE | TimingViolation       | Is used to indicate that a section of code (delinated by a debug signal) has taken to long to execute.                                          |
+| 0xFD | Timming               | Is used to periodically send timming information for a section of code (delinated by a debug signal).                                           |
 
 ## Getting started
 
