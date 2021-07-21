@@ -88,7 +88,9 @@ A function consists of a Request packet that is always sent from an ECP Central 
 
 If the ECP Peripheral successfully executed the Request, then it will respond with a Response containing the results of the function execution. The Response has the same code and address as the Request that initiated it.
 
-However, if for some reason the ECP Peripheral was not able to execute the function then it will respond with a NACK packet. The NACK packet has a CODE of 0x00 and a single data byte with an error code for why it was unable to execute the function. The ECP protocol defines the following standard error codes that must be implemented by all ECP compliant devices:
+However, if for some reason the ECP Peripheral was not able to execute the function then it will respond with a NACK packet. The NACK packet has a CODE of 0x00 and a single data byte with an error code for why it was unable to execute the function. 
+
+The ECP protocol defines the following standard error codes that must be implemented by all ECP compliant devices:
 
 | Code | Specification            |
 |------|--------------------------|
@@ -97,7 +99,7 @@ However, if for some reason the ECP Peripheral was not able to execute the funct
 | 0x02 | Invalid content          |
 | 0xFF | Dispatch error           |
 
-An ECP implementation can defines as many extra error codes as required for its application.
+An ECP implementation can define as many extra error codes as required for its application.
 
 For the current ECP design to work the following must be guaranteed of a system implementing the ECP protocol:
 
@@ -158,6 +160,8 @@ The ECP protocol specifies the following messages:
 ## Getting started
 
 Work in progress.
+
+[Releases](https://github.com/Inventors-Way/Inventors.ECP/releases)
 
 ## Using the .NET Library
 
