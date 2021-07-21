@@ -116,7 +116,21 @@ Because the recipient can use the CODE to differentiate between Messages and the
 
 #### Addressing and routing of functions and messages
 
-Work in progress.
+The ECP protocol is intended for system that consists of a known topography/tree of ECP Centrals/ECP Peripherals. Consequently, the routing of functions and messages can be tailored to the specific application. The following is an example of how the address field may be used to route functions and messages based on this three of devices:
+
+![Adressing](Adressing.png)
+
+**The top level ECP Central needs to execute a function on the ECP Peripheral with address 0x02:**
+
+1. The ECP Central initiates the function by sending a Request packet to up tree ECP Peripheral (0x01)
+2. When the Request is received by the ECP Peripheral (0x01) it sees that the Request is not intended for itself but for the ECP Peripheral (0x02) which is up tree to itself.
+3. The ECP Peripheral (0x01) uses its ECP Central connected to ECP Peripheral (0x02) to retransmit the Request to the ECP Peripheral (0x02), it also keep track that it is currently executing a function from the down tree ECP Central on the up tree ECP Peripheral (0x02). It also starts a timeout for the function, so it can inform the down tree ECP Central if the function fails by a timeout (typically because either the Request or Response has been lost due to noice, which in a properly designed system should not happen or happen extremely rarely).
+4. The ECP Peripheral (0x02) executed the function and send back the Response to the function or send back a NACK
+5. The down tree ECP Central to the ECP Peripheral (0x02) receives the Response or NACK and retransmit it to the down tree ECP Central that initiated the function.
+
+**Propagation of messages:**
+
+Messages can like functions be retransmitted so a message from an up tree ECP Peripheral can reach all the other deviceds in the system. However, this may be tailored so messages are only retransmitted to the devices that need their information.
 
 ### Application Layer
 
