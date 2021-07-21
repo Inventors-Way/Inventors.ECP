@@ -122,11 +122,11 @@ The ECP protocol is intended for system that consists of a known topography/tree
 
 **The top level ECP Central needs to execute a function on the ECP Peripheral with address 0x02:**
 
-1. The ECP Central initiates the function by sending a Request packet to up tree ECP Peripheral (0x01)
-2. When the Request is received by the ECP Peripheral (0x01) it sees that the Request is not intended for itself but for the ECP Peripheral (0x02) which is up tree to itself.
-3. The ECP Peripheral (0x01) uses its ECP Central connected to ECP Peripheral (0x02) to retransmit the Request to the ECP Peripheral (0x02), it also keep track that it is currently executing a function from the down tree ECP Central on the up tree ECP Peripheral (0x02). It also starts a timeout for the function, so it can inform the down tree ECP Central if the function fails by a timeout (typically because either the Request or Response has been lost due to noice, which in a properly designed system should not happen or happen extremely rarely).
-4. The ECP Peripheral (0x02) executed the function and send back the Response to the function or send back a NACK
-5. The down tree ECP Central to the ECP Peripheral (0x02) receives the Response or NACK and retransmit it to the down tree ECP Central that initiated the function.
+1. The ECP Central initiates the function by sending a Request packet to down tree to the ECP Peripheral (0x01)
+2. When the Request is received by the ECP Peripheral (0x01) it sees that the Request is not intended for itself but for the ECP Peripheral (0x02) which is down tree to itself.
+3. The ECP Peripheral (0x01) uses its ECP Central connected to ECP Peripheral (0x02) to retransmit the Request to the ECP Peripheral (0x02), it also keep track that it is currently executing a function from the up tree ECP Central on the up tree ECP Peripheral (0x02). It also starts a timeout for the function, so it can inform the up tree ECP Central if the function fails by a timeout (typically because either the Request or Response has been lost due to noice, which in a properly designed system should not happen or happen extremely rarely).
+4. The ECP Peripheral (0x02) executed the function and sends back the Response to the function or sends back a NACK
+5. The up tree ECP Central to the ECP Peripheral (0x02) receives the Response or NACK and retransmit it to the up tree ECP Central that initiated the function.
 
 **Propagation of messages:**
 
