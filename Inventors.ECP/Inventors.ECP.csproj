@@ -50,10 +50,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\Inventors.ECP.TestFramework\Logo128x128.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
     <None Include="Logo128x128.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
