@@ -1,22 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
+using Inventors.ECP.TestFramework;
+using System;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Inventors.ECP.Tester
 {
-    static class Program
+    internal static class Program
     {
         /// <summary>
-        /// The main entry point for the application.
+        ///  The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main(string[] args)
         {
+            #if NETFRAMEWORK
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            #else
+            ApplicationConfiguration.Initialize();
+            #endif
 
             if (args.Length > 0)
             {
@@ -33,6 +35,7 @@ namespace Inventors.ECP.Tester
             {
                 Application.Run(new MainWindow());
             }
+
         }
     }
 }

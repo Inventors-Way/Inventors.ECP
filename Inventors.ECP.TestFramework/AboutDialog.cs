@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Inventors.ECP.Tester
+namespace Inventors.ECP.TestFramework
 {
     public partial class AboutDialog : Form
     {

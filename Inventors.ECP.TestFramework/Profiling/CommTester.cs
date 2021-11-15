@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Inventors.ECP.Tester.Profiling
+namespace Inventors.ECP.TestFramework.Profiling
 {
     public class CommTester
     {

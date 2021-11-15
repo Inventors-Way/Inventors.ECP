@@ -1,4 +1,4 @@
-﻿namespace Inventors.ECP.Tester.Profiling
+﻿namespace Inventors.ECP.TestFramework.Profiling
 {
     partial class ProfilerWindow
     {

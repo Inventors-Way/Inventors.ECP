@@ -1,5 +1,5 @@
 ﻿
-namespace Inventors.ECP.Tester.Monitoring
+namespace Inventors.ECP.TestFramework.Monitoring
 {
     partial class MonitorWindow
     {

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace Inventors.ECP.Tester
+namespace Inventors.ECP.TestFramework
 {
     public class Settings
     {
