@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net48;netstandard2.1</TargetFrameworks>
-    <Version>2.4.0</Version>
+    <TargetFrameworks>net48;netstandard2.1;net5.0;net6.0</TargetFrameworks>
+    <Version>2.5.0</Version>
     <Authors>Inventors' Way</Authors>
     <Company>Inventors' Way ApS</Company>
     <Description>Library implementing the Embedded Communication Protocol (ECP)</Description>
@@ -17,7 +17,7 @@
     <PackageIconUrl></PackageIconUrl>
     <NeutralLanguage>en</NeutralLanguage>
     <PackageIcon>Logo128x128.png</PackageIcon>
-    <AssemblyVersion>2.4.0.0</AssemblyVersion>
+    <AssemblyVersion>2.5.0.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>

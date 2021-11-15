@@ -16,11 +16,11 @@ using System.Threading;
 using System.IO;
 using System.Reflection;
 using Inventors.ECP.Profiling;
-using Inventors.ECP.Tester.Profiling;
-using Inventors.ECP.Tester.Monitoring;
+using Inventors.ECP.TestFramework.Profiling;
+using Inventors.ECP.TestFramework.Monitoring;
 using Inventors.ECP.Monitor;
 
-namespace Inventors.ECP.Tester
+namespace Inventors.ECP.TestFramework
 {
     public partial class MainWindow :
         Form
@@ -45,6 +45,8 @@ namespace Inventors.ECP.Tester
         private readonly MonitorWindow monitorWindow;
         private readonly CommTester commTester;
 
+        public Image AboutImage { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -63,7 +65,7 @@ namespace Inventors.ECP.Tester
 
             commTester = new CommTester();
         }
-
+        
         public MainWindow(string deviceFileName) :
             this()
         {
@@ -246,18 +248,6 @@ namespace Inventors.ECP.Tester
             return false;
         }
 
-        private string CreatePortDescription(string location, string description)
-        {
-            if (description is object)
-            {
-                return String.Format("{0} ({1})", location.ToString(), description);
-            }
-            else
-            {
-                return location;
-            }
-        }
-
         private void UpdatePorts()
         {
             if (!device.IsOpen)
@@ -266,21 +256,19 @@ namespace Inventors.ECP.Tester
 
                 if (CheckDevicesChanged(devices))
                 {
-                    var portInfo = new PortInformationProvider();
                     Log.Debug("Available devices changed:");
                     portMenuItem.DropDownItems.Clear();
 
                     for (int n = 0; n < devices.Count; ++n)
                     {
                         var location = devices[n];
-                        var menuName = CreatePortDescription(location, portInfo.GetDescription(location));
-                        var item = new ToolStripMenuItem(menuName) 
+                        var item = new ToolStripMenuItem(location) 
                         { 
                             Tag = devices[n] 
                         };
                         portMenuItem.DropDownItems.Add(item);
 
-                        Log.Debug("  [ {0} ] Device: {1}", n, menuName);
+                        Log.Debug("  [ {0} ] Device: {1}", n, location);
                         if (selectedDevice is object)
                         {
                             if (selectedDevice.ToString() == devices[n].ToString())
@@ -546,8 +534,8 @@ namespace Inventors.ECP.Tester
             propertyGrid.Refresh();
         }
 
-        #endregion
-        #region Functions and message handling
+#endregion
+#region Functions and message handling
         private void Execute(DeviceFunction function, bool doLogging = false)
         {
             if (device != null)
@@ -591,7 +579,7 @@ namespace Inventors.ECP.Tester
             }
         }
 
-        #endregion
+#endregion
 
         private async void TestToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -693,8 +681,17 @@ namespace Inventors.ECP.Tester
                 Product = "ECP Tester",
                 Version = VersionInfo.VersionDescription,
                 Description = "Copyright (C) 2019-2020 Inventors' Way ApS. All rights reserved." + Environment.NewLine + "ECP Tester is made possible by the open source ECP project made by the scientists and engineers at Inventors' Way.",
-                Image = Resource.AboutImage
             };
+
+            if (AboutImage is object)
+            {
+                dialog.Image = AboutImage;
+            }
+            else
+            {
+                dialog.Image = Resource.AboutImage;
+            }
+
             dialog.ShowDialog();
         }
 

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Inventors.ECP.Tester
+namespace Inventors.ECP.TestFramework
 {
     public abstract class Statistics
     {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Inventors.ECP.Tester.Profiling
+namespace Inventors.ECP.TestFramework.Profiling
 {
     public class ColorSet
     {

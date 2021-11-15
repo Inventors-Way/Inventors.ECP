@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Inventors.ECP.Monitor;
 
-namespace Inventors.ECP.Tester.Monitoring
+namespace Inventors.ECP.TestFramework.Monitoring
 {
     public partial class MonitorWindow : 
         Form,

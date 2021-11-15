@@ -1,4 +1,4 @@
-﻿namespace Inventors.ECP.Tester
+﻿namespace Inventors.ECP.TestFramework
 {
     partial class MainWindow
     {
@@ -69,10 +69,10 @@
             this.vSplitContainer = new System.Windows.Forms.SplitContainer();
             this.functionList = new System.Windows.Forms.ListBox();
             this.propertyGrid = new System.Windows.Forms.PropertyGrid();
+            this.logControl = new Inventors.ECP.TestFramework.LogControl();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.msgTimer = new System.Windows.Forms.Timer(this.components);
             this.deviceTimer = new System.Windows.Forms.Timer(this.components);
-            this.logControl = new Inventors.ECP.Tester.LogControl();
             this.statusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.hSplitContainer)).BeginInit();
@@ -121,7 +121,7 @@
             this.helpToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(1159, 30);
+            this.menuStrip.Size = new System.Drawing.Size(1159, 28);
             this.menuStrip.TabIndex = 1;
             this.menuStrip.Text = "menuStrip1";
             // 
@@ -138,7 +138,7 @@
             this.toolStripSeparator1,
             this.exitToolStripMenuItem});
             this.fileMenuItem.Name = "fileMenuItem";
-            this.fileMenuItem.Size = new System.Drawing.Size(46, 26);
+            this.fileMenuItem.Size = new System.Drawing.Size(46, 24);
             this.fileMenuItem.Text = "File";
             // 
             // clearLogToolStripMenuItem
@@ -151,7 +151,6 @@
             // 
             // saveLogToolStripMenuItem
             // 
-            this.saveLogToolStripMenuItem.Image = global::Inventors.ECP.Tester.Properties.Resources._216190___export;
             this.saveLogToolStripMenuItem.Name = "saveLogToolStripMenuItem";
             this.saveLogToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
             this.saveLogToolStripMenuItem.Size = new System.Drawing.Size(202, 26);
@@ -238,28 +237,27 @@
             this.toolStripSeparator2,
             this.portMenuItem});
             this.connectMenuItem.Name = "connectMenuItem";
-            this.connectMenuItem.Size = new System.Drawing.Size(98, 26);
+            this.connectMenuItem.Size = new System.Drawing.Size(98, 24);
             this.connectMenuItem.Text = "Connection";
             // 
             // openDeviceToolStripMenuItem
             // 
-            this.openDeviceToolStripMenuItem.Image = global::Inventors.ECP.Tester.Properties.Resources._216173___device_phone;
             this.openDeviceToolStripMenuItem.Name = "openDeviceToolStripMenuItem";
             this.openDeviceToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
-            this.openDeviceToolStripMenuItem.Size = new System.Drawing.Size(223, 26);
+            this.openDeviceToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.openDeviceToolStripMenuItem.Text = "Load Device";
             this.openDeviceToolStripMenuItem.Click += new System.EventHandler(this.OpenDeviceToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(220, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(221, 6);
             // 
             // connectToolStripMenuItem
             // 
             this.connectToolStripMenuItem.Name = "connectToolStripMenuItem";
             this.connectToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.connectToolStripMenuItem.Size = new System.Drawing.Size(223, 26);
+            this.connectToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.connectToolStripMenuItem.Text = "Open";
             this.connectToolStripMenuItem.Click += new System.EventHandler(this.ConnectToolStripMenuItem_Click);
             // 
@@ -267,26 +265,26 @@
             // 
             this.disconnectToolStripMenuItem.Name = "disconnectToolStripMenuItem";
             this.disconnectToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.disconnectToolStripMenuItem.Size = new System.Drawing.Size(223, 26);
+            this.disconnectToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.disconnectToolStripMenuItem.Text = "Close";
             this.disconnectToolStripMenuItem.Click += new System.EventHandler(this.DisconnectToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(220, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(221, 6);
             // 
             // portMenuItem
             // 
             this.portMenuItem.Name = "portMenuItem";
-            this.portMenuItem.Size = new System.Drawing.Size(223, 26);
+            this.portMenuItem.Size = new System.Drawing.Size(224, 26);
             this.portMenuItem.Text = "Device";
             this.portMenuItem.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.PortMenuItem_DropDownItemClicked);
             // 
             // addressMenu
             // 
             this.addressMenu.Name = "addressMenu";
-            this.addressMenu.Size = new System.Drawing.Size(76, 26);
+            this.addressMenu.Size = new System.Drawing.Size(76, 24);
             this.addressMenu.Text = "Address";
             // 
             // profilerToolStripMenuItem
@@ -298,7 +296,7 @@
             this.profilerMenuItem,
             this.portMonitorToolStripMenuItem});
             this.profilerToolStripMenuItem.Name = "profilerToolStripMenuItem";
-            this.profilerToolStripMenuItem.Size = new System.Drawing.Size(76, 26);
+            this.profilerToolStripMenuItem.Size = new System.Drawing.Size(76, 24);
             this.profilerToolStripMenuItem.Text = "Analysis";
             // 
             // testToolStripMenuItem
@@ -341,7 +339,7 @@
             this.toolStripSeparator5,
             this.aboutECPTesterToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(55, 26);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(55, 24);
             this.helpToolStripMenuItem.Text = "Help";
             // 
             // documentationToolStripMenuItem
@@ -367,7 +365,7 @@
             // 
             this.hSplitContainer.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.hSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.hSplitContainer.Location = new System.Drawing.Point(0, 30);
+            this.hSplitContainer.Location = new System.Drawing.Point(0, 28);
             this.hSplitContainer.Margin = new System.Windows.Forms.Padding(4);
             this.hSplitContainer.Name = "hSplitContainer";
             this.hSplitContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -379,8 +377,8 @@
             // hSplitContainer.Panel2
             // 
             this.hSplitContainer.Panel2.Controls.Add(this.logControl);
-            this.hSplitContainer.Size = new System.Drawing.Size(1159, 680);
-            this.hSplitContainer.SplitterDistance = 469;
+            this.hSplitContainer.Size = new System.Drawing.Size(1159, 682);
+            this.hSplitContainer.SplitterDistance = 470;
             this.hSplitContainer.SplitterWidth = 5;
             this.hSplitContainer.TabIndex = 2;
             // 
@@ -399,7 +397,7 @@
             // vSplitContainer.Panel2
             // 
             this.vSplitContainer.Panel2.Controls.Add(this.propertyGrid);
-            this.vSplitContainer.Size = new System.Drawing.Size(1159, 469);
+            this.vSplitContainer.Size = new System.Drawing.Size(1159, 470);
             this.vSplitContainer.SplitterDistance = 221;
             this.vSplitContainer.SplitterWidth = 5;
             this.vSplitContainer.TabIndex = 0;
@@ -412,7 +410,7 @@
             this.functionList.Location = new System.Drawing.Point(0, 0);
             this.functionList.Margin = new System.Windows.Forms.Padding(4);
             this.functionList.Name = "functionList";
-            this.functionList.Size = new System.Drawing.Size(217, 465);
+            this.functionList.Size = new System.Drawing.Size(217, 466);
             this.functionList.TabIndex = 0;
             this.functionList.SelectedIndexChanged += new System.EventHandler(this.FunctionList_SelectedIndexChanged);
             this.functionList.DoubleClick += new System.EventHandler(this.FunctionList_DoubleClick);
@@ -423,8 +421,20 @@
             this.propertyGrid.Location = new System.Drawing.Point(0, 0);
             this.propertyGrid.Margin = new System.Windows.Forms.Padding(4);
             this.propertyGrid.Name = "propertyGrid";
-            this.propertyGrid.Size = new System.Drawing.Size(929, 465);
+            this.propertyGrid.Size = new System.Drawing.Size(929, 466);
             this.propertyGrid.TabIndex = 0;
+            // 
+            // logControl
+            // 
+            this.logControl.AutoSave = true;
+            this.logControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.logControl.Level = Inventors.ECP.LogLevel.STATUS;
+            this.logControl.Location = new System.Drawing.Point(0, 0);
+            this.logControl.Margin = new System.Windows.Forms.Padding(5);
+            this.logControl.Name = "logControl";
+            this.logControl.Paused = true;
+            this.logControl.Size = new System.Drawing.Size(1155, 203);
+            this.logControl.TabIndex = 0;
             // 
             // imageList
             // 
@@ -457,18 +467,6 @@
             this.deviceTimer.Enabled = true;
             this.deviceTimer.Interval = 500;
             this.deviceTimer.Tick += new System.EventHandler(this.DeviceTimer_Tick);
-            // 
-            // logControl
-            // 
-            this.logControl.AutoSave = true;
-            this.logControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.logControl.Level = Inventors.ECP.LogLevel.STATUS;
-            this.logControl.Location = new System.Drawing.Point(0, 0);
-            this.logControl.Margin = new System.Windows.Forms.Padding(5);
-            this.logControl.Name = "logControl";
-            this.logControl.Paused = true;
-            this.logControl.Size = new System.Drawing.Size(1155, 202);
-            this.logControl.TabIndex = 0;
             // 
             // MainWindow
             // 

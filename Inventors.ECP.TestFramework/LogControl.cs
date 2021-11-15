@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using System.Globalization;
 using System.IO;
 
-namespace Inventors.ECP.Tester
+namespace Inventors.ECP.TestFramework
 {
     public partial class LogControl : 
         UserControl,

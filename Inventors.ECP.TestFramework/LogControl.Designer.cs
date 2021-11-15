@@ -1,4 +1,4 @@
-﻿namespace Inventors.ECP.Tester
+﻿namespace Inventors.ECP.TestFramework
 {
     partial class LogControl
     {

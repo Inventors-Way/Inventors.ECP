@@ -1,0 +1,62 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net48;net5.0-windows;net6.0-windows</TargetFrameworks>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+	<LangVersion>latest</LangVersion>
+	<nullable>disable</nullable>
+	<ImplicitUsings>disable</ImplicitUsings>
+	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	<Authors>Inventors' Way</Authors>
+	<Company>Inventors' Way ApS</Company>
+	<Description>WinForms components for a creating test applications for devices implementing the ECP protocol</Description>
+	<Copyright>Copyright 2021 Inventors Way ApS</Copyright>
+	<PackageProjectUrl>https://github.com/Inventors-Way/Inventors.ECP</PackageProjectUrl>
+	<RepositoryUrl>https://github.com/Inventors-Way/Inventors.ECP</RepositoryUrl>
+	<RepositoryType>Git</RepositoryType>
+	<PackageTags>Communication</PackageTags>
+	<PackageReleaseNotes>https://github.com/Inventors-Way/Inventors.ECP/releases</PackageReleaseNotes>
+	<NeutralLanguage>en</NeutralLanguage>
+	<AssemblyVersion>2.5.0.0</AssemblyVersion>
+	<FileVersion>2.5.0.0</FileVersion>
+	<Version>2.5.0.0</Version>
+	<PackageIcon>Logo128x128.png</PackageIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Monitoring\" />
+    <Folder Include="Profiling\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ScottPlot" Version="4.1.27" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Inventors.ECP\Inventors.ECP.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+	  <None Include="Logo128x128.png">
+		  <Pack>True</Pack>
+		  <PackagePath></PackagePath>
+	  </None>
+  </ItemGroup>
+
+</Project>

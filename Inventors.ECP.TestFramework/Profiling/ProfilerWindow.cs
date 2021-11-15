@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ScottPlot;
 
-namespace Inventors.ECP.Tester.Profiling
+namespace Inventors.ECP.TestFramework.Profiling
 {
     public partial class ProfilerWindow : Form
     {
@@ -299,13 +299,14 @@ namespace Inventors.ECP.Tester.Profiling
                     {
                         foreach (var e in report.Events)
                         {
-                            plot.PlotVLine(e.Time, color: Color.Black);
-                            plot.PlotText(text: e.Description, 
-                                          x: e.Time, 
-                                          y: 0,                                           
-                                          alignment: TextAlignment.lowerLeft,
-                                          color: Color.Black,
-                                          rotation: -90);
+                            var line = plot.AddVerticalLine(e.Time);
+                            line.Color = Color.Black;
+
+                            var txt = plot.AddText(label: e.Description, x: e.Time, y: 0);
+                            txt.Alignment = Alignment.LowerLeft;
+                            txt.Rotation = -90;
+                            txt.Color = Color.Black;
+                            
                         }
                     }
 
@@ -313,20 +314,20 @@ namespace Inventors.ECP.Tester.Profiling
                     {
                         foreach (var t in report.Violation)
                         {
-                            plot.PlotVLine(t.Time, color: Color.Black);
-                            plot.PlotText(text: $"{t.Time}us",
-                                          x: t.Time,
-                                          y: 0,
-                                          alignment: TextAlignment.lowerLeft,
-                                          color: Color.Black,
-                                          rotation: -90);
+                            var line = plot.AddVerticalLine(t.Time);
+                            line.Color = Color.Black;
+
+                            var txt = plot.AddText(label: $"{t.Time}us", x: t.Time, y: 0);
+                            txt.Alignment = Alignment.LowerLeft;
+                            txt.Color = Color.Black;
+                            txt.Rotation = -90;
                         }
                     }
 
-                    plot.Legend(location: legendLocation.lowerLeft);
+                    //plot.Legend(location: legendLocation.lowerLeft);
+
                     plot.XLabel("Time [s]");
                     plot.YLabel("Elapsed Time [us]");
-                    plot.Frame(right: false, top: false);
                 }
 
                 pictureBox.Image = plot.GetBitmap();
