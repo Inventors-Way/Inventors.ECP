@@ -771,7 +771,7 @@ namespace Inventors.ECP.TestFramework
         {
             if (device is object)
             {
-                PortMonitor.Enabled = !device.Profiler.Enabled;
+                PortMonitor.Enabled = true;
                 UpdatePortMonitor();
             }
         }
