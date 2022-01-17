@@ -107,9 +107,12 @@ namespace Inventors.ECP.TestFramework.Profiling
 
                 listBox.Items.Add(DebugSignal.None);
 
-                foreach (var signal in debugSpecification.Signals)
+                if (debugSpecification is not null && debugSpecification.Signals is not null)
                 {
-                    listBox.Items.Add(signal);
+                    foreach (var signal in debugSpecification.Signals)
+                    {
+                        listBox.Items.Add(signal);
+                    }
                 }
 
                 page.Controls.Add(listBox);
