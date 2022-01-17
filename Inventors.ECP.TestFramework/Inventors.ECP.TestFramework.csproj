@@ -12,8 +12,7 @@
 	<Company>Inventors' Way ApS</Company>
 	<Description>WinForms components for a creating test applications for devices implementing the ECP protocol</Description>
 	<Copyright>Copyright 2021 Inventors Way ApS</Copyright>
-	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
-	  <PackageProjectUrl>https://github.com/Inventors-Way/Inventors.ECP</PackageProjectUrl>
+	<PackageProjectUrl>https://github.com/Inventors-Way/Inventors.ECP</PackageProjectUrl>
 	<RepositoryUrl>https://github.com/Inventors-Way/Inventors.ECP</RepositoryUrl>
 	<RepositoryType>Git</RepositoryType>
 	<PackageTags>Communication</PackageTags>
