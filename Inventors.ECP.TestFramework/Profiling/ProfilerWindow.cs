@@ -105,10 +105,10 @@ namespace Inventors.ECP.TestFramework.Profiling
 
                 listBox.SelectedIndexChanged += ListBox_SelectedIndexChanged;
 
-                listBox.Items.Add(DebugSignal.None);
-
                 if (debugSpecification is not null && debugSpecification.Signals is not null)
                 {
+                    listBox.Items.Add(DebugSignal.None);
+
                     foreach (var signal in debugSpecification.Signals)
                     {
                         listBox.Items.Add(signal);
