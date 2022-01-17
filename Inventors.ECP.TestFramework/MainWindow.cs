@@ -680,7 +680,7 @@ namespace Inventors.ECP.TestFramework
                 Text = "About ECP Tester",
                 Product = "ECP Tester",
                 Version = VersionInfo.VersionDescription,
-                Description = "Copyright (C) 2019-2020 Inventors' Way ApS. All rights reserved." + Environment.NewLine + "ECP Tester is made possible by the open source ECP project made by the scientists and engineers at Inventors' Way.",
+                Description = "Copyright (C) 2009-2022 Inventors' Way ApS. All rights reserved." + Environment.NewLine + "ECP Tester is made possible by the open source ECP project made by the scientists and engineers at Inventors' Way.",
             };
 
             if (AboutImage is object)
