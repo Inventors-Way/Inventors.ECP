@@ -38,9 +38,10 @@
             // picture
             // 
             this.picture.Location = new System.Drawing.Point(1, 0);
-            this.picture.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.picture.Margin = new System.Windows.Forms.Padding(4);
             this.picture.Name = "picture";
             this.picture.Size = new System.Drawing.Size(533, 222);
+            this.picture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.picture.TabIndex = 0;
             this.picture.TabStop = false;
             // 
@@ -52,7 +53,7 @@
             this.product.Location = new System.Drawing.Point(20, 27);
             this.product.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.product.Name = "product";
-            this.product.Size = new System.Drawing.Size(82, 24);
+            this.product.Size = new System.Drawing.Size(103, 29);
             this.product.TabIndex = 4;
             this.product.Text = "Product";
             // 
@@ -63,7 +64,7 @@
             this.version.Location = new System.Drawing.Point(21, 57);
             this.version.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.version.Name = "version";
-            this.version.Size = new System.Drawing.Size(54, 16);
+            this.version.Size = new System.Drawing.Size(53, 16);
             this.version.TabIndex = 5;
             this.version.Text = "Version";
             // 
@@ -88,7 +89,7 @@
             this.Controls.Add(this.product);
             this.Controls.Add(this.picture);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AboutDialog";
