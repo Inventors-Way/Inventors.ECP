@@ -24,6 +24,7 @@ namespace Inventors.ECP.DefaultDevice
             Add(new SimpleFunction());
             Add(new DataFunction());
 
+            Add(new SPIConfigureFunction());
             Add(new SPITestFunction());
 
             Add(new TimingViolationMessage());

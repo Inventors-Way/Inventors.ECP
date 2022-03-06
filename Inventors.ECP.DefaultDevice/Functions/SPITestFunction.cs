@@ -10,7 +10,7 @@ namespace Inventors.ECP.DefaultDevice.Functions
     public class SPITestFunction :
         DeviceFunction
     {
-        public override byte Code => 0x20;
+        public override byte Code => 0x21;
 
         public SPITestFunction() :
             base(requestLength: 0, responseLength: 0)
@@ -100,6 +100,6 @@ namespace Inventors.ECP.DefaultDevice.Functions
             }
         }
 
-        public override string ToString() => "[0x20] SPI Test Function";
+        public override string ToString() => "[0x21] SPI Test Function";
     }
 }
