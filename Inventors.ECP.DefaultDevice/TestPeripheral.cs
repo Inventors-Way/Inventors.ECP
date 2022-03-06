@@ -14,7 +14,7 @@ namespace Inventors.ECP.DefaultDevice
     {
         private UInt32 count;
 
-        public List<int> FuncData { get; } = new List<int>();
+        public List<byte> FuncData { get; } = new List<byte>();
 
         public List<int> MsgData { get; } = new List<int>();
 

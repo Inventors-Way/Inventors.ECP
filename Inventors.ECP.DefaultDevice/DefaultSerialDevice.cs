@@ -1,4 +1,5 @@
-﻿using Inventors.ECP.Functions;
+﻿using Inventors.ECP.DefaultDevice.Functions;
+using Inventors.ECP.Functions;
 using Inventors.ECP.Messages;
 using Inventors.ECP.Profiling;
 using System;
@@ -19,6 +20,11 @@ namespace Inventors.ECP.DefaultDevice
             Add(new Ping());
             Add(new GetEndianness());
             Add(new SetDebugSignal());
+
+            Add(new SimpleFunction());
+            Add(new DataFunction());
+
+            Add(new SPITestFunction());
 
             Add(new TimingViolationMessage());
             Add(new TimingMessage());

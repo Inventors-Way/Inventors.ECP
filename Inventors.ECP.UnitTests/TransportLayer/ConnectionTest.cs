@@ -74,7 +74,7 @@ namespace Inventors.ECP.UnitTests.TransportLayer
         public void T06_DataFunction()
         {
             var device = TC.CentralDevice;
-            var data = new List<int>() { 1, 2, 3, 4 };
+            var data = new List<byte>() { 1, 2, 3, 4 };
             var func = new DataFunction(data);
 
             device.Execute(func);
@@ -86,10 +86,10 @@ namespace Inventors.ECP.UnitTests.TransportLayer
         public void T07_LargeDataFunction()
         {
             var device = TC.CentralDevice;
-            var data = new List<int>();
+            var data = new List<byte>();
 
             for (int n = 0; n < 800; ++n)
-                data.Add(n);
+                data.Add((byte) n);
 
             var func = new DataFunction(data);
 
@@ -124,7 +124,7 @@ namespace Inventors.ECP.UnitTests.TransportLayer
         {
             var device = TC.CentralDevice;
             TC.PeripheralDevice.ErrorCode = (int)TestErrorCode.INVALID_OPERATION;
-            var data = new List<int>() { 1, 2, 3, 4 };
+            var data = new List<byte>() { 1, 2, 3, 4 };
             var func = new DataFunction(data);
             Assert.ThrowsException<FunctionNotAcknowledgedException>(() => device.Execute(func));
 

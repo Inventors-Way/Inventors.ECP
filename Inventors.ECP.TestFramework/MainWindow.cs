@@ -302,16 +302,24 @@ namespace Inventors.ECP.TestFramework
                 {
                     if (device.PingEnabled)
                     {
-                        var ping = device.Ping();
+                        try
+                        {
+                            var ping = device.Ping();
 
-                        if (ping < 0)
+                            if (ping < 0)
+                            {
+                                Log.Error("Ping failed!");
+                                device.Profiler.Add(new TargetEvent("Ping failed"));
+                            }
+                            else
+                            {
+                                pingStatus.Text = String.Format($"| Ping count: { ping }");
+                            }
+                        }
+                        catch
                         {
                             Log.Error("Ping failed!");
                             device.Profiler.Add(new TargetEvent("Ping failed"));
-                        }
-                        else
-                        {
-                            pingStatus.Text = String.Format($"| Ping count: { ping }");
                         }
                     }
 
