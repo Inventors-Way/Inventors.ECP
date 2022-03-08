@@ -32,6 +32,8 @@ namespace Inventors.ECP.DefaultDevice
 
             Add(new ADCGetValue());
 
+            Add(new MCP48X2Update());
+
             Add(new TimingViolationMessage());
             Add(new TimingMessage());
         }

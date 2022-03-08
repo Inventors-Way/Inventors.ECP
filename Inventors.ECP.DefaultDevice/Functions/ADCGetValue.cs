@@ -15,6 +15,18 @@ namespace Inventors.ECP.DefaultDevice.Functions
             CHAN02,
             CHAN03,
             CHAN04,
+            CHAN05,
+            CHAN06,
+            CHAN07,
+            CHAN08,
+            CHAN09,
+            CHAN10,
+            CHAN11,
+            CHAN12,
+            CHAN13,
+            CHAN14,
+            CHAN15,
+            CHAN16
         }
 
         public override byte Code => 0x24;
