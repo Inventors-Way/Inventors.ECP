@@ -18,5 +18,16 @@ namespace Inventors.ECP
 
         [XmlElement("debug-signal")] 
         public List<DebugSignal> Signals { get; } = new List<DebugSignal>();
+
+        public void Initialize()
+        {
+            if (Signals is null)
+                return;
+
+            for (int n = 0; n < Signals.Count; n++)
+            {
+                Signals[n].Code = (uint) (n + 1);
+            }
+        }
     }
 }

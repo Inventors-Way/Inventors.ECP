@@ -28,7 +28,7 @@ namespace Inventors.ECP
             }            
         }
 
-        [XmlAttribute("code")]
+        [XmlIgnore]
         public UInt32 Code { get; set; } = 1;
 
         [XmlAttribute("name")]

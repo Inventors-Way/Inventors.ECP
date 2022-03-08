@@ -79,6 +79,7 @@ namespace Inventors.ECP.TestFramework.Profiling
         private void InitializeDebugSignals()
         {
             var debugSpecification = device.GetActiveDebugSpecification();
+            debugSpecification.Initialize();
 
             debugSignalTabControl.TabPages.Clear();
 
@@ -333,7 +334,12 @@ namespace Inventors.ECP.TestFramework.Profiling
                     plot.YLabel("Elapsed Time [us]");
                 }
 
-                pictureBox.Image = plot.GetBitmap();
+                try
+                {
+                    var image = plot.GetBitmap();
+                    pictureBox.Image = image;
+                }
+                catch { }
             }
         }
 

@@ -27,6 +27,11 @@ namespace Inventors.ECP.DefaultDevice
             Add(new SPIConfigureFunction());
             Add(new SPITestFunction());
 
+            Add(new DIOSetPin());
+            Add(new DIOGetPin());
+
+            Add(new ADCGetValue());
+
             Add(new TimingViolationMessage());
             Add(new TimingMessage());
         }
