@@ -18,9 +18,9 @@
 	<PackageTags>Communication</PackageTags>
 	<PackageReleaseNotes>https://github.com/Inventors-Way/Inventors.ECP/releases</PackageReleaseNotes>
 	<NeutralLanguage>en</NeutralLanguage>
-	<AssemblyVersion>2.5.0.0</AssemblyVersion>
-	<FileVersion>2.5.0.0</FileVersion>
-	<Version>2.6.0</Version>
+	<AssemblyVersion>2.6.1.0</AssemblyVersion>
+	<FileVersion>2.6.1.0</FileVersion>
+	<Version>2.6.1</Version>
 	<PackageIcon>Logo128x128.png</PackageIcon>
   </PropertyGroup>
 

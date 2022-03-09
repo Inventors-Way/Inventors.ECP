@@ -676,11 +676,6 @@ namespace Inventors.ECP.TestFramework
             }
         }
 
-        private void DocumentationToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Process.Start("https://github.com/Inventors-Way/Inventors.ECP");
-        }
-
         private void AboutECPTesterToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var dialog = new AboutDialog()
