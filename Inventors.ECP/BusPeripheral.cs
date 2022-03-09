@@ -2,12 +2,14 @@
 using Inventors.ECP.Messages;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Globalization;
 using System.Text;
 
 namespace Inventors.ECP
 {
     public class BusPeripheral :
+        DynamicObject,
         IDisposable
     {
         private List<MessageDispatcher> MessageDispatchers { get; } = new List<MessageDispatcher>();
