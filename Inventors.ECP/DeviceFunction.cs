@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,7 +9,8 @@ using System.Xml.Serialization;
 
 namespace Inventors.ECP
 {
-    public abstract class DeviceFunction
+    public abstract class DeviceFunction :
+        DynamicObject
     {
         public abstract byte Code { get; }
 

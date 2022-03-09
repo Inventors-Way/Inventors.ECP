@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Dynamic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,7 @@ using Inventors.ECP.Profiling;
 namespace Inventors.ECP
 {
     public class BusCentral :
+        DynamicObject,
         IDisposable
     {
         private enum CommState
