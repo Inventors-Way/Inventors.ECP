@@ -21,10 +21,12 @@ namespace Inventors.ECP.TestFramework.Monitoring
         private bool updated;
         private StringBuilder buffer = new StringBuilder();
         private readonly object lockObject = new object();
+        private bool msgEnabled = true;
 
         public MonitorWindow()
         {
             InitializeComponent();
+            messagesToolStripMenuItem.Checked = msgEnabled;
         }
 
         private bool _enabled;
@@ -39,9 +41,23 @@ namespace Inventors.ECP.TestFramework.Monitoring
         {
             lock (lockObject)
             {
-                var dir = chunk.Rx ? "RX" : "TX";
-                buffer.AppendLine($"{chunk.Time.ToLongTimeString()} | {dir} | DATA: {chunk}");
-                updated = true;
+
+                if (chunk.Data[2] >= 0x80)
+                {
+                    var dir = "MSG";
+
+                    if (msgEnabled)
+                    {
+                        buffer.AppendLine($"{chunk.Time.ToLongTimeString()} | {dir} | DATA: {chunk}");
+                        updated = true;
+                    }
+                }
+                else
+                {
+                    var dir = chunk.Rx ? "RX " : "TX ";
+                    buffer.AppendLine($"{chunk.Time.ToLongTimeString()} | {dir} | DATA: {chunk}");
+                    updated = true;
+                }
             }
         }
 
@@ -83,6 +99,15 @@ namespace Inventors.ECP.TestFramework.Monitoring
             {
                 textBox.SelectionStart = textBox.Text.Length;
                 textBox.ScrollToCaret();
+            }
+        }
+
+        private void messagesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            lock (lockObject)
+            {
+                msgEnabled = !msgEnabled;
+                messagesToolStripMenuItem.Checked = msgEnabled;
             }
         }
     }

@@ -79,8 +79,12 @@ namespace Inventors.ECP.TestFramework.Profiling
         private void InitializeDebugSignals()
         {
             var debugSpecification = device.GetActiveDebugSpecification();
-            debugSpecification.Initialize();
 
+            if (debugSpecification is not null)
+            {
+                debugSpecification.Initialize();
+            }
+            
             debugSignalTabControl.TabPages.Clear();
 
             for (int n = 0; n < device.NumberOfSupportedDebugSignals; ++n)
