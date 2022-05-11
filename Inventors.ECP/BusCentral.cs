@@ -85,21 +85,23 @@ namespace Inventors.ECP
         /// <param name="function">The function to execute.</param>
         public void Execute(DeviceFunction function, DeviceAddress address)
         {
-            if (function is object)
+            if (function is null)
             {
-                lock (commLock)
+                return;
+            }
+
+            lock (commLock)
+            {
+                function.OnSend();
+                Initiate(function, address);
+
+                while (!IsCompleted()) ;
+
+                state = CommState.IDLE;
+
+                if (currentException is object)
                 {
-                    function.OnSend();
-                    Initiate(function, address);
-
-                    while (!IsCompleted()) ;
-
-                    state = CommState.IDLE;
-
-                    if (currentException is object)
-                    {
-                        throw currentException;
-                    }
+                    throw currentException;
                 }
             }
         }

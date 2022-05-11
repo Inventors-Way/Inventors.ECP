@@ -69,7 +69,6 @@ namespace Inventors.ECP
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         private void InitializeRead()
         {
             byte[] buffer = new byte[BlockLimit];

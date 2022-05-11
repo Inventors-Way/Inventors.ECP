@@ -161,7 +161,6 @@ namespace Inventors.ECP
         /// Ping the connected device.
         /// </summary>
         /// <returns>the ping count of the connected the device</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         public virtual int Ping()
         {
             int retValue = -1;
