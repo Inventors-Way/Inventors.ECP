@@ -1,5 +1,6 @@
 ﻿using Inventors.ECP.Functions;
 using Inventors.ECP.Messages;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;

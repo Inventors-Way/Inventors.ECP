@@ -1,4 +1,6 @@
-﻿namespace Inventors.ECP.TestFramework
+﻿using Serilog.Events;
+
+namespace Inventors.ECP.TestFramework
 {
     partial class MainWindow
     {
@@ -39,7 +41,6 @@
             this.saveLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pauseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.autoSaveLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openLogsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.logLevelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -131,7 +132,6 @@
             this.saveLogToolStripMenuItem,
             this.pauseToolStripMenuItem,
             this.autoSaveLogToolStripMenuItem,
-            this.openLogsToolStripMenuItem,
             this.toolStripSeparator7,
             this.logLevelToolStripMenuItem,
             this.toolStripSeparator1,
@@ -144,7 +144,7 @@
             // 
             this.clearLogToolStripMenuItem.Name = "clearLogToolStripMenuItem";
             this.clearLogToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.clearLogToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            this.clearLogToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.clearLogToolStripMenuItem.Text = "Clear Log";
             this.clearLogToolStripMenuItem.Click += new System.EventHandler(this.ClearLogToolStripMenuItem_Click);
             // 
@@ -152,7 +152,7 @@
             // 
             this.saveLogToolStripMenuItem.Name = "saveLogToolStripMenuItem";
             this.saveLogToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveLogToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            this.saveLogToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.saveLogToolStripMenuItem.Text = "Save Log";
             this.saveLogToolStripMenuItem.Click += new System.EventHandler(this.SaveLogToolStripMenuItem_Click);
             // 
@@ -160,28 +160,21 @@
             // 
             this.pauseToolStripMenuItem.Name = "pauseToolStripMenuItem";
             this.pauseToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-            this.pauseToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            this.pauseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.pauseToolStripMenuItem.Text = "Pause";
             this.pauseToolStripMenuItem.Click += new System.EventHandler(this.PauseToolStripMenuItem_Click);
             // 
             // autoSaveLogToolStripMenuItem
             // 
             this.autoSaveLogToolStripMenuItem.Name = "autoSaveLogToolStripMenuItem";
-            this.autoSaveLogToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            this.autoSaveLogToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.autoSaveLogToolStripMenuItem.Text = "Auto Save Log";
             this.autoSaveLogToolStripMenuItem.Click += new System.EventHandler(this.AutoSaveLogToolStripMenuItem_Click);
-            // 
-            // openLogsToolStripMenuItem
-            // 
-            this.openLogsToolStripMenuItem.Name = "openLogsToolStripMenuItem";
-            this.openLogsToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
-            this.openLogsToolStripMenuItem.Text = "Open Logs";
-            this.openLogsToolStripMenuItem.Click += new System.EventHandler(this.OpenLogsToolStripMenuItem_Click);
             // 
             // toolStripSeparator7
             // 
             this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(158, 6);
+            this.toolStripSeparator7.Size = new System.Drawing.Size(177, 6);
             // 
             // logLevelToolStripMenuItem
             // 
@@ -190,7 +183,7 @@
             this.statusToolStripMenuItem,
             this.errorToolStripMenuItem});
             this.logLevelToolStripMenuItem.Name = "logLevelToolStripMenuItem";
-            this.logLevelToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            this.logLevelToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.logLevelToolStripMenuItem.Text = "Log Level";
             // 
             // debugToolStripMenuItem
@@ -217,12 +210,12 @@
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(158, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
@@ -342,7 +335,7 @@
             // aboutECPTesterToolStripMenuItem
             // 
             this.aboutECPTesterToolStripMenuItem.Name = "aboutECPTesterToolStripMenuItem";
-            this.aboutECPTesterToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aboutECPTesterToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.aboutECPTesterToolStripMenuItem.Text = "About";
             this.aboutECPTesterToolStripMenuItem.Click += new System.EventHandler(this.AboutECPTesterToolStripMenuItem_Click);
             // 
@@ -406,9 +399,9 @@
             // 
             this.logControl.AutoSave = true;
             this.logControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.logControl.Level = Inventors.ECP.LogLevel.STATUS;
+            this.logControl.Level = Serilog.Events.LogEventLevel.Information;
             this.logControl.Location = new System.Drawing.Point(0, 0);
-            this.logControl.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.logControl.Margin = new System.Windows.Forms.Padding(4);
             this.logControl.Name = "logControl";
             this.logControl.Paused = true;
             this.logControl.Size = new System.Drawing.Size(923, 161);
@@ -517,7 +510,6 @@
         private System.Windows.Forms.ToolStripMenuItem addressMenu;
         private System.Windows.Forms.ToolStripMenuItem pauseToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem autoSaveLogToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openLogsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem portMonitorToolStripMenuItem;
     }
 }

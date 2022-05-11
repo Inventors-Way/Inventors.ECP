@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Inventors.ECP.Profiling;
+using Serilog;
 
 namespace Inventors.ECP
 {
@@ -164,7 +165,6 @@ namespace Inventors.ECP
         public void RestartStatistics() => connection.RestartStatistics();
 
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         private void HandleIncommingFrame(Destuffer caller, byte[] frame)
         {
             try

@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ScottPlot;
+using Serilog;
 
 namespace Inventors.ECP.TestFramework.Profiling
 {
@@ -258,7 +259,7 @@ namespace Inventors.ECP.TestFramework.Profiling
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            if (profiler is object)
+            if (profiler is not null)
             {
                 if (profiler.Updated)
                 {
@@ -269,9 +270,9 @@ namespace Inventors.ECP.TestFramework.Profiling
 
         private void Redraw()
         {
-            if (plot is object)
+            if (plot is not null)
             {
-                if (profiler is object)
+                if (profiler is not null)
                 {
                     var report = profiler.GetReport();
                     plot.Clear();
@@ -349,7 +350,7 @@ namespace Inventors.ECP.TestFramework.Profiling
 
         private void ResetToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (device is object)
+            if (device is not null)
                 device.Profiler.Reset();
         }
 
@@ -360,7 +361,7 @@ namespace Inventors.ECP.TestFramework.Profiling
 
         private void ClearProfilerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (device is object)
+            if (device is not null)
             {
                 device.Profiler.Reset();
             }
@@ -368,7 +369,7 @@ namespace Inventors.ECP.TestFramework.Profiling
 
         private void s60timeChanged_Click(object sender, EventArgs e)
         {
-            if (profiler is object)
+            if (profiler is not null)
             {
                 profiler.TimeSpan = 60;
 
@@ -380,7 +381,7 @@ namespace Inventors.ECP.TestFramework.Profiling
 
         private void s300timeChanged_Click(object sender, EventArgs e)
         {
-            if (profiler is object)
+            if (profiler is not null)
             {
                 profiler.TimeSpan = 300;
 
@@ -392,7 +393,7 @@ namespace Inventors.ECP.TestFramework.Profiling
 
         private void s600timeChanged_Click(object sender, EventArgs e)
         {
-            if (profiler is object)
+            if (profiler is not null)
             {
                 profiler.TimeSpan = 600;
 
@@ -424,7 +425,7 @@ namespace Inventors.ECP.TestFramework.Profiling
 
         private void PausedToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (profiler is object)
+            if (profiler is not null)
             {
                 profiler.Paused = !profiler.Paused;
                 pausedToolStripMenuItem.Checked = profiler.Paused;
@@ -441,7 +442,7 @@ namespace Inventors.ECP.TestFramework.Profiling
 
         private void HScrollBar_Scroll(object sender, ScrollEventArgs e)
         {
-            if (profiler is object)
+            if (profiler is not null)
             {
                 if (profiler.Paused)
                 {
@@ -458,7 +459,7 @@ namespace Inventors.ECP.TestFramework.Profiling
             pictureBox.Width = hScrollBar.Width;
             pictureBox.Height = splitContainer.Panel2.Height - hScrollBar.Height;
 
-            if (plot is object)
+            if (plot is not null)
             {
                 plot.Resize(width: pictureBox.Width, height: pictureBox.Height);
                 pictureBox.Image = plot.GetBitmap();

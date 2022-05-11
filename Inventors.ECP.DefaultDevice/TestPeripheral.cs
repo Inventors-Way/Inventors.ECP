@@ -1,6 +1,7 @@
 ﻿using Inventors.ECP.DefaultDevice.Functions;
 using Inventors.ECP.DefaultDevice.Messages;
 using Inventors.ECP.Functions;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;

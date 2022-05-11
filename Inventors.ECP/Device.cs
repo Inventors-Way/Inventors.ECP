@@ -2,6 +2,8 @@
 using Inventors.ECP.Messages;
 using Inventors.ECP.Profiling;
 using Inventors.ECP.Utility;
+using Serilog;
+using Serilog.Events;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -26,7 +28,7 @@ namespace Inventors.ECP
         #region PrintLevel
         [Category("Debug")]
         [XmlIgnore]
-        public LogLevel PrintLevel { get; set; } = LogLevel.DEBUG;
+        public LogEventLevel PrintLevel { get; set; } = LogEventLevel.Debug;
         #endregion
         #region Connected
         private bool _connected;
@@ -362,9 +364,9 @@ namespace Inventors.ECP
             {
                 switch (PrintLevel)
                 {
-                    case LogLevel.DEBUG: Log.Debug(message.DebugMessage); break;
-                    case LogLevel.STATUS: Log.Status(message.DebugMessage); break;
-                    case LogLevel.ERROR: Log.Error(message.DebugMessage); break;
+                    case LogEventLevel.Debug: Log.Debug(message.DebugMessage); break;
+                    case LogEventLevel.Information: Log.Information(message.DebugMessage); break;
+                    case LogEventLevel.Error: Log.Error(message.DebugMessage); break;
                     default:
                         break;
                 }
