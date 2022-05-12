@@ -159,7 +159,15 @@ namespace Inventors.ECP.TestFramework
         {
             if (_file is null)
             {
-                _file = LoadXML<SettingsFile>(StateFile);
+                try
+                {
+                    _file = LoadXML<SettingsFile>(StateFile);
+                }
+                catch (Exception ex)
+                {
+                    EcpLog.Error(ex.Message);
+                    _file = new();
+                }
             }
 
             return _file;
