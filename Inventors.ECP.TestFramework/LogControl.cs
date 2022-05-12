@@ -86,13 +86,13 @@ namespace Inventors.ECP.TestFramework
                     switch (Level)
                     {
                         case LogLevel.DEBUG:
-                            Log.Debug(logEntry.Text);
+                            EcpLog.Debug(logEntry.Text);
                             break;
                         case LogLevel.STATUS:
-                            Log.Status(logEntry.Text);
+                            EcpLog.Status(logEntry.Text);
                             break;
                         case LogLevel.ERROR:
-                            Log.Error(logEntry.Text);
+                            EcpLog.Error(logEntry.Text);
                             break;
                         default:
                             break;

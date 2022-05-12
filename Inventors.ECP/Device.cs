@@ -362,9 +362,9 @@ namespace Inventors.ECP
             {
                 switch (PrintLevel)
                 {
-                    case LogLevel.DEBUG: Log.Debug(message.DebugMessage); break;
-                    case LogLevel.STATUS: Log.Status(message.DebugMessage); break;
-                    case LogLevel.ERROR: Log.Error(message.DebugMessage); break;
+                    case LogLevel.DEBUG: EcpLog.Debug(message.DebugMessage); break;
+                    case LogLevel.STATUS: EcpLog.Status(message.DebugMessage); break;
+                    case LogLevel.ERROR: EcpLog.Error(message.DebugMessage); break;
                     default:
                         break;
                 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Inventors.ECP
 {
-    public static class Log
+    public static class EcpLog
     {
         public static void Debug(string format, params object[] args)
         {

@@ -80,8 +80,8 @@ namespace Inventors.ECP.TestFramework
 
         private void SetupLogging()
         {
-            Log.SetLogger(logControl);
-            Log.Level = LogLevel.DEBUG;
+            EcpLog.SetLogger(logControl);
+            EcpLog.Level = LogLevel.DEBUG;
         }
 
         private void UpdateStatus()
@@ -123,7 +123,7 @@ namespace Inventors.ECP.TestFramework
                 }
                 catch (Exception ex)
                 {
-                    Log.Error(ex.Message);
+                    EcpLog.Error(ex.Message);
                 }
             }
         }
@@ -136,10 +136,10 @@ namespace Inventors.ECP.TestFramework
                 deviceId = loader.Factory;
                 logDirectory = Settings.GetDeviceDefaultLoggingDirectory(deviceId);
                 logControl.Paused = false;
-                Log.Status("Loaded assembly: {0}", loader.FileName);
-                Log.Status("Device: {0} [Creation time: {1}]", loader.Factory, loader.CreationTime);
-                Log.Status("Logging directory: {0}", logDirectory);
-                Log.Status("Log settings [Auto save: {0}, Confirm deletion: {1}]", loader.AutoSaveLog, loader.ConfirmLogDeletion);
+                EcpLog.Status("Loaded assembly: {0}", loader.FileName);
+                EcpLog.Status("Device: {0} [Creation time: {1}]", loader.Factory, loader.CreationTime);
+                EcpLog.Status("Logging directory: {0}", logDirectory);
+                EcpLog.Status("Log settings [Auto save: {0}, Confirm deletion: {1}]", loader.AutoSaveLog, loader.ConfirmLogDeletion);
 
                 autoSaveLogToolStripMenuItem.Checked = logControl.AutoSave = loader.AutoSaveLog;
                 logControl.InitializeLogFile(logDirectory);
@@ -153,7 +153,7 @@ namespace Inventors.ECP.TestFramework
                 commTester.TestDelay = loader.TestDelay;
                 commTester.Master = device.Central;
 
-                Log.Status("Profiler: {0} (Test Trials: {1}, Test Delay: {2})",
+                EcpLog.Status("Profiler: {0} (Test Trials: {1}, Test Delay: {2})",
                     loader.Profiling ? "ENABLED" : "DISABLED",
                     commTester.Trials,
                     commTester.TestDelay);
@@ -173,7 +173,7 @@ namespace Inventors.ECP.TestFramework
                                 if (item.Tag is DeviceAddress current)
                                 {
                                     device.CurrentAddress = current;
-                                    Log.Status($"CURRENT ADDRESS: {current.Name} [ {current.Value} ]");
+                                    EcpLog.Status($"CURRENT ADDRESS: {current.Name} [ {current.Value} ]");
                                     UpdateAddressMenu();
                                 }
                             }
@@ -194,7 +194,7 @@ namespace Inventors.ECP.TestFramework
             catch (Exception e)
             {
                 UpdateAppStates(AppState.APP_STATE_UNINITIALIZED);
-                Log.Error(e.Message);
+                EcpLog.Error(e.Message);
                 MessageBox.Show(e.Message, "Error loading device");
             }
         }
@@ -256,7 +256,7 @@ namespace Inventors.ECP.TestFramework
 
                 if (CheckDevicesChanged(devices))
                 {
-                    Log.Debug("Available devices changed:");
+                    EcpLog.Debug("Available devices changed:");
                     portMenuItem.DropDownItems.Clear();
 
                     for (int n = 0; n < devices.Count; ++n)
@@ -268,7 +268,7 @@ namespace Inventors.ECP.TestFramework
                         };
                         portMenuItem.DropDownItems.Add(item);
 
-                        Log.Debug("  [ {0} ] Device: {1}", n, location);
+                        EcpLog.Debug("  [ {0} ] Device: {1}", n, location);
                         if (selectedDevice is object)
                         {
                             if (selectedDevice.ToString() == devices[n].ToString())
@@ -308,7 +308,7 @@ namespace Inventors.ECP.TestFramework
 
                             if (ping < 0)
                             {
-                                Log.Error("Ping failed!");
+                                EcpLog.Error("Ping failed!");
                                 device.Profiler.Add(new TargetEvent("Ping failed"));
                             }
                             else
@@ -318,7 +318,7 @@ namespace Inventors.ECP.TestFramework
                         }
                         catch
                         {
-                            Log.Error("Ping failed!");
+                            EcpLog.Error("Ping failed!");
                             device.Profiler.Add(new TargetEvent("Ping failed"));
                         }
                     }
@@ -339,7 +339,7 @@ namespace Inventors.ECP.TestFramework
                 {
                     if (e.ClickedItem.Tag is string current)
                     {
-                        Log.Debug("Port changed to: {0}", e.ClickedItem.Text);
+                        EcpLog.Debug("Port changed to: {0}", e.ClickedItem.Text);
                         device.Location = current;
                         selectedDevice = current;
 
@@ -350,12 +350,12 @@ namespace Inventors.ECP.TestFramework
                     }
                     else
                     {
-                        Log.Error("Clicked item did not have a DeviceType as its tag");
+                        EcpLog.Error("Clicked item did not have a DeviceType as its tag");
                     }
                 }
                 else
                 {
-                    Log.Error("Attempted to change device while the device is open");
+                    EcpLog.Error("Attempted to change device while the device is open");
                 }
             }
         }
@@ -398,19 +398,19 @@ namespace Inventors.ECP.TestFramework
                     }
                     catch (FunctionNotAcknowledgedException fnae)
                     {
-                        Log.Status($"NACK: {device.GetErrorString(fnae.ErrorCode)}");
+                        EcpLog.Status($"NACK: {device.GetErrorString(fnae.ErrorCode)}");
                     }
                     catch (PeripheralNotRespondingException snre)
                     {
-                        Log.Status($"Slave not responding: {snre.Message}");
+                        EcpLog.Status($"Slave not responding: {snre.Message}");
                     }
                     catch (PacketFormatException pfe)
                     {
-                        Log.Status($"Invalid packet format: {pfe.Message}");
+                        EcpLog.Status($"Invalid packet format: {pfe.Message}");
                     }
                     catch (Exception ex)
                     {
-                        Log.Status($"Exception [ {ex.GetType()} ]: {ex.Message}");
+                        EcpLog.Status($"Exception [ {ex.GetType()} ]: {ex.Message}");
                     }
 
                     functionList.Enabled = true;
@@ -419,12 +419,12 @@ namespace Inventors.ECP.TestFramework
                 }
                 else
                 {
-                    Log.Debug("Selected item is not a function");
+                    EcpLog.Debug("Selected item is not a function");
                 }
             }
             else
             {
-                Log.Status("Please connect first to a device");
+                EcpLog.Status("Please connect first to a device");
             }
         }
 
@@ -436,19 +436,19 @@ namespace Inventors.ECP.TestFramework
                 {
                     device.Location = selectedDevice;
                     device.Open();
-                    Log.Status($"Location opened: {device.Location}");
+                    EcpLog.Status($"Location opened: {device.Location}");
                     device.Profiler.Add(new TargetEvent($"Location opened: {device.Location}"));
                     UpdateAppStates(AppState.APP_STATE_CONNECTED);
                 }
                 catch (Exception ex)
                 {
-                    Log.Error("Problem connecting to device: " + ex.Message);
+                    EcpLog.Error("Problem connecting to device: " + ex.Message);
                     UpdateAppStates(AppState.APP_STATE_INITIALIZED);
                 }
             }
             else
             {
-                Log.Status("No ports available");
+                EcpLog.Status("No ports available");
             }
         }
 
@@ -458,12 +458,12 @@ namespace Inventors.ECP.TestFramework
             {
                 device.Close();
                 UpdateAppStates(AppState.APP_STATE_INITIALIZED);
-                Log.Status("Location closed: {0}", device.Location);
+                EcpLog.Status("Location closed: {0}", device.Location);
                 device.Profiler.Add(new TargetEvent("Connection closed"));
             }
             catch (Exception ex)
             {
-                Log.Error("Problem closing location: " + ex.Message);
+                EcpLog.Error("Problem closing location: " + ex.Message);
                 UpdateAppStates(AppState.APP_STATE_INITIALIZED);
             }
         }
@@ -554,20 +554,20 @@ namespace Inventors.ECP.TestFramework
 
                     if (doLogging)
                     {
-                        Log.Status(String.Format("Complete [{0}] ({1}ms)", function.ToString(), function.TransmissionTime));
+                        EcpLog.Status(String.Format("Complete [{0}] ({1}ms)", function.ToString(), function.TransmissionTime));
 
                         if (function is DeviceIdentification identification)
                         {
                             if (!device.IsCompatible(identification))
                             {
-                                Log.Error("Incompatible device: {0} [{1}:{2}]",
+                                EcpLog.Error("Incompatible device: {0} [{1}:{2}]",
                                     identification.Device,
                                     identification.ManufactureID,
                                     identification.DeviceID);
                             }
                             else
                             {
-                                Log.Status("Compatible device: {0} [{1}:{2}]",
+                                EcpLog.Status("Compatible device: {0} [{1}:{2}]",
                                     identification.Device,
                                     identification.ManufactureID,
                                     identification.DeviceID);
@@ -581,7 +581,7 @@ namespace Inventors.ECP.TestFramework
                 {
                     if (doLogging)
                     {
-                        Log.Error("EXCEPTION:" + function.ToString() + " [" + e.Message + " ] ");
+                        EcpLog.Error("EXCEPTION:" + function.ToString() + " [" + e.Message + " ] ");
                     }
                 }
             }
@@ -597,18 +597,18 @@ namespace Inventors.ECP.TestFramework
                 {
                     UpdateAppStates(AppState.APP_STATE_ACTIVE);
                     var report = await commTester.TestAsync(function).ConfigureAwait(true);
-                    Log.Status(report.ToString());
+                    EcpLog.Status(report.ToString());
                     UpdateAppStates(AppState.APP_STATE_CONNECTED);
                     UpdateProfiling();
                 }
                 else
                 {
-                    Log.Status("Please select a function");
+                    EcpLog.Status("Please select a function");
                 }
             }
             else
             {
-                Log.Status("Please connect first to a device");
+                EcpLog.Status("Please connect first to a device");
             }
         }
 
@@ -621,7 +621,7 @@ namespace Inventors.ECP.TestFramework
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
                     commTester.Trials = dialog.Trials;
-                    Log.Debug("Number of test trials set to {0}", commTester.Trials);
+                    EcpLog.Debug("Number of test trials set to {0}", commTester.Trials);
                 }
             }
         }
@@ -799,7 +799,7 @@ namespace Inventors.ECP.TestFramework
             debugToolStripMenuItem.Checked = level == LogLevel.DEBUG;
             statusToolStripMenuItem.Checked = level == LogLevel.STATUS;
             errorToolStripMenuItem.Checked = level == LogLevel.ERROR;
-            Log.Level = level;
+            EcpLog.Level = level;
             Settings.Level = level;
         }
 

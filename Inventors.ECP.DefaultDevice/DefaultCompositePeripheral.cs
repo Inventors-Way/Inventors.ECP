@@ -29,7 +29,7 @@ namespace Inventors.ECP.DefaultDevice
         {
             if (func.Address == 1)
             {
-                Log.Debug("Default Petripheral: DeviceIdentification");
+                EcpLog.Debug("Default Petripheral: DeviceIdentification");
                 func.ManufactureID = Manufacturer.InventorsWay;
                 func.Manufacture = "Inventors' Way ApS";
                 func.DeviceID = UInt16.MaxValue;
@@ -47,7 +47,7 @@ namespace Inventors.ECP.DefaultDevice
             }
             else if (func.Address == 2)
             {
-                Log.Debug("Default Petripheral: DeviceIdentification");
+                EcpLog.Debug("Default Petripheral: DeviceIdentification");
                 func.ManufactureID = Manufacturer.InventorsWay;
                 func.Manufacture = "Inventors' Way ApS";
                 func.DeviceID = UInt16.MaxValue;
@@ -89,14 +89,14 @@ namespace Inventors.ECP.DefaultDevice
 
         public int Accept(GetEndianness func)
         {
-            Log.Debug($"Peripheral: GetEndinanness [Address: {func.Address}]");
+            EcpLog.Debug($"Peripheral: GetEndinanness [Address: {func.Address}]");
 
             return 0;
         }
 
         public int Accept(SetDebugSignal func)
         {
-            Log.Debug($"Peripheral: SetDebugSignal [Address: {func.Address}]");
+            EcpLog.Debug($"Peripheral: SetDebugSignal [Address: {func.Address}]");
 
             return 0;
         }
