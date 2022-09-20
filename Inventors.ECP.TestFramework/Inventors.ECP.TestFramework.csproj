@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <Folder Include="Monitoring\" />
+    <Folder Include="Analysis\" />
     <Folder Include="Profiling\" />
   </ItemGroup>
 

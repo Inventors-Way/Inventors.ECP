@@ -171,17 +171,17 @@ namespace Inventors.ECP
         {
             try
             {
-                var response = new Packet(frame);
+                var packet = new Packet(frame);
 
-                if (response.Code != 0x00)
+                if (packet.Code != 0x00)
                 {
-                    if (response.IsFunction)
+                    if (packet.IsFunction)
                     {
                         lock (lockObject)
                         {
                             if (current != null)
                             {
-                                current.SetResponse(response);
+                                current.SetResponse(packet);
                                 current.OnReceived();
                             }
 
@@ -192,7 +192,7 @@ namespace Inventors.ECP
                     {
                         try
                         {
-                            Dispatch(response);
+                            Dispatch(packet);
                         }
                         catch (Exception e)
                         {
@@ -206,7 +206,7 @@ namespace Inventors.ECP
                     
                     lock (lockObject)
                     {
-                        currentException = new FunctionNotAcknowledgedException($"{response.GetByte(0)}");
+                        currentException = new FunctionNotAcknowledgedException($"{packet.GetByte(0)}");
                         state = CommState.ERROR;
                     }
                 }
@@ -221,7 +221,13 @@ namespace Inventors.ECP
         {
             if (Dispatchers.ContainsKey(packet.Code) && (MessageListener is object))
             {
-                Dispatchers[packet.Code].Create(packet).Dispatch(MessageListener);
+                var msg = Dispatchers[packet.Code].Create(packet);
+                msg.Dispatch(MessageListener);
+
+                if (Analysers.ContainsKey(packet.Code))
+                {
+                    Analysers[packet.Code].Accept(msg);
+                }
             }
         }
 
@@ -236,7 +242,23 @@ namespace Inventors.ECP
             Dispatchers.Add(message.Code, message.CreateDispatcher());
         }
 
+        private void Add(MessageAnalyser analyser)
+        {
+            if (analyser is null)
+                throw new ArgumentNullException(nameof(analyser));
+
+            if (Analysers.ContainsKey(analyser.Code))
+                throw new ArgumentException($"Analyser[ { analyser } ] is allready present in Analysers");
+
+            if (!Dispatchers.ContainsKey(analyser.Code))
+                throw new ArgumentException($"No dispatcher is defined for Analyser [ {analyser.Code} ]");
+
+            Analysers.Add(analyser.Code, analyser);
+        }
+
         private Dictionary<byte, MessageDispatcher> Dispatchers { get; } = new Dictionary<byte, MessageDispatcher>();
+
+        private Dictionary<byte, MessageAnalyser> Analysers { get; } = new Dictionary<byte, MessageAnalyser>();
 
         public List<string> GetLocations() => connection.GetLocations();
 
