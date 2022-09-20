@@ -111,25 +111,25 @@ namespace Inventors.ECP
                             nack.InsertByte(0, (byte) ErrorCode.DISPATCH_ERR);
 
                             _connection.Transmit(Frame.Encode(nack.ToArray()));
-                            EcpLog.Debug($"{e.GetType()} => {e.Message}");
+                            Log.Debug($"{e.GetType()} => {e.Message}");
                         }
                     }
                     else
                     {
                         if (!DispatchMessage(response))
                         {
-                            EcpLog.Debug("MESSAGE [0x{0:X}] ERROR NO DISPATCHER FOUND", response.Code);
+                            Log.Debug("MESSAGE [0x{0:X}] ERROR NO DISPATCHER FOUND", response.Code);
                         }
                     }
                 }
                 else
                 {
-                    EcpLog.Debug("Received a NACK, should be impossible for a slave");
+                    Log.Debug("Received a NACK, should be impossible for a slave");
                 }
             }
             catch (Exception e)
             {
-                EcpLog.Debug("Error in creating Packet: {0}", e.Message);
+                Log.Debug("Error in creating Packet: {0}", e.Message);
             }
         }
 

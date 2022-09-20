@@ -99,7 +99,7 @@ namespace Inventors.ECP
                 if (BaudRate > 0)
                 {
                     retValue.BaudRate = BaudRate;
-                    EcpLog.Debug("Baudrate set to: {0}", BaudRate);
+                    Log.Debug("Baudrate set to: {0}", BaudRate);
                 }
 
 
