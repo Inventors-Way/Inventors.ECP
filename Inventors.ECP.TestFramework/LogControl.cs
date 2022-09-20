@@ -9,12 +9,16 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Globalization;
 using System.IO;
+using Serilog.Core;
+using Serilog.Events;
+using Serilog;
+using Serilog.Configuration;
 
 namespace Inventors.ECP.TestFramework
 {
-    public partial class LogControl : 
+    public partial class LogControl :
         UserControl,
-        ILogger
+        ILogEventSink
     {
         private readonly StringBuilder logBuffer = new StringBuilder();
         private readonly object lockObject = new object();
@@ -24,8 +28,8 @@ namespace Inventors.ECP.TestFramework
 
         public delegate void InvokeDelegate();
 
-        public LogLevel Level { get; set; } = LogLevel.STATUS;      
-      
+        public LogEventLevel Level { get; set; } = LogEventLevel.Information;
+
         public string Content => logBox.Text;
 
         public LogControl()
@@ -34,7 +38,11 @@ namespace Inventors.ECP.TestFramework
             logBox.VisibleChanged += (o, e) => ScrollToEnd();
             ResizeLogBox();
             timer.Enabled = true;
+            _formatProvider = null;
         }
+
+        public void SetFormatProvider(IFormatProvider provider) =>
+            _formatProvider = provider;
 
         public void InitializeLogFile(string directory)
         {
@@ -65,15 +73,16 @@ namespace Inventors.ECP.TestFramework
 
         public void Initialize() => logBox.Text = "";
 
-        public void Add(DateTime time, LogLevel level, string message)
+        private IFormatProvider _formatProvider;
+
+
+        public void Emit(LogEvent logEvent)
         {
+            var message = logEvent.RenderMessage(_formatProvider);
+
             lock (lockObject)
             {
-                logBuffer.AppendLine(String.Format(CultureInfo.CurrentCulture, 
-                                                   "{0} {1, -6} {2}", 
-                                                   time, 
-                                                   level, 
-                                                   message));
+                logBuffer.AppendLine(message);
             }
         }
 
@@ -85,14 +94,14 @@ namespace Inventors.ECP.TestFramework
                 {
                     switch (Level)
                     {
-                        case LogLevel.DEBUG:
-                            EcpLog.Debug(logEntry.Text);
+                        case LogEventLevel.Debug:
+                            Log.Debug(logEntry.Text);
                             break;
-                        case LogLevel.STATUS:
-                            EcpLog.Status(logEntry.Text);
+                        case LogEventLevel.Information:
+                            Log.Information(logEntry.Text);
                             break;
-                        case LogLevel.ERROR:
-                            EcpLog.Error(logEntry.Text);
+                        case LogEventLevel.Error:
+                            Log.Error(logEntry.Text);
                             break;
                         default:
                             break;
@@ -153,6 +162,15 @@ namespace Inventors.ECP.TestFramework
 
                 ScrollToEnd();
             }
+        }
+    }
+
+    public static class LogControlSinkExtensions
+    {
+        public static LoggerConfiguration AddLogControl(this LoggerSinkConfiguration loggerConfiguration,
+                                                     LogControl ctrl)
+        {
+            return loggerConfiguration.Sink(ctrl);
         }
     }
 }

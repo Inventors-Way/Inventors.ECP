@@ -2,6 +2,8 @@
 using Inventors.ECP.Messages;
 using Inventors.ECP.Profiling;
 using Inventors.ECP.Utility;
+using Serilog;
+using Serilog.Events;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -26,7 +28,7 @@ namespace Inventors.ECP
         #region PrintLevel
         [Category("Debug")]
         [XmlIgnore]
-        public LogLevel PrintLevel { get; set; } = LogLevel.DEBUG;
+        public LogEventLevel PrintLevel { get; set; } = LogEventLevel.Debug;
         #endregion
         #region Connected
         private bool _connected;
@@ -159,7 +161,6 @@ namespace Inventors.ECP
         /// Ping the connected device.
         /// </summary>
         /// <returns>the ping count of the connected the device</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         public virtual int Ping()
         {
             int retValue = -1;
@@ -362,9 +363,9 @@ namespace Inventors.ECP
             {
                 switch (PrintLevel)
                 {
-                    case LogLevel.DEBUG: EcpLog.Debug(message.DebugMessage); break;
-                    case LogLevel.STATUS: EcpLog.Status(message.DebugMessage); break;
-                    case LogLevel.ERROR: EcpLog.Error(message.DebugMessage); break;
+                    case LogEventLevel.Debug: Log.Debug(message.DebugMessage); break;
+                    case LogEventLevel.Information: Log.Information(message.DebugMessage); break;
+                    case LogEventLevel.Error: Log.Error(message.DebugMessage); break;
                     default:
                         break;
                 }

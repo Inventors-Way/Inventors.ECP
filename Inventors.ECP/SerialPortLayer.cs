@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Serilog;
+using System;
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
@@ -68,7 +69,6 @@ namespace Inventors.ECP
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         private void InitializeRead()
         {
             byte[] buffer = new byte[BlockLimit];
@@ -93,7 +93,7 @@ namespace Inventors.ECP
                                 }
                                 catch (Exception e)
                                 {
-                                    EcpLog.Error(e.Message);
+                                    Log.Error(e.Message);
                                 }
 
                                 reader();
@@ -102,7 +102,7 @@ namespace Inventors.ECP
                     }
                     catch (Exception e)
                     {
-                        EcpLog.Error(e.Message);
+                        Log.Error(e.Message);
                     }
                 }
             }

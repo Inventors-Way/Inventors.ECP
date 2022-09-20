@@ -1,4 +1,5 @@
 ﻿using Inventors.ECP.Functions;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +27,7 @@ namespace Inventors.ECP.DefaultDevice
 
         public int Accept(DeviceIdentification func)
         {
-            EcpLog.Debug("Default Petripheral: DeviceIdentification");
+            Log.Debug("Default Petripheral: DeviceIdentification");
             func.ManufactureID = Manufacturer.InventorsWay;
             func.Manufacture = "Inventors' Way ApS";
             func.DeviceID = UInt16.MaxValue;
@@ -53,14 +54,14 @@ namespace Inventors.ECP.DefaultDevice
 
         public int Accept(GetEndianness func)
         {
-            EcpLog.Debug("Peripheral: GetEndinanness");
+            Log.Debug("Peripheral: GetEndinanness");
 
             return 0;
         }
 
         public int Accept(SetDebugSignal func)
         {
-            EcpLog.Debug("Peripheral: SetDebugSignal");
+            Log.Debug("Peripheral: SetDebugSignal");
 
             return 0;
         }

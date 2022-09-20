@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -98,7 +99,7 @@ namespace Inventors.ECP
                 if (BaudRate > 0)
                 {
                     retValue.BaudRate = BaudRate;
-                    EcpLog.Debug("Baudrate set to: {0}", BaudRate);
+                    Log.Debug("Baudrate set to: {0}", BaudRate);
                 }
 
 

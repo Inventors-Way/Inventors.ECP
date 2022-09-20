@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Inventors.ECP.Profiling;
+using Serilog;
 
 namespace Inventors.ECP
 {
@@ -84,21 +85,23 @@ namespace Inventors.ECP
         /// <param name="function">The function to execute.</param>
         public void Execute(DeviceFunction function, DeviceAddress address)
         {
-            if (function is object)
+            if (function is null)
             {
-                lock (commLock)
+                return;
+            }
+
+            lock (commLock)
+            {
+                function.OnSend();
+                Initiate(function, address);
+
+                while (!IsCompleted()) ;
+
+                state = CommState.IDLE;
+
+                if (currentException is object)
                 {
-                    function.OnSend();
-                    Initiate(function, address);
-
-                    while (!IsCompleted()) ;
-
-                    state = CommState.IDLE;
-
-                    if (currentException is object)
-                    {
-                        throw currentException;
-                    }
+                    throw currentException;
                 }
             }
         }
@@ -164,7 +167,6 @@ namespace Inventors.ECP
         public void RestartStatistics() => connection.RestartStatistics();
 
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         private void HandleIncommingFrame(Destuffer caller, byte[] frame)
         {
             try
@@ -194,7 +196,7 @@ namespace Inventors.ECP
                         }
                         catch (Exception e)
                         {
-                            EcpLog.Error(e.Message);
+                            Log.Error(e.Message);
                             Profiler.Add(new TargetEvent(e.Message));
                         }
                     }
@@ -211,7 +213,7 @@ namespace Inventors.ECP
             }
             catch (Exception e)
             {
-                EcpLog.Debug("Error in HandleIncommingFrame: {0}", e.Message);
+                Log.Debug("Error in HandleIncommingFrame: {0}", e.Message);
             }
         }
 

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Serilog;
+using Serilog.Events;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -49,7 +51,7 @@ namespace Inventors.ECP.TestFramework
         public class SettingsFile
         {
             [XmlAttribute("level")]
-            public LogLevel Level { get; set; } = LogLevel.STATUS;
+            public LogEventLevel Level { get; set; } = LogEventLevel.Information;
 
             [XmlAttribute("device-directory")]
             public string DeviceDirectory { get; set; }
@@ -83,7 +85,7 @@ namespace Inventors.ECP.TestFramework
 
         private static string StateFile => Path.Combine(SystemDirectory, "settings.xml");
 
-        public static LogLevel Level
+        public static LogEventLevel Level
         {
             get => Instance.Load().Level;
             set
@@ -165,8 +167,8 @@ namespace Inventors.ECP.TestFramework
                 }
                 catch (Exception ex)
                 {
-                    EcpLog.Error(ex.Message);
-                    _file = new();
+                    Log.Error(ex, "Error loading settings file");
+                    _file = new SettingsFile();
                 }
             }
 
