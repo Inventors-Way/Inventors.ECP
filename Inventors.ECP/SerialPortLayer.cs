@@ -93,7 +93,7 @@ namespace Inventors.ECP
                                 }
                                 catch (Exception e)
                                 {
-                                    Log.Error(e.Message);
+                                    EcpLog.Error(e.Message);
                                 }
 
                                 reader();
@@ -102,7 +102,7 @@ namespace Inventors.ECP
                     }
                     catch (Exception e)
                     {
-                        Log.Error(e.Message);
+                        EcpLog.Error(e.Message);
                     }
                 }
             }

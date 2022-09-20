@@ -242,7 +242,7 @@ namespace Inventors.ECP.TestFramework.Profiling
             }
             catch (Exception e)
             {
-                Log.Error(e.Message);
+                EcpLog.Error(e.Message);
             }
         }
 

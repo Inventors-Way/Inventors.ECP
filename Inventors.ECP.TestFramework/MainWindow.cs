@@ -98,7 +98,7 @@ namespace Inventors.ECP.TestFramework
 
         private void UpdateStatus()
         {
-            if (device is object)
+            if (device is not null)
             {
                 statusText.Text = String.Format("DATA [Rx: {0}, Tx: {1}]",
                     Statistics.FormatRate(device.Central.RxRate),

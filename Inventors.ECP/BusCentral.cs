@@ -196,7 +196,7 @@ namespace Inventors.ECP
                         }
                         catch (Exception e)
                         {
-                            Log.Error(e.Message);
+                            EcpLog.Error(e.Message);
                             Profiler.Add(new TargetEvent(e.Message));
                         }
                     }
@@ -213,7 +213,7 @@ namespace Inventors.ECP
             }
             catch (Exception e)
             {
-                Log.Debug("Error in HandleIncommingFrame: {0}", e.Message);
+                EcpLog.Debug("Error in HandleIncommingFrame: {0}", e.Message);
             }
         }
 

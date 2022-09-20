@@ -27,7 +27,7 @@ namespace Inventors.ECP.DefaultDevice
 
         public int Accept(DeviceIdentification func)
         {
-            Log.Debug("Default Petripheral: DeviceIdentification");
+            EcpLog.Debug("Default Petripheral: DeviceIdentification");
             func.ManufactureID = Manufacturer.InventorsWay;
             func.Manufacture = "Inventors' Way ApS";
             func.DeviceID = UInt16.MaxValue;
@@ -54,14 +54,14 @@ namespace Inventors.ECP.DefaultDevice
 
         public int Accept(GetEndianness func)
         {
-            Log.Debug("Peripheral: GetEndinanness");
+            EcpLog.Debug("Peripheral: GetEndinanness");
 
             return 0;
         }
 
         public int Accept(SetDebugSignal func)
         {
-            Log.Debug("Peripheral: SetDebugSignal");
+            EcpLog.Debug("Peripheral: SetDebugSignal");
 
             return 0;
         }
