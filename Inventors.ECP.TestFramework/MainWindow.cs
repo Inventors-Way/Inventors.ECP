@@ -170,7 +170,7 @@ namespace Inventors.ECP.TestFramework
                     commTester.Trials,
                     commTester.TestDelay);
 
-                if (device.AvailableAddress is object)
+                if (device.AvailableAddress is not null)
                 {
                     foreach (var address in device.AvailableAddress)
                     {
@@ -196,6 +196,15 @@ namespace Inventors.ECP.TestFramework
 
                     device.CurrentAddress = device.AvailableAddress[0];
                     UpdateAddressMenu();
+                }
+
+                if (loader.Analysers is not null)
+                {
+                    foreach (var analyser in loader.Analysers)
+                    {
+                        Log.Information("Analyser {0} for message {1} with script {2}",
+                            analyser.Name, analyser.Code, analyser.Script);
+                    }
                 }
 
                 UpdateProfiling();

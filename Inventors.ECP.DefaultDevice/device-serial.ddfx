@@ -15,4 +15,9 @@
 			<debug-signal name="Heartbeat Timer" description="Timing measurement for the Heartbeat timer that sends the 'Beat' printf every second" />
 		</debug-specification>
 	</debug-specifications>
+    <analysis-specification>
+        <analysis name="Timming analysis"
+                  code="253"
+                  script="analysis.py" />
+    </analysis-specification>
 </device>
