@@ -1,7 +1,9 @@
 ﻿using Inventors.ECP.DefaultDevice.Functions;
+using Inventors.ECP.DefaultDevice.Messages;
 using Inventors.ECP.Functions;
 using Inventors.ECP.Messages;
 using Inventors.ECP.Profiling;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +36,7 @@ namespace Inventors.ECP.DefaultDevice
 
             Add(new MCP48X2Update());
 
+            Add(new SignalMessage());   
             Add(new TimingViolationMessage());
             Add(new TimingMessage());
         }
@@ -50,6 +53,11 @@ namespace Inventors.ECP.DefaultDevice
         public void Accept(TimingMessage msg)
         {
             Profiler.Add(new TimingRecord(msg.DebugSignal, msg.AverageTime, msg.Min, msg.Max));
+        }
+
+        public void Accept(SignalMessage msg)
+        {
+            Log.Information("Signal message; {0}", msg.X);
         }
 
         public override bool IsCompatible(DeviceFunction identification) => true;

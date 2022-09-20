@@ -103,7 +103,7 @@ namespace Inventors.ECP.UnitTests.TransportLayer
         public void T08_SimpleMessage2Peripheral()
         {
             var device = TC.CentralDevice;
-            var msg = new SimpleMessage() { X = 12 };
+            var msg = new SignalMessage() { X = 12 };
             device.Send(msg);
             Thread.Sleep(200);
             Assert.AreEqual(12, TC.PeripheralDevice.X);
@@ -113,7 +113,7 @@ namespace Inventors.ECP.UnitTests.TransportLayer
         public void T09_SimpleMessage2Central()
         {
             var peripheral = TC.PeripheralDevice;
-            var msg = new SimpleMessage() { X = 12 };
+            var msg = new SignalMessage() { X = 12 };
             peripheral.Send(msg);
             Thread.Sleep(200);
             Assert.AreEqual(12, TC.CentralDevice.X);
