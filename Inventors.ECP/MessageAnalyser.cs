@@ -18,6 +18,9 @@ namespace Inventors.ECP
         [XmlAttribute("script")]
         public string Script { get; set; }
 
+        [XmlAttribute("signals")]
+        public int Signals { get; set; }
+
         public event EventHandler<DeviceMessage> OnMessage;
 
         public void Accept(DeviceMessage message)

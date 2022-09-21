@@ -25,8 +25,9 @@
         </debug-specification>
     </debug-specifications>
     <analysis-specification>
-        <analysis name="Timming analysis"
-                  code="253"
-                  script="analysis.py" />
+        <analysis name="Signal Analysis"
+                  code="128"
+                  script="analysis.py" 
+                  signals="1"/>
     </analysis-specification>
 </device>

@@ -2,6 +2,7 @@
 using Microsoft.Scripting;
 using Microsoft.Scripting.Hosting;
 using ScottPlot;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,31 +16,21 @@ namespace Inventors.ECP.TestFramework.Analysis
     {
         public event EventHandler<Plot> PlotChanged;
 
-        public AnalysisEngine(MessageAnalyser analyser)
+        public AnalysisEngine(MessageAnalyser analyser, string path)
         {
             if (File.Exists(analyser.Script))
                 throw new InvalidOperationException($"Script file {analyser.Script} does not exists");
 
-            var script = File.ReadAllText(analyser.Script);
+            var script = File.ReadAllText(Path.Combine(path, analyser.Script));
             var source = _engine.CreateScriptSourceFromString(script, SourceCodeKind.Statements);
             _code = source.Compile();
+            _msgCode = analyser.Code;
+            _name = analyser.Name;
+            _dataSet.SetNumberOfSignals(analyser.Signals);
+            _dataSet.Reset();
 
-            Initialize();
 
             analyser.OnMessage += OnMessage;
-        }
-
-        private void Initialize()
-        {
-            _dataSet.Reset();
-            var scope = _engine.CreateScope(new Dictionary<string, object>
-            {
-                { "data", _dataSet }
-            });
-            _code.Execute(scope);
-            dynamic function = scope.GetVariable("initialize");
-
-            function();
         }
 
         private static ScriptEngine CreateEngine()
@@ -61,23 +52,36 @@ namespace Inventors.ECP.TestFramework.Analysis
             var scope = _engine.CreateScope(new Dictionary<string, object>
             {
                 { "plt", _plot },
-                { "data", _dataSet }
+                { "data", _dataSet },
+                { "msg", message }
             });
-            _code.Execute(scope);
-            dynamic function = scope.GetVariable("analyse");
-
             _plot.Clear();
-            function(message);
 
-            PlotChanged?.Invoke(this, _plot);
+            try
+            {
+                _code.Execute(scope);
+                Updated = true;
+
+                PlotChanged?.Invoke(this, _plot);
+            }
+            catch (Exception e)
+            {
+                Log.Error("Error [ {0} ]: {1} ", e.Message, e);
+            }
         }
 
         public Plot Plot => _plot;
+
+        public bool Updated { get; private set; } = false;
+
+        public override string ToString() => $"[{_msgCode}] {_name}";
 
         private static readonly ScriptEngine _engine = CreateEngine();
         private readonly CompiledCode _code;
         private readonly Plot _plot = new();
         private readonly DataSet _dataSet = new();
+        private readonly byte _msgCode;
+        private readonly string _name;
 
     }
 }

@@ -236,9 +236,12 @@ namespace Inventors.ECP.TestFramework.Profiling
 
             try
             {
-                device.SetActiveDebugSignals(GetActiveSignals());
-                profiler.Reset();
-                colors.Reset();
+                if (device.IsOpen)
+                {
+                    device.SetActiveDebugSignals(GetActiveSignals());
+                    profiler.Reset();
+                    colors.Reset();
+                }
             }
             catch (Exception e)
             {

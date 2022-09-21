@@ -242,7 +242,7 @@ namespace Inventors.ECP
             Dispatchers.Add(message.Code, message.CreateDispatcher());
         }
 
-        private void Add(MessageAnalyser analyser)
+        public void Add(MessageAnalyser analyser)
         {
             if (analyser is null)
                 throw new ArgumentNullException(nameof(analyser));
