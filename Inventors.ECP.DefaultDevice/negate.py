@@ -4,7 +4,7 @@ clr.AddReference("Serilog")
 clr.AddReference("Inventors.ECP.DefaultDevice")
 
 from Serilog import Log
-from Inventors.ECP.DefaultDevice.Functions import SimpleFunction
+from Inventors.ECP.DefaultDevice.Functions import *
 
 
 number = dialog.GetNumber("Number to negate", 10);
@@ -19,3 +19,6 @@ dev.Execute(func)
 
 Log.Information("I got the following answer: {number}".format(number = func.Answer))
 
+index = dialog.GetListIndex("Select value", "1;2;3");
+
+Log.Information("Index was: {index}".format(index = index))
