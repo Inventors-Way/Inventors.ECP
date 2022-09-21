@@ -27,5 +27,15 @@ namespace Inventors.ECP.TestFramework.Actions
 
             throw new InvalidOperationException($"User didn't provide an answer for {title}");
         }
+
+        public int GetListIndex(string title, string values)
+        {
+            var dialog = new ListDialog(title, values);
+
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                return dialog.Index;
+
+            throw new InvalidOperationException($"User didn't provide an answer for {title}");
+        }
     }
 }
