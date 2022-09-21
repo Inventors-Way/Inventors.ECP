@@ -3,16 +3,35 @@
         factory="Inventors.ECP.DefaultDevice.DefaultSerialDevice"
         baudrate="38400"
         profiling="false"
-        number-of-trials="100"
+        number-of-trials="20"
         test-delay="0">
-	<debug-specifications>
-		<debug-specification address="0" name="Default Device">
-			<debug-signal name="Polling Loop" description="Timing measurement for the main polling loop" />
-			<debug-signal name="Hal Layer" description="Timing measurement for the Run() function in the HAL layer" />
-			<debug-signal name="System Layer" description="Timing measurement for the Run() function in the System layer" />
-			<debug-signal name="ADC Sample" description="ADC Run function that samples all analog input channels in a round robin sequence" />
-			<debug-signal name="Debug Signal Timer" description="Timing measurement for the Debug Signal timer that sends the timing profiles" />
-			<debug-signal name="Heartbeat Timer" description="Timing measurement for the Heartbeat timer that sends the 'Beat' printf every second" />
-		</debug-specification>
-	</debug-specifications>
+    <debug-specifications>
+        <debug-specification address="0"
+                             name="Default Device">
+            <debug-signal name="Polling Loop"
+                          description="Timing measurement for the main polling loop" />
+            <debug-signal name="Hal Layer"
+                          description="Timing measurement for the Run() function in the HAL layer" />
+            <debug-signal name="System Layer"
+                          description="Timing measurement for the Run() function in the System layer" />
+            <debug-signal name="ADC Sample"
+                          description="ADC Run function that samples all analog input channels in a round robin sequence" />
+            <debug-signal name="Debug Signal Timer"
+                          description="Timing measurement for the Debug Signal timer that sends the timing profiles" />
+            <debug-signal name="Heartbeat Timer"
+                          description="Timing measurement for the Heartbeat timer that sends the 'Beat' printf every second" />
+            <debug-signal name="Signal Timer"
+                          description="Timer for the fake saw-tooth signal" />
+        </debug-specification>
+    </debug-specifications>
+    <analysis-specification>
+        <analysis name="Signal Analysis"
+                  code="128"
+                  script="analysis.py" 
+                  signals="1"/>
+        <analysis name="Normalized Signal Analysis"
+                  code="128"
+                  script="analysis2.py"
+                  signals="1"/>
+    </analysis-specification>
 </device>

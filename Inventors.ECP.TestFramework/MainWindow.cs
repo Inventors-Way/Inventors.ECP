@@ -21,6 +21,7 @@ using Inventors.ECP.TestFramework.Monitoring;
 using Inventors.ECP.Monitor;
 using Serilog;
 using Serilog.Events;
+using Inventors.ECP.TestFramework.Analysis;
 
 namespace Inventors.ECP.TestFramework
 {
@@ -44,6 +45,7 @@ namespace Inventors.ECP.TestFramework
         private bool confirmLogDeletion = true;
         private AppState state = AppState.APP_STATE_UNINITIALIZED;
         private readonly ProfilerWindow profilerWindow;
+        private readonly AnalysisWindow analysisWindow;
         private readonly MonitorWindow monitorWindow;
         private readonly CommTester commTester;
 
@@ -60,6 +62,7 @@ namespace Inventors.ECP.TestFramework
             SetupLogging();
             UpdateAppStates(AppState.APP_STATE_UNINITIALIZED);
             UpdateStatus();
+            UpdateAnalysisWindow(false);
             SetTitle();
             UpdateProfiling();
             SetLoggingLevel(Settings.Level);
@@ -68,6 +71,8 @@ namespace Inventors.ECP.TestFramework
             profilerWindow.OnProfilerClosed += ProfilerWindow_OnClosed;
             monitorWindow = new MonitorWindow();
             monitorWindow.OnMonitorClosed += PortMonitorWindow_OnClosed;
+            analysisWindow = new AnalysisWindow();
+            analysisWindow.OnAnalysisClosed += AnalysisWindow_OnClosed;
             PortMonitor.SetMonitor(monitorWindow);
 
             commTester = new CommTester();
@@ -145,6 +150,7 @@ namespace Inventors.ECP.TestFramework
             try
             {
                 var loader = DeviceLoader.Load(fileName);
+                var path = Path.GetDirectoryName(fileName);
                 deviceId = loader.Factory;
                 logDirectory = Settings.GetDeviceDefaultLoggingDirectory(deviceId);
                 logControl.Paused = false;
@@ -170,7 +176,7 @@ namespace Inventors.ECP.TestFramework
                     commTester.Trials,
                     commTester.TestDelay);
 
-                if (device.AvailableAddress is object)
+                if (device.AvailableAddress is not null)
                 {
                     foreach (var address in device.AvailableAddress)
                     {
@@ -198,7 +204,27 @@ namespace Inventors.ECP.TestFramework
                     UpdateAddressMenu();
                 }
 
+                if (loader.Analysers is not null)
+                {
+                    foreach (var analyser in loader.Analysers)
+                    {                        
+                        Log.Information("Analyser {0} for message {1} with script {2}",
+                            analyser.Name, analyser.Code, analyser.Script);
+
+                        try
+                        {
+                            analysisWindow.Add(new AnalysisEngine(analyser, path));
+                            device.Add(analyser);
+                        }
+                        catch (Exception e)
+                        {
+                            Log.Error(e.Message);
+                        }
+                    }
+                }
+
                 UpdateProfiling();
+                UpdateAnalysisWindow(false);
                 InitializeFunctions();
                 UpdatePorts();
                 UpdateAppStates(AppState.APP_STATE_INITIALIZED);
@@ -793,6 +819,39 @@ namespace Inventors.ECP.TestFramework
             {
                 PortMonitor.Enabled = false;
                 UpdatePortMonitor();
+            }
+        }
+
+        private void UpdateAnalysisWindow(bool show)
+        {
+            if (device is not null)
+            {
+                analysisToolStripMenuItem.Checked = show;
+
+                if (show)
+                {
+                    analysisWindow.Show();
+                }
+                else
+                {
+                    analysisWindow.Visible = false;
+                }
+            }
+        }
+
+        private void analysisToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (device is not null)
+            {
+                UpdateAnalysisWindow(!analysisToolStripMenuItem.Checked);
+            }
+        }
+
+        private void AnalysisWindow_OnClosed(object sender, bool show)
+        {
+            if (device is not null)
+            {
+                UpdateAnalysisWindow(show);
             }
         }
 

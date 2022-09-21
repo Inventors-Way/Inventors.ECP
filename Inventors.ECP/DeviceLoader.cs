@@ -59,6 +59,10 @@ namespace Inventors.ECP
         [XmlArrayItem("debug-specification")]
         public List<DebugSpecification> DebugSpecifications { get; } = new List<DebugSpecification>();
 
+        [XmlArray("analysis-specification")]
+        [XmlArrayItem("analysis")]
+        public List<MessageAnalyser> Analysers { get; } = new List<MessageAnalyser>();
+
         [XmlIgnore]
         public string CreationTime { get; set; } = "Unknown";
 

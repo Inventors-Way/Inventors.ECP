@@ -156,9 +156,10 @@ namespace Inventors.ECP
             foreach (var displatcher in MessageDispatchers)
             {
                 if ((displatcher.Code == packet.Code) &&
-                    (MessageListener != null))
+                    (MessageListener is object))
                 {
-                    displatcher.Create(packet).Dispatch(MessageListener);
+                    var message = displatcher.Create(packet);
+                    message.Dispatch(MessageListener);
                     retValue = true;
                 }
             }

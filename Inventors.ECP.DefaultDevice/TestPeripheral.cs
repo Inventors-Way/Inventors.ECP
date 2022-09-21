@@ -34,7 +34,7 @@ namespace Inventors.ECP.DefaultDevice
             Add(new SimpleFunction());
             Add(new DataFunction());
 
-            Add(new SimpleMessage());
+            Add(new SignalMessage());
             Add(new DataMessage());
 
             FunctionListener = this;
@@ -97,7 +97,7 @@ namespace Inventors.ECP.DefaultDevice
             return ErrorCode;
         }
 
-        public void Accept(SimpleMessage msg)
+        public void Accept(SignalMessage msg)
         {
             X = msg.X;
         }

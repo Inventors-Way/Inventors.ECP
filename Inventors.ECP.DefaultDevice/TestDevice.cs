@@ -25,7 +25,7 @@ namespace Inventors.ECP.DefaultDevice
             Add(new SimpleFunction());
             Add(new DataFunction());
 
-            Add(new SimpleMessage());
+            Add(new SignalMessage());
             Add(new DataMessage());
 
             Add(new TimingViolationMessage());
@@ -49,7 +49,7 @@ namespace Inventors.ECP.DefaultDevice
 
         public void Accept(TimingMessage msg) =>  Profiler.Add(new TimingRecord(msg.DebugSignal, msg.AverageTime, msg.Min, msg.Max));
 
-        public void Accept(SimpleMessage msg)
+        public void Accept(SignalMessage msg)
         {
             X = msg.X;
         }

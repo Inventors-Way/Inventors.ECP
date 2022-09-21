@@ -155,6 +155,12 @@ namespace Inventors.ECP
             Central.Add(new PrintfMessage());
         }
 
+        public void Add(MessageAnalyser analyser)
+        {
+            Central.Add(analyser);
+        }
+
+
         #region Implementation of ping
 
         /// <summary>
