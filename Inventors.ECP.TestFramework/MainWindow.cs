@@ -22,6 +22,8 @@ using Inventors.ECP.Monitor;
 using Serilog;
 using Serilog.Events;
 using Inventors.ECP.TestFramework.Analysis;
+using Inventors.ECP.TestFramework.Actions;
+using System.Net;
 
 namespace Inventors.ECP.TestFramework
 {
@@ -223,6 +225,24 @@ namespace Inventors.ECP.TestFramework
                     }
                 }
 
+                if (loader.Actions is not null)
+                {
+                    ActionEngine.Initialize(loader.Library);
+
+                    foreach (var action in loader.Actions)
+                    {
+                        Log.Information("Action {0} with script {1}", action.Name, action.Script);
+
+                        var menuItem = new ToolStripMenuItem(action.Name)
+                        {
+                            Tag = new ActionProcessor(action, path)
+                        };
+                        menuItem.Click += ActionClicked;
+
+                        actionsToolStripMenuItem.DropDownItems.Add(menuItem);
+                    }
+                }
+
                 UpdateProfiling();
                 UpdateAnalysisWindow(false);
                 InitializeFunctions();
@@ -234,6 +254,33 @@ namespace Inventors.ECP.TestFramework
                 UpdateAppStates(AppState.APP_STATE_UNINITIALIZED);
                 Log.Error(e.Message);
                 MessageBox.Show(e.Message, "Error loading device");
+            }
+        }
+
+        private async void ActionClicked(object sender, EventArgs e)
+        {
+            if (device is null)
+                return;
+
+            if (sender is not ToolStripMenuItem item)
+                return;
+
+            if (item.Tag is not ActionProcessor processor)
+                return;
+
+            item.Enabled = false;
+
+            try
+            {
+                await Task.Run(() => processor.Run(device));
+            }
+            catch (Exception ex)
+            {
+                Log.Error("EXCEPTION [ {0} ]: {e}", ex.Message, ex);
+            }
+            finally
+            {
+                item.Enabled = true;
             }
         }
 

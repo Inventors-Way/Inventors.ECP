@@ -22,6 +22,9 @@
     <None Update="device-serial.ddfx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="negate.py">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Schema\test-script.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

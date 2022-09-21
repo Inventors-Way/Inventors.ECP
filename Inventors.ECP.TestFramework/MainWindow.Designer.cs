@@ -62,17 +62,18 @@ namespace Inventors.ECP.TestFramework
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.profilerMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.portMonitorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.analysisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutECPTesterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hSplitContainer = new System.Windows.Forms.SplitContainer();
             this.vSplitContainer = new System.Windows.Forms.SplitContainer();
             this.functionList = new System.Windows.Forms.ListBox();
             this.propertyGrid = new System.Windows.Forms.PropertyGrid();
+            this.logControl = new Inventors.ECP.TestFramework.LogControl();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.msgTimer = new System.Windows.Forms.Timer(this.components);
             this.deviceTimer = new System.Windows.Forms.Timer(this.components);
-            this.analysisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.logControl = new Inventors.ECP.TestFramework.LogControl();
+            this.actionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.hSplitContainer)).BeginInit();
@@ -117,6 +118,7 @@ namespace Inventors.ECP.TestFramework
             this.fileMenuItem,
             this.connectMenuItem,
             this.addressMenu,
+            this.actionsToolStripMenuItem,
             this.profilerToolStripMenuItem,
             this.helpToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
@@ -296,35 +298,42 @@ namespace Inventors.ECP.TestFramework
             // testToolStripMenuItem
             // 
             this.testToolStripMenuItem.Name = "testToolStripMenuItem";
-            this.testToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.testToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.testToolStripMenuItem.Text = "Test";
             this.testToolStripMenuItem.Click += new System.EventHandler(this.TestToolStripMenuItem_Click);
             // 
             // trialsToolStripMenuItem
             // 
             this.trialsToolStripMenuItem.Name = "trialsToolStripMenuItem";
-            this.trialsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.trialsToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.trialsToolStripMenuItem.Text = "Trials";
             this.trialsToolStripMenuItem.Click += new System.EventHandler(this.TrialsToolStripMenuItem_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(139, 6);
             // 
             // profilerMenuItem
             // 
             this.profilerMenuItem.Name = "profilerMenuItem";
-            this.profilerMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.profilerMenuItem.Size = new System.Drawing.Size(142, 22);
             this.profilerMenuItem.Text = "Profiler";
             this.profilerMenuItem.Click += new System.EventHandler(this.ProfilerMenuItem_Click);
             // 
             // portMonitorToolStripMenuItem
             // 
             this.portMonitorToolStripMenuItem.Name = "portMonitorToolStripMenuItem";
-            this.portMonitorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.portMonitorToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.portMonitorToolStripMenuItem.Text = "Port Monitor";
             this.portMonitorToolStripMenuItem.Click += new System.EventHandler(this.PortMonitorToolStripMenuItem_Click);
+            // 
+            // analysisToolStripMenuItem
+            // 
+            this.analysisToolStripMenuItem.Name = "analysisToolStripMenuItem";
+            this.analysisToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.analysisToolStripMenuItem.Text = "Analysis";
+            this.analysisToolStripMenuItem.Click += new System.EventHandler(this.analysisToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -397,6 +406,18 @@ namespace Inventors.ECP.TestFramework
             this.propertyGrid.Size = new System.Drawing.Size(743, 370);
             this.propertyGrid.TabIndex = 0;
             // 
+            // logControl
+            // 
+            this.logControl.AutoSave = true;
+            this.logControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.logControl.Level = Serilog.Events.LogEventLevel.Information;
+            this.logControl.Location = new System.Drawing.Point(0, 0);
+            this.logControl.Margin = new System.Windows.Forms.Padding(4);
+            this.logControl.Name = "logControl";
+            this.logControl.Paused = true;
+            this.logControl.Size = new System.Drawing.Size(923, 161);
+            this.logControl.TabIndex = 0;
+            // 
             // imageList
             // 
             this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList.ImageStream")));
@@ -429,24 +450,11 @@ namespace Inventors.ECP.TestFramework
             this.deviceTimer.Interval = 500;
             this.deviceTimer.Tick += new System.EventHandler(this.DeviceTimer_Tick);
             // 
-            // analysisToolStripMenuItem
+            // actionsToolStripMenuItem
             // 
-            this.analysisToolStripMenuItem.Name = "analysisToolStripMenuItem";
-            this.analysisToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.analysisToolStripMenuItem.Text = "Analysis";
-            this.analysisToolStripMenuItem.Click += new System.EventHandler(this.analysisToolStripMenuItem_Click);
-            // 
-            // logControl
-            // 
-            this.logControl.AutoSave = true;
-            this.logControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.logControl.Level = Serilog.Events.LogEventLevel.Information;
-            this.logControl.Location = new System.Drawing.Point(0, 0);
-            this.logControl.Margin = new System.Windows.Forms.Padding(4);
-            this.logControl.Name = "logControl";
-            this.logControl.Paused = true;
-            this.logControl.Size = new System.Drawing.Size(923, 161);
-            this.logControl.TabIndex = 0;
+            this.actionsToolStripMenuItem.Name = "actionsToolStripMenuItem";
+            this.actionsToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
+            this.actionsToolStripMenuItem.Text = "Actions";
             // 
             // MainWindow
             // 
@@ -521,6 +529,7 @@ namespace Inventors.ECP.TestFramework
         private System.Windows.Forms.ToolStripMenuItem autoSaveLogToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem portMonitorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem analysisToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem actionsToolStripMenuItem;
     }
 }
 
