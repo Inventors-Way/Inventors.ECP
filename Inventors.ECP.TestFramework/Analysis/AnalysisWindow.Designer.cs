@@ -125,20 +125,23 @@
             // startToolStripMenuItem
             // 
             this.startToolStripMenuItem.Name = "startToolStripMenuItem";
-            this.startToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
+            this.startToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.startToolStripMenuItem.Text = "Start";
+            this.startToolStripMenuItem.Click += new System.EventHandler(this.startToolStripMenuItem_Click);
             // 
             // pauseToolStripMenuItem
             // 
             this.pauseToolStripMenuItem.Name = "pauseToolStripMenuItem";
-            this.pauseToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
+            this.pauseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.pauseToolStripMenuItem.Text = "Pause";
+            this.pauseToolStripMenuItem.Click += new System.EventHandler(this.pauseToolStripMenuItem_Click);
             // 
             // stopToolStripMenuItem
             // 
             this.stopToolStripMenuItem.Name = "stopToolStripMenuItem";
-            this.stopToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
+            this.stopToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.stopToolStripMenuItem.Text = "Stop";
+            this.stopToolStripMenuItem.Click += new System.EventHandler(this.stopToolStripMenuItem_Click);
             // 
             // timer
             // 
@@ -167,6 +170,7 @@
             this.startBtn.Name = "startBtn";
             this.startBtn.Size = new System.Drawing.Size(23, 22);
             this.startBtn.Text = "toolStripButton1";
+            this.startBtn.Click += new System.EventHandler(this.startToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
@@ -181,6 +185,7 @@
             this.pauseBtn.Name = "pauseBtn";
             this.pauseBtn.Size = new System.Drawing.Size(23, 22);
             this.pauseBtn.Text = "toolStripButton1";
+            this.pauseBtn.Click += new System.EventHandler(this.pauseToolStripMenuItem_Click);
             // 
             // stopBtn
             // 
@@ -190,6 +195,7 @@
             this.stopBtn.Name = "stopBtn";
             this.stopBtn.Size = new System.Drawing.Size(23, 22);
             this.stopBtn.Text = "toolStripButton1";
+            this.stopBtn.Click += new System.EventHandler(this.stopToolStripMenuItem_Click);
             // 
             // splitContainer1
             // 

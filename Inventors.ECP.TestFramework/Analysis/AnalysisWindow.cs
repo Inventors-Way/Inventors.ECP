@@ -23,6 +23,7 @@ namespace Inventors.ECP.TestFramework.Analysis
         {
             InitializeComponent();
             Text = "Analysis";
+            UpdateState();
         }
 
         public void Add(AnalysisEngine analysis)
@@ -38,6 +39,8 @@ namespace Inventors.ECP.TestFramework.Analysis
                 analysisList.SelectedIndex = 0;
                 Text = current.ToString();
             }
+
+            UpdateState();
         }
 
         private void AnalysisWindow_FormClosing(object sender, FormClosingEventArgs e)
@@ -114,7 +117,55 @@ namespace Inventors.ECP.TestFramework.Analysis
                 return;
 
             Redraw();
-            Text = current.ToString();                
+            Text = current.ToString();
+            UpdateState();
+        }
+
+        private void startToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (current is null)
+                return;
+
+            current.Start();
+            UpdateState();
+        }
+
+        private void pauseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (current is null)
+                return;
+
+            current.Pause();
+            UpdateState();
+        }
+
+        private void stopToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (current is null)
+                return;
+
+            current.Stop();
+            UpdateState();
+        }
+
+        private void UpdateState()
+        {
+            if (current is null)
+            {
+                startToolStripMenuItem.Enabled = startBtn.Enabled = false;
+                pauseToolStripMenuItem.Enabled = pauseBtn.Enabled = false;
+                stopToolStripMenuItem.Enabled = stopBtn.Enabled = false;
+                return;
+            }
+
+            startToolStripMenuItem.Enabled = startBtn.Enabled = current.StartPossible;
+            startToolStripMenuItem.Checked = current.State == AnalysisState.RUNNING;
+            pauseToolStripMenuItem.Enabled = pauseBtn.Enabled = current.PausePossible;
+            pauseToolStripMenuItem.Checked = current.State == AnalysisState.PAUSED;
+            stopToolStripMenuItem.Enabled = stopBtn.Enabled = current.StopPossible;
+            stopToolStripMenuItem.Checked = current.State == AnalysisState.STOPPED;
+
+            Text = $"{current.ToString()} ({current.State})";
         }
     }
 }

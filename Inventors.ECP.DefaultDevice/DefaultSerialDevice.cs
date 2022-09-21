@@ -50,14 +50,14 @@ namespace Inventors.ECP.DefaultDevice
             Profiler.Add(new TimingViolation(msg.DebugSignal, msg.Time, msg.TimeLimit, 0));
         }
 
-        public void Accept(TimingMessage msg)
+        public void Accept(TimingMessage msg) 
         {
             Profiler.Add(new TimingRecord(msg.DebugSignal, msg.AverageTime, msg.Min, msg.Max));
         }
 
         public void Accept(SignalMessage msg)
         {
-            Log.Information("Signal message; {0}", msg.X);
+            Profiler.Add(new TargetEvent("Signal Wrap Around"));
         }
 
         public override bool IsCompatible(DeviceFunction identification) => true;

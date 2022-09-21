@@ -28,7 +28,7 @@ namespace Inventors.ECP.TestFramework.Analysis
             _name = analyser.Name;
             _dataSet.SetNumberOfSignals(analyser.Signals);
             _dataSet.Reset();
-
+            _state = AnalysisState.STOPPED;
 
             analyser.OnMessage += OnMessage;
         }
@@ -46,6 +46,9 @@ namespace Inventors.ECP.TestFramework.Analysis
 
         private void OnMessage(object sender, DeviceMessage message)
         {
+            if (_state != AnalysisState.RUNNING)
+                return;
+
             if (sender is not MessageAnalyser)
                 return;
 
@@ -71,9 +74,44 @@ namespace Inventors.ECP.TestFramework.Analysis
             }
         }
 
+        public bool StartPossible => (_state == AnalysisState.PAUSED) || (_state == AnalysisState.STOPPED);
+
+        public void Start()
+        {
+            if (!StartPossible)
+                return;
+
+            _state = AnalysisState.RUNNING;
+        }
+
+        public bool PausePossible => _state == AnalysisState.RUNNING;
+
+        public void Pause()
+        {
+            if (!PausePossible)
+                return;
+
+            _state = AnalysisState.PAUSED;
+        }
+
+        public bool StopPossible => (_state == AnalysisState.RUNNING) || (_state == AnalysisState.PAUSED);
+
+        public void Stop()
+        {
+            if (!StopPossible)
+                return;
+
+            _state = AnalysisState.STOPPED;
+            _dataSet.Reset();
+            _plot.Clear();
+            Updated = true;
+        }
+
         public Plot Plot => _plot;
 
         public bool Updated { get; set; } = false;
+
+        public AnalysisState State => _state;
 
         public override string ToString() => $"[{_msgCode}] {_name}";
 
@@ -83,6 +121,7 @@ namespace Inventors.ECP.TestFramework.Analysis
         private readonly DataSet _dataSet = new();
         private readonly byte _msgCode;
         private readonly string _name;
+        private AnalysisState _state;
 
     }
 }
