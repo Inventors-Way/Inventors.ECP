@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<DOCUMENT Type="Advanced Installer" CreateVersion="16.2" version="19.3" Modules="professional" RootPath="." Language="en" Id="{0687AB8F-C018-4E72-ADE8-CA2B69065AF4}">
+<DOCUMENT Type="Advanced Installer" CreateVersion="16.2" version="19.5" Modules="professional" RootPath="." Language="en" Id="{0687AB8F-C018-4E72-ADE8-CA2B69065AF4}">
   <COMPONENT cid="caphyon.advinst.msicomp.ProjectOptionsComponent">
-    <ROW Name="HiddenItems" Value="ActSyncAppComponent;AutorunComponent;CPLAppletComponent;GameUxComponent;SilverlightSlnComponent;AppXAppDetailsComponent;FixupComponent;AppXCapabilitiesComponent;AppXDependenciesComponent;AppXProductDetailsComponent;AppXVisualAssetsComponent;AppXAppDeclarationsComponent;AppXUriRulesComponent;MsiXDiffComponent;MsixManifestEditorComponent"/>
+    <ROW Name="HiddenItems" Value="ActSyncAppComponent;CPLAppletComponent;AppXAppDetailsComponent;FixupComponent;AppXCapabilitiesComponent;AppXDependenciesComponent;AppXProductDetailsComponent;AppXVisualAssetsComponent;AppXAppDeclarationsComponent;AppXUriRulesComponent;MsiXDiffComponent;MsixManifestEditorComponent"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiPropsComponent">
     <ROW Property="AI_BITMAP_DISPLAY_MODE" Value="0"/>
     <ROW Property="AI_CURRENT_YEAR" Value="2022" ValueLocId="-"/>
+    <ROW Property="AI_PACKAGING_TOOL" Value="Advanced Installer 19.5 build 36301275" ValueLocId="-"/>
     <ROW Property="AI_PREDEF_LCONDS_PROPS" Value="AI_DETECTED_DOTNET_VERSION"/>
     <ROW Property="AI_REQUIRED_DOTNET_DISPLAY" MultiBuildValue="DefaultBuild:4.7.2" ValueLocId="-"/>
     <ROW Property="AI_REQUIRED_DOTNET_VERSION" MultiBuildValue="DefaultBuild:4.7.2" ValueLocId="-"/>
@@ -14,10 +15,10 @@
     <ROW Property="ARPHELPLINK" Value="https://github.com/Inventors-Way/ITLS-ECP"/>
     <ROW Property="ARPPRODUCTICON" Value="icons8_usb_on_96_k8q_icon.exe" Type="8"/>
     <ROW Property="Manufacturer" Value="Inventors Way"/>
-    <ROW Property="ProductCode" Value="1033:{D0847078-A4FA-46D9-97F0-7E6E045F59D0} " Type="16"/>
+    <ROW Property="ProductCode" Value="1033:{CBAD2AC4-06FA-40DB-8CA5-8A2606B35BD6} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="ECP Tester"/>
-    <ROW Property="ProductVersion" Value="2.6.2"/>
+    <ROW Property="ProductVersion" Value="3.0.0"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND"/>
     <ROW Property="UpgradeCode" Value="{7AF47BB0-E218-41DD-B835-61EC033F35ED}"/>
     <ROW Property="WindowsType9X" MultiBuildValue="DefaultBuild:Windows 9x/ME" ValueLocId="-"/>
@@ -31,71 +32,610 @@
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiDirsComponent">
     <ROW Directory="APPDIR" Directory_Parent="TARGETDIR" DefaultDir="APPDIR:." IsPseudoRoot="1"/>
-    <ROW Directory="StartMenuFolder" Directory_Parent="TARGETDIR" DefaultDir="STARTM~1|StartMenuFolder" IsPseudoRoot="1"/>
+    <ROW Directory="Lib_Dir" Directory_Parent="winx64_Dir" DefaultDir="Lib"/>
+    <ROW Directory="ProgramMenuFolder" Directory_Parent="TARGETDIR" DefaultDir="PROGRA~1|ProgramMenuFolder" IsPseudoRoot="1"/>
     <ROW Directory="TARGETDIR" DefaultDir="SourceDir"/>
-    <ROW Directory="lib_1_Dir" Directory_Parent="osx_Dir" DefaultDir="lib"/>
-    <ROW Directory="lib_2_Dir" Directory_Parent="win_Dir" DefaultDir="lib"/>
-    <ROW Directory="lib_Dir" Directory_Parent="linux_Dir" DefaultDir="lib"/>
-    <ROW Directory="linux_Dir" Directory_Parent="runtimes_Dir" DefaultDir="linux"/>
-    <ROW Directory="linuxarm64_Dir" Directory_Parent="runtimes_Dir" DefaultDir="LINUX-~2|linux-arm64"/>
-    <ROW Directory="linuxarm_Dir" Directory_Parent="runtimes_Dir" DefaultDir="LINUX-~1|linux-arm"/>
-    <ROW Directory="linuxx64_Dir" Directory_Parent="runtimes_Dir" DefaultDir="LINUX-~3|linux-x64"/>
-    <ROW Directory="native_1_Dir" Directory_Parent="linuxarm64_Dir" DefaultDir="native"/>
-    <ROW Directory="native_2_Dir" Directory_Parent="linuxx64_Dir" DefaultDir="native"/>
-    <ROW Directory="native_3_Dir" Directory_Parent="osxx64_Dir" DefaultDir="native"/>
-    <ROW Directory="native_Dir" Directory_Parent="linuxarm_Dir" DefaultDir="native"/>
-    <ROW Directory="net6.0windows_Dir" Directory_Parent="APPDIR" DefaultDir="NET6~1.0-W|net6.0-windows"/>
-    <ROW Directory="netstandard2.0_1_Dir" Directory_Parent="lib_1_Dir" DefaultDir="NETSTA~1.0|netstandard2.0"/>
-    <ROW Directory="netstandard2.0_2_Dir" Directory_Parent="lib_2_Dir" DefaultDir="NETSTA~1.0|netstandard2.0"/>
-    <ROW Directory="netstandard2.0_Dir" Directory_Parent="lib_Dir" DefaultDir="NETSTA~1.0|netstandard2.0"/>
-    <ROW Directory="osx_Dir" Directory_Parent="runtimes_Dir" DefaultDir="osx"/>
-    <ROW Directory="osxx64_Dir" Directory_Parent="runtimes_Dir" DefaultDir="osx-x64"/>
-    <ROW Directory="runtimes_Dir" Directory_Parent="net6.0windows_Dir" DefaultDir="runtimes"/>
-    <ROW Directory="win_Dir" Directory_Parent="runtimes_Dir" DefaultDir="win"/>
+    <ROW Directory="_bundled_Dir" Directory_Parent="ensurepip_Dir" DefaultDir="_bundled"/>
+    <ROW Directory="command_Dir" Directory_Parent="distutils_Dir" DefaultDir="command"/>
+    <ROW Directory="ctypes_Dir" Directory_Parent="Lib_Dir" DefaultDir="ctypes"/>
+    <ROW Directory="distutils_Dir" Directory_Parent="Lib_Dir" DefaultDir="DISTUT~1|distutils"/>
+    <ROW Directory="dom_Dir" Directory_Parent="xml_Dir" DefaultDir="dom"/>
+    <ROW Directory="dummy_Dir" Directory_Parent="multiprocessing_Dir" DefaultDir="dummy"/>
+    <ROW Directory="email_Dir" Directory_Parent="Lib_Dir" DefaultDir="email"/>
+    <ROW Directory="encodings_Dir" Directory_Parent="Lib_Dir" DefaultDir="ENCODI~1|encodings"/>
+    <ROW Directory="ensurepip_Dir" Directory_Parent="Lib_Dir" DefaultDir="ENSURE~1|ensurepip"/>
+    <ROW Directory="etree_Dir" Directory_Parent="xml_Dir" DefaultDir="etree"/>
+    <ROW Directory="fixes_Dir" Directory_Parent="lib2to3_Dir" DefaultDir="fixes"/>
+    <ROW Directory="importlib_Dir" Directory_Parent="Lib_Dir" DefaultDir="IMPORT~1|importlib"/>
+    <ROW Directory="json_Dir" Directory_Parent="Lib_Dir" DefaultDir="json"/>
+    <ROW Directory="lib2to3_Dir" Directory_Parent="Lib_Dir" DefaultDir="lib2to3"/>
+    <ROW Directory="logging_Dir" Directory_Parent="Lib_Dir" DefaultDir="logging"/>
+    <ROW Directory="macholib_Dir" Directory_Parent="ctypes_Dir" DefaultDir="macholib"/>
+    <ROW Directory="mime_Dir" Directory_Parent="email_Dir" DefaultDir="mime"/>
+    <ROW Directory="multiprocessing_Dir" Directory_Parent="Lib_Dir" DefaultDir="MULTIP~1|multiprocessing"/>
+    <ROW Directory="parsers_Dir" Directory_Parent="xml_Dir" DefaultDir="parsers"/>
+    <ROW Directory="pgen2_Dir" Directory_Parent="lib2to3_Dir" DefaultDir="pgen2"/>
+    <ROW Directory="pydoc_data_Dir" Directory_Parent="Lib_Dir" DefaultDir="PYDOC_~1|pydoc_data"/>
+    <ROW Directory="sax_Dir" Directory_Parent="xml_Dir" DefaultDir="sax"/>
+    <ROW Directory="sitepackages_Dir" Directory_Parent="Lib_Dir" DefaultDir="SITE-P~1|site-packages"/>
+    <ROW Directory="sqlite3_Dir" Directory_Parent="Lib_Dir" DefaultDir="sqlite3"/>
+    <ROW Directory="unittest_Dir" Directory_Parent="Lib_Dir" DefaultDir="unittest"/>
+    <ROW Directory="winx64_Dir" Directory_Parent="APPDIR" DefaultDir="win-x64"/>
+    <ROW Directory="wsgiref_Dir" Directory_Parent="Lib_Dir" DefaultDir="wsgiref"/>
+    <ROW Directory="xml_Dir" Directory_Parent="Lib_Dir" DefaultDir="xml"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiCompsComponent">
     <ROW Component="APPDIR" ComponentId="{04FDEAF2-9F48-402B-8084-66DE0D08F821}" Directory_="APPDIR" Attributes="0"/>
-    <ROW Component="Inventors.ECP.TestFramework.dll" ComponentId="{2BA95EE6-2B27-4734-9F75-A38376802EA1}" Directory_="net6.0windows_Dir" Attributes="0" KeyPath="Inventors.ECP.TestFramework.dll"/>
-    <ROW Component="Inventors.ECP.Tester.deps.json" ComponentId="{BDEE4D76-FCCB-4610-A7A9-B7FF01478066}" Directory_="net6.0windows_Dir" Attributes="0" KeyPath="Inventors.ECP.Tester.deps.json" Type="0"/>
-    <ROW Component="Inventors.ECP.Tester.dll" ComponentId="{2278D5E7-5D9F-48DE-830F-58F4B7203BB2}" Directory_="net6.0windows_Dir" Attributes="0" KeyPath="Inventors.ECP.Tester.dll"/>
-    <ROW Component="Inventors.ECP.Tester.exe" ComponentId="{12CA6ABB-F741-4780-9BD9-27F32E2DA940}" Directory_="net6.0windows_Dir" Attributes="256" KeyPath="Inventors.ECP.Tester.exe"/>
-    <ROW Component="Inventors.ECP.dll" ComponentId="{B2DFBBC5-91AF-4A38-AE8D-39327B9F0F82}" Directory_="net6.0windows_Dir" Attributes="0" KeyPath="Inventors.ECP.dll"/>
-    <ROW Component="Newtonsoft.Json.dll" ComponentId="{CCDF0410-6A66-4891-A69A-4CFEE5AE79F2}" Directory_="net6.0windows_Dir" Attributes="0" KeyPath="Newtonsoft.Json.dll"/>
+    <ROW Component="D3DCompiler_47_cor3.dll" ComponentId="{4F8A2F62-5618-45F6-BB96-CC61489C5D33}" Directory_="winx64_Dir" Attributes="256" KeyPath="D3DCompiler_47_cor3.dll"/>
+    <ROW Component="Inventors.ECP.Tester.exe" ComponentId="{AAD11FF0-6134-437A-B153-84AECB4868E6}" Directory_="winx64_Dir" Attributes="256" KeyPath="Inventors.ECP.Tester.exe"/>
+    <ROW Component="Inventors.ECP.pdb" ComponentId="{B1C5D9B3-7652-495C-9724-5195E3D07C7D}" Directory_="winx64_Dir" Attributes="0" KeyPath="Inventors.ECP.pdb" Type="4"/>
+    <ROW Component="PenImc_cor3.dll" ComponentId="{6606ADF1-D809-4EE8-8B20-570F84EFA360}" Directory_="winx64_Dir" Attributes="256" KeyPath="PenImc_cor3.dll"/>
+    <ROW Component="PresentationNative_cor3.dll" ComponentId="{0D5BB35B-74B3-4E7A-9F3A-766F7EC54A7A}" Directory_="winx64_Dir" Attributes="256" KeyPath="PresentationNative_cor3.dll"/>
     <ROW Component="ProductInformation" ComponentId="{5363DE25-DBDD-4F8F-BA55-B904FFBDA7D6}" Directory_="APPDIR" Attributes="4" KeyPath="Version"/>
-    <ROW Component="ScottPlot.dll" ComponentId="{A92BC987-F967-4F02-85DA-0CD035FC1682}" Directory_="net6.0windows_Dir" Attributes="0" KeyPath="ScottPlot.dll"/>
-    <ROW Component="System.IO.Ports.Native.dylib" ComponentId="{D3628B2A-5818-4A3D-8C6C-B40758836499}" Directory_="native_3_Dir" Attributes="0" KeyPath="System.IO.Ports.Native.dylib" Type="0"/>
-    <ROW Component="System.IO.Ports.Native.so" ComponentId="{68CB03E6-A4E0-41C3-8CC6-CBCCAF754325}" Directory_="native_Dir" Attributes="0" KeyPath="System.IO.Ports.Native.so" Type="0"/>
-    <ROW Component="System.IO.Ports.Native.so_1" ComponentId="{8AE81201-118D-4BF0-B087-7415775A599F}" Directory_="native_1_Dir" Attributes="0" KeyPath="System.IO.Ports.Native.so_1" Type="0"/>
-    <ROW Component="System.IO.Ports.Native.so_2" ComponentId="{92E8B5C6-5335-439D-AAAA-5B339DD229CD}" Directory_="native_2_Dir" Attributes="0" KeyPath="System.IO.Ports.Native.so_2" Type="0"/>
-    <ROW Component="System.IO.Ports.dll" ComponentId="{730E035C-FB5A-4494-870E-450F75F4FAFE}" Directory_="netstandard2.0_Dir" Attributes="0" KeyPath="System.IO.Ports.dll"/>
-    <ROW Component="System.IO.Ports.dll_1" ComponentId="{6B348099-7F24-4C67-8E45-7E6778CF9B14}" Directory_="netstandard2.0_1_Dir" Attributes="0" KeyPath="System.IO.Ports.dll_1"/>
-    <ROW Component="System.IO.Ports.dll_2" ComponentId="{A89011F9-7B3C-4035-9B88-AE9C7C59DF97}" Directory_="netstandard2.0_2_Dir" Attributes="0" KeyPath="System.IO.Ports.dll_2"/>
-    <ROW Component="System.IO.Ports.dll_3" ComponentId="{B003D5B1-9A39-44F7-932C-35B44E5AE71B}" Directory_="net6.0windows_Dir" Attributes="0" KeyPath="System.IO.Ports.dll_3"/>
+    <ROW Component="README.txt" ComponentId="{2FDC426E-E090-4C0E-B687-C257DA7B7902}" Directory_="sitepackages_Dir" Attributes="0" KeyPath="README.txt" Type="0"/>
+    <ROW Component="__init__.py" ComponentId="{A0C0001C-AF1C-4D81-B66F-293A2A1B032B}" Directory_="importlib_Dir" Attributes="0" KeyPath="__init__.py_8" Type="0"/>
+    <ROW Component="__init__.py_1" ComponentId="{8602ABAD-A72F-4281-849B-54C21651555E}" Directory_="xml_Dir" Attributes="0" KeyPath="__init__.py_24" Type="0"/>
+    <ROW Component="_uninstall.py" ComponentId="{07DFA52A-31A5-492B-A9D2-353A1495090B}" Directory_="ensurepip_Dir" Attributes="0" KeyPath="_uninstall.py" Type="0"/>
+    <ROW Component="abc.py" ComponentId="{BCF924B3-071C-41D6-BE79-5B4C29EC68BC}" Directory_="Lib_Dir" Attributes="0" KeyPath="abc.py" Type="0"/>
+    <ROW Component="aliases.py" ComponentId="{E283D63D-524D-4523-B268-AC441E44D329}" Directory_="encodings_Dir" Attributes="0" KeyPath="aliases.py" Type="0"/>
+    <ROW Component="application.py" ComponentId="{1F6EE96D-B49F-47D6-BE9B-4E262452F67C}" Directory_="mime_Dir" Attributes="0" KeyPath="application.py" Type="0"/>
+    <ROW Component="archive_util.py" ComponentId="{062D58C5-9C5A-4709-8310-29D7EE366BD6}" Directory_="distutils_Dir" Attributes="0" KeyPath="archive_util.py" Type="0"/>
+    <ROW Component="base64mime.py" ComponentId="{1DE31C7A-61B5-47BC-85DB-56D2F32529F9}" Directory_="email_Dir" Attributes="0" KeyPath="base64mime.py" Type="0"/>
+    <ROW Component="bdist.py" ComponentId="{B35A3BC3-EB3E-48A6-8C59-09B5B892C0FA}" Directory_="command_Dir" Attributes="0" KeyPath="bdist.py" Type="0"/>
+    <ROW Component="btm_matcher.py" ComponentId="{17CC0F0F-7434-4702-AD89-74E0FF1C8DBC}" Directory_="lib2to3_Dir" Attributes="0" KeyPath="btm_matcher.py" Type="0"/>
+    <ROW Component="cElementTree.py" ComponentId="{0AD26890-E0F4-438C-B84F-18C9E614D1C0}" Directory_="etree_Dir" Attributes="0" KeyPath="cElementTree.py" Type="0"/>
+    <ROW Component="case.py" ComponentId="{33A7A358-316C-4A75-8AF4-156DDFDD9D81}" Directory_="unittest_Dir" Attributes="0" KeyPath="case.py" Type="0"/>
+    <ROW Component="config.py" ComponentId="{1F464F88-88D0-4D46-97ED-7A57928DBC2C}" Directory_="logging_Dir" Attributes="0" KeyPath="config.py_2" Type="0"/>
+    <ROW Component="connection.py" ComponentId="{9A224C53-FE62-4989-BB00-DD975E4FE3E0}" Directory_="multiprocessing_Dir" Attributes="0" KeyPath="connection.py" Type="0"/>
+    <ROW Component="connection.py_1" ComponentId="{07D92F8B-4416-49D4-8651-BBCD36433415}" Directory_="dummy_Dir" Attributes="0" KeyPath="connection.py_1" Type="0"/>
+    <ROW Component="conv.py" ComponentId="{4FAC12A1-E73C-4E26-82F8-8A936CC70727}" Directory_="pgen2_Dir" Attributes="0" KeyPath="conv.py" Type="0"/>
+    <ROW Component="dbapi2.py" ComponentId="{1E88FC5C-6F9F-47DD-8982-5EE61208B8CC}" Directory_="sqlite3_Dir" Attributes="0" KeyPath="dbapi2.py" Type="0"/>
+    <ROW Component="decoder.py" ComponentId="{B2D57B96-AC10-47CD-80C0-0382559D9F00}" Directory_="json_Dir" Attributes="0" KeyPath="decoder.py" Type="0"/>
+    <ROW Component="domreg.py" ComponentId="{4C873C82-5F14-44AB-8667-504C84DE5B56}" Directory_="dom_Dir" Attributes="0" KeyPath="domreg.py" Type="0"/>
+    <ROW Component="dyld.py" ComponentId="{7558B24A-B641-433E-A83D-477EA60B5F86}" Directory_="macholib_Dir" Attributes="0" KeyPath="dyld.py" Type="0"/>
+    <ROW Component="expat.py" ComponentId="{BE9B0B0F-A662-48CE-B680-FD5084B6DFA7}" Directory_="parsers_Dir" Attributes="0" KeyPath="expat.py" Type="0"/>
+    <ROW Component="expatreader.py" ComponentId="{ED4469C7-1C62-4ADF-8520-4E03EADEF75B}" Directory_="sax_Dir" Attributes="0" KeyPath="expatreader.py" Type="0"/>
+    <ROW Component="fix_apply.py" ComponentId="{B1ACA514-0B73-4257-8EA4-A1D3AB98106F}" Directory_="fixes_Dir" Attributes="0" KeyPath="fix_apply.py" Type="0"/>
+    <ROW Component="handlers.py" ComponentId="{C341209A-6BB5-4684-842A-1FE945BF241B}" Directory_="wsgiref_Dir" Attributes="0" KeyPath="handlers.py_1" Type="0"/>
+    <ROW Component="pip19.2.3py2.py3noneany.whl" ComponentId="{D3333227-2AC1-4661-AF1D-E35B91279B57}" Directory_="_bundled_Dir" Attributes="0" KeyPath="pip19.2.3py2.py3noneany.whl" Type="0"/>
+    <ROW Component="topics.py" ComponentId="{4E1A8897-89A8-4FA5-AD4C-22AE02C55E1C}" Directory_="pydoc_data_Dir" Attributes="0" KeyPath="topics.py" Type="0"/>
+    <ROW Component="util.py" ComponentId="{9B16A802-0DE8-49D1-90C7-376458CF96EF}" Directory_="ctypes_Dir" Attributes="0" KeyPath="util.py" Type="0"/>
+    <ROW Component="vcruntime140_cor3.dll" ComponentId="{528BAF2E-7003-4156-812C-064DD1C7D1AA}" Directory_="winx64_Dir" Attributes="256" KeyPath="vcruntime140_cor3.dll"/>
+    <ROW Component="wpfgfx_cor3.dll" ComponentId="{4AFD8257-3F8D-4892-A5D0-EFB2BB4CB202}" Directory_="winx64_Dir" Attributes="256" KeyPath="wpfgfx_cor3.dll"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFeatsComponent">
     <ROW Feature="MainFeature" Title="MainFeature" Description="Description" Display="1" Level="1" Directory_="APPDIR" Attributes="0"/>
     <ATTRIBUTE name="CurrentFeature" value="MainFeature"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFilesComponent">
-    <ROW File="Inventors.ECP.dll" Component_="Inventors.ECP.dll" FileName="INVENT~1.DLL|Inventors.ECP.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Debug\net6.0-windows\Inventors.ECP.dll" SelfReg="false"/>
-    <ROW File="Inventors.ECP.pdb" Component_="Inventors.ECP.dll" FileName="INVENT~1.PDB|Inventors.ECP.pdb" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Debug\net6.0-windows\Inventors.ECP.pdb" SelfReg="false"/>
-    <ROW File="Inventors.ECP.Tester.deps.json" Component_="Inventors.ECP.Tester.deps.json" FileName="INVENT~1.JSO|Inventors.ECP.Tester.deps.json" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Debug\net6.0-windows\Inventors.ECP.Tester.deps.json" SelfReg="false"/>
-    <ROW File="Inventors.ECP.Tester.dll" Component_="Inventors.ECP.Tester.dll" FileName="INVENT~2.DLL|Inventors.ECP.Tester.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Debug\net6.0-windows\Inventors.ECP.Tester.dll" SelfReg="false"/>
-    <ROW File="Inventors.ECP.Tester.exe" Component_="Inventors.ECP.Tester.exe" FileName="INVENT~1.EXE|Inventors.ECP.Tester.exe" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Debug\net6.0-windows\Inventors.ECP.Tester.exe" SelfReg="false" DigSign="true"/>
-    <ROW File="Inventors.ECP.Tester.pdb" Component_="Inventors.ECP.Tester.exe" FileName="INVENT~2.PDB|Inventors.ECP.Tester.pdb" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Debug\net6.0-windows\Inventors.ECP.Tester.pdb" SelfReg="false"/>
-    <ROW File="Inventors.ECP.Tester.runtimeconfig.json" Component_="Inventors.ECP.Tester.deps.json" FileName="INVENT~2.JSO|Inventors.ECP.Tester.runtimeconfig.json" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Debug\net6.0-windows\Inventors.ECP.Tester.runtimeconfig.json" SelfReg="false"/>
-    <ROW File="Inventors.ECP.TestFramework.dll" Component_="Inventors.ECP.TestFramework.dll" FileName="INVENT~3.DLL|Inventors.ECP.TestFramework.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Debug\net6.0-windows\Inventors.ECP.TestFramework.dll" SelfReg="false"/>
-    <ROW File="Inventors.ECP.TestFramework.pdb" Component_="Inventors.ECP.TestFramework.dll" FileName="INVENT~3.PDB|Inventors.ECP.TestFramework.pdb" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Debug\net6.0-windows\Inventors.ECP.TestFramework.pdb" SelfReg="false"/>
-    <ROW File="Newtonsoft.Json.dll" Component_="Newtonsoft.Json.dll" FileName="NEWTON~1.DLL|Newtonsoft.Json.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Debug\net6.0-windows\Newtonsoft.Json.dll" SelfReg="false"/>
-    <ROW File="System.IO.Ports.dll" Component_="System.IO.Ports.dll" FileName="SYSTEM~1.DLL|System.IO.Ports.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Debug\net6.0-windows\runtimes\linux\lib\netstandard2.0\System.IO.Ports.dll" SelfReg="false"/>
-    <ROW File="System.IO.Ports.Native.so" Component_="System.IO.Ports.Native.so" FileName="SYSTEM~1.SO|System.IO.Ports.Native.so" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Debug\net6.0-windows\runtimes\linux-arm\native\System.IO.Ports.Native.so" SelfReg="false"/>
-    <ROW File="System.IO.Ports.Native.so_1" Component_="System.IO.Ports.Native.so_1" FileName="SYSTEM~1.SO|System.IO.Ports.Native.so" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Debug\net6.0-windows\runtimes\linux-arm64\native\System.IO.Ports.Native.so" SelfReg="false"/>
-    <ROW File="System.IO.Ports.Native.so_2" Component_="System.IO.Ports.Native.so_2" FileName="SYSTEM~1.SO|System.IO.Ports.Native.so" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Debug\net6.0-windows\runtimes\linux-x64\native\System.IO.Ports.Native.so" SelfReg="false"/>
-    <ROW File="System.IO.Ports.dll_1" Component_="System.IO.Ports.dll_1" FileName="SYSTEM~1.DLL|System.IO.Ports.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Debug\net6.0-windows\runtimes\osx\lib\netstandard2.0\System.IO.Ports.dll" SelfReg="false"/>
-    <ROW File="System.IO.Ports.Native.dylib" Component_="System.IO.Ports.Native.dylib" FileName="SYSTEM~1.DYL|System.IO.Ports.Native.dylib" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Debug\net6.0-windows\runtimes\osx-x64\native\System.IO.Ports.Native.dylib" SelfReg="false"/>
-    <ROW File="System.IO.Ports.dll_2" Component_="System.IO.Ports.dll_2" FileName="SYSTEM~1.DLL|System.IO.Ports.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Debug\net6.0-windows\runtimes\win\lib\netstandard2.0\System.IO.Ports.dll" SelfReg="false"/>
-    <ROW File="ScottPlot.dll" Component_="ScottPlot.dll" FileName="SCOTTP~1.DLL|ScottPlot.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Debug\net6.0-windows\ScottPlot.dll" SelfReg="false"/>
-    <ROW File="System.IO.Ports.dll_3" Component_="System.IO.Ports.dll_3" FileName="SYSTEM~1.DLL|System.IO.Ports.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Debug\net6.0-windows\System.IO.Ports.dll" SelfReg="false"/>
+    <ROW File="D3DCompiler_47_cor3.dll" Component_="D3DCompiler_47_cor3.dll" FileName="D3DCOM~1.DLL|D3DCompiler_47_cor3.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\D3DCompiler_47_cor3.dll" SelfReg="false"/>
+    <ROW File="Inventors.ECP.pdb" Component_="Inventors.ECP.pdb" FileName="INVENT~1.PDB|Inventors.ECP.pdb" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Inventors.ECP.pdb" SelfReg="false"/>
+    <ROW File="Inventors.ECP.Tester.exe" Component_="Inventors.ECP.Tester.exe" FileName="INVENT~1.EXE|Inventors.ECP.Tester.exe" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Inventors.ECP.Tester.exe" SelfReg="false" DigSign="true"/>
+    <ROW File="Inventors.ECP.Tester.pdb" Component_="Inventors.ECP.Tester.exe" FileName="INVENT~2.PDB|Inventors.ECP.Tester.pdb" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Inventors.ECP.Tester.pdb" SelfReg="false"/>
+    <ROW File="Inventors.ECP.TestFramework.pdb" Component_="Inventors.ECP.pdb" FileName="INVENT~3.PDB|Inventors.ECP.TestFramework.pdb" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Inventors.ECP.TestFramework.pdb" SelfReg="false"/>
+    <ROW File="abc.py" Component_="abc.py" FileName="abc.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\abc.py" SelfReg="false"/>
+    <ROW File="aifc.py" Component_="abc.py" FileName="aifc.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\aifc.py" SelfReg="false"/>
+    <ROW File="antigravity.py" Component_="abc.py" FileName="ANTIGR~1.PY|antigravity.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\antigravity.py" SelfReg="false"/>
+    <ROW File="anydbm.py" Component_="abc.py" FileName="anydbm.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\anydbm.py" SelfReg="false"/>
+    <ROW File="argparse.py" Component_="abc.py" FileName="argparse.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\argparse.py" SelfReg="false"/>
+    <ROW File="ast.py" Component_="abc.py" FileName="ast.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\ast.py" SelfReg="false"/>
+    <ROW File="asynchat.py" Component_="abc.py" FileName="asynchat.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\asynchat.py" SelfReg="false"/>
+    <ROW File="asyncore.py" Component_="abc.py" FileName="asyncore.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\asyncore.py" SelfReg="false"/>
+    <ROW File="atexit.py" Component_="abc.py" FileName="atexit.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\atexit.py" SelfReg="false"/>
+    <ROW File="audiodev.py" Component_="abc.py" FileName="audiodev.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\audiodev.py" SelfReg="false"/>
+    <ROW File="base64.py" Component_="abc.py" FileName="base64.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\base64.py" SelfReg="false"/>
+    <ROW File="BaseHTTPServer.py" Component_="abc.py" FileName="BASEHT~1.PY|BaseHTTPServer.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\BaseHTTPServer.py" SelfReg="false"/>
+    <ROW File="Bastion.py" Component_="abc.py" FileName="Bastion.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\Bastion.py" SelfReg="false"/>
+    <ROW File="bdb.py" Component_="abc.py" FileName="bdb.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\bdb.py" SelfReg="false"/>
+    <ROW File="binhex.py" Component_="abc.py" FileName="binhex.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\binhex.py" SelfReg="false"/>
+    <ROW File="bisect.py" Component_="abc.py" FileName="bisect.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\bisect.py" SelfReg="false"/>
+    <ROW File="calendar.py" Component_="abc.py" FileName="calendar.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\calendar.py" SelfReg="false"/>
+    <ROW File="cgi.py" Component_="abc.py" FileName="cgi.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\cgi.py" SelfReg="false"/>
+    <ROW File="CGIHTTPServer.py" Component_="abc.py" FileName="CGIHTT~1.PY|CGIHTTPServer.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\CGIHTTPServer.py" SelfReg="false"/>
+    <ROW File="cgitb.py" Component_="abc.py" FileName="cgitb.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\cgitb.py" SelfReg="false"/>
+    <ROW File="chunk.py" Component_="abc.py" FileName="chunk.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\chunk.py" SelfReg="false"/>
+    <ROW File="clrtype.py" Component_="abc.py" FileName="clrtype.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\clrtype.py" SelfReg="false"/>
+    <ROW File="cmd.py" Component_="abc.py" FileName="cmd.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\cmd.py" SelfReg="false"/>
+    <ROW File="code.py" Component_="abc.py" FileName="code.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\code.py" SelfReg="false"/>
+    <ROW File="codecs.py" Component_="abc.py" FileName="codecs.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\codecs.py" SelfReg="false"/>
+    <ROW File="codeop.py" Component_="abc.py" FileName="codeop.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\codeop.py" SelfReg="false"/>
+    <ROW File="collections.py" Component_="abc.py" FileName="COLLEC~1.PY|collections.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\collections.py" SelfReg="false"/>
+    <ROW File="colorsys.py" Component_="abc.py" FileName="colorsys.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\colorsys.py" SelfReg="false"/>
+    <ROW File="commands.py" Component_="abc.py" FileName="commands.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\commands.py" SelfReg="false"/>
+    <ROW File="compileall.py" Component_="abc.py" FileName="COMPIL~1.PY|compileall.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\compileall.py" SelfReg="false"/>
+    <ROW File="ConfigParser.py" Component_="abc.py" FileName="CONFIG~1.PY|ConfigParser.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\ConfigParser.py" SelfReg="false"/>
+    <ROW File="contextlib.py" Component_="abc.py" FileName="CONTEX~1.PY|contextlib.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\contextlib.py" SelfReg="false"/>
+    <ROW File="Cookie.py" Component_="abc.py" FileName="Cookie.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\Cookie.py" SelfReg="false"/>
+    <ROW File="cookielib.py" Component_="abc.py" FileName="COOKIE~1.PY|cookielib.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\cookielib.py" SelfReg="false"/>
+    <ROW File="copy.py" Component_="abc.py" FileName="copy.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\copy.py" SelfReg="false"/>
+    <ROW File="csv.py" Component_="abc.py" FileName="csv.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\csv.py" SelfReg="false"/>
+    <ROW File="dyld.py" Component_="dyld.py" FileName="dyld.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\ctypes\macholib\dyld.py" SelfReg="false"/>
+    <ROW File="dylib.py" Component_="dyld.py" FileName="dylib.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\ctypes\macholib\dylib.py" SelfReg="false"/>
+    <ROW File="framework.py" Component_="dyld.py" FileName="FRAMEW~1.PY|framework.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\ctypes\macholib\framework.py" SelfReg="false"/>
+    <ROW File="__init__.py" Component_="dyld.py" FileName="__init__.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\ctypes\macholib\__init__.py" SelfReg="false"/>
+    <ROW File="util.py" Component_="util.py" FileName="util.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\ctypes\util.py" SelfReg="false"/>
+    <ROW File="wintypes.py" Component_="util.py" FileName="wintypes.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\ctypes\wintypes.py" SelfReg="false"/>
+    <ROW File="_endian.py" Component_="util.py" FileName="_endian.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\ctypes\_endian.py" SelfReg="false"/>
+    <ROW File="__init__.py_1" Component_="util.py" FileName="__init__.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\ctypes\__init__.py" SelfReg="false"/>
+    <ROW File="decimal.py" Component_="abc.py" FileName="decimal.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\decimal.py" SelfReg="false"/>
+    <ROW File="difflib.py" Component_="abc.py" FileName="difflib.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\difflib.py" SelfReg="false"/>
+    <ROW File="dircache.py" Component_="abc.py" FileName="dircache.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\dircache.py" SelfReg="false"/>
+    <ROW File="dis.py" Component_="abc.py" FileName="dis.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\dis.py" SelfReg="false"/>
+    <ROW File="archive_util.py" Component_="archive_util.py" FileName="ARCHIV~1.PY|archive_util.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\archive_util.py" SelfReg="false"/>
+    <ROW File="bcppcompiler.py" Component_="archive_util.py" FileName="BCPPCO~1.PY|bcppcompiler.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\bcppcompiler.py" SelfReg="false"/>
+    <ROW File="ccompiler.py" Component_="archive_util.py" FileName="CCOMPI~1.PY|ccompiler.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\ccompiler.py" SelfReg="false"/>
+    <ROW File="cmd.py_1" Component_="archive_util.py" FileName="cmd.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\cmd.py" SelfReg="false"/>
+    <ROW File="bdist.py" Component_="bdist.py" FileName="bdist.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\command\bdist.py" SelfReg="false"/>
+    <ROW File="bdist_dumb.py" Component_="bdist.py" FileName="BDIST_~1.PY|bdist_dumb.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\command\bdist_dumb.py" SelfReg="false"/>
+    <ROW File="bdist_rpm.py" Component_="bdist.py" FileName="BDIST_~2.PY|bdist_rpm.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\command\bdist_rpm.py" SelfReg="false"/>
+    <ROW File="bdist_wininst.py" Component_="bdist.py" FileName="BDIST_~3.PY|bdist_wininst.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\command\bdist_wininst.py" SelfReg="false"/>
+    <ROW File="build.py" Component_="bdist.py" FileName="build.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\command\build.py" SelfReg="false"/>
+    <ROW File="build_clib.py" Component_="bdist.py" FileName="BUILD_~1.PY|build_clib.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\command\build_clib.py" SelfReg="false"/>
+    <ROW File="build_ext.py" Component_="bdist.py" FileName="BUILD_~2.PY|build_ext.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\command\build_ext.py" SelfReg="false"/>
+    <ROW File="build_py.py" Component_="bdist.py" FileName="build_py.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\command\build_py.py" SelfReg="false"/>
+    <ROW File="build_scripts.py" Component_="bdist.py" FileName="BUILD_~3.PY|build_scripts.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\command\build_scripts.py" SelfReg="false"/>
+    <ROW File="check.py" Component_="bdist.py" FileName="check.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\command\check.py" SelfReg="false"/>
+    <ROW File="clean.py" Component_="bdist.py" FileName="clean.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\command\clean.py" SelfReg="false"/>
+    <ROW File="config.py" Component_="bdist.py" FileName="config.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\command\config.py" SelfReg="false"/>
+    <ROW File="install.py" Component_="bdist.py" FileName="install.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\command\install.py" SelfReg="false"/>
+    <ROW File="install_data.py" Component_="bdist.py" FileName="INSTAL~1.PY|install_data.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\command\install_data.py" SelfReg="false"/>
+    <ROW File="install_egg_info.py" Component_="bdist.py" FileName="INSTAL~2.PY|install_egg_info.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\command\install_egg_info.py" SelfReg="false"/>
+    <ROW File="install_headers.py" Component_="bdist.py" FileName="INSTAL~3.PY|install_headers.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\command\install_headers.py" SelfReg="false"/>
+    <ROW File="install_lib.py" Component_="bdist.py" FileName="INSTAL~4.PY|install_lib.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\command\install_lib.py" SelfReg="false"/>
+    <ROW File="install_scripts.py" Component_="bdist.py" FileName="INSTAL~5.PY|install_scripts.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\command\install_scripts.py" SelfReg="false"/>
+    <ROW File="register.py" Component_="bdist.py" FileName="register.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\command\register.py" SelfReg="false"/>
+    <ROW File="sdist.py" Component_="bdist.py" FileName="sdist.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\command\sdist.py" SelfReg="false"/>
+    <ROW File="upload.py" Component_="bdist.py" FileName="upload.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\command\upload.py" SelfReg="false"/>
+    <ROW File="__init__.py_2" Component_="bdist.py" FileName="__init__.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\command\__init__.py" SelfReg="false"/>
+    <ROW File="config.py_1" Component_="archive_util.py" FileName="config.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\config.py" SelfReg="false"/>
+    <ROW File="core.py" Component_="archive_util.py" FileName="core.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\core.py" SelfReg="false"/>
+    <ROW File="cygwinccompiler.py" Component_="archive_util.py" FileName="CYGWIN~1.PY|cygwinccompiler.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\cygwinccompiler.py" SelfReg="false"/>
+    <ROW File="debug.py" Component_="archive_util.py" FileName="debug.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\debug.py" SelfReg="false"/>
+    <ROW File="dep_util.py" Component_="archive_util.py" FileName="dep_util.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\dep_util.py" SelfReg="false"/>
+    <ROW File="dir_util.py" Component_="archive_util.py" FileName="dir_util.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\dir_util.py" SelfReg="false"/>
+    <ROW File="dist.py" Component_="archive_util.py" FileName="dist.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\dist.py" SelfReg="false"/>
+    <ROW File="emxccompiler.py" Component_="archive_util.py" FileName="EMXCCO~1.PY|emxccompiler.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\emxccompiler.py" SelfReg="false"/>
+    <ROW File="errors.py" Component_="archive_util.py" FileName="errors.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\errors.py" SelfReg="false"/>
+    <ROW File="extension.py" Component_="archive_util.py" FileName="EXTENS~1.PY|extension.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\extension.py" SelfReg="false"/>
+    <ROW File="fancy_getopt.py" Component_="archive_util.py" FileName="FANCY_~1.PY|fancy_getopt.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\fancy_getopt.py" SelfReg="false"/>
+    <ROW File="filelist.py" Component_="archive_util.py" FileName="filelist.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\filelist.py" SelfReg="false"/>
+    <ROW File="file_util.py" Component_="archive_util.py" FileName="FILE_U~1.PY|file_util.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\file_util.py" SelfReg="false"/>
+    <ROW File="log.py" Component_="archive_util.py" FileName="log.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\log.py" SelfReg="false"/>
+    <ROW File="msvccompiler.py" Component_="archive_util.py" FileName="MSVCCO~1.PY|msvccompiler.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\msvccompiler.py" SelfReg="false"/>
+    <ROW File="spawn.py" Component_="archive_util.py" FileName="spawn.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\spawn.py" SelfReg="false"/>
+    <ROW File="sysconfig.py" Component_="archive_util.py" FileName="SYSCON~1.PY|sysconfig.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\sysconfig.py" SelfReg="false"/>
+    <ROW File="text_file.py" Component_="archive_util.py" FileName="TEXT_F~1.PY|text_file.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\text_file.py" SelfReg="false"/>
+    <ROW File="unixccompiler.py" Component_="archive_util.py" FileName="UNIXCC~1.PY|unixccompiler.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\unixccompiler.py" SelfReg="false"/>
+    <ROW File="util.py_1" Component_="archive_util.py" FileName="util.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\util.py" SelfReg="false"/>
+    <ROW File="version.py" Component_="archive_util.py" FileName="version.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\version.py" SelfReg="false"/>
+    <ROW File="versionpredicate.py" Component_="archive_util.py" FileName="VERSIO~1.PY|versionpredicate.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\versionpredicate.py" SelfReg="false"/>
+    <ROW File="__init__.py_3" Component_="archive_util.py" FileName="__init__.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\distutils\__init__.py" SelfReg="false"/>
+    <ROW File="doctest.py" Component_="abc.py" FileName="doctest.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\doctest.py" SelfReg="false"/>
+    <ROW File="DocXMLRPCServer.py" Component_="abc.py" FileName="DOCXML~1.PY|DocXMLRPCServer.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\DocXMLRPCServer.py" SelfReg="false"/>
+    <ROW File="dumbdbm.py" Component_="abc.py" FileName="dumbdbm.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\dumbdbm.py" SelfReg="false"/>
+    <ROW File="dummy_thread.py" Component_="abc.py" FileName="DUMMY_~1.PY|dummy_thread.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\dummy_thread.py" SelfReg="false"/>
+    <ROW File="dummy_threading.py" Component_="abc.py" FileName="DUMMY_~2.PY|dummy_threading.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\dummy_threading.py" SelfReg="false"/>
+    <ROW File="base64mime.py" Component_="base64mime.py" FileName="BASE64~1.PY|base64mime.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\email\base64mime.py" SelfReg="false"/>
+    <ROW File="charset.py" Component_="base64mime.py" FileName="charset.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\email\charset.py" SelfReg="false"/>
+    <ROW File="encoders.py" Component_="base64mime.py" FileName="encoders.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\email\encoders.py" SelfReg="false"/>
+    <ROW File="errors.py_1" Component_="base64mime.py" FileName="errors.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\email\errors.py" SelfReg="false"/>
+    <ROW File="feedparser.py" Component_="base64mime.py" FileName="FEEDPA~1.PY|feedparser.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\email\feedparser.py" SelfReg="false"/>
+    <ROW File="generator.py" Component_="base64mime.py" FileName="GENERA~1.PY|generator.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\email\generator.py" SelfReg="false"/>
+    <ROW File="header.py" Component_="base64mime.py" FileName="header.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\email\header.py" SelfReg="false"/>
+    <ROW File="iterators.py" Component_="base64mime.py" FileName="ITERAT~1.PY|iterators.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\email\iterators.py" SelfReg="false"/>
+    <ROW File="message.py" Component_="base64mime.py" FileName="message.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\email\message.py" SelfReg="false"/>
+    <ROW File="application.py" Component_="application.py" FileName="APPLIC~1.PY|application.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\email\mime\application.py" SelfReg="false"/>
+    <ROW File="audio.py" Component_="application.py" FileName="audio.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\email\mime\audio.py" SelfReg="false"/>
+    <ROW File="base.py" Component_="application.py" FileName="base.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\email\mime\base.py" SelfReg="false"/>
+    <ROW File="image.py" Component_="application.py" FileName="image.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\email\mime\image.py" SelfReg="false"/>
+    <ROW File="message.py_1" Component_="application.py" FileName="message.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\email\mime\message.py" SelfReg="false"/>
+    <ROW File="multipart.py" Component_="application.py" FileName="MULTIP~1.PY|multipart.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\email\mime\multipart.py" SelfReg="false"/>
+    <ROW File="nonmultipart.py" Component_="application.py" FileName="NONMUL~1.PY|nonmultipart.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\email\mime\nonmultipart.py" SelfReg="false"/>
+    <ROW File="text.py" Component_="application.py" FileName="text.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\email\mime\text.py" SelfReg="false"/>
+    <ROW File="__init__.py_4" Component_="application.py" FileName="__init__.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\email\mime\__init__.py" SelfReg="false"/>
+    <ROW File="parser.py" Component_="base64mime.py" FileName="parser.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\email\parser.py" SelfReg="false"/>
+    <ROW File="quoprimime.py" Component_="base64mime.py" FileName="QUOPRI~1.PY|quoprimime.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\email\quoprimime.py" SelfReg="false"/>
+    <ROW File="utils.py" Component_="base64mime.py" FileName="utils.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\email\utils.py" SelfReg="false"/>
+    <ROW File="_parseaddr.py" Component_="base64mime.py" FileName="_PARSE~1.PY|_parseaddr.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\email\_parseaddr.py" SelfReg="false"/>
+    <ROW File="__init__.py_5" Component_="base64mime.py" FileName="__init__.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\email\__init__.py" SelfReg="false"/>
+    <ROW File="aliases.py" Component_="aliases.py" FileName="aliases.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\aliases.py" SelfReg="false"/>
+    <ROW File="ascii.py" Component_="aliases.py" FileName="ascii.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\ascii.py" SelfReg="false"/>
+    <ROW File="base64_codec.py" Component_="aliases.py" FileName="BASE64~1.PY|base64_codec.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\base64_codec.py" SelfReg="false"/>
+    <ROW File="bz2_codec.py" Component_="aliases.py" FileName="BZ2_CO~1.PY|bz2_codec.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\bz2_codec.py" SelfReg="false"/>
+    <ROW File="charmap.py" Component_="aliases.py" FileName="charmap.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\charmap.py" SelfReg="false"/>
+    <ROW File="cp037.py" Component_="aliases.py" FileName="cp037.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\cp037.py" SelfReg="false"/>
+    <ROW File="cp1006.py" Component_="aliases.py" FileName="cp1006.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\cp1006.py" SelfReg="false"/>
+    <ROW File="cp1026.py" Component_="aliases.py" FileName="cp1026.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\cp1026.py" SelfReg="false"/>
+    <ROW File="cp1140.py" Component_="aliases.py" FileName="cp1140.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\cp1140.py" SelfReg="false"/>
+    <ROW File="cp1250.py" Component_="aliases.py" FileName="cp1250.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\cp1250.py" SelfReg="false"/>
+    <ROW File="cp1251.py" Component_="aliases.py" FileName="cp1251.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\cp1251.py" SelfReg="false"/>
+    <ROW File="cp1252.py" Component_="aliases.py" FileName="cp1252.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\cp1252.py" SelfReg="false"/>
+    <ROW File="cp1253.py" Component_="aliases.py" FileName="cp1253.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\cp1253.py" SelfReg="false"/>
+    <ROW File="cp1254.py" Component_="aliases.py" FileName="cp1254.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\cp1254.py" SelfReg="false"/>
+    <ROW File="cp1255.py" Component_="aliases.py" FileName="cp1255.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\cp1255.py" SelfReg="false"/>
+    <ROW File="cp1256.py" Component_="aliases.py" FileName="cp1256.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\cp1256.py" SelfReg="false"/>
+    <ROW File="cp1257.py" Component_="aliases.py" FileName="cp1257.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\cp1257.py" SelfReg="false"/>
+    <ROW File="cp1258.py" Component_="aliases.py" FileName="cp1258.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\cp1258.py" SelfReg="false"/>
+    <ROW File="cp424.py" Component_="aliases.py" FileName="cp424.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\cp424.py" SelfReg="false"/>
+    <ROW File="cp437.py" Component_="aliases.py" FileName="cp437.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\cp437.py" SelfReg="false"/>
+    <ROW File="cp500.py" Component_="aliases.py" FileName="cp500.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\cp500.py" SelfReg="false"/>
+    <ROW File="cp720.py" Component_="aliases.py" FileName="cp720.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\cp720.py" SelfReg="false"/>
+    <ROW File="cp737.py" Component_="aliases.py" FileName="cp737.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\cp737.py" SelfReg="false"/>
+    <ROW File="cp775.py" Component_="aliases.py" FileName="cp775.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\cp775.py" SelfReg="false"/>
+    <ROW File="cp850.py" Component_="aliases.py" FileName="cp850.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\cp850.py" SelfReg="false"/>
+    <ROW File="cp852.py" Component_="aliases.py" FileName="cp852.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\cp852.py" SelfReg="false"/>
+    <ROW File="cp855.py" Component_="aliases.py" FileName="cp855.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\cp855.py" SelfReg="false"/>
+    <ROW File="cp856.py" Component_="aliases.py" FileName="cp856.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\cp856.py" SelfReg="false"/>
+    <ROW File="cp857.py" Component_="aliases.py" FileName="cp857.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\cp857.py" SelfReg="false"/>
+    <ROW File="cp858.py" Component_="aliases.py" FileName="cp858.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\cp858.py" SelfReg="false"/>
+    <ROW File="cp860.py" Component_="aliases.py" FileName="cp860.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\cp860.py" SelfReg="false"/>
+    <ROW File="cp861.py" Component_="aliases.py" FileName="cp861.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\cp861.py" SelfReg="false"/>
+    <ROW File="cp862.py" Component_="aliases.py" FileName="cp862.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\cp862.py" SelfReg="false"/>
+    <ROW File="cp863.py" Component_="aliases.py" FileName="cp863.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\cp863.py" SelfReg="false"/>
+    <ROW File="cp864.py" Component_="aliases.py" FileName="cp864.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\cp864.py" SelfReg="false"/>
+    <ROW File="cp865.py" Component_="aliases.py" FileName="cp865.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\cp865.py" SelfReg="false"/>
+    <ROW File="cp866.py" Component_="aliases.py" FileName="cp866.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\cp866.py" SelfReg="false"/>
+    <ROW File="cp869.py" Component_="aliases.py" FileName="cp869.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\cp869.py" SelfReg="false"/>
+    <ROW File="cp874.py" Component_="aliases.py" FileName="cp874.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\cp874.py" SelfReg="false"/>
+    <ROW File="cp875.py" Component_="aliases.py" FileName="cp875.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\cp875.py" SelfReg="false"/>
+    <ROW File="hex_codec.py" Component_="aliases.py" FileName="HEX_CO~1.PY|hex_codec.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\hex_codec.py" SelfReg="false"/>
+    <ROW File="hp_roman8.py" Component_="aliases.py" FileName="HP_ROM~1.PY|hp_roman8.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\hp_roman8.py" SelfReg="false"/>
+    <ROW File="idna.py" Component_="aliases.py" FileName="idna.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\idna.py" SelfReg="false"/>
+    <ROW File="iso8859_1.py" Component_="aliases.py" FileName="ISO885~1.PY|iso8859_1.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\iso8859_1.py" SelfReg="false"/>
+    <ROW File="iso8859_10.py" Component_="aliases.py" FileName="ISO885~2.PY|iso8859_10.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\iso8859_10.py" SelfReg="false"/>
+    <ROW File="iso8859_11.py" Component_="aliases.py" FileName="ISO885~3.PY|iso8859_11.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\iso8859_11.py" SelfReg="false"/>
+    <ROW File="iso8859_13.py" Component_="aliases.py" FileName="ISO885~4.PY|iso8859_13.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\iso8859_13.py" SelfReg="false"/>
+    <ROW File="iso8859_14.py" Component_="aliases.py" FileName="ISO885~5.PY|iso8859_14.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\iso8859_14.py" SelfReg="false"/>
+    <ROW File="iso8859_15.py" Component_="aliases.py" FileName="ISO885~6.PY|iso8859_15.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\iso8859_15.py" SelfReg="false"/>
+    <ROW File="iso8859_16.py" Component_="aliases.py" FileName="ISO885~7.PY|iso8859_16.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\iso8859_16.py" SelfReg="false"/>
+    <ROW File="iso8859_2.py" Component_="aliases.py" FileName="ISO885~8.PY|iso8859_2.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\iso8859_2.py" SelfReg="false"/>
+    <ROW File="iso8859_3.py" Component_="aliases.py" FileName="ISO885~9.PY|iso8859_3.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\iso8859_3.py" SelfReg="false"/>
+    <ROW File="iso8859_4.py" Component_="aliases.py" FileName="ISO88~10.PY|iso8859_4.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\iso8859_4.py" SelfReg="false"/>
+    <ROW File="iso8859_5.py" Component_="aliases.py" FileName="ISO88~11.PY|iso8859_5.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\iso8859_5.py" SelfReg="false"/>
+    <ROW File="iso8859_6.py" Component_="aliases.py" FileName="ISO88~12.PY|iso8859_6.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\iso8859_6.py" SelfReg="false"/>
+    <ROW File="iso8859_7.py" Component_="aliases.py" FileName="ISO88~13.PY|iso8859_7.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\iso8859_7.py" SelfReg="false"/>
+    <ROW File="iso8859_8.py" Component_="aliases.py" FileName="ISO88~14.PY|iso8859_8.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\iso8859_8.py" SelfReg="false"/>
+    <ROW File="iso8859_9.py" Component_="aliases.py" FileName="ISO88~15.PY|iso8859_9.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\iso8859_9.py" SelfReg="false"/>
+    <ROW File="koi8_r.py" Component_="aliases.py" FileName="koi8_r.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\koi8_r.py" SelfReg="false"/>
+    <ROW File="koi8_u.py" Component_="aliases.py" FileName="koi8_u.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\koi8_u.py" SelfReg="false"/>
+    <ROW File="latin_1.py" Component_="aliases.py" FileName="latin_1.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\latin_1.py" SelfReg="false"/>
+    <ROW File="mac_arabic.py" Component_="aliases.py" FileName="MAC_AR~1.PY|mac_arabic.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\mac_arabic.py" SelfReg="false"/>
+    <ROW File="mac_centeuro.py" Component_="aliases.py" FileName="MAC_CE~1.PY|mac_centeuro.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\mac_centeuro.py" SelfReg="false"/>
+    <ROW File="mac_croatian.py" Component_="aliases.py" FileName="MAC_CR~1.PY|mac_croatian.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\mac_croatian.py" SelfReg="false"/>
+    <ROW File="mac_cyrillic.py" Component_="aliases.py" FileName="MAC_CY~1.PY|mac_cyrillic.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\mac_cyrillic.py" SelfReg="false"/>
+    <ROW File="mac_farsi.py" Component_="aliases.py" FileName="MAC_FA~1.PY|mac_farsi.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\mac_farsi.py" SelfReg="false"/>
+    <ROW File="mac_greek.py" Component_="aliases.py" FileName="MAC_GR~1.PY|mac_greek.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\mac_greek.py" SelfReg="false"/>
+    <ROW File="mac_iceland.py" Component_="aliases.py" FileName="MAC_IC~1.PY|mac_iceland.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\mac_iceland.py" SelfReg="false"/>
+    <ROW File="mac_latin2.py" Component_="aliases.py" FileName="MAC_LA~1.PY|mac_latin2.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\mac_latin2.py" SelfReg="false"/>
+    <ROW File="mac_roman.py" Component_="aliases.py" FileName="MAC_RO~1.PY|mac_roman.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\mac_roman.py" SelfReg="false"/>
+    <ROW File="mac_romanian.py" Component_="aliases.py" FileName="MAC_RO~2.PY|mac_romanian.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\mac_romanian.py" SelfReg="false"/>
+    <ROW File="mac_turkish.py" Component_="aliases.py" FileName="MAC_TU~1.PY|mac_turkish.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\mac_turkish.py" SelfReg="false"/>
+    <ROW File="mbcs.py" Component_="aliases.py" FileName="mbcs.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\mbcs.py" SelfReg="false"/>
+    <ROW File="palmos.py" Component_="aliases.py" FileName="palmos.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\palmos.py" SelfReg="false"/>
+    <ROW File="ptcp154.py" Component_="aliases.py" FileName="ptcp154.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\ptcp154.py" SelfReg="false"/>
+    <ROW File="punycode.py" Component_="aliases.py" FileName="punycode.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\punycode.py" SelfReg="false"/>
+    <ROW File="quopri_codec.py" Component_="aliases.py" FileName="QUOPRI~1.PY|quopri_codec.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\quopri_codec.py" SelfReg="false"/>
+    <ROW File="raw_unicode_escape.py" Component_="aliases.py" FileName="RAW_UN~1.PY|raw_unicode_escape.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\raw_unicode_escape.py" SelfReg="false"/>
+    <ROW File="rot_13.py" Component_="aliases.py" FileName="rot_13.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\rot_13.py" SelfReg="false"/>
+    <ROW File="string_escape.py" Component_="aliases.py" FileName="STRING~1.PY|string_escape.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\string_escape.py" SelfReg="false"/>
+    <ROW File="tis_620.py" Component_="aliases.py" FileName="tis_620.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\tis_620.py" SelfReg="false"/>
+    <ROW File="undefined.py" Component_="aliases.py" FileName="UNDEFI~1.PY|undefined.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\undefined.py" SelfReg="false"/>
+    <ROW File="unicode_escape.py" Component_="aliases.py" FileName="UNICOD~1.PY|unicode_escape.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\unicode_escape.py" SelfReg="false"/>
+    <ROW File="unicode_internal.py" Component_="aliases.py" FileName="UNICOD~2.PY|unicode_internal.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\unicode_internal.py" SelfReg="false"/>
+    <ROW File="utf_16.py" Component_="aliases.py" FileName="utf_16.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\utf_16.py" SelfReg="false"/>
+    <ROW File="utf_16_be.py" Component_="aliases.py" FileName="UTF_16~1.PY|utf_16_be.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\utf_16_be.py" SelfReg="false"/>
+    <ROW File="utf_16_le.py" Component_="aliases.py" FileName="UTF_16~2.PY|utf_16_le.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\utf_16_le.py" SelfReg="false"/>
+    <ROW File="utf_32.py" Component_="aliases.py" FileName="utf_32.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\utf_32.py" SelfReg="false"/>
+    <ROW File="utf_32_be.py" Component_="aliases.py" FileName="UTF_32~1.PY|utf_32_be.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\utf_32_be.py" SelfReg="false"/>
+    <ROW File="utf_32_le.py" Component_="aliases.py" FileName="UTF_32~2.PY|utf_32_le.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\utf_32_le.py" SelfReg="false"/>
+    <ROW File="utf_7.py" Component_="aliases.py" FileName="utf_7.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\utf_7.py" SelfReg="false"/>
+    <ROW File="utf_8.py" Component_="aliases.py" FileName="utf_8.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\utf_8.py" SelfReg="false"/>
+    <ROW File="utf_8_sig.py" Component_="aliases.py" FileName="UTF_8_~1.PY|utf_8_sig.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\utf_8_sig.py" SelfReg="false"/>
+    <ROW File="uu_codec.py" Component_="aliases.py" FileName="uu_codec.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\uu_codec.py" SelfReg="false"/>
+    <ROW File="zlib_codec.py" Component_="aliases.py" FileName="ZLIB_C~1.PY|zlib_codec.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\zlib_codec.py" SelfReg="false"/>
+    <ROW File="__init__.py_6" Component_="aliases.py" FileName="__init__.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\encodings\__init__.py" SelfReg="false"/>
+    <ROW File="pip19.2.3py2.py3noneany.whl" Component_="pip19.2.3py2.py3noneany.whl" FileName="PIP-19~1.WHL|pip-19.2.3-py2.py3-none-any.whl" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\ensurepip\_bundled\pip-19.2.3-py2.py3-none-any.whl" SelfReg="false"/>
+    <ROW File="setuptools41.2.0py2.py3noneany.whl" Component_="pip19.2.3py2.py3noneany.whl" FileName="SETUPT~1.WHL|setuptools-41.2.0-py2.py3-none-any.whl" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\ensurepip\_bundled\setuptools-41.2.0-py2.py3-none-any.whl" SelfReg="false"/>
+    <ROW File="_uninstall.py" Component_="_uninstall.py" FileName="_UNINS~1.PY|_uninstall.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\ensurepip\_uninstall.py" SelfReg="false"/>
+    <ROW File="__init__.py_7" Component_="_uninstall.py" FileName="__init__.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\ensurepip\__init__.py" SelfReg="false"/>
+    <ROW File="__main__.py" Component_="_uninstall.py" FileName="__main__.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\ensurepip\__main__.py" SelfReg="false"/>
+    <ROW File="filecmp.py" Component_="abc.py" FileName="filecmp.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\filecmp.py" SelfReg="false"/>
+    <ROW File="fileinput.py" Component_="abc.py" FileName="FILEIN~1.PY|fileinput.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\fileinput.py" SelfReg="false"/>
+    <ROW File="fnmatch.py" Component_="abc.py" FileName="fnmatch.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\fnmatch.py" SelfReg="false"/>
+    <ROW File="formatter.py" Component_="abc.py" FileName="FORMAT~1.PY|formatter.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\formatter.py" SelfReg="false"/>
+    <ROW File="fpformat.py" Component_="abc.py" FileName="fpformat.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\fpformat.py" SelfReg="false"/>
+    <ROW File="fractions.py" Component_="abc.py" FileName="FRACTI~1.PY|fractions.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\fractions.py" SelfReg="false"/>
+    <ROW File="ftplib.py" Component_="abc.py" FileName="ftplib.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\ftplib.py" SelfReg="false"/>
+    <ROW File="functools.py" Component_="abc.py" FileName="FUNCTO~1.PY|functools.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\functools.py" SelfReg="false"/>
+    <ROW File="genericpath.py" Component_="abc.py" FileName="GENERI~1.PY|genericpath.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\genericpath.py" SelfReg="false"/>
+    <ROW File="getopt.py" Component_="abc.py" FileName="getopt.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\getopt.py" SelfReg="false"/>
+    <ROW File="getpass.py" Component_="abc.py" FileName="getpass.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\getpass.py" SelfReg="false"/>
+    <ROW File="gettext.py" Component_="abc.py" FileName="gettext.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\gettext.py" SelfReg="false"/>
+    <ROW File="glob.py" Component_="abc.py" FileName="glob.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\glob.py" SelfReg="false"/>
+    <ROW File="gzip.py" Component_="abc.py" FileName="gzip.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\gzip.py" SelfReg="false"/>
+    <ROW File="hashlib.py" Component_="abc.py" FileName="hashlib.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\hashlib.py" SelfReg="false"/>
+    <ROW File="heapq.py" Component_="abc.py" FileName="heapq.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\heapq.py" SelfReg="false"/>
+    <ROW File="hmac.py" Component_="abc.py" FileName="hmac.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\hmac.py" SelfReg="false"/>
+    <ROW File="htmlentitydefs.py" Component_="abc.py" FileName="HTMLEN~1.PY|htmlentitydefs.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\htmlentitydefs.py" SelfReg="false"/>
+    <ROW File="htmllib.py" Component_="abc.py" FileName="htmllib.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\htmllib.py" SelfReg="false"/>
+    <ROW File="HTMLParser.py" Component_="abc.py" FileName="HTMLPA~1.PY|HTMLParser.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\HTMLParser.py" SelfReg="false"/>
+    <ROW File="httplib.py" Component_="abc.py" FileName="httplib.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\httplib.py" SelfReg="false"/>
+    <ROW File="ihooks.py" Component_="abc.py" FileName="ihooks.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\ihooks.py" SelfReg="false"/>
+    <ROW File="imaplib.py" Component_="abc.py" FileName="imaplib.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\imaplib.py" SelfReg="false"/>
+    <ROW File="imghdr.py" Component_="abc.py" FileName="imghdr.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\imghdr.py" SelfReg="false"/>
+    <ROW File="__init__.py_8" Component_="__init__.py" FileName="__init__.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\importlib\__init__.py" SelfReg="false"/>
+    <ROW File="imputil.py" Component_="abc.py" FileName="imputil.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\imputil.py" SelfReg="false"/>
+    <ROW File="inspect.py" Component_="abc.py" FileName="inspect.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\inspect.py" SelfReg="false"/>
+    <ROW File="io.py" Component_="abc.py" FileName="io.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\io.py" SelfReg="false"/>
+    <ROW File="decoder.py" Component_="decoder.py" FileName="decoder.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\json\decoder.py" SelfReg="false"/>
+    <ROW File="encoder.py" Component_="decoder.py" FileName="encoder.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\json\encoder.py" SelfReg="false"/>
+    <ROW File="scanner.py" Component_="decoder.py" FileName="scanner.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\json\scanner.py" SelfReg="false"/>
+    <ROW File="tool.py" Component_="decoder.py" FileName="tool.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\json\tool.py" SelfReg="false"/>
+    <ROW File="__init__.py_9" Component_="decoder.py" FileName="__init__.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\json\__init__.py" SelfReg="false"/>
+    <ROW File="keyword.py" Component_="abc.py" FileName="keyword.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\keyword.py" SelfReg="false"/>
+    <ROW File="btm_matcher.py" Component_="btm_matcher.py" FileName="BTM_MA~1.PY|btm_matcher.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\btm_matcher.py" SelfReg="false"/>
+    <ROW File="btm_utils.py" Component_="btm_matcher.py" FileName="BTM_UT~1.PY|btm_utils.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\btm_utils.py" SelfReg="false"/>
+    <ROW File="fixer_base.py" Component_="btm_matcher.py" FileName="FIXER_~1.PY|fixer_base.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixer_base.py" SelfReg="false"/>
+    <ROW File="fixer_util.py" Component_="btm_matcher.py" FileName="FIXER_~2.PY|fixer_util.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixer_util.py" SelfReg="false"/>
+    <ROW File="fix_apply.py" Component_="fix_apply.py" FileName="FIX_AP~1.PY|fix_apply.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_apply.py" SelfReg="false"/>
+    <ROW File="fix_asserts.py" Component_="fix_apply.py" FileName="FIX_AS~1.PY|fix_asserts.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_asserts.py" SelfReg="false"/>
+    <ROW File="fix_basestring.py" Component_="fix_apply.py" FileName="FIX_BA~1.PY|fix_basestring.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_basestring.py" SelfReg="false"/>
+    <ROW File="fix_buffer.py" Component_="fix_apply.py" FileName="FIX_BU~1.PY|fix_buffer.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_buffer.py" SelfReg="false"/>
+    <ROW File="fix_dict.py" Component_="fix_apply.py" FileName="fix_dict.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_dict.py" SelfReg="false"/>
+    <ROW File="fix_except.py" Component_="fix_apply.py" FileName="FIX_EX~1.PY|fix_except.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_except.py" SelfReg="false"/>
+    <ROW File="fix_exec.py" Component_="fix_apply.py" FileName="fix_exec.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_exec.py" SelfReg="false"/>
+    <ROW File="fix_execfile.py" Component_="fix_apply.py" FileName="FIX_EX~2.PY|fix_execfile.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_execfile.py" SelfReg="false"/>
+    <ROW File="fix_exitfunc.py" Component_="fix_apply.py" FileName="FIX_EX~3.PY|fix_exitfunc.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_exitfunc.py" SelfReg="false"/>
+    <ROW File="fix_filter.py" Component_="fix_apply.py" FileName="FIX_FI~1.PY|fix_filter.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_filter.py" SelfReg="false"/>
+    <ROW File="fix_funcattrs.py" Component_="fix_apply.py" FileName="FIX_FU~1.PY|fix_funcattrs.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_funcattrs.py" SelfReg="false"/>
+    <ROW File="fix_future.py" Component_="fix_apply.py" FileName="FIX_FU~2.PY|fix_future.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_future.py" SelfReg="false"/>
+    <ROW File="fix_getcwdu.py" Component_="fix_apply.py" FileName="FIX_GE~1.PY|fix_getcwdu.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_getcwdu.py" SelfReg="false"/>
+    <ROW File="fix_has_key.py" Component_="fix_apply.py" FileName="FIX_HA~1.PY|fix_has_key.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_has_key.py" SelfReg="false"/>
+    <ROW File="fix_idioms.py" Component_="fix_apply.py" FileName="FIX_ID~1.PY|fix_idioms.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_idioms.py" SelfReg="false"/>
+    <ROW File="fix_import.py" Component_="fix_apply.py" FileName="FIX_IM~1.PY|fix_import.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_import.py" SelfReg="false"/>
+    <ROW File="fix_imports.py" Component_="fix_apply.py" FileName="FIX_IM~2.PY|fix_imports.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_imports.py" SelfReg="false"/>
+    <ROW File="fix_imports2.py" Component_="fix_apply.py" FileName="FIX_IM~3.PY|fix_imports2.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_imports2.py" SelfReg="false"/>
+    <ROW File="fix_input.py" Component_="fix_apply.py" FileName="FIX_IN~1.PY|fix_input.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_input.py" SelfReg="false"/>
+    <ROW File="fix_intern.py" Component_="fix_apply.py" FileName="FIX_IN~2.PY|fix_intern.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_intern.py" SelfReg="false"/>
+    <ROW File="fix_isinstance.py" Component_="fix_apply.py" FileName="FIX_IS~1.PY|fix_isinstance.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_isinstance.py" SelfReg="false"/>
+    <ROW File="fix_itertools.py" Component_="fix_apply.py" FileName="FIX_IT~1.PY|fix_itertools.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_itertools.py" SelfReg="false"/>
+    <ROW File="fix_itertools_imports.py" Component_="fix_apply.py" FileName="FIX_IT~2.PY|fix_itertools_imports.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_itertools_imports.py" SelfReg="false"/>
+    <ROW File="fix_long.py" Component_="fix_apply.py" FileName="fix_long.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_long.py" SelfReg="false"/>
+    <ROW File="fix_map.py" Component_="fix_apply.py" FileName="fix_map.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_map.py" SelfReg="false"/>
+    <ROW File="fix_metaclass.py" Component_="fix_apply.py" FileName="FIX_ME~1.PY|fix_metaclass.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_metaclass.py" SelfReg="false"/>
+    <ROW File="fix_methodattrs.py" Component_="fix_apply.py" FileName="FIX_ME~2.PY|fix_methodattrs.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_methodattrs.py" SelfReg="false"/>
+    <ROW File="fix_ne.py" Component_="fix_apply.py" FileName="fix_ne.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_ne.py" SelfReg="false"/>
+    <ROW File="fix_next.py" Component_="fix_apply.py" FileName="fix_next.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_next.py" SelfReg="false"/>
+    <ROW File="fix_nonzero.py" Component_="fix_apply.py" FileName="FIX_NO~1.PY|fix_nonzero.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_nonzero.py" SelfReg="false"/>
+    <ROW File="fix_numliterals.py" Component_="fix_apply.py" FileName="FIX_NU~1.PY|fix_numliterals.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_numliterals.py" SelfReg="false"/>
+    <ROW File="fix_operator.py" Component_="fix_apply.py" FileName="FIX_OP~1.PY|fix_operator.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_operator.py" SelfReg="false"/>
+    <ROW File="fix_paren.py" Component_="fix_apply.py" FileName="FIX_PA~1.PY|fix_paren.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_paren.py" SelfReg="false"/>
+    <ROW File="fix_print.py" Component_="fix_apply.py" FileName="FIX_PR~1.PY|fix_print.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_print.py" SelfReg="false"/>
+    <ROW File="fix_raise.py" Component_="fix_apply.py" FileName="FIX_RA~1.PY|fix_raise.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_raise.py" SelfReg="false"/>
+    <ROW File="fix_raw_input.py" Component_="fix_apply.py" FileName="FIX_RA~2.PY|fix_raw_input.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_raw_input.py" SelfReg="false"/>
+    <ROW File="fix_reduce.py" Component_="fix_apply.py" FileName="FIX_RE~1.PY|fix_reduce.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_reduce.py" SelfReg="false"/>
+    <ROW File="fix_renames.py" Component_="fix_apply.py" FileName="FIX_RE~2.PY|fix_renames.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_renames.py" SelfReg="false"/>
+    <ROW File="fix_repr.py" Component_="fix_apply.py" FileName="fix_repr.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_repr.py" SelfReg="false"/>
+    <ROW File="fix_set_literal.py" Component_="fix_apply.py" FileName="FIX_SE~1.PY|fix_set_literal.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_set_literal.py" SelfReg="false"/>
+    <ROW File="fix_standarderror.py" Component_="fix_apply.py" FileName="FIX_ST~1.PY|fix_standarderror.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_standarderror.py" SelfReg="false"/>
+    <ROW File="fix_sys_exc.py" Component_="fix_apply.py" FileName="FIX_SY~1.PY|fix_sys_exc.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_sys_exc.py" SelfReg="false"/>
+    <ROW File="fix_throw.py" Component_="fix_apply.py" FileName="FIX_TH~1.PY|fix_throw.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_throw.py" SelfReg="false"/>
+    <ROW File="fix_tuple_params.py" Component_="fix_apply.py" FileName="FIX_TU~1.PY|fix_tuple_params.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_tuple_params.py" SelfReg="false"/>
+    <ROW File="fix_types.py" Component_="fix_apply.py" FileName="FIX_TY~1.PY|fix_types.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_types.py" SelfReg="false"/>
+    <ROW File="fix_unicode.py" Component_="fix_apply.py" FileName="FIX_UN~1.PY|fix_unicode.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_unicode.py" SelfReg="false"/>
+    <ROW File="fix_urllib.py" Component_="fix_apply.py" FileName="FIX_UR~1.PY|fix_urllib.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_urllib.py" SelfReg="false"/>
+    <ROW File="fix_ws_comma.py" Component_="fix_apply.py" FileName="FIX_WS~1.PY|fix_ws_comma.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_ws_comma.py" SelfReg="false"/>
+    <ROW File="fix_xrange.py" Component_="fix_apply.py" FileName="FIX_XR~1.PY|fix_xrange.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_xrange.py" SelfReg="false"/>
+    <ROW File="fix_xreadlines.py" Component_="fix_apply.py" FileName="FIX_XR~2.PY|fix_xreadlines.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_xreadlines.py" SelfReg="false"/>
+    <ROW File="fix_zip.py" Component_="fix_apply.py" FileName="fix_zip.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\fix_zip.py" SelfReg="false"/>
+    <ROW File="__init__.py_10" Component_="fix_apply.py" FileName="__init__.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\fixes\__init__.py" SelfReg="false"/>
+    <ROW File="main.py" Component_="btm_matcher.py" FileName="main.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\main.py" SelfReg="false"/>
+    <ROW File="patcomp.py" Component_="btm_matcher.py" FileName="patcomp.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\patcomp.py" SelfReg="false"/>
+    <ROW File="conv.py" Component_="conv.py" FileName="conv.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\pgen2\conv.py" SelfReg="false"/>
+    <ROW File="driver.py" Component_="conv.py" FileName="driver.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\pgen2\driver.py" SelfReg="false"/>
+    <ROW File="grammar.py" Component_="conv.py" FileName="grammar.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\pgen2\grammar.py" SelfReg="false"/>
+    <ROW File="literals.py" Component_="conv.py" FileName="literals.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\pgen2\literals.py" SelfReg="false"/>
+    <ROW File="parse.py" Component_="conv.py" FileName="parse.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\pgen2\parse.py" SelfReg="false"/>
+    <ROW File="pgen.py" Component_="conv.py" FileName="pgen.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\pgen2\pgen.py" SelfReg="false"/>
+    <ROW File="token.py" Component_="conv.py" FileName="token.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\pgen2\token.py" SelfReg="false"/>
+    <ROW File="tokenize.py" Component_="conv.py" FileName="tokenize.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\pgen2\tokenize.py" SelfReg="false"/>
+    <ROW File="__init__.py_11" Component_="conv.py" FileName="__init__.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\pgen2\__init__.py" SelfReg="false"/>
+    <ROW File="pygram.py" Component_="btm_matcher.py" FileName="pygram.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\pygram.py" SelfReg="false"/>
+    <ROW File="pytree.py" Component_="btm_matcher.py" FileName="pytree.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\pytree.py" SelfReg="false"/>
+    <ROW File="refactor.py" Component_="btm_matcher.py" FileName="refactor.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\refactor.py" SelfReg="false"/>
+    <ROW File="__init__.py_12" Component_="btm_matcher.py" FileName="__init__.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\__init__.py" SelfReg="false"/>
+    <ROW File="__main__.py_1" Component_="btm_matcher.py" FileName="__main__.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\lib2to3\__main__.py" SelfReg="false"/>
+    <ROW File="linecache.py" Component_="abc.py" FileName="LINECA~1.PY|linecache.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\linecache.py" SelfReg="false"/>
+    <ROW File="locale.py" Component_="abc.py" FileName="locale.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\locale.py" SelfReg="false"/>
+    <ROW File="config.py_2" Component_="config.py" FileName="config.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\logging\config.py" SelfReg="false"/>
+    <ROW File="handlers.py" Component_="config.py" FileName="handlers.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\logging\handlers.py" SelfReg="false"/>
+    <ROW File="__init__.py_13" Component_="config.py" FileName="__init__.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\logging\__init__.py" SelfReg="false"/>
+    <ROW File="macpath.py" Component_="abc.py" FileName="macpath.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\macpath.py" SelfReg="false"/>
+    <ROW File="macurl2path.py" Component_="abc.py" FileName="MACURL~1.PY|macurl2path.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\macurl2path.py" SelfReg="false"/>
+    <ROW File="mailbox.py" Component_="abc.py" FileName="mailbox.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\mailbox.py" SelfReg="false"/>
+    <ROW File="mailcap.py" Component_="abc.py" FileName="mailcap.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\mailcap.py" SelfReg="false"/>
+    <ROW File="markupbase.py" Component_="abc.py" FileName="MARKUP~1.PY|markupbase.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\markupbase.py" SelfReg="false"/>
+    <ROW File="md5.py" Component_="abc.py" FileName="md5.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\md5.py" SelfReg="false"/>
+    <ROW File="mhlib.py" Component_="abc.py" FileName="mhlib.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\mhlib.py" SelfReg="false"/>
+    <ROW File="mimetools.py" Component_="abc.py" FileName="MIMETO~1.PY|mimetools.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\mimetools.py" SelfReg="false"/>
+    <ROW File="mimetypes.py" Component_="abc.py" FileName="MIMETY~1.PY|mimetypes.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\mimetypes.py" SelfReg="false"/>
+    <ROW File="MimeWriter.py" Component_="abc.py" FileName="MIMEWR~1.PY|MimeWriter.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\MimeWriter.py" SelfReg="false"/>
+    <ROW File="mimify.py" Component_="abc.py" FileName="mimify.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\mimify.py" SelfReg="false"/>
+    <ROW File="modulefinder.py" Component_="abc.py" FileName="MODULE~1.PY|modulefinder.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\modulefinder.py" SelfReg="false"/>
+    <ROW File="multifile.py" Component_="abc.py" FileName="MULTIF~1.PY|multifile.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\multifile.py" SelfReg="false"/>
+    <ROW File="connection.py" Component_="connection.py" FileName="CONNEC~1.PY|connection.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\multiprocessing\connection.py" SelfReg="false"/>
+    <ROW File="connection.py_1" Component_="connection.py_1" FileName="CONNEC~1.PY|connection.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\multiprocessing\dummy\connection.py" SelfReg="false"/>
+    <ROW File="__init__.py_14" Component_="connection.py_1" FileName="__init__.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\multiprocessing\dummy\__init__.py" SelfReg="false"/>
+    <ROW File="forking.py" Component_="connection.py" FileName="forking.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\multiprocessing\forking.py" SelfReg="false"/>
+    <ROW File="heap.py" Component_="connection.py" FileName="heap.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\multiprocessing\heap.py" SelfReg="false"/>
+    <ROW File="managers.py" Component_="connection.py" FileName="managers.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\multiprocessing\managers.py" SelfReg="false"/>
+    <ROW File="pool.py" Component_="connection.py" FileName="pool.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\multiprocessing\pool.py" SelfReg="false"/>
+    <ROW File="process.py" Component_="connection.py" FileName="process.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\multiprocessing\process.py" SelfReg="false"/>
+    <ROW File="queues.py" Component_="connection.py" FileName="queues.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\multiprocessing\queues.py" SelfReg="false"/>
+    <ROW File="reduction.py" Component_="connection.py" FileName="REDUCT~1.PY|reduction.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\multiprocessing\reduction.py" SelfReg="false"/>
+    <ROW File="sharedctypes.py" Component_="connection.py" FileName="SHARED~1.PY|sharedctypes.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\multiprocessing\sharedctypes.py" SelfReg="false"/>
+    <ROW File="synchronize.py" Component_="connection.py" FileName="SYNCHR~1.PY|synchronize.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\multiprocessing\synchronize.py" SelfReg="false"/>
+    <ROW File="util.py_2" Component_="connection.py" FileName="util.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\multiprocessing\util.py" SelfReg="false"/>
+    <ROW File="__init__.py_15" Component_="connection.py" FileName="__init__.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\multiprocessing\__init__.py" SelfReg="false"/>
+    <ROW File="mutex.py" Component_="abc.py" FileName="mutex.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\mutex.py" SelfReg="false"/>
+    <ROW File="netrc.py" Component_="abc.py" FileName="netrc.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\netrc.py" SelfReg="false"/>
+    <ROW File="new.py" Component_="abc.py" FileName="new.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\new.py" SelfReg="false"/>
+    <ROW File="nntplib.py" Component_="abc.py" FileName="nntplib.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\nntplib.py" SelfReg="false"/>
+    <ROW File="ntpath.py" Component_="abc.py" FileName="ntpath.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\ntpath.py" SelfReg="false"/>
+    <ROW File="nturl2path.py" Component_="abc.py" FileName="NTURL2~1.PY|nturl2path.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\nturl2path.py" SelfReg="false"/>
+    <ROW File="numbers.py" Component_="abc.py" FileName="numbers.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\numbers.py" SelfReg="false"/>
+    <ROW File="opcode.py" Component_="abc.py" FileName="opcode.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\opcode.py" SelfReg="false"/>
+    <ROW File="optparse.py" Component_="abc.py" FileName="optparse.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\optparse.py" SelfReg="false"/>
+    <ROW File="os.py" Component_="abc.py" FileName="os.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\os.py" SelfReg="false"/>
+    <ROW File="os2emxpath.py" Component_="abc.py" FileName="OS2EMX~1.PY|os2emxpath.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\os2emxpath.py" SelfReg="false"/>
+    <ROW File="pdb.py" Component_="abc.py" FileName="pdb.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\pdb.py" SelfReg="false"/>
+    <ROW File="pickle.py" Component_="abc.py" FileName="pickle.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\pickle.py" SelfReg="false"/>
+    <ROW File="pickletools.py" Component_="abc.py" FileName="PICKLE~1.PY|pickletools.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\pickletools.py" SelfReg="false"/>
+    <ROW File="pipes.py" Component_="abc.py" FileName="pipes.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\pipes.py" SelfReg="false"/>
+    <ROW File="pkgutil.py" Component_="abc.py" FileName="pkgutil.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\pkgutil.py" SelfReg="false"/>
+    <ROW File="platform.py" Component_="abc.py" FileName="platform.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\platform.py" SelfReg="false"/>
+    <ROW File="plistlib.py" Component_="abc.py" FileName="plistlib.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\plistlib.py" SelfReg="false"/>
+    <ROW File="popen2.py" Component_="abc.py" FileName="popen2.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\popen2.py" SelfReg="false"/>
+    <ROW File="poplib.py" Component_="abc.py" FileName="poplib.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\poplib.py" SelfReg="false"/>
+    <ROW File="posixfile.py" Component_="abc.py" FileName="POSIXF~1.PY|posixfile.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\posixfile.py" SelfReg="false"/>
+    <ROW File="posixpath.py" Component_="abc.py" FileName="POSIXP~1.PY|posixpath.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\posixpath.py" SelfReg="false"/>
+    <ROW File="pprint.py" Component_="abc.py" FileName="pprint.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\pprint.py" SelfReg="false"/>
+    <ROW File="profile.py" Component_="abc.py" FileName="profile.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\profile.py" SelfReg="false"/>
+    <ROW File="pstats.py" Component_="abc.py" FileName="pstats.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\pstats.py" SelfReg="false"/>
+    <ROW File="pyclbr.py" Component_="abc.py" FileName="pyclbr.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\pyclbr.py" SelfReg="false"/>
+    <ROW File="pydoc.py" Component_="abc.py" FileName="pydoc.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\pydoc.py" SelfReg="false"/>
+    <ROW File="topics.py" Component_="topics.py" FileName="topics.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\pydoc_data\topics.py" SelfReg="false"/>
+    <ROW File="__init__.py_16" Component_="topics.py" FileName="__init__.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\pydoc_data\__init__.py" SelfReg="false"/>
+    <ROW File="py_compile.py" Component_="abc.py" FileName="PY_COM~1.PY|py_compile.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\py_compile.py" SelfReg="false"/>
+    <ROW File="Queue.py" Component_="abc.py" FileName="Queue.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\Queue.py" SelfReg="false"/>
+    <ROW File="quopri.py" Component_="abc.py" FileName="quopri.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\quopri.py" SelfReg="false"/>
+    <ROW File="random.py" Component_="abc.py" FileName="random.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\random.py" SelfReg="false"/>
+    <ROW File="repr.py" Component_="abc.py" FileName="repr.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\repr.py" SelfReg="false"/>
+    <ROW File="rexec.py" Component_="abc.py" FileName="rexec.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\rexec.py" SelfReg="false"/>
+    <ROW File="rfc822.py" Component_="abc.py" FileName="rfc822.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\rfc822.py" SelfReg="false"/>
+    <ROW File="rlcompleter.py" Component_="abc.py" FileName="RLCOMP~1.PY|rlcompleter.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\rlcompleter.py" SelfReg="false"/>
+    <ROW File="robotparser.py" Component_="abc.py" FileName="ROBOTP~1.PY|robotparser.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\robotparser.py" SelfReg="false"/>
+    <ROW File="runpy.py" Component_="abc.py" FileName="runpy.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\runpy.py" SelfReg="false"/>
+    <ROW File="sched.py" Component_="abc.py" FileName="sched.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\sched.py" SelfReg="false"/>
+    <ROW File="sets.py" Component_="abc.py" FileName="sets.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\sets.py" SelfReg="false"/>
+    <ROW File="sgmllib.py" Component_="abc.py" FileName="sgmllib.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\sgmllib.py" SelfReg="false"/>
+    <ROW File="sha.py" Component_="abc.py" FileName="sha.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\sha.py" SelfReg="false"/>
+    <ROW File="shelve.py" Component_="abc.py" FileName="shelve.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\shelve.py" SelfReg="false"/>
+    <ROW File="shlex.py" Component_="abc.py" FileName="shlex.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\shlex.py" SelfReg="false"/>
+    <ROW File="shutil.py" Component_="abc.py" FileName="shutil.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\shutil.py" SelfReg="false"/>
+    <ROW File="SimpleHTTPServer.py" Component_="abc.py" FileName="SIMPLE~1.PY|SimpleHTTPServer.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\SimpleHTTPServer.py" SelfReg="false"/>
+    <ROW File="SimpleXMLRPCServer.py" Component_="abc.py" FileName="SIMPLE~2.PY|SimpleXMLRPCServer.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\SimpleXMLRPCServer.py" SelfReg="false"/>
+    <ROW File="README.txt" Component_="README.txt" FileName="README.txt" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\site-packages\README.txt" SelfReg="false"/>
+    <ROW File="site.py" Component_="abc.py" FileName="site.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\site.py" SelfReg="false"/>
+    <ROW File="smtpd.py" Component_="abc.py" FileName="smtpd.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\smtpd.py" SelfReg="false"/>
+    <ROW File="smtplib.py" Component_="abc.py" FileName="smtplib.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\smtplib.py" SelfReg="false"/>
+    <ROW File="sndhdr.py" Component_="abc.py" FileName="sndhdr.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\sndhdr.py" SelfReg="false"/>
+    <ROW File="socket.py" Component_="abc.py" FileName="socket.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\socket.py" SelfReg="false"/>
+    <ROW File="SocketServer.py" Component_="abc.py" FileName="SOCKET~1.PY|SocketServer.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\SocketServer.py" SelfReg="false"/>
+    <ROW File="dbapi2.py" Component_="dbapi2.py" FileName="dbapi2.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\sqlite3\dbapi2.py" SelfReg="false"/>
+    <ROW File="dump.py" Component_="dbapi2.py" FileName="dump.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\sqlite3\dump.py" SelfReg="false"/>
+    <ROW File="__init__.py_17" Component_="dbapi2.py" FileName="__init__.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\sqlite3\__init__.py" SelfReg="false"/>
+    <ROW File="sre_constants.py" Component_="abc.py" FileName="SRE_CO~1.PY|sre_constants.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\sre_constants.py" SelfReg="false"/>
+    <ROW File="sre_parse.py" Component_="abc.py" FileName="SRE_PA~1.PY|sre_parse.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\sre_parse.py" SelfReg="false"/>
+    <ROW File="ssl.py" Component_="abc.py" FileName="ssl.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\ssl.py" SelfReg="false"/>
+    <ROW File="stat.py" Component_="abc.py" FileName="stat.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\stat.py" SelfReg="false"/>
+    <ROW File="statvfs.py" Component_="abc.py" FileName="statvfs.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\statvfs.py" SelfReg="false"/>
+    <ROW File="string.py" Component_="abc.py" FileName="string.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\string.py" SelfReg="false"/>
+    <ROW File="StringIO.py" Component_="abc.py" FileName="StringIO.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\StringIO.py" SelfReg="false"/>
+    <ROW File="stringold.py" Component_="abc.py" FileName="STRING~1.PY|stringold.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\stringold.py" SelfReg="false"/>
+    <ROW File="stringprep.py" Component_="abc.py" FileName="STRING~2.PY|stringprep.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\stringprep.py" SelfReg="false"/>
+    <ROW File="struct.py" Component_="abc.py" FileName="struct.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\struct.py" SelfReg="false"/>
+    <ROW File="subprocess.py" Component_="abc.py" FileName="SUBPRO~1.PY|subprocess.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\subprocess.py" SelfReg="false"/>
+    <ROW File="sunau.py" Component_="abc.py" FileName="sunau.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\sunau.py" SelfReg="false"/>
+    <ROW File="sunaudio.py" Component_="abc.py" FileName="sunaudio.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\sunaudio.py" SelfReg="false"/>
+    <ROW File="symbol.py" Component_="abc.py" FileName="symbol.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\symbol.py" SelfReg="false"/>
+    <ROW File="sysconfig.py_1" Component_="abc.py" FileName="SYSCON~1.PY|sysconfig.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\sysconfig.py" SelfReg="false"/>
+    <ROW File="tabnanny.py" Component_="abc.py" FileName="tabnanny.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\tabnanny.py" SelfReg="false"/>
+    <ROW File="tarfile.py" Component_="abc.py" FileName="tarfile.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\tarfile.py" SelfReg="false"/>
+    <ROW File="telnetlib.py" Component_="abc.py" FileName="TELNET~1.PY|telnetlib.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\telnetlib.py" SelfReg="false"/>
+    <ROW File="tempfile.py" Component_="abc.py" FileName="tempfile.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\tempfile.py" SelfReg="false"/>
+    <ROW File="textwrap.py" Component_="abc.py" FileName="textwrap.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\textwrap.py" SelfReg="false"/>
+    <ROW File="this.py" Component_="abc.py" FileName="this.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\this.py" SelfReg="false"/>
+    <ROW File="threading.py" Component_="abc.py" FileName="THREAD~1.PY|threading.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\threading.py" SelfReg="false"/>
+    <ROW File="timeit.py" Component_="abc.py" FileName="timeit.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\timeit.py" SelfReg="false"/>
+    <ROW File="toaiff.py" Component_="abc.py" FileName="toaiff.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\toaiff.py" SelfReg="false"/>
+    <ROW File="token.py_1" Component_="abc.py" FileName="token.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\token.py" SelfReg="false"/>
+    <ROW File="tokenize.py_1" Component_="abc.py" FileName="tokenize.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\tokenize.py" SelfReg="false"/>
+    <ROW File="trace.py" Component_="abc.py" FileName="trace.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\trace.py" SelfReg="false"/>
+    <ROW File="traceback.py" Component_="abc.py" FileName="TRACEB~1.PY|traceback.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\traceback.py" SelfReg="false"/>
+    <ROW File="types.py" Component_="abc.py" FileName="types.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\types.py" SelfReg="false"/>
+    <ROW File="case.py" Component_="case.py" FileName="case.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\unittest\case.py" SelfReg="false"/>
+    <ROW File="loader.py" Component_="case.py" FileName="loader.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\unittest\loader.py" SelfReg="false"/>
+    <ROW File="main.py_1" Component_="case.py" FileName="main.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\unittest\main.py" SelfReg="false"/>
+    <ROW File="result.py" Component_="case.py" FileName="result.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\unittest\result.py" SelfReg="false"/>
+    <ROW File="runner.py" Component_="case.py" FileName="runner.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\unittest\runner.py" SelfReg="false"/>
+    <ROW File="signals.py" Component_="case.py" FileName="signals.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\unittest\signals.py" SelfReg="false"/>
+    <ROW File="suite.py" Component_="case.py" FileName="suite.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\unittest\suite.py" SelfReg="false"/>
+    <ROW File="util.py_3" Component_="case.py" FileName="util.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\unittest\util.py" SelfReg="false"/>
+    <ROW File="__init__.py_18" Component_="case.py" FileName="__init__.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\unittest\__init__.py" SelfReg="false"/>
+    <ROW File="__main__.py_2" Component_="case.py" FileName="__main__.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\unittest\__main__.py" SelfReg="false"/>
+    <ROW File="urllib.py" Component_="abc.py" FileName="urllib.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\urllib.py" SelfReg="false"/>
+    <ROW File="urllib2.py" Component_="abc.py" FileName="urllib2.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\urllib2.py" SelfReg="false"/>
+    <ROW File="urlparse.py" Component_="abc.py" FileName="urlparse.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\urlparse.py" SelfReg="false"/>
+    <ROW File="user.py" Component_="abc.py" FileName="user.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\user.py" SelfReg="false"/>
+    <ROW File="UserDict.py" Component_="abc.py" FileName="UserDict.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\UserDict.py" SelfReg="false"/>
+    <ROW File="UserList.py" Component_="abc.py" FileName="UserList.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\UserList.py" SelfReg="false"/>
+    <ROW File="UserString.py" Component_="abc.py" FileName="USERST~1.PY|UserString.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\UserString.py" SelfReg="false"/>
+    <ROW File="uu.py" Component_="abc.py" FileName="uu.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\uu.py" SelfReg="false"/>
+    <ROW File="uuid.py" Component_="abc.py" FileName="uuid.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\uuid.py" SelfReg="false"/>
+    <ROW File="warnings.py" Component_="abc.py" FileName="warnings.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\warnings.py" SelfReg="false"/>
+    <ROW File="wave.py" Component_="abc.py" FileName="wave.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\wave.py" SelfReg="false"/>
+    <ROW File="weakref.py" Component_="abc.py" FileName="weakref.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\weakref.py" SelfReg="false"/>
+    <ROW File="webbrowser.py" Component_="abc.py" FileName="WEBBRO~1.PY|webbrowser.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\webbrowser.py" SelfReg="false"/>
+    <ROW File="whichdb.py" Component_="abc.py" FileName="whichdb.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\whichdb.py" SelfReg="false"/>
+    <ROW File="wpf.py" Component_="abc.py" FileName="wpf.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\wpf.py" SelfReg="false"/>
+    <ROW File="handlers.py_1" Component_="handlers.py" FileName="handlers.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\wsgiref\handlers.py" SelfReg="false"/>
+    <ROW File="headers.py" Component_="handlers.py" FileName="headers.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\wsgiref\headers.py" SelfReg="false"/>
+    <ROW File="simple_server.py" Component_="handlers.py" FileName="SIMPLE~1.PY|simple_server.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\wsgiref\simple_server.py" SelfReg="false"/>
+    <ROW File="util.py_4" Component_="handlers.py" FileName="util.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\wsgiref\util.py" SelfReg="false"/>
+    <ROW File="validate.py" Component_="handlers.py" FileName="validate.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\wsgiref\validate.py" SelfReg="false"/>
+    <ROW File="__init__.py_19" Component_="handlers.py" FileName="__init__.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\wsgiref\__init__.py" SelfReg="false"/>
+    <ROW File="xdrlib.py" Component_="abc.py" FileName="xdrlib.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\xdrlib.py" SelfReg="false"/>
+    <ROW File="domreg.py" Component_="domreg.py" FileName="domreg.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\xml\dom\domreg.py" SelfReg="false"/>
+    <ROW File="expatbuilder.py" Component_="domreg.py" FileName="EXPATB~1.PY|expatbuilder.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\xml\dom\expatbuilder.py" SelfReg="false"/>
+    <ROW File="minicompat.py" Component_="domreg.py" FileName="MINICO~1.PY|minicompat.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\xml\dom\minicompat.py" SelfReg="false"/>
+    <ROW File="minidom.py" Component_="domreg.py" FileName="minidom.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\xml\dom\minidom.py" SelfReg="false"/>
+    <ROW File="NodeFilter.py" Component_="domreg.py" FileName="NODEFI~1.PY|NodeFilter.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\xml\dom\NodeFilter.py" SelfReg="false"/>
+    <ROW File="pulldom.py" Component_="domreg.py" FileName="pulldom.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\xml\dom\pulldom.py" SelfReg="false"/>
+    <ROW File="xmlbuilder.py" Component_="domreg.py" FileName="XMLBUI~1.PY|xmlbuilder.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\xml\dom\xmlbuilder.py" SelfReg="false"/>
+    <ROW File="__init__.py_20" Component_="domreg.py" FileName="__init__.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\xml\dom\__init__.py" SelfReg="false"/>
+    <ROW File="cElementTree.py" Component_="cElementTree.py" FileName="CELEME~1.PY|cElementTree.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\xml\etree\cElementTree.py" SelfReg="false"/>
+    <ROW File="ElementInclude.py" Component_="cElementTree.py" FileName="ELEMEN~1.PY|ElementInclude.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\xml\etree\ElementInclude.py" SelfReg="false"/>
+    <ROW File="ElementPath.py" Component_="cElementTree.py" FileName="ELEMEN~2.PY|ElementPath.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\xml\etree\ElementPath.py" SelfReg="false"/>
+    <ROW File="ElementTree.py" Component_="cElementTree.py" FileName="ELEMEN~3.PY|ElementTree.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\xml\etree\ElementTree.py" SelfReg="false"/>
+    <ROW File="SimpleXMLTreeBuilder.py" Component_="cElementTree.py" FileName="SIMPLE~1.PY|SimpleXMLTreeBuilder.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\xml\etree\SimpleXMLTreeBuilder.py" SelfReg="false"/>
+    <ROW File="__init__.py_21" Component_="cElementTree.py" FileName="__init__.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\xml\etree\__init__.py" SelfReg="false"/>
+    <ROW File="expat.py" Component_="expat.py" FileName="expat.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\xml\parsers\expat.py" SelfReg="false"/>
+    <ROW File="__init__.py_22" Component_="expat.py" FileName="__init__.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\xml\parsers\__init__.py" SelfReg="false"/>
+    <ROW File="expatreader.py" Component_="expatreader.py" FileName="EXPATR~1.PY|expatreader.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\xml\sax\expatreader.py" SelfReg="false"/>
+    <ROW File="handler.py" Component_="expatreader.py" FileName="handler.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\xml\sax\handler.py" SelfReg="false"/>
+    <ROW File="saxutils.py" Component_="expatreader.py" FileName="saxutils.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\xml\sax\saxutils.py" SelfReg="false"/>
+    <ROW File="xmlreader.py" Component_="expatreader.py" FileName="XMLREA~1.PY|xmlreader.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\xml\sax\xmlreader.py" SelfReg="false"/>
+    <ROW File="_exceptions.py" Component_="expatreader.py" FileName="_EXCEP~1.PY|_exceptions.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\xml\sax\_exceptions.py" SelfReg="false"/>
+    <ROW File="__init__.py_23" Component_="expatreader.py" FileName="__init__.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\xml\sax\__init__.py" SelfReg="false"/>
+    <ROW File="__init__.py_24" Component_="__init__.py_1" FileName="__init__.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\xml\__init__.py" SelfReg="false"/>
+    <ROW File="xmllib.py" Component_="abc.py" FileName="xmllib.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\xmllib.py" SelfReg="false"/>
+    <ROW File="xmlrpclib.py" Component_="abc.py" FileName="XMLRPC~1.PY|xmlrpclib.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\xmlrpclib.py" SelfReg="false"/>
+    <ROW File="zipfile.py" Component_="abc.py" FileName="zipfile.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\zipfile.py" SelfReg="false"/>
+    <ROW File="_abcoll.py" Component_="abc.py" FileName="_abcoll.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\_abcoll.py" SelfReg="false"/>
+    <ROW File="_LWPCookieJar.py" Component_="abc.py" FileName="_LWPCO~1.PY|_LWPCookieJar.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\_LWPCookieJar.py" SelfReg="false"/>
+    <ROW File="_MozillaCookieJar.py" Component_="abc.py" FileName="_MOZIL~1.PY|_MozillaCookieJar.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\_MozillaCookieJar.py" SelfReg="false"/>
+    <ROW File="_osx_support.py" Component_="abc.py" FileName="_OSX_S~1.PY|_osx_support.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\_osx_support.py" SelfReg="false"/>
+    <ROW File="_pyio.py" Component_="abc.py" FileName="_pyio.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\_pyio.py" SelfReg="false"/>
+    <ROW File="_strptime.py" Component_="abc.py" FileName="_STRPT~1.PY|_strptime.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\_strptime.py" SelfReg="false"/>
+    <ROW File="_threading_local.py" Component_="abc.py" FileName="_THREA~1.PY|_threading_local.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\_threading_local.py" SelfReg="false"/>
+    <ROW File="_weakrefset.py" Component_="abc.py" FileName="_WEAKR~1.PY|_weakrefset.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\_weakrefset.py" SelfReg="false"/>
+    <ROW File="__future__.py" Component_="abc.py" FileName="__FUTU~1.PY|__future__.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\__future__.py" SelfReg="false"/>
+    <ROW File="__phello__.foo.py" Component_="abc.py" FileName="__PHEL~1.PY|__phello__.foo.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\__phello__.foo.py" SelfReg="false"/>
+    <ROW File="PenImc_cor3.dll" Component_="PenImc_cor3.dll" FileName="PENIMC~1.DLL|PenImc_cor3.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\PenImc_cor3.dll" SelfReg="false"/>
+    <ROW File="PresentationNative_cor3.dll" Component_="PresentationNative_cor3.dll" FileName="PRESEN~1.DLL|PresentationNative_cor3.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\PresentationNative_cor3.dll" SelfReg="false"/>
+    <ROW File="vcruntime140_cor3.dll" Component_="vcruntime140_cor3.dll" FileName="VCRUNT~1.DLL|vcruntime140_cor3.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\vcruntime140_cor3.dll" SelfReg="false"/>
+    <ROW File="wpfgfx_cor3.dll" Component_="wpfgfx_cor3.dll" FileName="WPFGFX~1.DLL|wpfgfx_cor3.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\wpfgfx_cor3.dll" SelfReg="false"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.BootstrOptComponent">
     <ROW BootstrOptKey="GlobalOptions" DownloadFolder="[AppDataFolder][|Manufacturer]\[|ProductName]\prerequisites" Options="2"/>
@@ -185,21 +725,41 @@
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFeatCompsComponent">
     <ROW Feature_="MainFeature" Component_="APPDIR"/>
     <ROW Feature_="MainFeature" Component_="ProductInformation"/>
-    <ROW Feature_="MainFeature" Component_="Inventors.ECP.dll"/>
-    <ROW Feature_="MainFeature" Component_="Inventors.ECP.Tester.deps.json"/>
-    <ROW Feature_="MainFeature" Component_="Inventors.ECP.Tester.dll"/>
+    <ROW Feature_="MainFeature" Component_="D3DCompiler_47_cor3.dll"/>
+    <ROW Feature_="MainFeature" Component_="Inventors.ECP.pdb"/>
     <ROW Feature_="MainFeature" Component_="Inventors.ECP.Tester.exe"/>
-    <ROW Feature_="MainFeature" Component_="Inventors.ECP.TestFramework.dll"/>
-    <ROW Feature_="MainFeature" Component_="Newtonsoft.Json.dll"/>
-    <ROW Feature_="MainFeature" Component_="System.IO.Ports.dll"/>
-    <ROW Feature_="MainFeature" Component_="System.IO.Ports.Native.so"/>
-    <ROW Feature_="MainFeature" Component_="System.IO.Ports.Native.so_1"/>
-    <ROW Feature_="MainFeature" Component_="System.IO.Ports.Native.so_2"/>
-    <ROW Feature_="MainFeature" Component_="System.IO.Ports.dll_1"/>
-    <ROW Feature_="MainFeature" Component_="System.IO.Ports.Native.dylib"/>
-    <ROW Feature_="MainFeature" Component_="System.IO.Ports.dll_2"/>
-    <ROW Feature_="MainFeature" Component_="ScottPlot.dll"/>
-    <ROW Feature_="MainFeature" Component_="System.IO.Ports.dll_3"/>
+    <ROW Feature_="MainFeature" Component_="abc.py"/>
+    <ROW Feature_="MainFeature" Component_="dyld.py"/>
+    <ROW Feature_="MainFeature" Component_="util.py"/>
+    <ROW Feature_="MainFeature" Component_="archive_util.py"/>
+    <ROW Feature_="MainFeature" Component_="bdist.py"/>
+    <ROW Feature_="MainFeature" Component_="base64mime.py"/>
+    <ROW Feature_="MainFeature" Component_="application.py"/>
+    <ROW Feature_="MainFeature" Component_="aliases.py"/>
+    <ROW Feature_="MainFeature" Component_="pip19.2.3py2.py3noneany.whl"/>
+    <ROW Feature_="MainFeature" Component_="_uninstall.py"/>
+    <ROW Feature_="MainFeature" Component_="__init__.py"/>
+    <ROW Feature_="MainFeature" Component_="decoder.py"/>
+    <ROW Feature_="MainFeature" Component_="btm_matcher.py"/>
+    <ROW Feature_="MainFeature" Component_="fix_apply.py"/>
+    <ROW Feature_="MainFeature" Component_="conv.py"/>
+    <ROW Feature_="MainFeature" Component_="config.py"/>
+    <ROW Feature_="MainFeature" Component_="connection.py"/>
+    <ROW Feature_="MainFeature" Component_="connection.py_1"/>
+    <ROW Feature_="MainFeature" Component_="topics.py"/>
+    <ROW Feature_="MainFeature" Component_="README.txt"/>
+    <ROW Feature_="MainFeature" Component_="dbapi2.py"/>
+    <ROW Feature_="MainFeature" Component_="case.py"/>
+    <ROW Feature_="MainFeature" Component_="handlers.py"/>
+    <ROW Feature_="MainFeature" Component_="domreg.py"/>
+    <ROW Feature_="MainFeature" Component_="cElementTree.py"/>
+    <ROW Feature_="MainFeature" Component_="expat.py"/>
+    <ROW Feature_="MainFeature" Component_="expatreader.py"/>
+    <ROW Feature_="MainFeature" Component_="__init__.py_1"/>
+    <ROW Feature_="MainFeature" Component_="PenImc_cor3.dll"/>
+    <ROW Feature_="MainFeature" Component_="PresentationNative_cor3.dll"/>
+    <ROW Feature_="MainFeature" Component_="vcruntime140_cor3.dll"/>
+    <ROW Feature_="MainFeature" Component_="wpfgfx_cor3.dll"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiIconsComponent">
     <ROW Name="Inventors.ECP.Tester.exe" SourcePath="Inventors.ECP.Tester\icons8_usb_on_96_k8q_icon.ico" Index="0"/>
@@ -240,7 +800,7 @@
     <ROW Registry="Version" Root="-1" Key="Software\[Manufacturer]\[ProductName]" Name="Version" Value="[ProductVersion]" Component_="ProductInformation"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiShortsComponent">
-    <ROW Shortcut="ECPTester" Directory_="StartMenuFolder" Name="ECPTES~1|ECP Tester" Component_="Inventors.ECP.Tester.exe" Target="[#Inventors.ECP.Tester.exe]" Hotkey="0" Icon_="Inventors.ECP.Tester.exe" IconIndex="0" ShowCmd="1" WkDir="net6.0windows_Dir"/>
+    <ROW Shortcut="ECPTester" Directory_="ProgramMenuFolder" Name="ECPTES~1|ECP Tester" Component_="Inventors.ECP.Tester.exe" Target="[#Inventors.ECP.Tester.exe]" Hotkey="0" Icon_="Inventors.ECP.Tester.exe" IconIndex="0" ShowCmd="1" WkDir="winx64_Dir"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiThemeComponent">
     <ATTRIBUTE name="UsedTheme" value="classic"/>
