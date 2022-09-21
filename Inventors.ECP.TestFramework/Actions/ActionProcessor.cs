@@ -38,7 +38,8 @@ namespace Inventors.ECP.TestFramework.Actions
             var engine = ActionEngine.GetInstance();
             var scope = engine.CreateScope(new Dictionary<string, object>
             {
-                { "dev", device} 
+                { "dev", device},
+                { "dialog", dialogs }
             });
 
             try
@@ -55,5 +56,6 @@ namespace Inventors.ECP.TestFramework.Actions
 
         private readonly CompiledCode _code;
         private readonly string _name;
+        private readonly DialogEngine dialogs = new();
     }
 }
