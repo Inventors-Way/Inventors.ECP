@@ -17,6 +17,10 @@ namespace Inventors.ECP.TestFramework.Analysis
             _values.Clear();
         }
 
+        public int Length => _values.Count;
+
+        public List<double> GetRow(int n) => _values[n];
+
         public void SetNumberOfSignals(int noOfSignals)
         {
             this.noOfSignals = noOfSignals;

@@ -1,4 +1,5 @@
 ﻿using ScottPlot;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -72,13 +73,19 @@ namespace Inventors.ECP.TestFramework.Analysis
 
         private void ResizePlot()
         {
-            chart.Width = splitContainer1.Panel2.Width;
-            chart.Height = splitContainer1.Panel2.Height;
+            var w = chart.Width = splitContainer1.Panel2.Width;
+            var h = chart.Height = splitContainer1.Panel2.Height;
+
+            foreach (var item in analysisList.Items)
+            {
+                if (item is AnalysisEngine analyser)
+                {
+                    analyser.Plot.Resize(width: w, height: h);
+                }
+            }
 
             if (current is not null)
             {
-                current.Plot.Resize(width: chart.Width, height: chart.Height);
-
                 try
                 {
                     chart.Image = current.Plot.GetBitmap();
@@ -165,7 +172,61 @@ namespace Inventors.ECP.TestFramework.Analysis
             stopToolStripMenuItem.Enabled = stopBtn.Enabled = current.StopPossible;
             stopToolStripMenuItem.Checked = current.State == AnalysisState.STOPPED;
 
+            saveToolStripMenuItem.Enabled = current is not null;
+
             Text = $"{current.ToString()} ({current.State})";
+        }
+
+        private void resultsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (current is null)
+                return;
+
+            var dialog = new SaveFileDialog()
+            {
+                Title = "Save results",
+                Filter = "Comma Seperated Values (.csv)|*.csv",
+                OverwritePrompt = true
+            };
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    current.SaveResults(dialog.FileName);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex.Message);
+                }
+            }
+
+        }
+
+        private void figureToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (current is null)
+                return;
+
+            var dialog = new SaveFileDialog()
+            {
+               Title ="Save figure",
+               Filter = "Bitmap Image (.bmp)|*.bmp|JPEG Image (.jpeg)|*.jpeg|PNG Image (.png)|*.png|Tiff Image (.tiff)|*.tiff",
+               FilterIndex = 3,
+               OverwritePrompt = true
+            };
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    current.Plot.SaveFig(dialog.FileName);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex.Message);
+                }
+            }
         }
     }
 }

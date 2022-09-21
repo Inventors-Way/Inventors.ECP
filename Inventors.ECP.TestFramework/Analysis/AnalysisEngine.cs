@@ -5,10 +5,13 @@ using ScottPlot;
 using Serilog;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Inventors.ECP.TestFramework.Analysis
 {
@@ -114,6 +117,21 @@ namespace Inventors.ECP.TestFramework.Analysis
         public AnalysisState State => _state;
 
         public override string ToString() => $"[{_msgCode}] {_name}";
+
+        public void SaveResults(string fileName)
+        {
+            StringBuilder builder = new();
+
+            for (int n = 0; n < _dataSet.Length; ++n)
+            {
+                var row = _dataSet.GetRow(n);
+                var str = String.Join(";", (from v in row
+                                            select v.ToString(CultureInfo.InvariantCulture)));
+                builder.AppendLine(str);
+            }
+
+            File.WriteAllText(fileName, builder.ToString());
+        }
 
         private static readonly ScriptEngine _engine = CreateEngine();
         private readonly CompiledCode _code;
