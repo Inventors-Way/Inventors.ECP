@@ -29,5 +29,9 @@
                   code="128"
                   script="analysis.py" 
                   signals="1"/>
+        <analysis name="Normalized Signal Analysis"
+                  code="128"
+                  script="analysis2.py"
+                  signals="1"/>
     </analysis-specification>
 </device>

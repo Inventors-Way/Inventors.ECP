@@ -10,6 +10,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="analysis2.py">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="analysis.py">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
