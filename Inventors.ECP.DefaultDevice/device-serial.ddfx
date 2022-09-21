@@ -34,4 +34,8 @@
                   script="analysis2.py"
                   signals="1"/>
     </analysis-specification>
+    <actions>
+        <action name="Negate Number"
+                script="negate.py" />
+    </actions>
 </device>

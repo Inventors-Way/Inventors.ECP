@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static Microsoft.Scripting.Hosting.Shell.ConsoleHostOptions;
 
 namespace Inventors.ECP.TestFramework.Analysis
 {
@@ -21,10 +22,12 @@ namespace Inventors.ECP.TestFramework.Analysis
 
         public AnalysisEngine(MessageAnalyser analyser, string path)
         {
-            if (File.Exists(analyser.Script))
-                throw new InvalidOperationException($"Script file {analyser.Script} does not exists");
+            var filename = Path.Combine(path, analyser.Script);
 
-            var script = File.ReadAllText(Path.Combine(path, analyser.Script));
+            if (!File.Exists(filename))
+                throw new InvalidOperationException($"Script file {filename} does not exists");
+
+            var script = File.ReadAllText(filename);
             var source = _engine.CreateScriptSourceFromString(script, SourceCodeKind.Statements);
             _code = source.Compile();
             _msgCode = analyser.Code;

@@ -63,6 +63,10 @@ namespace Inventors.ECP
         [XmlArrayItem("analysis")]
         public List<MessageAnalyser> Analysers { get; } = new List<MessageAnalyser>();
 
+        [XmlArray("actions")]
+        [XmlArrayItem("action")]
+        public List<CustomAction> Actions { get; } = new List<CustomAction>();
+
         [XmlIgnore]
         public string CreationTime { get; set; } = "Unknown";
 
@@ -93,7 +97,7 @@ namespace Inventors.ECP
             Device retValue = null;
             string basePath = Path.GetDirectoryName(FileName);
             string fullAssemblyName = Path.Combine(basePath, AssemblyName) + ".dll";
-            var assembly = Assembly.LoadFrom(fullAssemblyName);
+            assembly = Assembly.LoadFrom(fullAssemblyName);
             var type = assembly.GetType(Factory);
 
             if ((type is object))
@@ -115,5 +119,10 @@ namespace Inventors.ECP
 
             return retValue;
         }
+
+        [XmlIgnore]
+        public Assembly Library => assembly;
+
+        private Assembly assembly;
     }
 }
