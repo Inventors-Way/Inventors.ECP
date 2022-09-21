@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,6 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Inventors.ECP.TestFramework.Analysis
 {
@@ -53,7 +55,65 @@ namespace Inventors.ECP.TestFramework.Analysis
 
         private void timer_Tick(object sender, EventArgs e)
         {
+            if (current is null)
+                return;
 
+            if (!current.Updated)
+                return;
+
+            Redraw();
+        }
+
+        private void splitContainer1_Panel2_Resize(object sender, EventArgs e) => ResizePlot();
+
+        private void ResizePlot()
+        {
+            chart.Width = splitContainer1.Panel2.Width;
+            chart.Height = splitContainer1.Panel2.Height;
+
+            if (current is not null)
+            {
+                current.Plot.Resize(width: chart.Width, height: chart.Height);
+
+                try
+                {
+                    chart.Image = current.Plot.GetBitmap();
+                }
+                catch 
+                { 
+                }
+
+                current.Updated = false;
+            }
+        }
+
+        private void Redraw()
+        {
+            if (current is not null)
+            {
+                try
+                {
+                    chart.Image = current.Plot.GetBitmap();
+                }
+                catch 
+                { 
+                }
+
+                current.Updated = false;
+            }
+        }
+
+        private void analysisList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (analysisList.SelectedIndex < 0)
+                return;
+                current = analysisList.Items[analysisList.SelectedIndex] as AnalysisEngine;
+
+            if (current is null)
+                return;
+
+            Redraw();
+            Text = current.ToString();                
         }
     }
 }

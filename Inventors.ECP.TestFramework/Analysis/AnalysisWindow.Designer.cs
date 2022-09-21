@@ -142,6 +142,7 @@
             // 
             // timer
             // 
+            this.timer.Enabled = true;
             this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
             // toolStrip
@@ -203,6 +204,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.chart);
+            this.splitContainer1.Panel2.Resize += new System.EventHandler(this.splitContainer1_Panel2_Resize);
             this.splitContainer1.Size = new System.Drawing.Size(800, 401);
             this.splitContainer1.SplitterDistance = 215;
             this.splitContainer1.TabIndex = 2;
@@ -215,6 +217,7 @@
             this.analysisList.Name = "analysisList";
             this.analysisList.Size = new System.Drawing.Size(215, 401);
             this.analysisList.TabIndex = 0;
+            this.analysisList.SelectedIndexChanged += new System.EventHandler(this.analysisList_SelectedIndexChanged);
             // 
             // chart
             // 

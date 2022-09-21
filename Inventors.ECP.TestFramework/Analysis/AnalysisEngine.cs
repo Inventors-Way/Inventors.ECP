@@ -56,6 +56,7 @@ namespace Inventors.ECP.TestFramework.Analysis
                 { "msg", message }
             });
             _plot.Clear();
+            _dataSet.AddRow();
 
             try
             {
@@ -72,7 +73,7 @@ namespace Inventors.ECP.TestFramework.Analysis
 
         public Plot Plot => _plot;
 
-        public bool Updated { get; private set; } = false;
+        public bool Updated { get; set; } = false;
 
         public override string ToString() => $"[{_msgCode}] {_name}";
 
