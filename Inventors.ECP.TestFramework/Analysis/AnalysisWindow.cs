@@ -30,6 +30,7 @@ namespace Inventors.ECP.TestFramework.Analysis
             analyses.Add(analysis);
 
             analysisList.Items.Add(analysis);
+            analysis.Plot.Resize(width: chart.Width, height: chart.Height);
 
             if (current is null)
             {

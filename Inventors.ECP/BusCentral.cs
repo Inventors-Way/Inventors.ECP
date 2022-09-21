@@ -226,7 +226,8 @@ namespace Inventors.ECP
 
                 if (Analysers.ContainsKey(packet.Code))
                 {
-                    Analysers[packet.Code].Accept(msg);
+                    foreach (var analyser in Analysers[packet.Code])
+                        analyser.Accept(msg);
                 }
             }
         }
@@ -247,18 +248,18 @@ namespace Inventors.ECP
             if (analyser is null)
                 throw new ArgumentNullException(nameof(analyser));
 
-            if (Analysers.ContainsKey(analyser.Code))
-                throw new ArgumentException($"Analyser[ { analyser } ] is allready present in Analysers");
-
             if (!Dispatchers.ContainsKey(analyser.Code))
                 throw new ArgumentException($"No dispatcher is defined for Analyser [ {analyser.Code} ]");
 
-            Analysers.Add(analyser.Code, analyser);
+            if (!Analysers.ContainsKey(analyser.Code))
+                Analysers.Add(analyser.Code, new List<MessageAnalyser>());
+
+            Analysers[analyser.Code].Add(analyser);
         }
 
         private Dictionary<byte, MessageDispatcher> Dispatchers { get; } = new Dictionary<byte, MessageDispatcher>();
 
-        private Dictionary<byte, MessageAnalyser> Analysers { get; } = new Dictionary<byte, MessageAnalyser>();
+        private Dictionary<byte, List<MessageAnalyser>> Analysers { get; } = new Dictionary<byte, List<MessageAnalyser>>();
 
         public List<string> GetLocations() => connection.GetLocations();
 

@@ -1,7 +1,7 @@
-﻿signal = msg.X
+﻿signal = msg.X / 255.0
 data.Update(0, signal)
 
-y = data.Signal(0) / 255.0
+y = data.Signal(0) 
 x = data.GetX(0.0, 1.0)
 
 if len(x) > 0:
