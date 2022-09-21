@@ -27,7 +27,5 @@ namespace Inventors.ECP.TestFramework.Actions
 
             throw new InvalidOperationException($"User didn't provide an answer for {title}");
         }
-
-
     }
 }
