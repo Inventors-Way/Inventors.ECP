@@ -15,10 +15,10 @@
     <ROW Property="ARPHELPLINK" Value="https://github.com/Inventors-Way/ITLS-ECP"/>
     <ROW Property="ARPPRODUCTICON" Value="icons8_usb_on_96_k8q_icon.exe" Type="8"/>
     <ROW Property="Manufacturer" Value="Inventors Way"/>
-    <ROW Property="ProductCode" Value="1033:{CBAD2AC4-06FA-40DB-8CA5-8A2606B35BD6} " Type="16"/>
+    <ROW Property="ProductCode" Value="1033:{FC3D0277-3AFB-4C5A-969F-7DC9223A92D5} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="ECP Tester"/>
-    <ROW Property="ProductVersion" Value="3.0.0"/>
+    <ROW Property="ProductVersion" Value="3.0.1"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND"/>
     <ROW Property="UpgradeCode" Value="{7AF47BB0-E218-41DD-B835-61EC033F35ED}"/>
     <ROW Property="WindowsType9X" MultiBuildValue="DefaultBuild:Windows 9x/ME" ValueLocId="-"/>
@@ -815,5 +815,8 @@
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.PreReqSearchComponent">
     <ROW SearchKey="A6D7F21EAEB4C4A901F0979CF110936Release" Prereq="A6D7F21EAEB4C4A901F0979CF110936" SearchType="9" SearchString="HKLM\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\Release" RefContent="G461813" Order="1" Property="PreReqSearch_A6D7F21EAEB4C4A901F097"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.SynchronizedFolderComponent">
+    <ROW Directory_="winx64_Dir" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64" Feature="MainFeature" ExcludePattern="*~|#*#|%*%|._|CVS|.cvsignore|SCCS|vssver.scc|mssccprj.scc|vssver2.scc|.svn|.DS_Store" ExcludeFlags="6" FileAddOptions="4"/>
   </COMPONENT>
 </DOCUMENT>
