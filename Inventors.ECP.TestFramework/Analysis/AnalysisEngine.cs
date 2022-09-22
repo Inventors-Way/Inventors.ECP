@@ -6,6 +6,7 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -13,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static Microsoft.Scripting.Hosting.Shell.ConsoleHostOptions;
+using static System.Windows.Forms.AxHost;
 
 namespace Inventors.ECP.TestFramework.Analysis
 {
@@ -64,19 +66,23 @@ namespace Inventors.ECP.TestFramework.Analysis
                 { "data", _dataSet },
                 { "msg", message }
             });
-            _plot.Clear();
-            _dataSet.AddRow();
 
-            try
+            lock (lockObject)
             {
-                _code.Execute(scope);
-                Updated = true;
+                _plot.Clear();
+                _dataSet.AddRow();
 
-                PlotChanged?.Invoke(this, _plot);
-            }
-            catch (Exception e)
-            {
-                Log.Error("Error [ {0} ]: {1} ", e.Message, e);
+                try
+                {
+                    _code.Execute(scope);
+                    Updated = true;
+
+                    PlotChanged?.Invoke(this, _plot);
+                }
+                catch (Exception e)
+                {
+                    Log.Error("Error [ {0} ]: {1} ", e.Message, e);
+                }
             }
         }
 
@@ -107,13 +113,47 @@ namespace Inventors.ECP.TestFramework.Analysis
             if (!StopPossible)
                 return;
 
-            _state = AnalysisState.STOPPED;
-            _dataSet.Reset();
-            _plot.Clear();
-            Updated = true;
+            lock (lockObject)
+            {
+                _state = AnalysisState.STOPPED;
+                _dataSet.Reset();
+                _plot.Clear();
+                Updated = true;
+            }
         }
 
-        public Plot Plot => _plot;
+        public void Resize(int width, int height)
+        {
+            lock (lockObject)
+            {
+                _plot.Resize(width, height);
+            }
+        }
+
+        public Bitmap GetBitmap()
+        {
+            lock (lockObject)
+            {
+                Updated = false;
+                return _plot.GetBitmap();
+            }
+        }
+
+        public void SaveFig(string filename)
+        {
+            bool restart = false;
+
+            if (_state == AnalysisState.RUNNING)
+            {
+                Pause();
+                restart = true;
+            }
+
+            _plot.SaveFig(filename);
+
+            if (restart)
+                Start();
+        }
 
         public bool Updated { get; set; } = false;
 
@@ -123,6 +163,14 @@ namespace Inventors.ECP.TestFramework.Analysis
 
         public void SaveResults(string fileName)
         {
+            bool restart = false;
+
+            if (_state == AnalysisState.RUNNING)
+            {
+                Pause();
+                restart = true;
+            }
+
             StringBuilder builder = new();
 
             for (int n = 0; n < _dataSet.Length; ++n)
@@ -132,6 +180,9 @@ namespace Inventors.ECP.TestFramework.Analysis
                                             select v.ToString(CultureInfo.InvariantCulture)));
                 builder.AppendLine(str);
             }
+
+            if (restart)
+                Start();
 
             File.WriteAllText(fileName, builder.ToString());
         }
@@ -143,6 +194,7 @@ namespace Inventors.ECP.TestFramework.Analysis
         private readonly byte _msgCode;
         private readonly string _name;
         private AnalysisState _state;
+        private readonly object lockObject = new();
 
     }
 }
