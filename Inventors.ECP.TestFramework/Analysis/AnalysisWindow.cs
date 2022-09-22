@@ -32,7 +32,7 @@ namespace Inventors.ECP.TestFramework.Analysis
             analyses.Add(analysis);
 
             analysisList.Items.Add(analysis);
-            analysis.Plot.Resize(width: chart.Width, height: chart.Height);
+            analysis.Resize(width: chart.Width, height: chart.Height);
 
             if (current is null)
             {
@@ -80,7 +80,7 @@ namespace Inventors.ECP.TestFramework.Analysis
             {
                 if (item is AnalysisEngine analyser)
                 {
-                    analyser.Plot.Resize(width: w, height: h);
+                    analyser.Resize(width: w, height: h);
                 }
             }
 
@@ -88,7 +88,7 @@ namespace Inventors.ECP.TestFramework.Analysis
             {
                 try
                 {
-                    chart.Image = current.Plot.GetBitmap();
+                    chart.Image = current.GetBitmap();
                 }
                 catch 
                 { 
@@ -104,13 +104,12 @@ namespace Inventors.ECP.TestFramework.Analysis
             {
                 try
                 {
-                    chart.Image = current.Plot.GetBitmap();
+                    chart.Image = current.GetBitmap();
                 }
                 catch 
                 { 
                 }
 
-                current.Updated = false;
             }
         }
 
@@ -128,7 +127,7 @@ namespace Inventors.ECP.TestFramework.Analysis
             UpdateState();
         }
 
-        private void startToolStripMenuItem_Click(object sender, EventArgs e)
+        private void StartToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (current is null)
                 return;
@@ -137,7 +136,7 @@ namespace Inventors.ECP.TestFramework.Analysis
             UpdateState();
         }
 
-        private void pauseToolStripMenuItem_Click(object sender, EventArgs e)
+        private void PauseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (current is null)
                 return;
@@ -146,7 +145,7 @@ namespace Inventors.ECP.TestFramework.Analysis
             UpdateState();
         }
 
-        private void stopToolStripMenuItem_Click(object sender, EventArgs e)
+        private void StopToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (current is null)
                 return;
@@ -174,7 +173,7 @@ namespace Inventors.ECP.TestFramework.Analysis
 
             saveToolStripMenuItem.Enabled = current is not null;
 
-            Text = $"{current.ToString()} ({current.State})";
+            Text = $"{current} ({current.State})";
         }
 
         private void resultsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -220,7 +219,7 @@ namespace Inventors.ECP.TestFramework.Analysis
             {
                 try
                 {
-                    current.Plot.SaveFig(dialog.FileName);
+                    current.SaveFig(dialog.FileName);
                 }
                 catch (Exception ex)
                 {
