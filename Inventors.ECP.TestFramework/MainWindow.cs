@@ -227,19 +227,27 @@ namespace Inventors.ECP.TestFramework
 
                 if (loader.Actions is not null)
                 {
+                    int number = 0;
+                    List<Keys> keys = new List<Keys>()
+                    { Keys.F1, Keys.F2,Keys.F3, Keys.F4,Keys.F5, Keys.F6,Keys.F7,Keys.F8, Keys.F9,Keys.F10,Keys.F11,Keys.F12 };
                     ActionEngine.Initialize(loader.Library);
 
                     foreach (var action in loader.Actions)
                     {
                         Log.Information("Action {0} with script {1}", action.Name, action.Script);
 
-                        var menuItem = new ToolStripMenuItem(action.Name)
+                        var menuItem = number < keys.Count ? new ToolStripMenuItem(action.Name)
+                        {
+                            Tag = new ActionProcessor(action, path),
+                            ShortcutKeys = keys[number]
+                        } : new ToolStripMenuItem(action.Name)
                         {
                             Tag = new ActionProcessor(action, path)
                         };
                         menuItem.Click += ActionClicked;
 
                         actionsToolStripMenuItem.DropDownItems.Add(menuItem);
+                        ++number;
                     }
                 }
 
