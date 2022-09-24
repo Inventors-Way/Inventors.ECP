@@ -17,6 +17,9 @@ namespace Inventors.ECP
         [XmlAttribute("script")]
         public string Script { get; set; }
 
+        [XmlAttribute("path")]
+        public string Path { get; set; }
+
         [XmlArray("parameters")]
         [XmlArrayItem("int", typeof(IntegerParameter))]
         [XmlArrayItem("bool", typeof(BooleanParameter))]

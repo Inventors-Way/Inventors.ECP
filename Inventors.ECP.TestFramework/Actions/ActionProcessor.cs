@@ -22,6 +22,9 @@ namespace Inventors.ECP.TestFramework.Actions
         {
             var filename = Path.Combine(path, action.Script);
 
+            if (!string.IsNullOrEmpty(action.Path))
+                filename = Path.Combine(path, action.Path, action.Script);
+
             if (!File.Exists(filename))
                 throw new InvalidOperationException($"Script file {filename} does not exists");
 
