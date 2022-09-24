@@ -29,6 +29,11 @@ namespace Inventors.ECP.TestFramework.Analysis
             if (!File.Exists(filename))
                 throw new InvalidOperationException($"Script file {filename} does not exists");
 
+            foreach (var p in analyser.Parameters)
+            {
+                _variables.Add(p.Name, p.GetValue());
+            }
+
             var script = File.ReadAllText(filename);
             var source = _engine.CreateScriptSourceFromString(script, SourceCodeKind.Statements);
             _code = source.Compile();
@@ -60,12 +65,10 @@ namespace Inventors.ECP.TestFramework.Analysis
             if (sender is not MessageAnalyser)
                 return;
 
-            var scope = _engine.CreateScope(new Dictionary<string, object>
-            {
-                { "plt", _plot },
-                { "data", _dataSet },
-                { "msg", message }
-            });
+            var scope = _engine.CreateScope(_variables);
+            scope.SetVariable("plt", _plot);
+            scope.SetVariable("data", _dataSet);
+            scope.SetVariable("msg", message);
 
             lock (lockObject)
             {
@@ -195,6 +198,6 @@ namespace Inventors.ECP.TestFramework.Analysis
         private readonly string _name;
         private AnalysisState _state;
         private readonly object lockObject = new();
-
+        private readonly Dictionary<string, object> _variables = new();
     }
 }
