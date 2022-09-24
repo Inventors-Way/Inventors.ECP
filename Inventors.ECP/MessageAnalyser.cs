@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Inventors.ECP.Parameters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,13 @@ namespace Inventors.ECP
 
         [XmlAttribute("signals")]
         public int Signals { get; set; }
+
+        [XmlArray("parameters")]
+        [XmlArrayItem("int", typeof(IntegerParameter))]
+        [XmlArrayItem("bool", typeof(BooleanParameter))]
+        [XmlArrayItem("string", typeof(StringParameter))]
+        [XmlArrayItem("double", typeof(DoubleParameter))]
+        public List<Parameter> Parameters { get; } = new List<Parameter>();
 
         public event EventHandler<DeviceMessage> OnMessage;
 
