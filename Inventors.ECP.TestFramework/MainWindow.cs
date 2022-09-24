@@ -24,11 +24,14 @@ using Serilog.Events;
 using Inventors.ECP.TestFramework.Analysis;
 using Inventors.ECP.TestFramework.Actions;
 using System.Net;
+using Serilog.Core;
+using Inventors.ECP.Logging;
 
 namespace Inventors.ECP.TestFramework
 {
     public partial class MainWindow :
-        Form
+        Form,
+        ILogConfigVisitor
     {
         private enum AppState
         {
@@ -51,9 +54,9 @@ namespace Inventors.ECP.TestFramework
         private readonly MonitorWindow monitorWindow;
         private readonly CommTester commTester;
 
-        public Serilog.Core.LoggingLevelSwitch LogLevel { get; } = new Serilog.Core.LoggingLevelSwitch()
+        public LoggingLevelSwitch LogLevel { get; } = new LoggingLevelSwitch()
         {
-            MinimumLevel = Serilog.Events.LogEventLevel.Debug
+            MinimumLevel = LogEventLevel.Debug
         };
 
         public Image AboutImage { get; set; }
@@ -61,7 +64,6 @@ namespace Inventors.ECP.TestFramework
         public MainWindow()
         {
             InitializeComponent();
-            SetupLogging();
             UpdateAppStates(AppState.APP_STATE_UNINITIALIZED);
             UpdateStatus();
             UpdateAnalysisWindow(false);
@@ -92,7 +94,7 @@ namespace Inventors.ECP.TestFramework
             Text = String.Format("ECP Tester, Rev {0}", VersionInfo.VersionDescription);
         }
 
-        private void SetupLogging()
+        public void Accept(BasicLogging config)
         {
             var log = new LoggerConfiguration()
             .MinimumLevel.ControlledBy(LogLevel)
@@ -100,7 +102,19 @@ namespace Inventors.ECP.TestFramework
             .CreateLogger();
 
             Log.Logger = log;
-            Log.Information("Logging has been configured");
+            Log.Information("Basic Logging has been configured");
+        }
+
+        public void Accept(SeqLogging config)
+        {
+            var log = new LoggerConfiguration()
+            .MinimumLevel.ControlledBy(LogLevel)
+            .WriteTo.AddLogControl(logControl)
+            .WriteTo.Seq(serverUrl: config.Url, apiKey: config.ApiKey)
+            .CreateLogger();
+
+            Log.Logger = log;
+            Log.Information("Seq Logging has been configured [url: {url}]", config.Url);
         }
 
         private void UpdateStatus()
@@ -160,6 +174,7 @@ namespace Inventors.ECP.TestFramework
                 Log.Information("Device: {0} [Creation time: {1}]", loader.Factory, loader.CreationTime);
                 Log.Information("Logging directory: {0}", logDirectory);
                 Log.Information("Log settings [Auto save: {0}, Confirm deletion: {1}]", loader.AutoSaveLog, loader.ConfirmLogDeletion);
+                loader.LogConfiguration.Visit(this);
 
                 autoSaveLogToolStripMenuItem.Checked = logControl.AutoSave = loader.AutoSaveLog;
                 logControl.InitializeLogFile(logDirectory);
