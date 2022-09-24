@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using Inventors.ECP.Logging;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -66,6 +67,11 @@ namespace Inventors.ECP
         [XmlArray("actions")]
         [XmlArrayItem("action")]
         public List<CustomAction> Actions { get; } = new List<CustomAction>();
+
+        [XmlElement("basic-logging", typeof(BasicLogging))]
+        [XmlElement("seq-logging", typeof(SeqLogging))]
+        public LogConfig LogConfiguration { get; set; } = new BasicLogging();
+
 
         [XmlIgnore]
         public string CreationTime { get; set; } = "Unknown";

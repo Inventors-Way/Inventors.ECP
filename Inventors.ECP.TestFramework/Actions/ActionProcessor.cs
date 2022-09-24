@@ -22,8 +22,17 @@ namespace Inventors.ECP.TestFramework.Actions
         {
             var filename = Path.Combine(path, action.Script);
 
+            if (!string.IsNullOrEmpty(action.Path))
+                filename = Path.Combine(path, action.Path, action.Script);
+
             if (!File.Exists(filename))
                 throw new InvalidOperationException($"Script file {filename} does not exists");
+
+
+            foreach (var p in action.Parameters)
+            {
+                _variables.Add(p.Name, p.GetValue());
+            }
 
             var engine = ActionEngine.GetInstance();
 
@@ -36,11 +45,9 @@ namespace Inventors.ECP.TestFramework.Actions
         public void Run(Device device)
         {
             var engine = ActionEngine.GetInstance();
-            var scope = engine.CreateScope(new Dictionary<string, object>
-            {
-                { "dev", device},
-                { "dialog", dialogs }
-            });
+            var scope = engine.CreateScope(_variables);
+            scope.SetVariable("dev", device);
+            scope.SetVariable("dialog", dialogs);
 
             try
             {
@@ -57,5 +64,6 @@ namespace Inventors.ECP.TestFramework.Actions
         private readonly CompiledCode _code;
         private readonly string _name;
         private readonly DialogEngine dialogs = new();
+        private readonly Dictionary<string, object> _variables = new();
     }
 }
