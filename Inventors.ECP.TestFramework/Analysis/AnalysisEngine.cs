@@ -26,6 +26,9 @@ namespace Inventors.ECP.TestFramework.Analysis
         {
             var filename = Path.Combine(path, analyser.Script);
 
+            if (!string.IsNullOrEmpty(analyser.Path))
+                filename = Path.Combine(path, analyser.Path, analyser.Script);
+
             if (!File.Exists(filename))
                 throw new InvalidOperationException($"Script file {filename} does not exists");
 
