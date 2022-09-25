@@ -249,20 +249,27 @@ namespace Inventors.ECP.TestFramework
 
                     foreach (var action in loader.Actions)
                     {
-                        Log.Information("Action {0} with script {1}", action.Name, action.Script);
-
-                        var menuItem = number < keys.Count ? new ToolStripMenuItem(action.Name)
+                        if (action.Name != "-")
                         {
-                            Tag = new ActionProcessor(action, path),
-                            ShortcutKeys = keys[number]
-                        } : new ToolStripMenuItem(action.Name)
-                        {
-                            Tag = new ActionProcessor(action, path)
-                        };
-                        menuItem.Click += ActionClicked;
+                            Log.Information("Action {0} with script {1}", action.Name, action.Script);
 
-                        actionsToolStripMenuItem.DropDownItems.Add(menuItem);
-                        ++number;
+                            var menuItem = number < keys.Count ? new ToolStripMenuItem(action.Name)
+                            {
+                                Tag = new ActionProcessor(action, path),
+                                ShortcutKeys = keys[number]
+                            } : new ToolStripMenuItem(action.Name)
+                            {
+                                Tag = new ActionProcessor(action, path)
+                            };
+                            menuItem.Click += ActionClicked;
+
+                            actionsToolStripMenuItem.DropDownItems.Add(menuItem);
+                            ++number;
+                        }
+                        else
+                        {
+                            actionsToolStripMenuItem.DropDownItems.Add(new ToolStripSeparator());
+                        }
                     }
                 }
 
