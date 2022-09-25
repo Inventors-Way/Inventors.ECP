@@ -20,10 +20,10 @@ namespace Inventors.ECP.TestFramework.Actions
     {
         public ActionProcessor(CustomAction action, string path)
         {
-            var filename = Path.Combine(path, action.Script);
+            var filename = path + action.Script;
 
             if (!string.IsNullOrEmpty(action.Path))
-                filename = Path.Combine(path, action.Path, action.Script);
+                filename = path + action.Path + action.Script;
 
             if (!File.Exists(filename))
                 throw new InvalidOperationException($"Script file {filename} does not exists");
