@@ -150,6 +150,15 @@ namespace Inventors.ECP.TestFramework.Analysis
             if (current is null)
                 return;
 
+            if (MessageBox.Show(this,
+                                text: "Do you want to restart the analyser and delete all collected data?",
+                                caption: "Deletion of data",
+                                MessageBoxButtons.YesNo,
+                                MessageBoxIcon.Question) == DialogResult.No)
+            {
+                return;
+            }
+
             current.Stop();
             UpdateState();
         }
