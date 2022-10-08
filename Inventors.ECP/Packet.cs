@@ -370,27 +370,44 @@ namespace Inventors.ECP
             data[position] = value;
         }
 
+        public void InsertByte(int position, int value) => 
+            InsertByte(position, (byte)value);   
+
+        public void InsertBool(int position, bool value) => 
+            InsertByte(position, (byte)(value ? 1 : 0));
+
         public void InsertSByte(int position, sbyte value)
         {
             VerifyPosition(data, position, 1);
             data[position] = (byte) value;
         }
 
+        public void InsertSByte(int position, int value) =>
+            InsertSByte(position, (SByte)value);
 
         public void InsertUInt16(int position, UInt16 value)
         {
             Serialize(data, position, BitConverter.GetBytes(value));
         }
 
+        public void InsertUInt16(int position, int value) => 
+            InsertUInt16(position, (UInt16)value);
+
         public void InsertInt16(int position, Int16 value)
         {
             Serialize(data, position, BitConverter.GetBytes(value));
         }
 
+        public void InsertInt16(int position, int value) =>
+            InsertInt16(position, (Int16)value);
+
         public void InsertUInt32(int position, UInt32 value)
         {
             Serialize(data, position, BitConverter.GetBytes(value));
         }
+
+        public void InsertUInt32(int position, int value) =>
+            InsertUInt32(position, (UInt32)value);
 
         public void InsertInt32(int position, Int32 value)
         {
@@ -420,6 +437,9 @@ namespace Inventors.ECP
             VerifyPosition(data, position, 1);
             return data[position];
         }
+
+        public bool GetBool(int position) =>
+            GetByte(position) != 0;
 
         public sbyte GetSByte(int position) => (sbyte) (data[position]);
         public UInt16 GetUInt16(int position) => BitConverter.ToUInt16(Deserialize(position, 2, data), 0);
