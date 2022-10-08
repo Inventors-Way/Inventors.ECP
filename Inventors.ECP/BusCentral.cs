@@ -171,6 +171,9 @@ namespace Inventors.ECP
         {
             try
             {
+                if (!Packet.IsValid(frame))
+                    return;
+
                 var packet = new Packet(frame);
 
                 if (packet.Code != 0x00)
@@ -213,7 +216,7 @@ namespace Inventors.ECP
             }
             catch (Exception e)
             {
-                Log.Debug("Error in HandleIncommingFrame: {0}", e.Message);
+                Log.Verbose("Error in HandleIncommingFrame: {0}", e.Message);
             }
         }
 

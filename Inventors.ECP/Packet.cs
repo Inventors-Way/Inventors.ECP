@@ -93,6 +93,17 @@ namespace Inventors.ECP
             data = new byte[length];
         }
 
+        public static bool IsValid(byte[] frame)
+        {
+            if (!(frame is object))
+                return false;
+
+            if (frame.Length < 2)
+                return false;
+
+            return true;
+        }
+
         public Packet(byte[] frame)
         {
             if (!(frame is object))
