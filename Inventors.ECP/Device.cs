@@ -148,7 +148,7 @@ namespace Inventors.ECP
         protected Device(CommunicationLayer commLayer, 
                          Profiler profiler)
         {
-            Central = new BusCentral(commLayer, profiler)
+            Central = new BusCentral(this, commLayer, profiler)
             {
                 MessageListener = this
             };
