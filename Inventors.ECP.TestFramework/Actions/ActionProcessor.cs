@@ -55,7 +55,7 @@ namespace Inventors.ECP.TestFramework.Actions
             }
             catch (Exception e)
             {
-                Log.Error("Error [ {0} ]: {1} ", e.Message, e);
+                Log.Error("Error: {message}", e.Message);
             }
         }
 

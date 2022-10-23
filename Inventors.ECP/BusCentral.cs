@@ -56,7 +56,7 @@ namespace Inventors.ECP
 
         #endregion
 
-        public BusCentral(CommunicationLayer connection, Profiler profiler)
+        public BusCentral(Device device, CommunicationLayer connection, Profiler profiler)
         {
             if (connection is null)
                 throw new ArgumentException(Resources.CONNECTION_NULL);
@@ -65,6 +65,7 @@ namespace Inventors.ECP
             connection.Destuffer.OnReceive += HandleIncommingFrame;
             Timeout = 500;
             Profiler = profiler;
+            this.device = device;
         }
 
         /// <summary>
@@ -209,7 +210,8 @@ namespace Inventors.ECP
                     
                     lock (lockObject)
                     {
-                        currentException = new FunctionNotAcknowledgedException($"{packet.GetByte(0)}");
+                        var errorCode = packet.GetByte(0);
+                        currentException = new FunctionNotAcknowledgedException(device.GetErrorString(errorCode));
                         state = CommState.ERROR;
                     }
                 }
@@ -305,5 +307,6 @@ namespace Inventors.ECP
         private Exception currentException;
         private readonly Stopwatch stopwatch = new Stopwatch();
         private CommState state = CommState.WAITING;
+        private readonly Device device;
     }
 }
