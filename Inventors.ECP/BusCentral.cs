@@ -96,7 +96,10 @@ namespace Inventors.ECP
                 function.OnSend();
                 Initiate(function, address);
 
-                while (!IsCompleted()) ;
+                while (!IsCompleted())
+                {
+                    Thread.Sleep(1);
+                }
 
                 state = CommState.IDLE;
 

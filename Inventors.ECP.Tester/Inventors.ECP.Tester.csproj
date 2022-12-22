@@ -7,7 +7,7 @@
     <UseWindowsForms>true</UseWindowsForms>
 	<LangVersion>latest</LangVersion>
 	<ImplicitUsings>disable</ImplicitUsings>
-	<Version>3.2.0</Version>
+	<Version>3.2.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
