@@ -27,6 +27,8 @@ using System.Net;
 using Serilog.Core;
 using Inventors.ECP.Logging;
 using ScottPlot;
+using Serilog.Formatting.Json;
+using Serilog.Formatting.Compact;
 
 namespace Inventors.ECP.TestFramework
 {
@@ -100,7 +102,8 @@ namespace Inventors.ECP.TestFramework
         {
             var retValue = new LoggerConfiguration()
                 .MinimumLevel.ControlledBy(LogLevel)
-                .WriteTo.File(Path.Combine(logDirectory, "log.txt"), rollingInterval: RollingInterval.Day)
+                .WriteTo.File(path: Path.Combine(logDirectory, "log.txt"), rollingInterval: RollingInterval.Day)
+                .WriteTo.File(formatter: new CompactJsonFormatter(), path: Path.Combine(logDirectory, "log.json"), rollingInterval: RollingInterval.Day)
                 .WriteTo.Sink(logControl);
 
             retValue = retValue
