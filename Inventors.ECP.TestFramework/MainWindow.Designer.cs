@@ -74,6 +74,9 @@ namespace Inventors.ECP.TestFramework
             this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.msgTimer = new System.Windows.Forms.Timer(this.components);
             this.deviceTimer = new System.Windows.Forms.Timer(this.components);
+            this.verboseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.warningToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fatalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.hSplitContainer)).BeginInit();
@@ -181,9 +184,12 @@ namespace Inventors.ECP.TestFramework
             // logLevelToolStripMenuItem
             // 
             this.logLevelToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.verboseToolStripMenuItem,
             this.debugToolStripMenuItem,
             this.informationToolStripMenuItem,
-            this.errorToolStripMenuItem});
+            this.warningToolStripMenuItem,
+            this.errorToolStripMenuItem,
+            this.fatalToolStripMenuItem});
             this.logLevelToolStripMenuItem.Name = "logLevelToolStripMenuItem";
             this.logLevelToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.logLevelToolStripMenuItem.Text = "Log Level";
@@ -459,6 +465,27 @@ namespace Inventors.ECP.TestFramework
             this.deviceTimer.Interval = 500;
             this.deviceTimer.Tick += new System.EventHandler(this.DeviceTimer_Tick);
             // 
+            // verboseToolStripMenuItem
+            // 
+            this.verboseToolStripMenuItem.Name = "verboseToolStripMenuItem";
+            this.verboseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.verboseToolStripMenuItem.Text = "Verbose";
+            this.verboseToolStripMenuItem.Click += new System.EventHandler(this.VerboseToolStripMenuItem_Click);
+            // 
+            // warningToolStripMenuItem
+            // 
+            this.warningToolStripMenuItem.Name = "warningToolStripMenuItem";
+            this.warningToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.warningToolStripMenuItem.Text = "Warning";
+            this.warningToolStripMenuItem.Click += new System.EventHandler(this.WarningToolStripMenuItem_Click);
+            // 
+            // fatalToolStripMenuItem
+            // 
+            this.fatalToolStripMenuItem.Name = "fatalToolStripMenuItem";
+            this.fatalToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.fatalToolStripMenuItem.Text = "Fatal";
+            this.fatalToolStripMenuItem.Click += new System.EventHandler(this.FatalToolStripMenuItem_Click);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -533,6 +560,9 @@ namespace Inventors.ECP.TestFramework
         private System.Windows.Forms.ToolStripMenuItem portMonitorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem analysisToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem actionsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem verboseToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem warningToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fatalToolStripMenuItem;
     }
 }
 

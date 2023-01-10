@@ -960,17 +960,27 @@ namespace Inventors.ECP.TestFramework
             }
         }
 
+        private void VerboseToolStripMenuItem_Click(object sender, EventArgs e) => SetLoggingLevel(LogEventLevel.Verbose);
+
         private void DebugToolStripMenuItem_Click(object sender, EventArgs e) => SetLoggingLevel(LogEventLevel.Debug);
 
         private void InformationToolStripMenuItem_Click(object sender, EventArgs e) => SetLoggingLevel(LogEventLevel.Information);
 
         private void ErrorToolStripMenuItem_Click(object sender, EventArgs e) => SetLoggingLevel(LogEventLevel.Error);
 
+        private void WarningToolStripMenuItem_Click(object sender, EventArgs e) => SetLoggingLevel(LogEventLevel.Warning);
+
+        private void FatalToolStripMenuItem_Click(object sender, EventArgs e) => SetLoggingLevel(LogEventLevel.Fatal);
+
         private void SetLoggingLevel(LogEventLevel level)
         {
+            verboseToolStripMenuItem.Checked = level == LogEventLevel.Verbose;
             debugToolStripMenuItem.Checked = level == LogEventLevel.Debug;
             informationToolStripMenuItem.Checked = level == LogEventLevel.Information;
+            warningToolStripMenuItem.Checked = level == LogEventLevel.Warning;
             errorToolStripMenuItem.Checked = level == LogEventLevel.Error;
+            fatalToolStripMenuItem.Checked = level == LogEventLevel.Fatal;
+
             LogLevel.MinimumLevel = level;
             Settings.Level = level;
         }
