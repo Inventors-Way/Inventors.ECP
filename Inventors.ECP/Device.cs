@@ -145,7 +145,7 @@ namespace Inventors.ECP
         #endregion
         #endregion
 
-        protected Device(CommunicationLayer commLayer, 
+        protected Device(CommunicationLayer commLayer,
                          Profiler profiler)
         {
             Central = new BusCentral(this, commLayer, profiler)
@@ -175,9 +175,12 @@ namespace Inventors.ECP
             {
                 dynamic ping = CreatePing();
                 Execute(ping);
-                retValue = (int) ping.Count;
+                retValue = (int)ping.Count;
             }
-            catch { }
+            catch (Exception e)
+            {
+                Log.Verbose("Ping failed: {@e}", e);
+            }
 
             return retValue;
         }
@@ -272,7 +275,7 @@ namespace Inventors.ECP
                 }
                 else
                 {
-                    Central.Close();    
+                    Central.Close();
                     throw new IncompatibleDeviceException(identification.ToString());
                 }
             }
@@ -314,10 +317,10 @@ namespace Inventors.ECP
         /// </summary>
         public void Open()
         {
-            if (!Central.IsOpen)
-            {
-                Central.Open();                
-            }
+            if (Central.IsOpen)
+                return;
+
+            Central.Open();
         }
 
         /// <summary>
@@ -325,34 +328,35 @@ namespace Inventors.ECP
         /// </summary>
         public void Close()
         {
-            if (Central.IsOpen)
-            {
-                Central.Close();
-            }
+            if (!Central.IsOpen)
+                return;
+
+            Central.Close();
         }
 
         #endregion
 
         public void Execute(DeviceFunction function)
         {
-            if (function is object)
+            if (function is null)
+                return;
+
+            for (int n = 0; n < Retries; ++n)
             {
-                for (int n = 0; n < Retries; ++n)
+                try
                 {
-                    try
+                    watch.Restart();
+                    Central.Execute(function, CurrentAddress);
+                    watch.Stop();
+                    function.TransmissionTime = watch.ElapsedMilliseconds;
+                    break;
+                }
+                catch (Exception e)
+                {
+                    if (n == Retries - 1)
                     {
-                        watch.Restart();
-                        Central.Execute(function, CurrentAddress);
-                        watch.Stop();
-                        function.TransmissionTime = watch.ElapsedMilliseconds;
-                        break;
-                    }
-                    catch 
-                    { 
-                        if (n == Retries - 1) 
-                        { 
-                            throw; 
-                        } 
+                        Log.Verbose("Failed to execute function [ {@function} ]", function);
+                        throw;
                     }
                 }
             }
@@ -369,9 +373,12 @@ namespace Inventors.ECP
             {
                 switch (PrintLevel)
                 {
+                    case LogEventLevel.Verbose: Log.Verbose(message.DebugMessage); break;
                     case LogEventLevel.Debug: Log.Debug(message.DebugMessage); break;
                     case LogEventLevel.Information: Log.Information(message.DebugMessage); break;
+                    case LogEventLevel.Warning: Log.Warning(message.DebugMessage); break;
                     case LogEventLevel.Error: Log.Error(message.DebugMessage); break;
+                    case LogEventLevel.Fatal: Log.Fatal(message.DebugMessage); break;
                     default:
                         break;
                 }

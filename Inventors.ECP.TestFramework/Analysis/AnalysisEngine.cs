@@ -24,7 +24,12 @@ namespace Inventors.ECP.TestFramework.Analysis
 
         public AnalysisEngine(MessageAnalyser analyser, string path)
         {
-            var filename = path + analyser.Script;
+            string filename = "";
+
+            if (analyser.Script.StartsWith($"{Path.DirectorySeparatorChar}"))
+                filename = path + analyser.Script;
+            else
+                filename = path + Path.DirectorySeparatorChar + analyser.Script;
 
             if (!string.IsNullOrEmpty(analyser.Path))
                 filename = path + analyser.Path + analyser.Script;

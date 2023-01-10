@@ -38,4 +38,5 @@
         <action name="Negate Number"
                 script="negate.py" />
     </actions>
+    <seq-logging url="http://localhost:5341" />
 </device>

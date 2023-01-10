@@ -20,7 +20,12 @@ namespace Inventors.ECP.TestFramework.Actions
     {
         public ActionProcessor(CustomAction action, string path)
         {
-            var filename = path + action.Script;
+            string filename = "";
+
+            if (action.Script.StartsWith($"{Path.DirectorySeparatorChar}"))
+                filename = path + action.Script;
+            else 
+                filename = path + Path.DirectorySeparatorChar + action.Script;
 
             if (!string.IsNullOrEmpty(action.Path))
                 filename = path + action.Path + action.Script;
