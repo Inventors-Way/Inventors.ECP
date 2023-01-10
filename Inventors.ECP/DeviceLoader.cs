@@ -22,6 +22,9 @@ namespace Inventors.ECP
         [XmlAttribute("factory")]
         public string Factory { get; set; }
 
+        [XmlIgnore]
+        public string Version { get; private set; } = "";
+
         [XmlAttribute("baudrate")]
         public string BaudRateString
         {
@@ -105,6 +108,7 @@ namespace Inventors.ECP
             string fullAssemblyName = Path.Combine(basePath, AssemblyName) + ".dll";
             assembly = Assembly.LoadFrom(fullAssemblyName);
             var type = assembly.GetType(Factory);
+            Version = assembly.GetName().Version.ToString();  
 
             if ((type is object))
             {

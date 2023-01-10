@@ -26,6 +26,7 @@ using Inventors.ECP.TestFramework.Actions;
 using System.Net;
 using Serilog.Core;
 using Inventors.ECP.Logging;
+using ScottPlot;
 
 namespace Inventors.ECP.TestFramework
 {
@@ -45,6 +46,7 @@ namespace Inventors.ECP.TestFramework
 
         private Device device = null;
         private string deviceId = null;
+        private string deviceVersion = "";
         private string logDirectory = null;
         private string selectedDevice = null;
         private bool confirmLogDeletion = true;
@@ -81,7 +83,7 @@ namespace Inventors.ECP.TestFramework
 
             commTester = new CommTester();
         }
-        
+
         public MainWindow(string deviceFileName) :
             this()
         {
@@ -94,27 +96,48 @@ namespace Inventors.ECP.TestFramework
             Text = String.Format("ECP Tester, Rev {0}", VersionInfo.VersionDescription);
         }
 
+        private LoggerConfiguration CreateCommonLogConfiguration()
+        {
+            var retValue = new LoggerConfiguration()
+                .MinimumLevel.ControlledBy(LogLevel)
+                .WriteTo.File(Path.Combine(logDirectory, "log.txt"), rollingInterval: RollingInterval.Day)
+                .WriteTo.Sink(logControl);
+
+            retValue = retValue
+                .Enrich.WithProperty("ApplicationVersion", VersionInfo.VersionDescription)
+                .Enrich.WithProperty("MachineName", Environment.MachineName)
+                .Enrich.WithProperty("Application", "ECP Tester")
+                .Enrich.WithProperty("Device", deviceId)
+                .Enrich.WithProperty("DeviceVersion", deviceVersion);
+
+            return retValue;
+        }
+
         public void Accept(BasicLogging config)
         {
-            var log = new LoggerConfiguration()
-            .MinimumLevel.ControlledBy(LogLevel)
-            .WriteTo.AddLogControl(logControl)
-            .CreateLogger();
-
+            var log = CreateCommonLogConfiguration().CreateLogger();
+    
             Log.Logger = log;
-            Log.Information("Basic Logging has been configured");
+            Log.Information("Basic Logging has been configured [ {directory} ]", logDirectory);
         }
 
         public void Accept(SeqLogging config)
         {
-            var log = new LoggerConfiguration()
-            .MinimumLevel.ControlledBy(LogLevel)
-            .WriteTo.AddLogControl(logControl)
-            .WriteTo.Seq(serverUrl: config.Url, apiKey: config.ApiKey)
-            .CreateLogger();
+            var serilogConfig = CreateCommonLogConfiguration();
+
+            if (string.IsNullOrEmpty(config.ApiKey))
+            {
+                serilogConfig.WriteTo.Seq(serverUrl: config.Url);
+            }
+            else
+            {
+                serilogConfig.WriteTo.Seq(serverUrl: config.Url, apiKey: config.ApiKey);
+            }
+
+            var log = serilogConfig.CreateLogger();
 
             Log.Logger = log;
-            Log.Information("Seq Logging has been configured [url: {url}]", config.Url);
+            Log.Information("Seq Logging has been configured [ Seq Address: {url}, Log Directory: {logDirectory} ]", config.Url, logDirectory);
         }
 
         private void UpdateStatus()
@@ -170,17 +193,19 @@ namespace Inventors.ECP.TestFramework
                 deviceId = loader.Factory;
                 logDirectory = Settings.GetDeviceDefaultLoggingDirectory(deviceId);
                 logControl.Paused = false;
-                Log.Information("Loaded assembly: {0}", loader.FileName);
-                Log.Information("Device: {0} [Creation time: {1}]", loader.Factory, loader.CreationTime);
-                Log.Information("Logging directory: {0}", logDirectory);
-                Log.Information("Log settings [Auto save: {0}, Confirm deletion: {1}]", loader.AutoSaveLog, loader.ConfirmLogDeletion);
-                loader.LogConfiguration.Visit(this);
 
                 autoSaveLogToolStripMenuItem.Checked = logControl.AutoSave = loader.AutoSaveLog;
                 logControl.InitializeLogFile(logDirectory);
                 confirmLogDeletion = loader.ConfirmLogDeletion;
 
                 device = loader.Create();
+                deviceVersion = loader.Version;
+
+                loader.LogConfiguration.Visit(this);
+                Log.Information("Loaded assembly: {0}", loader.FileName);
+                Log.Information("Device: {0} [Creation time: {1}]", loader.Factory, loader.CreationTime);
+                Log.Information("Logging directory: {0}", logDirectory);
+                Log.Information("Log settings [Auto save: {0}, Confirm deletion: {1}]", loader.AutoSaveLog, loader.ConfirmLogDeletion);
 
                 device.Profiler.Enabled = loader.Profiling;
                 profilerWindow.SetDevice(device);
@@ -224,7 +249,7 @@ namespace Inventors.ECP.TestFramework
                 if (loader.Analysers is not null)
                 {
                     foreach (var analyser in loader.Analysers)
-                    {                        
+                    {
                         Log.Information("Analyser {0} for message {1} with script {2}",
                             analyser.Name, analyser.Code, analyser.Script);
 
@@ -367,7 +392,7 @@ namespace Inventors.ECP.TestFramework
         {
             if (!device.IsOpen)
             {
-                var devices = device.GetLocationsDevices(); 
+                var devices = device.GetLocationsDevices();
 
                 if (CheckDevicesChanged(devices))
                 {
@@ -377,9 +402,9 @@ namespace Inventors.ECP.TestFramework
                     for (int n = 0; n < devices.Count; ++n)
                     {
                         var location = devices[n];
-                        var item = new ToolStripMenuItem(location) 
-                        { 
-                            Tag = devices[n] 
+                        var item = new ToolStripMenuItem(location)
+                        {
+                            Tag = devices[n]
                         };
                         portMenuItem.DropDownItems.Add(item);
 
@@ -428,7 +453,7 @@ namespace Inventors.ECP.TestFramework
                             }
                             else
                             {
-                                pingStatus.Text = String.Format($"| Ping count: { ping }");
+                                pingStatus.Text = String.Format($"| Ping count: {ping}");
                             }
                         }
                         catch
@@ -653,8 +678,8 @@ namespace Inventors.ECP.TestFramework
             propertyGrid.Refresh();
         }
 
-#endregion
-#region Functions and message handling
+        #endregion
+        #region Functions and message handling
         private void Execute(DeviceFunction function, bool doLogging = false)
         {
             if (device != null)
@@ -698,7 +723,7 @@ namespace Inventors.ECP.TestFramework
             }
         }
 
-#endregion
+        #endregion
 
         private async void TestToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -775,7 +800,7 @@ namespace Inventors.ECP.TestFramework
                 {
                     Filter = "Text Files|*.txt",
                     Title = "Save Log File",
-                    InitialDirectory = Settings.GetLoggingDirectory(deviceId)                    
+                    InitialDirectory = Settings.GetLoggingDirectory(deviceId)
                 })
                 {
                     if (dialog.ShowDialog() == DialogResult.OK)
@@ -934,14 +959,14 @@ namespace Inventors.ECP.TestFramework
 
         private void DebugToolStripMenuItem_Click(object sender, EventArgs e) => SetLoggingLevel(LogEventLevel.Debug);
 
-        private void StatusToolStripMenuItem_Click(object sender, EventArgs e) => SetLoggingLevel(LogEventLevel.Information);
+        private void InformationToolStripMenuItem_Click(object sender, EventArgs e) => SetLoggingLevel(LogEventLevel.Information);
 
         private void ErrorToolStripMenuItem_Click(object sender, EventArgs e) => SetLoggingLevel(LogEventLevel.Error);
 
         private void SetLoggingLevel(LogEventLevel level)
         {
             debugToolStripMenuItem.Checked = level == LogEventLevel.Debug;
-            statusToolStripMenuItem.Checked = level == LogEventLevel.Information;
+            informationToolStripMenuItem.Checked = level == LogEventLevel.Information;
             errorToolStripMenuItem.Checked = level == LogEventLevel.Error;
             LogLevel.MinimumLevel = level;
             Settings.Level = level;
