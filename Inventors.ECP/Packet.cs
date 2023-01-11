@@ -106,13 +106,10 @@ namespace Inventors.ECP
             if (frame[1] < 128) // It is a standard frame.
             {
                 var length = frame[1];
-
-                if (length != frame.Length + 2)
-                    return false;
             }
             else // It is an extended frame.
             {
-                // TODO: Implement.
+
             }
 
             return true;

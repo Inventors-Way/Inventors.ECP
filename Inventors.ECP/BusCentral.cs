@@ -176,7 +176,9 @@ namespace Inventors.ECP
             try
             {
                 if (!Packet.IsValid(frame))
+                {
                     return;
+                }
 
                 var packet = new Packet(frame);
 
