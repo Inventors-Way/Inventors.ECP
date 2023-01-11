@@ -351,15 +351,17 @@ namespace Inventors.ECP
                     function.TransmissionTime = watch.ElapsedMilliseconds;
                     break;
                 }
-                catch (Exception e)
+                catch 
                 {
                     if (n == Retries - 1)
                     {
-                        Log.Verbose("Failed to execute function [ {@function} ]", function);
+                        Log.Verbose("Failed to execute function [ {@Function} ]", function);
                         throw;
                     }
                 }
             }
+
+            Log.Verbose("Executed function: {@Function}", function);
         }
 
         public void Send(DeviceMessage message)

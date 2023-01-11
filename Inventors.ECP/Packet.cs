@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Inventors.ECP.Utility;
+using Serilog;
 
 namespace Inventors.ECP
 {
@@ -101,9 +103,47 @@ namespace Inventors.ECP
             if (frame.Length < 2)
                 return false;
 
+            if (frame[1] < 128) // It is a standard frame.
+            {
+                var length = frame[1];
+
+                if (length != frame.Length + 2)
+                    return false;
+            }
+            else // It is an extended frame.
+            {
+                // TODO: Implement.
+            }
+
             return true;
         }
 
+        [SuppressMessage("Style", "IDE0066:Convert switch statement to expression", Justification = "If not available in earlier versions of .NET")]
+        public static LengthEncodingType ParseLength(byte data)
+        {
+            switch ((LengthEncodingType)(0x03 & data))
+            {
+                case LengthEncodingType.UInt8Encoding: return LengthEncodingType.UInt8Encoding;
+                case LengthEncodingType.UInt16Encoding: return LengthEncodingType.UInt16Encoding;
+                case LengthEncodingType.UInt32Encoding: return LengthEncodingType.UInt32Encoding;
+                default:
+                    throw new InvalidOperationException($"Invalid length encoding [ {0x03 & data} ]");
+            }
+        }
+
+        public static ChecksumAlgorithmType ParseChecksum(byte data)
+        {
+            switch ((ChecksumAlgorithmType)(0x0C & data))
+            {
+                case ChecksumAlgorithmType.None: return ChecksumAlgorithmType.None;
+                case ChecksumAlgorithmType.Additive: return ChecksumAlgorithmType.Additive;
+                case ChecksumAlgorithmType.CRC8CCIT: return ChecksumAlgorithmType.CRC8CCIT;
+                default:
+                    throw new InvalidOperationException($"Invalid checksum type [ {0x0C & data} ]");
+            }
+        }
+
+        [SuppressMessage("Style", "IDE0066:Convert switch statement to expression", Justification = "If not available in earlier versions of .NET")]
         public Packet(byte[] frame)
         {
             if (!(frame is object))
@@ -112,110 +152,93 @@ namespace Inventors.ECP
             if (frame.Length < 2)
                 throw new PacketFormatException(Resources.INVALID_FRAME_TOO_SHORT);
 
-            // Parsing the code byte
-            _code = frame[0];
-
-            // Parsing the format byte
-            if (frame[1] < 128)
+            try
             {
-                _length = frame[1];
-                _lengthEncoding = LengthEncodingType.UInt8Encoding;
-                Address = 0;
-                _checksumType = ChecksumAlgorithmType.None;
-            }
-            else
-            {
-                // Parse the length encoding
-                switch ((LengthEncodingType) (0x03 & frame[1]))
+                // Parsing the code byte
+                _code = frame[0];
+
+                // Parsing the format byte
+                if (frame[1] < 128)
                 {
-                    case LengthEncodingType.UInt8Encoding:
-                        _lengthEncoding = LengthEncodingType.UInt8Encoding;
-                        break;
-                    case LengthEncodingType.UInt16Encoding:
-                        _lengthEncoding = LengthEncodingType.UInt16Encoding;
-                        break;
-                    case LengthEncodingType.UInt32Encoding:
-                        _lengthEncoding = LengthEncodingType.UInt32Encoding;
-                        break;
-                    default:
-                        throw new InvalidOperationException($"Invalid length encoding [ {0x03 & frame[1]} ]");
+                    _length = frame[1];
+                    _lengthEncoding = LengthEncodingType.UInt8Encoding;
+                    Address = 0;
+                    _checksumType = ChecksumAlgorithmType.None;
+                }
+                else
+                {
+                    _lengthEncoding = ParseLength(frame[1]);
+                    _checksumType = ParseChecksum(frame[1]);
+
+                    // Parse the address bit.
+                    if ((0x10 & frame[1]) != 0)
+                    {
+                        Address = frame[2 + GetLengthSize()];
+                    }
                 }
 
-                // Parse the checksum field
-                switch ((ChecksumAlgorithmType) (0x0C & frame[1]))
+                if (Extended)
                 {
-                    case ChecksumAlgorithmType.None:
-                        _checksumType = ChecksumAlgorithmType.None;
-                        break;
-                    case ChecksumAlgorithmType.Additive:
-                        _checksumType = ChecksumAlgorithmType.Additive;
-                        break;
-                    case ChecksumAlgorithmType.CRC8CCIT:
-                        _checksumType = ChecksumAlgorithmType.CRC8CCIT;
-                        break;
-                    default:
-                        throw new InvalidOperationException($"Invalid checksum type [ {0x0C & frame[1]} ]");
-                }
-
-                // Parse the address bit.
-                if ((0x10 & frame[1]) != 0)
-                {
-                    Address = frame[2 + GetLengthSize()];
-                }
-            }
-
-            if (Extended)
-            {
-                int offset = GetDataOffset();
-                _length = DecodeLength(frame);
-                data = new byte[_length];
+                    int offset = GetDataOffset();
+                    _length = DecodeLength(frame);
+                    data = new byte[_length];
 
 
-                for (int i = 0; i < _length; ++i)
-                {
-                    data[i] = frame[i + offset];
-                }
-
-                // Validate checksum
-                switch (ChecksumAlgorithm)
-                {
-                    case ChecksumAlgorithmType.Additive:
+                    for (int i = 0; i < _length; ++i)
+                    {
+                        if (i + offset < frame.Length)
                         {
-                            _checksum = frame[GetChecksumOffset()];
-                            byte actualChecksum = AdditiveChecksum.Calculate(frame, frame.Length - 1);
-
-                            if (_checksum != actualChecksum)
-                            {
-                                throw new InvalidOperationException($"Checksum incorrect (expected: {_checksum}, actual: {actualChecksum})");
-                            }
+                            data[i] = frame[i + offset];
                         }
-                        break;
+                    }
 
-                    case ChecksumAlgorithmType.CRC8CCIT:
-                        {
-                            _checksum = frame[GetChecksumOffset()];
-                            byte actualChecksum = CRC8CCITT.Calculate(frame, frame.Length - 1);
-
-                            if (_checksum != actualChecksum)
+                    // Validate checksum
+                    switch (ChecksumAlgorithm)
+                    {
+                        case ChecksumAlgorithmType.Additive:
                             {
-                                throw new InvalidOperationException($"Checksum incorrect (expected: {_checksum}, actual: {actualChecksum})");
-                            }
-                        }
-                        break;
+                                _checksum = frame[GetChecksumOffset()];
+                                byte actualChecksum = AdditiveChecksum.Calculate(frame, frame.Length - 1);
 
-                    default:
-                        break;
+                                if (_checksum != actualChecksum)
+                                {
+                                    throw new InvalidOperationException($"Checksum incorrect (expected: {_checksum}, actual: {actualChecksum})");
+                                }
+                            }
+                            break;
+
+                        case ChecksumAlgorithmType.CRC8CCIT:
+                            {
+                                _checksum = frame[GetChecksumOffset()];
+                                byte actualChecksum = CRC8CCITT.Calculate(frame, frame.Length - 1);
+
+                                if (_checksum != actualChecksum)
+                                {
+                                    throw new InvalidOperationException($"Checksum incorrect (expected: {_checksum}, actual: {actualChecksum})");
+                                }
+                            }
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+                else // Standard frame
+                {
+                    data = new byte[_length];
+                    int offset = 2;
+
+                    for (int i = 0; i < _length; ++i)
+                    {
+                        if (i + offset < frame.Length)
+                            data[i] = frame[i + offset];
+                    }
                 }
             }
-            else // Standard frame
+            catch (Exception e)
             {
-                data = new byte[_length];
-                int offset = 2;
-
-                for (int i = 0; i < _length; ++i)
-                {
-                    data[i] = frame[i + offset];
-                }
+                Log.Verbose("Exception in creating packet: {@e}", e);
+                throw;
             }
         }
 
