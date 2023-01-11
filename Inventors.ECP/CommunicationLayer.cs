@@ -45,6 +45,7 @@ namespace Inventors.ECP
 
         public void Open()
         {
+            Destuffer.Reset();
             DoOpen();
             RestartStatistics();
         }

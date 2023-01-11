@@ -82,9 +82,21 @@ namespace Inventors.ECP.TestFramework
 
             lock (lockObject)
             {
-                logBuffer.AppendLine(message);
+                var time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+                logBuffer.AppendLine($"{time} [ {LogLevelDescrption(logEvent.Level)} ] {message}");
             }
         }
+
+        private string LogLevelDescrption(LogEventLevel level) => level switch
+        {
+            LogEventLevel.Verbose => "VER",
+            LogEventLevel.Debug => "DEB",
+            LogEventLevel.Information => "INF",
+            LogEventLevel.Warning => "WRN",
+            LogEventLevel.Error => "ERR",
+            LogEventLevel.Fatal => "FTL",
+            _ => "UNK"
+        };
 
         private void LogEntry_KeyDown(object sender, KeyEventArgs e)
         {
@@ -162,15 +174,6 @@ namespace Inventors.ECP.TestFramework
 
                 ScrollToEnd();
             }
-        }
-    }
-
-    public static class LogControlSinkExtensions
-    {
-        public static LoggerConfiguration AddLogControl(this LoggerSinkConfiguration loggerConfiguration,
-                                                     LogControl ctrl)
-        {
-            return loggerConfiguration.Sink(ctrl);
         }
     }
 }
