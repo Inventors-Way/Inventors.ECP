@@ -174,4 +174,10 @@ For a reference firmware that implement an ECP Peripheral on a microprocessor (A
 
 [ECP.Firmware](https://github.com/Inventors-Way/Firmware.ECP)
 
+For a reference firmware that implement an ECP Peripheral on a Cypress PSoC6 platform (CYBLE-416045-02 Module) see:
 
+[Firmware.PSoC6](https://github.com/Inventors-Way/Firmware.PSoC6)
+
+For a reference firmware that implement an ECP Peripheral on a Cypress PSoC4 platform see:
+
+[Firmware.PSoC](https://github.com/Inventors-Way/Firmware.PSoC)
