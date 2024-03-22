@@ -14,23 +14,27 @@ namespace Inventors.ECP
         /// <summary>
         /// Inventors' Way ApS
         /// </summary>
-        InventorsWay = 1,
+        InventorsWay,
         /// <summary>
         /// Detectronic A/S
         /// </summary>
-        Detectronic = 2,
+        Detectronic,
         /// <summary>
         /// Nocitech ApS
         /// </summary>
-        Nocitech = 3,
+        Nocitech,
         /// <summary>
         /// InnoCon Medical ApS
         /// </summary>
-        InnoCon = 4,
+        InnoCon,
         /// <summary>
         /// Nordic-NeuroSTIM ApS
         /// </summary>
-        NordicNeuroSTIM = 5,
+        NordicNeuroSTIM,
+        /// <summary>
+        /// Banrob ApS
+        /// </summary>
+        Banrob,
         /// <summary>
         /// Use only for testing purposes. Please contact Inventors' Way at info@inventors.dk to get an MID allocated to your company, which is free for non-profit or open source projects.
         /// </summary>
