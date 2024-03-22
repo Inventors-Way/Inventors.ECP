@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<DOCUMENT Type="Advanced Installer" CreateVersion="16.2" version="21.4" Modules="professional" RootPath="." Language="en" Id="{0687AB8F-C018-4E72-ADE8-CA2B69065AF4}">
+<DOCUMENT Type="Advanced Installer" CreateVersion="16.2" version="20.0" Modules="professional" RootPath="." Language="en" Id="{0687AB8F-C018-4E72-ADE8-CA2B69065AF4}">
   <COMPONENT cid="caphyon.advinst.msicomp.ProjectOptionsComponent">
     <ROW Name="HiddenItems" Value="ActSyncAppComponent;CPLAppletComponent;AppXAppDetailsComponent;FixupComponent;AppXCapabilitiesComponent;AppXDependenciesComponent;AppXProductDetailsComponent;AppXVisualAssetsComponent;AppXAppDeclarationsComponent;AppXUriRulesComponent;MsiXDiffComponent;MsixManifestEditorComponent"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiPropsComponent">
     <ROW Property="AI_BITMAP_DISPLAY_MODE" Value="0"/>
+    <ROW Property="AI_CURRENT_YEAR" Value="2023" ValueLocId="-"/>
+    <ROW Property="AI_PACKAGING_TOOL" Value="Advanced Installer 20.0 build e4706cc2" ValueLocId="-"/>
     <ROW Property="AI_PREDEF_LCONDS_PROPS" Value="AI_DETECTED_DOTNET_VERSION"/>
     <ROW Property="AI_REQUIRED_DOTNET_DISPLAY" MultiBuildValue="DefaultBuild:4.7.2" ValueLocId="-"/>
     <ROW Property="AI_REQUIRED_DOTNET_VERSION" MultiBuildValue="DefaultBuild:4.7.2" ValueLocId="-"/>
@@ -13,10 +15,10 @@
     <ROW Property="ARPHELPLINK" Value="https://github.com/Inventors-Way/ITLS-ECP"/>
     <ROW Property="ARPPRODUCTICON" Value="icons8_usb_on_96_k8q_icon.exe" Type="8"/>
     <ROW Property="Manufacturer" Value="Inventors Way"/>
-    <ROW Property="ProductCode" Value="1033:{756B7321-851B-41BB-B6CA-22C0509B9C83} " Type="16"/>
+    <ROW Property="ProductCode" Value="1033:{FA0CBC7C-4BD5-4369-8DCD-11BB56E7D42F} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="ECP Tester"/>
-    <ROW Property="ProductVersion" Value="3.3.0" Options="32"/>
+    <ROW Property="ProductVersion" Value="3.2.2"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND"/>
     <ROW Property="UpgradeCode" Value="{7AF47BB0-E218-41DD-B835-61EC033F35ED}"/>
     <ROW Property="WindowsType9X" MultiBuildValue="DefaultBuild:Windows 9x/ME" ValueLocId="-"/>
@@ -27,8 +29,6 @@
     <ROW Property="WindowsTypeNT50Display" MultiBuildValue="DefaultBuild:Windows 2000" ValueLocId="-"/>
     <ROW Property="WindowsTypeNT5X" MultiBuildValue="DefaultBuild:Windows XP/2003" ValueLocId="-"/>
     <ROW Property="WindowsTypeNT5XDisplay" MultiBuildValue="DefaultBuild:Windows XP/2003" ValueLocId="-"/>
-    <ROW Property="WindowsTypeNT60" MultiBuildValue="DefaultBuild:Windows Vista/Server 2008" ValueLocId="-"/>
-    <ROW Property="WindowsTypeNT60Display" MultiBuildValue="DefaultBuild:Windows Vista/Server 2008" ValueLocId="-"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiDirsComponent">
     <ROW Directory="APPDIR" Directory_Parent="TARGETDIR" DefaultDir="APPDIR:." IsPseudoRoot="1"/>
@@ -66,28 +66,13 @@
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiCompsComponent">
     <ROW Component="APPDIR" ComponentId="{04FDEAF2-9F48-402B-8084-66DE0D08F821}" Directory_="APPDIR" Attributes="0"/>
-    <ROW Component="Inventors.ECP.TestFramework.dll" ComponentId="{7D356C0B-6A7B-4D62-B340-7B2187BC1CF3}" Directory_="winx64_Dir" Attributes="0" KeyPath="Inventors.ECP.TestFramework.dll"/>
-    <ROW Component="Inventors.ECP.Tester.deps.json" ComponentId="{C45EA435-3232-4849-B912-52137AF30EF5}" Directory_="winx64_Dir" Attributes="0" KeyPath="Inventors.ECP.Tester.deps.json" Type="0"/>
-    <ROW Component="Inventors.ECP.Tester.dll" ComponentId="{61D1564D-EAC7-4357-A340-A3104C067406}" Directory_="winx64_Dir" Attributes="256" KeyPath="Inventors.ECP.Tester.dll"/>
+    <ROW Component="D3DCompiler_47_cor3.dll" ComponentId="{4F8A2F62-5618-45F6-BB96-CC61489C5D33}" Directory_="winx64_Dir" Attributes="256" KeyPath="D3DCompiler_47_cor3.dll"/>
     <ROW Component="Inventors.ECP.Tester.exe" ComponentId="{AAD11FF0-6134-437A-B153-84AECB4868E6}" Directory_="winx64_Dir" Attributes="256" KeyPath="Inventors.ECP.Tester.exe"/>
-    <ROW Component="Inventors.ECP.pdb" ComponentId="{B1C5D9B3-7652-495C-9724-5195E3D07C7D}" Directory_="winx64_Dir" Attributes="0" KeyPath="Inventors.ECP.dll"/>
-    <ROW Component="IronPython.Modules.dll" ComponentId="{8EE275D8-CC1E-4A24-AAEE-76DE66DCB109}" Directory_="winx64_Dir" Attributes="0" KeyPath="IronPython.Modules.dll"/>
-    <ROW Component="IronPython.SQLite.dll" ComponentId="{74C3E6F1-3404-4FB9-80E9-1FD3BD0E2824}" Directory_="winx64_Dir" Attributes="0" KeyPath="IronPython.SQLite.dll"/>
-    <ROW Component="IronPython.Wpf.dll" ComponentId="{DB020349-E996-415E-9E31-2396D1DE7C3F}" Directory_="winx64_Dir" Attributes="0" KeyPath="IronPython.Wpf.dll"/>
-    <ROW Component="IronPython.dll" ComponentId="{54F8CF32-EEAD-4B0F-8127-8ADF114DFDD9}" Directory_="winx64_Dir" Attributes="0" KeyPath="IronPython.dll"/>
-    <ROW Component="Microsoft.Dynamic.dll" ComponentId="{936F1569-B1DF-4FC5-ABD3-87963C45D4C0}" Directory_="winx64_Dir" Attributes="0" KeyPath="Microsoft.Dynamic.dll"/>
-    <ROW Component="Microsoft.Scripting.Metadata.dll" ComponentId="{22A347D4-46D7-45FA-BDD6-F0DBC0C3BF63}" Directory_="winx64_Dir" Attributes="0" KeyPath="Microsoft.Scripting.Metadata.dll"/>
-    <ROW Component="Microsoft.Scripting.dll" ComponentId="{ADB8EA95-8082-4D22-BC49-AEAB1A874328}" Directory_="winx64_Dir" Attributes="0" KeyPath="Microsoft.Scripting.dll"/>
-    <ROW Component="Mono.Unix.dll" ComponentId="{21D89CC2-9FFF-45C0-B817-C20639DF1A5C}" Directory_="winx64_Dir" Attributes="0" KeyPath="Mono.Unix.dll"/>
+    <ROW Component="Inventors.ECP.pdb" ComponentId="{B1C5D9B3-7652-495C-9724-5195E3D07C7D}" Directory_="winx64_Dir" Attributes="0" KeyPath="Inventors.ECP.pdb" Type="4"/>
+    <ROW Component="PenImc_cor3.dll" ComponentId="{6606ADF1-D809-4EE8-8B20-570F84EFA360}" Directory_="winx64_Dir" Attributes="256" KeyPath="PenImc_cor3.dll"/>
+    <ROW Component="PresentationNative_cor3.dll" ComponentId="{0D5BB35B-74B3-4E7A-9F3A-766F7EC54A7A}" Directory_="winx64_Dir" Attributes="256" KeyPath="PresentationNative_cor3.dll"/>
     <ROW Component="ProductInformation" ComponentId="{5363DE25-DBDD-4F8F-BA55-B904FFBDA7D6}" Directory_="APPDIR" Attributes="4" KeyPath="Version"/>
     <ROW Component="README.txt" ComponentId="{2FDC426E-E090-4C0E-B687-C257DA7B7902}" Directory_="sitepackages_Dir" Attributes="0" KeyPath="README.txt" Type="0"/>
-    <ROW Component="ScottPlot.dll" ComponentId="{B0F28B70-6C4A-4988-A01A-9B6070CDFD87}" Directory_="winx64_Dir" Attributes="0" KeyPath="ScottPlot.dll"/>
-    <ROW Component="Serilog.Formatting.Compact.dll" ComponentId="{CDB16658-C321-4E47-AE06-1F1FD8364EE9}" Directory_="winx64_Dir" Attributes="0" KeyPath="Serilog.Formatting.Compact.dll"/>
-    <ROW Component="Serilog.Sinks.File.dll" ComponentId="{3D139F17-DDD8-4BAB-8BFB-AC1AC9442871}" Directory_="winx64_Dir" Attributes="0" KeyPath="Serilog.Sinks.File.dll"/>
-    <ROW Component="Serilog.Sinks.PeriodicBatching.dll" ComponentId="{380D2F46-8306-4A8E-A035-3E84FEFBA4F1}" Directory_="winx64_Dir" Attributes="0" KeyPath="Serilog.Sinks.PeriodicBatching.dll"/>
-    <ROW Component="Serilog.Sinks.Seq.dll" ComponentId="{EC22A1FD-C041-4F23-8529-8342B2D24104}" Directory_="winx64_Dir" Attributes="0" KeyPath="Serilog.Sinks.Seq.dll"/>
-    <ROW Component="Serilog.dll" ComponentId="{EB9A683F-C434-4793-B011-FC63D5C0501A}" Directory_="winx64_Dir" Attributes="0" KeyPath="Serilog.dll"/>
-    <ROW Component="System.IO.Ports.dll" ComponentId="{B7AD1792-0B03-4A85-BC35-6A039110804E}" Directory_="winx64_Dir" Attributes="0" KeyPath="System.IO.Ports.dll"/>
     <ROW Component="__init__.py" ComponentId="{A0C0001C-AF1C-4D81-B66F-293A2A1B032B}" Directory_="importlib_Dir" Attributes="0" KeyPath="__init__.py_8" Type="0"/>
     <ROW Component="__init__.py_1" ComponentId="{8602ABAD-A72F-4281-849B-54C21651555E}" Directory_="xml_Dir" Attributes="0" KeyPath="__init__.py_24" Type="0"/>
     <ROW Component="_uninstall.py" ComponentId="{07DFA52A-31A5-492B-A9D2-353A1495090B}" Directory_="ensurepip_Dir" Attributes="0" KeyPath="_uninstall.py" Type="0"/>
@@ -115,12 +100,15 @@
     <ROW Component="pip19.2.3py2.py3noneany.whl" ComponentId="{D3333227-2AC1-4661-AF1D-E35B91279B57}" Directory_="_bundled_Dir" Attributes="0" KeyPath="pip19.2.3py2.py3noneany.whl" Type="0"/>
     <ROW Component="topics.py" ComponentId="{4E1A8897-89A8-4FA5-AD4C-22AE02C55E1C}" Directory_="pydoc_data_Dir" Attributes="0" KeyPath="topics.py" Type="0"/>
     <ROW Component="util.py" ComponentId="{9B16A802-0DE8-49D1-90C7-376458CF96EF}" Directory_="ctypes_Dir" Attributes="0" KeyPath="util.py" Type="0"/>
+    <ROW Component="vcruntime140_cor3.dll" ComponentId="{528BAF2E-7003-4156-812C-064DD1C7D1AA}" Directory_="winx64_Dir" Attributes="256" KeyPath="vcruntime140_cor3.dll"/>
+    <ROW Component="wpfgfx_cor3.dll" ComponentId="{4AFD8257-3F8D-4892-A5D0-EFB2BB4CB202}" Directory_="winx64_Dir" Attributes="256" KeyPath="wpfgfx_cor3.dll"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFeatsComponent">
     <ROW Feature="MainFeature" Title="MainFeature" Description="Description" Display="1" Level="1" Directory_="APPDIR" Attributes="0"/>
     <ATTRIBUTE name="CurrentFeature" value="MainFeature"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFilesComponent">
+    <ROW File="D3DCompiler_47_cor3.dll" Component_="D3DCompiler_47_cor3.dll" FileName="D3DCOM~1.DLL|D3DCompiler_47_cor3.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\D3DCompiler_47_cor3.dll" SelfReg="false"/>
     <ROW File="Inventors.ECP.pdb" Component_="Inventors.ECP.pdb" FileName="INVENT~1.PDB|Inventors.ECP.pdb" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Inventors.ECP.pdb" SelfReg="false"/>
     <ROW File="Inventors.ECP.Tester.exe" Component_="Inventors.ECP.Tester.exe" FileName="INVENT~1.EXE|Inventors.ECP.Tester.exe" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Inventors.ECP.Tester.exe" SelfReg="false" DigSign="true"/>
     <ROW File="Inventors.ECP.Tester.pdb" Component_="Inventors.ECP.Tester.exe" FileName="INVENT~2.PDB|Inventors.ECP.Tester.pdb" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Inventors.ECP.Tester.pdb" SelfReg="false"/>
@@ -644,35 +632,16 @@
     <ROW File="_weakrefset.py" Component_="abc.py" FileName="_WEAKR~1.PY|_weakrefset.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\_weakrefset.py" SelfReg="false"/>
     <ROW File="__future__.py" Component_="abc.py" FileName="__FUTU~1.PY|__future__.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\__future__.py" SelfReg="false"/>
     <ROW File="__phello__.foo.py" Component_="abc.py" FileName="__PHEL~1.PY|__phello__.foo.py" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Lib\__phello__.foo.py" SelfReg="false"/>
-    <ROW File="Inventors.ECP.dll" Component_="Inventors.ECP.pdb" FileName="INVENT~1.DLL|Inventors.ECP.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Inventors.ECP.dll" SelfReg="false"/>
-    <ROW File="Inventors.ECP.Tester.deps.json" Component_="Inventors.ECP.Tester.deps.json" FileName="INVENT~1.JSO|Inventors.ECP.Tester.deps.json" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Inventors.ECP.Tester.deps.json" SelfReg="false"/>
-    <ROW File="Inventors.ECP.Tester.dll" Component_="Inventors.ECP.Tester.dll" FileName="INVENT~2.DLL|Inventors.ECP.Tester.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Inventors.ECP.Tester.dll" SelfReg="false"/>
-    <ROW File="Inventors.ECP.Tester.runtimeconfig.json" Component_="Inventors.ECP.Tester.deps.json" FileName="INVENT~2.JSO|Inventors.ECP.Tester.runtimeconfig.json" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Inventors.ECP.Tester.runtimeconfig.json" SelfReg="false"/>
-    <ROW File="Inventors.ECP.TestFramework.dll" Component_="Inventors.ECP.TestFramework.dll" FileName="INVENT~3.DLL|Inventors.ECP.TestFramework.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Inventors.ECP.TestFramework.dll" SelfReg="false"/>
-    <ROW File="IronPython.dll" Component_="IronPython.dll" FileName="IRONPY~1.DLL|IronPython.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\IronPython.dll" SelfReg="false"/>
-    <ROW File="IronPython.Modules.dll" Component_="IronPython.Modules.dll" FileName="IRONPY~2.DLL|IronPython.Modules.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\IronPython.Modules.dll" SelfReg="false"/>
-    <ROW File="IronPython.SQLite.dll" Component_="IronPython.SQLite.dll" FileName="IRONPY~3.DLL|IronPython.SQLite.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\IronPython.SQLite.dll" SelfReg="false"/>
-    <ROW File="IronPython.Wpf.dll" Component_="IronPython.Wpf.dll" FileName="IRONPY~4.DLL|IronPython.Wpf.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\IronPython.Wpf.dll" SelfReg="false"/>
-    <ROW File="Microsoft.Dynamic.dll" Component_="Microsoft.Dynamic.dll" FileName="MICROS~1.DLL|Microsoft.Dynamic.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Microsoft.Dynamic.dll" SelfReg="false"/>
-    <ROW File="Microsoft.Scripting.dll" Component_="Microsoft.Scripting.dll" FileName="MICROS~2.DLL|Microsoft.Scripting.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Microsoft.Scripting.dll" SelfReg="false"/>
-    <ROW File="Microsoft.Scripting.Metadata.dll" Component_="Microsoft.Scripting.Metadata.dll" FileName="MICROS~3.DLL|Microsoft.Scripting.Metadata.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Microsoft.Scripting.Metadata.dll" SelfReg="false"/>
-    <ROW File="Mono.Unix.dll" Component_="Mono.Unix.dll" FileName="MONOUN~1.DLL|Mono.Unix.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Mono.Unix.dll" SelfReg="false"/>
-    <ROW File="ScottPlot.dll" Component_="ScottPlot.dll" FileName="SCOTTP~1.DLL|ScottPlot.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\ScottPlot.dll" SelfReg="false"/>
-    <ROW File="Serilog.dll" Component_="Serilog.dll" FileName="Serilog.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Serilog.dll" SelfReg="false"/>
-    <ROW File="Serilog.Formatting.Compact.dll" Component_="Serilog.Formatting.Compact.dll" FileName="SERILO~1.DLL|Serilog.Formatting.Compact.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Serilog.Formatting.Compact.dll" SelfReg="false"/>
-    <ROW File="Serilog.Sinks.File.dll" Component_="Serilog.Sinks.File.dll" FileName="SERILO~2.DLL|Serilog.Sinks.File.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Serilog.Sinks.File.dll" SelfReg="false"/>
-    <ROW File="Serilog.Sinks.PeriodicBatching.dll" Component_="Serilog.Sinks.PeriodicBatching.dll" FileName="SERILO~3.DLL|Serilog.Sinks.PeriodicBatching.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Serilog.Sinks.PeriodicBatching.dll" SelfReg="false"/>
-    <ROW File="Serilog.Sinks.Seq.dll" Component_="Serilog.Sinks.Seq.dll" FileName="SERILO~4.DLL|Serilog.Sinks.Seq.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\Serilog.Sinks.Seq.dll" SelfReg="false"/>
-    <ROW File="System.IO.Ports.dll" Component_="System.IO.Ports.dll" FileName="SYSTEM~1.DLL|System.IO.Ports.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\System.IO.Ports.dll" SelfReg="false"/>
+    <ROW File="PenImc_cor3.dll" Component_="PenImc_cor3.dll" FileName="PENIMC~1.DLL|PenImc_cor3.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\PenImc_cor3.dll" SelfReg="false"/>
+    <ROW File="PresentationNative_cor3.dll" Component_="PresentationNative_cor3.dll" FileName="PRESEN~1.DLL|PresentationNative_cor3.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\PresentationNative_cor3.dll" SelfReg="false"/>
+    <ROW File="vcruntime140_cor3.dll" Component_="vcruntime140_cor3.dll" FileName="VCRUNT~1.DLL|vcruntime140_cor3.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\vcruntime140_cor3.dll" SelfReg="false"/>
+    <ROW File="wpfgfx_cor3.dll" Component_="wpfgfx_cor3.dll" FileName="WPFGFX~1.DLL|wpfgfx_cor3.dll" Attributes="0" SourcePath="Inventors.ECP.Tester\bin\Release\net6.0-windows\publish\win-x64\wpfgfx_cor3.dll" SelfReg="false"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.BootstrOptComponent">
     <ROW BootstrOptKey="GlobalOptions" DownloadFolder="[AppDataFolder][|Manufacturer]\[|ProductName]\prerequisites" Options="2"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.BootstrapperUISequenceComponent">
     <ROW Action="AI_DetectSoftware" Sequence="101"/>
-    <ROW Action="AI_AppSearchEx" Condition="AI_BOOTSTRAPPER" Sequence="252"/>
-    <ROW Action="AI_BACKUP_AI_SETUPEXEPATH" Sequence="249"/>
-    <ROW Action="AI_RESTORE_AI_SETUPEXEPATH" Condition="AI_SETUPEXEPATH_ORIGINAL" Sequence="251"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.BuildComponent">
     <ROW BuildKey="DefaultBuild" BuildName="DefaultBuild" BuildOrder="1" BuildType="0" PackageFolder="Setup Files" Languages="en" InstallationType="4" ExtUI="true" UseLargeSchema="true"/>
@@ -700,16 +669,10 @@
     <ROW Fragment="WelcomeDlg.aip" Path="&lt;AI_THEMES&gt;classic\fragments\WelcomeDlg.aip"/>
     <ROW Fragment="WelcomePrereqDlg.aip" Path="&lt;AI_THEMES&gt;classic\fragments\WelcomePrereqDlg.aip"/>
   </COMPONENT>
-  <COMPONENT cid="caphyon.advinst.msicomp.MsiActionTextComponent">
-    <ROW Action="AI_DeleteLzma" Description="Deleting files extracted from archive" DescriptionLocId="ActionText.Description.AI_DeleteLzma" TemplateLocId="-"/>
-    <ROW Action="AI_DeleteRLzma" Description="Deleting files extracted from archive" DescriptionLocId="ActionText.Description.AI_DeleteLzma" TemplateLocId="-"/>
-    <ROW Action="AI_ExtractLzma" Description="Extracting files from archive" DescriptionLocId="ActionText.Description.AI_ExtractLzma" TemplateLocId="-"/>
-  </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiBinaryComponent">
     <ROW Name="Prereq.dll" SourcePath="&lt;AI_CUSTACTS&gt;Prereq.dll"/>
     <ROW Name="SoftwareDetector.dll" SourcePath="&lt;AI_CUSTACTS&gt;SoftwareDetector.dll"/>
     <ROW Name="aicustact.dll" SourcePath="&lt;AI_CUSTACTS&gt;aicustact.dll"/>
-    <ROW Name="lzmaextractor.dll" SourcePath="&lt;AI_CUSTACTS&gt;lzmaextractor.dll"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiControlEventComponent">
     <ROW Dialog_="WelcomeDlg" Control_="Next" Event="NewDialog" Argument="FolderDlg" Condition="AI_INSTALL" Ordering="1"/>
@@ -745,19 +708,11 @@
     <ROW Action="AI_AppSearchEx" Type="1" Source="Prereq.dll" Target="DoAppSearchEx"/>
     <ROW Action="AI_BACKUP_AI_SETUPEXEPATH" Type="51" Source="AI_SETUPEXEPATH_ORIGINAL" Target="[AI_SETUPEXEPATH]"/>
     <ROW Action="AI_DOWNGRADE" Type="19" Target="4010"/>
-    <ROW Action="AI_DeleteCadLzma" Type="51" Source="AI_DeleteLzma" Target="[AI_SETUPEXEPATH]"/>
-    <ROW Action="AI_DeleteLzma" Type="1025" Source="lzmaextractor.dll" Target="DeleteLZMAFiles"/>
-    <ROW Action="AI_DeleteRCadLzma" Type="51" Source="AI_DeleteRLzma" Target="[AI_SETUPEXEPATH]"/>
-    <ROW Action="AI_DeleteRLzma" Type="1281" Source="lzmaextractor.dll" Target="DeleteLZMAFiles"/>
     <ROW Action="AI_DetectSoftware" Type="257" Source="SoftwareDetector.dll" Target="OnDetectSoftware"/>
     <ROW Action="AI_DpiContentScale" Type="1" Source="aicustact.dll" Target="DpiContentScale"/>
     <ROW Action="AI_EnableDebugLog" Type="321" Source="aicustact.dll" Target="EnableDebugLog"/>
-    <ROW Action="AI_ExtractCadLzma" Type="51" Source="AI_ExtractLzma" Target="[AI_SETUPEXEPATH]"/>
-    <ROW Action="AI_ExtractLzma" Type="1025" Source="lzmaextractor.dll" Target="ExtractLZMAFiles"/>
-    <ROW Action="AI_FindExeLzma" Type="1" Source="lzmaextractor.dll" Target="FindEXE"/>
     <ROW Action="AI_InstallModeCheck" Type="1" Source="aicustact.dll" Target="UpdateInstallMode" WithoutSeq="true"/>
     <ROW Action="AI_PREPARE_UPGRADE" Type="65" Source="aicustact.dll" Target="PrepareUpgrade"/>
-    <ROW Action="AI_PRESERVE_INSTALL_TYPE" Type="65" Source="aicustact.dll" Target="PreserveInstallType"/>
     <ROW Action="AI_RESTORE_AI_SETUPEXEPATH" Type="51" Source="AI_SETUPEXEPATH" Target="[AI_SETUPEXEPATH_ORIGINAL]"/>
     <ROW Action="AI_RESTORE_LOCATION" Type="65" Source="aicustact.dll" Target="RestoreLocation"/>
     <ROW Action="AI_ResolveKnownFolders" Type="1" Source="aicustact.dll" Target="AI_ResolveKnownFolders"/>
@@ -770,6 +725,7 @@
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFeatCompsComponent">
     <ROW Feature_="MainFeature" Component_="APPDIR"/>
     <ROW Feature_="MainFeature" Component_="ProductInformation"/>
+    <ROW Feature_="MainFeature" Component_="D3DCompiler_47_cor3.dll"/>
     <ROW Feature_="MainFeature" Component_="Inventors.ECP.pdb"/>
     <ROW Feature_="MainFeature" Component_="Inventors.ECP.Tester.exe"/>
     <ROW Feature_="MainFeature" Component_="abc.py"/>
@@ -800,24 +756,10 @@
     <ROW Feature_="MainFeature" Component_="expat.py"/>
     <ROW Feature_="MainFeature" Component_="expatreader.py"/>
     <ROW Feature_="MainFeature" Component_="__init__.py_1"/>
-    <ROW Feature_="MainFeature" Component_="Inventors.ECP.Tester.deps.json"/>
-    <ROW Feature_="MainFeature" Component_="Inventors.ECP.Tester.dll"/>
-    <ROW Feature_="MainFeature" Component_="Inventors.ECP.TestFramework.dll"/>
-    <ROW Feature_="MainFeature" Component_="IronPython.dll"/>
-    <ROW Feature_="MainFeature" Component_="IronPython.Modules.dll"/>
-    <ROW Feature_="MainFeature" Component_="IronPython.SQLite.dll"/>
-    <ROW Feature_="MainFeature" Component_="IronPython.Wpf.dll"/>
-    <ROW Feature_="MainFeature" Component_="Microsoft.Dynamic.dll"/>
-    <ROW Feature_="MainFeature" Component_="Microsoft.Scripting.dll"/>
-    <ROW Feature_="MainFeature" Component_="Microsoft.Scripting.Metadata.dll"/>
-    <ROW Feature_="MainFeature" Component_="Mono.Unix.dll"/>
-    <ROW Feature_="MainFeature" Component_="ScottPlot.dll"/>
-    <ROW Feature_="MainFeature" Component_="Serilog.dll"/>
-    <ROW Feature_="MainFeature" Component_="Serilog.Formatting.Compact.dll"/>
-    <ROW Feature_="MainFeature" Component_="Serilog.Sinks.File.dll"/>
-    <ROW Feature_="MainFeature" Component_="Serilog.Sinks.PeriodicBatching.dll"/>
-    <ROW Feature_="MainFeature" Component_="Serilog.Sinks.Seq.dll"/>
-    <ROW Feature_="MainFeature" Component_="System.IO.Ports.dll"/>
+    <ROW Feature_="MainFeature" Component_="PenImc_cor3.dll"/>
+    <ROW Feature_="MainFeature" Component_="PresentationNative_cor3.dll"/>
+    <ROW Feature_="MainFeature" Component_="vcruntime140_cor3.dll"/>
+    <ROW Feature_="MainFeature" Component_="wpfgfx_cor3.dll"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiIconsComponent">
     <ROW Name="Inventors.ECP.Tester.exe" SourcePath="Inventors.ECP.Tester\icons8_usb_on_96_k8q_icon.ico" Index="0"/>
@@ -830,17 +772,8 @@
     <ROW Action="AI_PREPARE_UPGRADE" Condition="AI_UPGRADE=&quot;No&quot; AND (Not Installed)" Sequence="1397"/>
     <ROW Action="AI_ResolveKnownFolders" Sequence="52"/>
     <ROW Action="AI_EnableDebugLog" Sequence="51"/>
-    <ROW Action="AI_DetectSoftware" Sequence="103"/>
-    <ROW Action="AI_AppSearchEx" Sequence="102"/>
-    <ROW Action="AI_BACKUP_AI_SETUPEXEPATH" Sequence="99" Builds="DefaultBuild"/>
-    <ROW Action="AI_RESTORE_AI_SETUPEXEPATH" Condition="AI_SETUPEXEPATH_ORIGINAL" Sequence="101" Builds="DefaultBuild"/>
-    <ROW Action="AI_DeleteCadLzma" Condition="SETUPEXEDIR=&quot;&quot; AND Installed AND (REMOVE&lt;&gt;&quot;ALL&quot;) AND (AI_INSTALL_MODE&lt;&gt;&quot;Remove&quot;) AND (NOT PATCH)" Sequence="199" Builds="DefaultBuild"/>
-    <ROW Action="AI_DeleteRCadLzma" Condition="SETUPEXEDIR=&quot;&quot; AND Installed AND (REMOVE&lt;&gt;&quot;ALL&quot;) AND (AI_INSTALL_MODE&lt;&gt;&quot;Remove&quot;) AND (NOT PATCH)" Sequence="198" Builds="DefaultBuild"/>
-    <ROW Action="AI_ExtractCadLzma" Condition="SETUPEXEDIR=&quot;&quot; AND Installed AND (REMOVE&lt;&gt;&quot;ALL&quot;) AND (AI_INSTALL_MODE&lt;&gt;&quot;Remove&quot;) AND (NOT PATCH)" Sequence="197" Builds="DefaultBuild"/>
-    <ROW Action="AI_FindExeLzma" Condition="SETUPEXEDIR=&quot;&quot; AND Installed AND (REMOVE&lt;&gt;&quot;ALL&quot;) AND (AI_INSTALL_MODE&lt;&gt;&quot;Remove&quot;) AND (NOT PATCH)" Sequence="196" Builds="DefaultBuild"/>
-    <ROW Action="AI_ExtractLzma" Condition="SETUPEXEDIR=&quot;&quot; AND Installed AND (REMOVE&lt;&gt;&quot;ALL&quot;) AND (AI_INSTALL_MODE&lt;&gt;&quot;Remove&quot;) AND (NOT PATCH)" Sequence="1549" Builds="DefaultBuild"/>
-    <ROW Action="AI_DeleteRLzma" Condition="SETUPEXEDIR=&quot;&quot; AND Installed AND (REMOVE&lt;&gt;&quot;ALL&quot;) AND (AI_INSTALL_MODE&lt;&gt;&quot;Remove&quot;) AND (NOT PATCH)" Sequence="1548" Builds="DefaultBuild"/>
-    <ROW Action="AI_DeleteLzma" Condition="SETUPEXEDIR=&quot;&quot; AND Installed AND (REMOVE&lt;&gt;&quot;ALL&quot;) AND (AI_INSTALL_MODE&lt;&gt;&quot;Remove&quot;) AND (NOT PATCH)" Sequence="6599" Builds="DefaultBuild"/>
+    <ROW Action="AI_DetectSoftware" Sequence="102"/>
+    <ROW Action="AI_AppSearchEx" Sequence="101"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiInstallUISequenceComponent">
     <ROW Action="AI_RESTORE_LOCATION" Condition="APPDIR=&quot;&quot;" Sequence="749"/>
@@ -851,13 +784,11 @@
     <ROW Action="AI_BACKUP_AI_SETUPEXEPATH" Sequence="99"/>
     <ROW Action="AI_RESTORE_AI_SETUPEXEPATH" Condition="AI_SETUPEXEPATH_ORIGINAL" Sequence="102"/>
     <ROW Action="AI_AppSearchEx" Sequence="101"/>
-    <ROW Action="AI_PRESERVE_INSTALL_TYPE" Sequence="199"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiLaunchConditionsComponent">
     <ROW Condition="((VersionNT &lt;&gt; 501) AND (VersionNT &lt;&gt; 502))" Description="[ProductName] cannot be installed on [WindowsTypeNT5XDisplay]." DescriptionLocId="AI.LaunchCondition.NoNT5X" IsPredefined="true" Builds="DefaultBuild"/>
     <ROW Condition="(VersionNT &lt;&gt; 400)" Description="[ProductName] cannot be installed on [WindowsTypeNT40Display]." DescriptionLocId="AI.LaunchCondition.NoNT40" IsPredefined="true" Builds="DefaultBuild"/>
     <ROW Condition="(VersionNT &lt;&gt; 500)" Description="[ProductName] cannot be installed on [WindowsTypeNT50Display]." DescriptionLocId="AI.LaunchCondition.NoNT50" IsPredefined="true" Builds="DefaultBuild"/>
-    <ROW Condition="(VersionNT &lt;&gt; 600)" Description="[ProductName] cannot be installed on [WindowsTypeNT60Display]." DescriptionLocId="AI.LaunchCondition.NoNT60" IsPredefined="true" Builds="DefaultBuild"/>
     <ROW Condition="AI_DETECTED_DOTNET_VERSION &gt;= AI_REQUIRED_DOTNET_VERSION" Description="[ProductName] cannot be installed on systems with .NET Framework version lower than [AI_REQUIRED_DOTNET_DISPLAY]." DescriptionLocId="AI.LaunchCondition.DotNET" IsPredefined="true" Builds="DefaultBuild"/>
     <ROW Condition="VersionNT" Description="[ProductName] cannot be installed on [WindowsType9XDisplay]." DescriptionLocId="AI.LaunchCondition.No9X" IsPredefined="true" Builds="DefaultBuild"/>
   </COMPONENT>
@@ -879,7 +810,7 @@
     <ROW UpgradeCode="[|UpgradeCode]" VersionMin="[|ProductVersion]" Attributes="2" ActionProperty="AI_NEWERPRODUCTFOUND"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.PreReqComponent">
-    <ROW PrereqKey="A6D7F21EAEB4C4A901F0979CF110936" DisplayName=".NET Framework 4.7.2" SetupFileUrl="https://download.microsoft.com/download/6/E/4/6E48E8AB-DC00-419E-9704-06DD46E5F81D/NDP472-KB4054530-x86-x64-AllOS-ENU.exe" Location="1" ExactSize="83943272" WinNTVersions="Windows 7 RTM x86, Windows 10 version 1507 x86, Windows 10 version 1511 x86, Windows 10 version 1803 x86, Windows 10 version 1809 x86, Windows 10 version 1903 x86" WinNT64Versions="Windows 7 RTM x64, Windows Server 2008 R2 RTM x64, Windows 10 version 1507 x64, Windows 10 version 1511 x64, Windows 10 version 1803 x64, Windows 10 version 1809 x64, Windows Server 2019 x64, Windows 10 version 1903 x64" Operator="1" NoUiComLine="/q /norestart" Options="xkq" MD5="87450cfa175585b23a76bbd7052ee66b" TargetName=".NET Framework 4.7.2"/>
+    <ROW PrereqKey="A6D7F21EAEB4C4A901F0979CF110936" DisplayName=".NET Framework 4.7.2" SetupFileUrl="https://download.microsoft.com/download/6/E/4/6E48E8AB-DC00-419E-9704-06DD46E5F81D/NDP472-KB4054530-x86-x64-AllOS-ENU.exe" Location="1" ExactSize="83943272" WinNTVersions="Windows Vista RTM x86, Windows Server 2008 x86, Windows 7 RTM x86, Windows 10 version 1507 x86, Windows 10 version 1511 x86, Windows 10 version 1803 x86, Windows 10 version 1809 x86, Windows 10 version 1903 x86" WinNT64Versions="Windows Vista RTM x64, Windows Server 2008 x64, Windows 7 RTM x64, Windows Server 2008 R2 RTM x64, Windows 10 version 1507 x64, Windows 10 version 1511 x64, Windows 10 version 1803 x64, Windows 10 version 1809 x64, Windows Server 2019 x64, Windows 10 version 1903 x64" Operator="1" NoUiComLine="/q /norestart" Options="xy" MD5="87450cfa175585b23a76bbd7052ee66b" TargetName=".NET Framework 4.7.2"/>
     <ATTRIBUTE name="PrereqsOrder" value="A6D7F21EAEB4C4A901F0979CF110936"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.PreReqSearchComponent">
