@@ -100,10 +100,7 @@ namespace Inventors.ECP
                             }
                         }, null);
                     }
-                    catch (Exception e)
-                    {
-                        Log.Error(e.Message);
-                    }
+                    catch {}
                 }
             }
 
