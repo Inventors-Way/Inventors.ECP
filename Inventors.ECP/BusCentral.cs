@@ -122,7 +122,7 @@ namespace Inventors.ECP
 
         private void Initiate(DeviceFunction function, DeviceAddress address)
         {
-            var bytes = function.GetRequest((byte) (address is object ? address.Value : 0));
+            var bytes = function.GetRequest((byte) (address is not null ? address.Value : 0));
 
             lock (lockObject)
             {
@@ -144,7 +144,7 @@ namespace Inventors.ECP
         /// <param name="message">The message to send</param>
         public void Send(DeviceMessage message, DeviceAddress address)
         {
-            if (connection.IsOpen && (message is object))
+            if (connection.IsOpen && (message is not null))
             {
                 lock (commLock)
                 {
@@ -294,8 +294,8 @@ namespace Inventors.ECP
 
         private readonly CommunicationLayer connection;
         private DeviceFunction current;
-        private readonly object lockObject = new object();
-        private readonly object commLock = new object();
+        private readonly object lockObject = new();
+        private readonly object commLock = new();
         private Exception currentException;
         private readonly Stopwatch stopwatch = new Stopwatch();
         private CommState state = CommState.WAITING;
