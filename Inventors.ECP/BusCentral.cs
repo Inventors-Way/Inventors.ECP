@@ -183,6 +183,9 @@ namespace Inventors.ECP
 
                             state = CommState.COMPLETED;
                         }
+
+                        if (ECPLog.Enabled)
+                            Log.Debug("Packet received [ Code: {code} ]", packet.Code);
                     }
                     else
                     {
@@ -192,7 +195,9 @@ namespace Inventors.ECP
                         }
                         catch (Exception e)
                         {
-                            Log.Error(e.Message);
+                            if (ECPLog.Enabled)
+                                Log.Error(e.Message);
+
                             Profiler.Add(new TargetEvent(e.Message));
                         }
                     }
@@ -210,7 +215,8 @@ namespace Inventors.ECP
             }
             catch (Exception e)
             {
-                Log.Verbose("Error in HandleIncommingFrame: {0}", e.Message);
+                if (ECPLog.Enabled)
+                    Log.Error("Error in HandleIncommingFrame: {0}", e.Message);
             }
         }
 

@@ -19,6 +19,7 @@ namespace Inventors.ECP.Tester
             {
                 if (File.Exists(args[0]))
                 {
+                    ECPLog.Enabled = true;
                     Application.Run(new MainWindow(args[0]));
                 }
                 else
