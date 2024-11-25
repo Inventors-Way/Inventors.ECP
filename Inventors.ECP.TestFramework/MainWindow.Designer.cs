@@ -30,490 +30,459 @@ namespace Inventors.ECP.TestFramework
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
-            this.statusStrip = new System.Windows.Forms.StatusStrip();
-            this.statusText = new System.Windows.Forms.ToolStripStatusLabel();
-            this.pingStatus = new System.Windows.Forms.ToolStripStatusLabel();
-            this.menuStrip = new System.Windows.Forms.MenuStrip();
-            this.fileMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.clearLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pauseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.autoSaveLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
-            this.logLevelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.informationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.errorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.connectMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openDeviceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.connectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.disconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.portMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addressMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.actionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.profilerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.trialsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-            this.profilerMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.portMonitorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.analysisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.aboutECPTesterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.hSplitContainer = new System.Windows.Forms.SplitContainer();
-            this.vSplitContainer = new System.Windows.Forms.SplitContainer();
-            this.functionList = new System.Windows.Forms.ListBox();
-            this.propertyGrid = new System.Windows.Forms.PropertyGrid();
-            this.logControl = new Inventors.ECP.TestFramework.LogControl();
-            this.imageList = new System.Windows.Forms.ImageList(this.components);
-            this.msgTimer = new System.Windows.Forms.Timer(this.components);
-            this.deviceTimer = new System.Windows.Forms.Timer(this.components);
-            this.verboseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.warningToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fatalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.statusStrip.SuspendLayout();
-            this.menuStrip.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.hSplitContainer)).BeginInit();
-            this.hSplitContainer.Panel1.SuspendLayout();
-            this.hSplitContainer.Panel2.SuspendLayout();
-            this.hSplitContainer.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.vSplitContainer)).BeginInit();
-            this.vSplitContainer.Panel1.SuspendLayout();
-            this.vSplitContainer.Panel2.SuspendLayout();
-            this.vSplitContainer.SuspendLayout();
-            this.SuspendLayout();
+            statusStrip = new System.Windows.Forms.StatusStrip();
+            statusText = new System.Windows.Forms.ToolStripStatusLabel();
+            pingStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            menuStrip = new System.Windows.Forms.MenuStrip();
+            fileMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            clearLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            saveLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            pauseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            autoSaveLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            logLevelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            verboseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            informationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            warningToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            errorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            fatalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            connectMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            openDeviceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            connectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            disconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            portMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            addressMenu = new System.Windows.Forms.ToolStripMenuItem();
+            actionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            profilerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            trialsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            profilerMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            portMonitorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            analysisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            aboutECPTesterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            hSplitContainer = new System.Windows.Forms.SplitContainer();
+            vSplitContainer = new System.Windows.Forms.SplitContainer();
+            functionList = new System.Windows.Forms.ListBox();
+            propertyGrid = new System.Windows.Forms.PropertyGrid();
+            logControl = new LogControl();
+            imageList = new System.Windows.Forms.ImageList(components);
+            msgTimer = new System.Windows.Forms.Timer(components);
+            deviceTimer = new System.Windows.Forms.Timer(components);
+            statusStrip.SuspendLayout();
+            menuStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)hSplitContainer).BeginInit();
+            hSplitContainer.Panel1.SuspendLayout();
+            hSplitContainer.Panel2.SuspendLayout();
+            hSplitContainer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)vSplitContainer).BeginInit();
+            vSplitContainer.Panel1.SuspendLayout();
+            vSplitContainer.Panel2.SuspendLayout();
+            vSplitContainer.SuspendLayout();
+            SuspendLayout();
             // 
             // statusStrip
             // 
-            this.statusStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.statusText,
-            this.pingStatus});
-            this.statusStrip.Location = new System.Drawing.Point(0, 567);
-            this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 15, 0);
-            this.statusStrip.Size = new System.Drawing.Size(927, 22);
-            this.statusStrip.TabIndex = 0;
-            this.statusStrip.Text = "statusStrip1";
+            statusStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
+            statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { statusText, pingStatus });
+            statusStrip.Location = new System.Drawing.Point(0, 567);
+            statusStrip.Name = "statusStrip";
+            statusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 15, 0);
+            statusStrip.Size = new System.Drawing.Size(927, 22);
+            statusStrip.TabIndex = 0;
+            statusStrip.Text = "statusStrip1";
             // 
             // statusText
             // 
-            this.statusText.Name = "statusText";
-            this.statusText.Size = new System.Drawing.Size(42, 17);
-            this.statusText.Text = "Status:";
+            statusText.Name = "statusText";
+            statusText.Size = new System.Drawing.Size(42, 17);
+            statusText.Text = "Status:";
             // 
             // pingStatus
             // 
-            this.pingStatus.Name = "pingStatus";
-            this.pingStatus.Size = new System.Drawing.Size(74, 17);
-            this.pingStatus.Text = "| Ping count:";
+            pingStatus.Name = "pingStatus";
+            pingStatus.Size = new System.Drawing.Size(74, 17);
+            pingStatus.Text = "| Ping count:";
             // 
             // menuStrip
             // 
-            this.menuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileMenuItem,
-            this.connectMenuItem,
-            this.addressMenu,
-            this.actionsToolStripMenuItem,
-            this.profilerToolStripMenuItem,
-            this.helpToolStripMenuItem});
-            this.menuStrip.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
-            this.menuStrip.Size = new System.Drawing.Size(927, 24);
-            this.menuStrip.TabIndex = 1;
-            this.menuStrip.Text = "menuStrip1";
+            menuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
+            menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { fileMenuItem, connectMenuItem, addressMenu, actionsToolStripMenuItem, profilerToolStripMenuItem, helpToolStripMenuItem });
+            menuStrip.Location = new System.Drawing.Point(0, 0);
+            menuStrip.Name = "menuStrip";
+            menuStrip.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
+            menuStrip.Size = new System.Drawing.Size(927, 24);
+            menuStrip.TabIndex = 1;
+            menuStrip.Text = "menuStrip1";
             // 
             // fileMenuItem
             // 
-            this.fileMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.clearLogToolStripMenuItem,
-            this.saveLogToolStripMenuItem,
-            this.pauseToolStripMenuItem,
-            this.autoSaveLogToolStripMenuItem,
-            this.toolStripSeparator7,
-            this.logLevelToolStripMenuItem,
-            this.toolStripSeparator1,
-            this.exitToolStripMenuItem});
-            this.fileMenuItem.Name = "fileMenuItem";
-            this.fileMenuItem.Size = new System.Drawing.Size(37, 20);
-            this.fileMenuItem.Text = "File";
+            fileMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { clearLogToolStripMenuItem, saveLogToolStripMenuItem, pauseToolStripMenuItem, autoSaveLogToolStripMenuItem, toolStripSeparator7, logLevelToolStripMenuItem, toolStripSeparator1, exitToolStripMenuItem });
+            fileMenuItem.Name = "fileMenuItem";
+            fileMenuItem.Size = new System.Drawing.Size(37, 20);
+            fileMenuItem.Text = "File";
             // 
             // clearLogToolStripMenuItem
             // 
-            this.clearLogToolStripMenuItem.Name = "clearLogToolStripMenuItem";
-            this.clearLogToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.clearLogToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.clearLogToolStripMenuItem.Text = "Clear Log";
-            this.clearLogToolStripMenuItem.Click += new System.EventHandler(this.ClearLogToolStripMenuItem_Click);
+            clearLogToolStripMenuItem.Name = "clearLogToolStripMenuItem";
+            clearLogToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
+            clearLogToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            clearLogToolStripMenuItem.Text = "Clear Log";
+            clearLogToolStripMenuItem.Click += ClearLogToolStripMenuItem_Click;
             // 
             // saveLogToolStripMenuItem
             // 
-            this.saveLogToolStripMenuItem.Name = "saveLogToolStripMenuItem";
-            this.saveLogToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveLogToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.saveLogToolStripMenuItem.Text = "Save Log";
-            this.saveLogToolStripMenuItem.Click += new System.EventHandler(this.SaveLogToolStripMenuItem_Click);
+            saveLogToolStripMenuItem.Name = "saveLogToolStripMenuItem";
+            saveLogToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S;
+            saveLogToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            saveLogToolStripMenuItem.Text = "Save Log";
+            saveLogToolStripMenuItem.Click += SaveLogToolStripMenuItem_Click;
             // 
             // pauseToolStripMenuItem
             // 
-            this.pauseToolStripMenuItem.Name = "pauseToolStripMenuItem";
-            this.pauseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.pauseToolStripMenuItem.Text = "Pause";
-            this.pauseToolStripMenuItem.Click += new System.EventHandler(this.PauseToolStripMenuItem_Click);
+            pauseToolStripMenuItem.Name = "pauseToolStripMenuItem";
+            pauseToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            pauseToolStripMenuItem.Text = "Pause";
+            pauseToolStripMenuItem.Click += PauseToolStripMenuItem_Click;
             // 
             // autoSaveLogToolStripMenuItem
             // 
-            this.autoSaveLogToolStripMenuItem.Name = "autoSaveLogToolStripMenuItem";
-            this.autoSaveLogToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.autoSaveLogToolStripMenuItem.Text = "Auto Save Log";
-            this.autoSaveLogToolStripMenuItem.Click += new System.EventHandler(this.AutoSaveLogToolStripMenuItem_Click);
+            autoSaveLogToolStripMenuItem.Name = "autoSaveLogToolStripMenuItem";
+            autoSaveLogToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            autoSaveLogToolStripMenuItem.Text = "Auto Save Log";
+            autoSaveLogToolStripMenuItem.Click += AutoSaveLogToolStripMenuItem_Click;
             // 
             // toolStripSeparator7
             // 
-            this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(177, 6);
+            toolStripSeparator7.Name = "toolStripSeparator7";
+            toolStripSeparator7.Size = new System.Drawing.Size(158, 6);
             // 
             // logLevelToolStripMenuItem
             // 
-            this.logLevelToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.verboseToolStripMenuItem,
-            this.debugToolStripMenuItem,
-            this.informationToolStripMenuItem,
-            this.warningToolStripMenuItem,
-            this.errorToolStripMenuItem,
-            this.fatalToolStripMenuItem});
-            this.logLevelToolStripMenuItem.Name = "logLevelToolStripMenuItem";
-            this.logLevelToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.logLevelToolStripMenuItem.Text = "Log Level";
-            // 
-            // debugToolStripMenuItem
-            // 
-            this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
-            this.debugToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.debugToolStripMenuItem.Text = "Debug";
-            this.debugToolStripMenuItem.Click += new System.EventHandler(this.DebugToolStripMenuItem_Click);
-            // 
-            // informationToolStripMenuItem
-            // 
-            this.informationToolStripMenuItem.Name = "informationToolStripMenuItem";
-            this.informationToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.informationToolStripMenuItem.Text = "Information";
-            this.informationToolStripMenuItem.Click += new System.EventHandler(this.InformationToolStripMenuItem_Click);
-            // 
-            // errorToolStripMenuItem
-            // 
-            this.errorToolStripMenuItem.Name = "errorToolStripMenuItem";
-            this.errorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.errorToolStripMenuItem.Text = "Error";
-            this.errorToolStripMenuItem.Click += new System.EventHandler(this.ErrorToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
-            // 
-            // exitToolStripMenuItem
-            // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.exitToolStripMenuItem.Text = "Exit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
-            // 
-            // connectMenuItem
-            // 
-            this.connectMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openDeviceToolStripMenuItem,
-            this.toolStripSeparator3,
-            this.connectToolStripMenuItem,
-            this.disconnectToolStripMenuItem,
-            this.toolStripSeparator2,
-            this.portMenuItem});
-            this.connectMenuItem.Name = "connectMenuItem";
-            this.connectMenuItem.Size = new System.Drawing.Size(81, 20);
-            this.connectMenuItem.Text = "Connection";
-            // 
-            // openDeviceToolStripMenuItem
-            // 
-            this.openDeviceToolStripMenuItem.Name = "openDeviceToolStripMenuItem";
-            this.openDeviceToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
-            this.openDeviceToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
-            this.openDeviceToolStripMenuItem.Text = "Load Device";
-            this.openDeviceToolStripMenuItem.Click += new System.EventHandler(this.OpenDeviceToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(175, 6);
-            // 
-            // connectToolStripMenuItem
-            // 
-            this.connectToolStripMenuItem.Name = "connectToolStripMenuItem";
-            this.connectToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.connectToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
-            this.connectToolStripMenuItem.Text = "Open";
-            this.connectToolStripMenuItem.Click += new System.EventHandler(this.ConnectToolStripMenuItem_Click);
-            // 
-            // disconnectToolStripMenuItem
-            // 
-            this.disconnectToolStripMenuItem.Name = "disconnectToolStripMenuItem";
-            this.disconnectToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.disconnectToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
-            this.disconnectToolStripMenuItem.Text = "Close";
-            this.disconnectToolStripMenuItem.Click += new System.EventHandler(this.DisconnectToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(175, 6);
-            // 
-            // portMenuItem
-            // 
-            this.portMenuItem.Name = "portMenuItem";
-            this.portMenuItem.Size = new System.Drawing.Size(178, 22);
-            this.portMenuItem.Text = "Device";
-            this.portMenuItem.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.PortMenuItem_DropDownItemClicked);
-            // 
-            // addressMenu
-            // 
-            this.addressMenu.Name = "addressMenu";
-            this.addressMenu.Size = new System.Drawing.Size(61, 20);
-            this.addressMenu.Text = "Address";
-            // 
-            // actionsToolStripMenuItem
-            // 
-            this.actionsToolStripMenuItem.Name = "actionsToolStripMenuItem";
-            this.actionsToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
-            this.actionsToolStripMenuItem.Text = "Actions";
-            // 
-            // profilerToolStripMenuItem
-            // 
-            this.profilerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.testToolStripMenuItem,
-            this.trialsToolStripMenuItem,
-            this.toolStripSeparator4,
-            this.profilerMenuItem,
-            this.portMonitorToolStripMenuItem,
-            this.analysisToolStripMenuItem});
-            this.profilerToolStripMenuItem.Name = "profilerToolStripMenuItem";
-            this.profilerToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
-            this.profilerToolStripMenuItem.Text = "Analysis";
-            // 
-            // testToolStripMenuItem
-            // 
-            this.testToolStripMenuItem.Name = "testToolStripMenuItem";
-            this.testToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
-            this.testToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.testToolStripMenuItem.Text = "Test";
-            this.testToolStripMenuItem.Click += new System.EventHandler(this.TestToolStripMenuItem_Click);
-            // 
-            // trialsToolStripMenuItem
-            // 
-            this.trialsToolStripMenuItem.Name = "trialsToolStripMenuItem";
-            this.trialsToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.trialsToolStripMenuItem.Text = "Trials";
-            this.trialsToolStripMenuItem.Click += new System.EventHandler(this.TrialsToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator4
-            // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(184, 6);
-            // 
-            // profilerMenuItem
-            // 
-            this.profilerMenuItem.Name = "profilerMenuItem";
-            this.profilerMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-            this.profilerMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.profilerMenuItem.Text = "Profiler";
-            this.profilerMenuItem.Click += new System.EventHandler(this.ProfilerMenuItem_Click);
-            // 
-            // portMonitorToolStripMenuItem
-            // 
-            this.portMonitorToolStripMenuItem.Name = "portMonitorToolStripMenuItem";
-            this.portMonitorToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
-            this.portMonitorToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.portMonitorToolStripMenuItem.Text = "Port Monitor";
-            this.portMonitorToolStripMenuItem.Click += new System.EventHandler(this.PortMonitorToolStripMenuItem_Click);
-            // 
-            // analysisToolStripMenuItem
-            // 
-            this.analysisToolStripMenuItem.Name = "analysisToolStripMenuItem";
-            this.analysisToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
-            this.analysisToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.analysisToolStripMenuItem.Text = "Analysis";
-            this.analysisToolStripMenuItem.Click += new System.EventHandler(this.analysisToolStripMenuItem_Click);
-            // 
-            // helpToolStripMenuItem
-            // 
-            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aboutECPTesterToolStripMenuItem});
-            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
-            this.helpToolStripMenuItem.Text = "Help";
-            // 
-            // aboutECPTesterToolStripMenuItem
-            // 
-            this.aboutECPTesterToolStripMenuItem.Name = "aboutECPTesterToolStripMenuItem";
-            this.aboutECPTesterToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
-            this.aboutECPTesterToolStripMenuItem.Text = "About";
-            this.aboutECPTesterToolStripMenuItem.Click += new System.EventHandler(this.AboutECPTesterToolStripMenuItem_Click);
-            // 
-            // hSplitContainer
-            // 
-            this.hSplitContainer.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.hSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.hSplitContainer.Location = new System.Drawing.Point(0, 24);
-            this.hSplitContainer.Name = "hSplitContainer";
-            this.hSplitContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // hSplitContainer.Panel1
-            // 
-            this.hSplitContainer.Panel1.Controls.Add(this.vSplitContainer);
-            // 
-            // hSplitContainer.Panel2
-            // 
-            this.hSplitContainer.Panel2.Controls.Add(this.logControl);
-            this.hSplitContainer.Size = new System.Drawing.Size(927, 543);
-            this.hSplitContainer.SplitterDistance = 374;
-            this.hSplitContainer.TabIndex = 2;
-            // 
-            // vSplitContainer
-            // 
-            this.vSplitContainer.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.vSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.vSplitContainer.Location = new System.Drawing.Point(0, 0);
-            this.vSplitContainer.Name = "vSplitContainer";
-            // 
-            // vSplitContainer.Panel1
-            // 
-            this.vSplitContainer.Panel1.Controls.Add(this.functionList);
-            // 
-            // vSplitContainer.Panel2
-            // 
-            this.vSplitContainer.Panel2.Controls.Add(this.propertyGrid);
-            this.vSplitContainer.Size = new System.Drawing.Size(927, 374);
-            this.vSplitContainer.SplitterDistance = 176;
-            this.vSplitContainer.TabIndex = 0;
-            // 
-            // functionList
-            // 
-            this.functionList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.functionList.FormattingEnabled = true;
-            this.functionList.Location = new System.Drawing.Point(0, 0);
-            this.functionList.Name = "functionList";
-            this.functionList.Size = new System.Drawing.Size(172, 370);
-            this.functionList.TabIndex = 0;
-            this.functionList.SelectedIndexChanged += new System.EventHandler(this.FunctionList_SelectedIndexChanged);
-            this.functionList.DoubleClick += new System.EventHandler(this.FunctionList_DoubleClick);
-            // 
-            // propertyGrid
-            // 
-            this.propertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.propertyGrid.Location = new System.Drawing.Point(0, 0);
-            this.propertyGrid.Name = "propertyGrid";
-            this.propertyGrid.Size = new System.Drawing.Size(743, 370);
-            this.propertyGrid.TabIndex = 0;
-            // 
-            // logControl
-            // 
-            this.logControl.AutoSave = true;
-            this.logControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.logControl.Level = Serilog.Events.LogEventLevel.Information;
-            this.logControl.Location = new System.Drawing.Point(0, 0);
-            this.logControl.Margin = new System.Windows.Forms.Padding(4);
-            this.logControl.Name = "logControl";
-            this.logControl.Paused = true;
-            this.logControl.Size = new System.Drawing.Size(923, 161);
-            this.logControl.TabIndex = 0;
-            // 
-            // imageList
-            // 
-            this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList.ImageStream")));
-            this.imageList.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList.Images.SetKeyName(0, "B_0.png");
-            this.imageList.Images.SetKeyName(1, "B_1.png");
-            this.imageList.Images.SetKeyName(2, "B_2.png");
-            this.imageList.Images.SetKeyName(3, "B_3.png");
-            this.imageList.Images.SetKeyName(4, "B_4.png");
-            this.imageList.Images.SetKeyName(5, "B_5.png");
-            this.imageList.Images.SetKeyName(6, "B_6.png");
-            this.imageList.Images.SetKeyName(7, "B_7.png");
-            this.imageList.Images.SetKeyName(8, "B_8.png");
-            this.imageList.Images.SetKeyName(9, "B_9.png");
-            this.imageList.Images.SetKeyName(10, "B_C.png");
-            this.imageList.Images.SetKeyName(11, "B_LEFT.png");
-            this.imageList.Images.SetKeyName(12, "B_MA.png");
-            this.imageList.Images.SetKeyName(13, "B_P.png");
-            this.imageList.Images.SetKeyName(14, "B_RIGHT.png");
-            this.imageList.Images.SetKeyName(15, "B_STAR.png");
-            // 
-            // msgTimer
-            // 
-            this.msgTimer.Enabled = true;
-            this.msgTimer.Tick += new System.EventHandler(this.MsgTimer_Tick);
-            // 
-            // deviceTimer
-            // 
-            this.deviceTimer.Enabled = true;
-            this.deviceTimer.Interval = 500;
-            this.deviceTimer.Tick += new System.EventHandler(this.DeviceTimer_Tick);
+            logLevelToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { verboseToolStripMenuItem, debugToolStripMenuItem, informationToolStripMenuItem, warningToolStripMenuItem, errorToolStripMenuItem, fatalToolStripMenuItem });
+            logLevelToolStripMenuItem.Name = "logLevelToolStripMenuItem";
+            logLevelToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            logLevelToolStripMenuItem.Text = "Log Level";
             // 
             // verboseToolStripMenuItem
             // 
-            this.verboseToolStripMenuItem.Name = "verboseToolStripMenuItem";
-            this.verboseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.verboseToolStripMenuItem.Text = "Verbose";
-            this.verboseToolStripMenuItem.Click += new System.EventHandler(this.VerboseToolStripMenuItem_Click);
+            verboseToolStripMenuItem.Name = "verboseToolStripMenuItem";
+            verboseToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            verboseToolStripMenuItem.Text = "Verbose";
+            verboseToolStripMenuItem.Click += VerboseToolStripMenuItem_Click;
+            // 
+            // debugToolStripMenuItem
+            // 
+            debugToolStripMenuItem.Name = "debugToolStripMenuItem";
+            debugToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            debugToolStripMenuItem.Text = "Debug";
+            debugToolStripMenuItem.Click += DebugToolStripMenuItem_Click;
+            // 
+            // informationToolStripMenuItem
+            // 
+            informationToolStripMenuItem.Name = "informationToolStripMenuItem";
+            informationToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            informationToolStripMenuItem.Text = "Information";
+            informationToolStripMenuItem.Click += InformationToolStripMenuItem_Click;
             // 
             // warningToolStripMenuItem
             // 
-            this.warningToolStripMenuItem.Name = "warningToolStripMenuItem";
-            this.warningToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.warningToolStripMenuItem.Text = "Warning";
-            this.warningToolStripMenuItem.Click += new System.EventHandler(this.WarningToolStripMenuItem_Click);
+            warningToolStripMenuItem.Name = "warningToolStripMenuItem";
+            warningToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            warningToolStripMenuItem.Text = "Warning";
+            warningToolStripMenuItem.Click += WarningToolStripMenuItem_Click;
+            // 
+            // errorToolStripMenuItem
+            // 
+            errorToolStripMenuItem.Name = "errorToolStripMenuItem";
+            errorToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            errorToolStripMenuItem.Text = "Error";
+            errorToolStripMenuItem.Click += ErrorToolStripMenuItem_Click;
             // 
             // fatalToolStripMenuItem
             // 
-            this.fatalToolStripMenuItem.Name = "fatalToolStripMenuItem";
-            this.fatalToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.fatalToolStripMenuItem.Text = "Fatal";
-            this.fatalToolStripMenuItem.Click += new System.EventHandler(this.FatalToolStripMenuItem_Click);
+            fatalToolStripMenuItem.Name = "fatalToolStripMenuItem";
+            fatalToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            fatalToolStripMenuItem.Text = "Fatal";
+            fatalToolStripMenuItem.Click += FatalToolStripMenuItem_Click;
+            // 
+            // toolStripSeparator1
+            // 
+            toolStripSeparator1.Name = "toolStripSeparator1";
+            toolStripSeparator1.Size = new System.Drawing.Size(158, 6);
+            // 
+            // exitToolStripMenuItem
+            // 
+            exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            exitToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            exitToolStripMenuItem.Text = "Exit";
+            exitToolStripMenuItem.Click += ExitToolStripMenuItem_Click;
+            // 
+            // connectMenuItem
+            // 
+            connectMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { openDeviceToolStripMenuItem, toolStripSeparator3, connectToolStripMenuItem, disconnectToolStripMenuItem, toolStripSeparator2, portMenuItem });
+            connectMenuItem.Name = "connectMenuItem";
+            connectMenuItem.Size = new System.Drawing.Size(81, 20);
+            connectMenuItem.Text = "Connection";
+            // 
+            // openDeviceToolStripMenuItem
+            // 
+            openDeviceToolStripMenuItem.Name = "openDeviceToolStripMenuItem";
+            openDeviceToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L;
+            openDeviceToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            openDeviceToolStripMenuItem.Text = "Load Device";
+            openDeviceToolStripMenuItem.Click += OpenDeviceToolStripMenuItem_Click;
+            // 
+            // toolStripSeparator3
+            // 
+            toolStripSeparator3.Name = "toolStripSeparator3";
+            toolStripSeparator3.Size = new System.Drawing.Size(175, 6);
+            // 
+            // connectToolStripMenuItem
+            // 
+            connectToolStripMenuItem.Name = "connectToolStripMenuItem";
+            connectToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O;
+            connectToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            connectToolStripMenuItem.Text = "Open";
+            connectToolStripMenuItem.Click += ConnectToolStripMenuItem_Click;
+            // 
+            // disconnectToolStripMenuItem
+            // 
+            disconnectToolStripMenuItem.Name = "disconnectToolStripMenuItem";
+            disconnectToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X;
+            disconnectToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            disconnectToolStripMenuItem.Text = "Close";
+            disconnectToolStripMenuItem.Click += DisconnectToolStripMenuItem_Click;
+            // 
+            // toolStripSeparator2
+            // 
+            toolStripSeparator2.Name = "toolStripSeparator2";
+            toolStripSeparator2.Size = new System.Drawing.Size(175, 6);
+            // 
+            // portMenuItem
+            // 
+            portMenuItem.Name = "portMenuItem";
+            portMenuItem.Size = new System.Drawing.Size(178, 22);
+            portMenuItem.Text = "Device";
+            portMenuItem.DropDownItemClicked += PortMenuItem_DropDownItemClicked;
+            // 
+            // addressMenu
+            // 
+            addressMenu.Name = "addressMenu";
+            addressMenu.Size = new System.Drawing.Size(61, 20);
+            addressMenu.Text = "Address";
+            // 
+            // actionsToolStripMenuItem
+            // 
+            actionsToolStripMenuItem.Name = "actionsToolStripMenuItem";
+            actionsToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
+            actionsToolStripMenuItem.Text = "Actions";
+            // 
+            // profilerToolStripMenuItem
+            // 
+            profilerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { testToolStripMenuItem, trialsToolStripMenuItem, toolStripSeparator4, profilerMenuItem, portMonitorToolStripMenuItem, analysisToolStripMenuItem });
+            profilerToolStripMenuItem.Name = "profilerToolStripMenuItem";
+            profilerToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
+            profilerToolStripMenuItem.Text = "Analysis";
+            // 
+            // testToolStripMenuItem
+            // 
+            testToolStripMenuItem.Name = "testToolStripMenuItem";
+            testToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T;
+            testToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            testToolStripMenuItem.Text = "Test";
+            testToolStripMenuItem.Click += TestToolStripMenuItem_Click;
+            // 
+            // trialsToolStripMenuItem
+            // 
+            trialsToolStripMenuItem.Name = "trialsToolStripMenuItem";
+            trialsToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            trialsToolStripMenuItem.Text = "Trials";
+            trialsToolStripMenuItem.Click += TrialsToolStripMenuItem_Click;
+            // 
+            // toolStripSeparator4
+            // 
+            toolStripSeparator4.Name = "toolStripSeparator4";
+            toolStripSeparator4.Size = new System.Drawing.Size(184, 6);
+            // 
+            // profilerMenuItem
+            // 
+            profilerMenuItem.Name = "profilerMenuItem";
+            profilerMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P;
+            profilerMenuItem.Size = new System.Drawing.Size(187, 22);
+            profilerMenuItem.Text = "Profiler";
+            profilerMenuItem.Click += ProfilerMenuItem_Click;
+            // 
+            // portMonitorToolStripMenuItem
+            // 
+            portMonitorToolStripMenuItem.Name = "portMonitorToolStripMenuItem";
+            portMonitorToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M;
+            portMonitorToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            portMonitorToolStripMenuItem.Text = "Port Monitor";
+            portMonitorToolStripMenuItem.Click += PortMonitorToolStripMenuItem_Click;
+            // 
+            // analysisToolStripMenuItem
+            // 
+            analysisToolStripMenuItem.Name = "analysisToolStripMenuItem";
+            analysisToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A;
+            analysisToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            analysisToolStripMenuItem.Text = "Analysis";
+            analysisToolStripMenuItem.Click += analysisToolStripMenuItem_Click;
+            // 
+            // helpToolStripMenuItem
+            // 
+            helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { aboutECPTesterToolStripMenuItem });
+            helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            helpToolStripMenuItem.Text = "Help";
+            // 
+            // aboutECPTesterToolStripMenuItem
+            // 
+            aboutECPTesterToolStripMenuItem.Name = "aboutECPTesterToolStripMenuItem";
+            aboutECPTesterToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            aboutECPTesterToolStripMenuItem.Text = "About";
+            aboutECPTesterToolStripMenuItem.Click += AboutECPTesterToolStripMenuItem_Click;
+            // 
+            // hSplitContainer
+            // 
+            hSplitContainer.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            hSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            hSplitContainer.Location = new System.Drawing.Point(0, 24);
+            hSplitContainer.Name = "hSplitContainer";
+            hSplitContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // hSplitContainer.Panel1
+            // 
+            hSplitContainer.Panel1.Controls.Add(vSplitContainer);
+            // 
+            // hSplitContainer.Panel2
+            // 
+            hSplitContainer.Panel2.Controls.Add(logControl);
+            hSplitContainer.Size = new System.Drawing.Size(927, 543);
+            hSplitContainer.SplitterDistance = 386;
+            hSplitContainer.TabIndex = 2;
+            // 
+            // vSplitContainer
+            // 
+            vSplitContainer.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            vSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            vSplitContainer.Location = new System.Drawing.Point(0, 0);
+            vSplitContainer.Name = "vSplitContainer";
+            // 
+            // vSplitContainer.Panel1
+            // 
+            vSplitContainer.Panel1.Controls.Add(functionList);
+            // 
+            // vSplitContainer.Panel2
+            // 
+            vSplitContainer.Panel2.Controls.Add(propertyGrid);
+            vSplitContainer.Size = new System.Drawing.Size(927, 386);
+            vSplitContainer.SplitterDistance = 307;
+            vSplitContainer.TabIndex = 0;
+            // 
+            // functionList
+            // 
+            functionList.Dock = System.Windows.Forms.DockStyle.Fill;
+            functionList.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            functionList.FormattingEnabled = true;
+            functionList.ItemHeight = 17;
+            functionList.Location = new System.Drawing.Point(0, 0);
+            functionList.Name = "functionList";
+            functionList.Size = new System.Drawing.Size(303, 382);
+            functionList.TabIndex = 0;
+            functionList.SelectedIndexChanged += FunctionList_SelectedIndexChanged;
+            functionList.DoubleClick += FunctionList_DoubleClick;
+            // 
+            // propertyGrid
+            // 
+            propertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            propertyGrid.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            propertyGrid.Location = new System.Drawing.Point(0, 0);
+            propertyGrid.Name = "propertyGrid";
+            propertyGrid.Size = new System.Drawing.Size(612, 382);
+            propertyGrid.TabIndex = 0;
+            // 
+            // logControl
+            // 
+            logControl.AutoSave = true;
+            logControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            logControl.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            logControl.Level = LogEventLevel.Information;
+            logControl.Location = new System.Drawing.Point(0, 0);
+            logControl.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            logControl.Name = "logControl";
+            logControl.Paused = true;
+            logControl.Size = new System.Drawing.Size(923, 149);
+            logControl.TabIndex = 0;
+            // 
+            // imageList
+            // 
+            imageList.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
+            imageList.ImageStream = (System.Windows.Forms.ImageListStreamer)resources.GetObject("imageList.ImageStream");
+            imageList.TransparentColor = System.Drawing.Color.Transparent;
+            imageList.Images.SetKeyName(0, "B_0.png");
+            imageList.Images.SetKeyName(1, "B_1.png");
+            imageList.Images.SetKeyName(2, "B_2.png");
+            imageList.Images.SetKeyName(3, "B_3.png");
+            imageList.Images.SetKeyName(4, "B_4.png");
+            imageList.Images.SetKeyName(5, "B_5.png");
+            imageList.Images.SetKeyName(6, "B_6.png");
+            imageList.Images.SetKeyName(7, "B_7.png");
+            imageList.Images.SetKeyName(8, "B_8.png");
+            imageList.Images.SetKeyName(9, "B_9.png");
+            imageList.Images.SetKeyName(10, "B_C.png");
+            imageList.Images.SetKeyName(11, "B_LEFT.png");
+            imageList.Images.SetKeyName(12, "B_MA.png");
+            imageList.Images.SetKeyName(13, "B_P.png");
+            imageList.Images.SetKeyName(14, "B_RIGHT.png");
+            imageList.Images.SetKeyName(15, "B_STAR.png");
+            // 
+            // msgTimer
+            // 
+            msgTimer.Enabled = true;
+            msgTimer.Tick += MsgTimer_Tick;
+            // 
+            // deviceTimer
+            // 
+            deviceTimer.Enabled = true;
+            deviceTimer.Interval = 500;
+            deviceTimer.Tick += DeviceTimer_Tick;
             // 
             // MainWindow
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(927, 589);
-            this.Controls.Add(this.hSplitContainer);
-            this.Controls.Add(this.statusStrip);
-            this.Controls.Add(this.menuStrip);
-            this.DoubleBuffered = true;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MainMenuStrip = this.menuStrip;
-            this.Name = "MainWindow";
-            this.Text = "ECP Tester";
-            this.statusStrip.ResumeLayout(false);
-            this.statusStrip.PerformLayout();
-            this.menuStrip.ResumeLayout(false);
-            this.menuStrip.PerformLayout();
-            this.hSplitContainer.Panel1.ResumeLayout(false);
-            this.hSplitContainer.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.hSplitContainer)).EndInit();
-            this.hSplitContainer.ResumeLayout(false);
-            this.vSplitContainer.Panel1.ResumeLayout(false);
-            this.vSplitContainer.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.vSplitContainer)).EndInit();
-            this.vSplitContainer.ResumeLayout(false);
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            ClientSize = new System.Drawing.Size(927, 589);
+            Controls.Add(hSplitContainer);
+            Controls.Add(statusStrip);
+            Controls.Add(menuStrip);
+            DoubleBuffered = true;
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
+            MainMenuStrip = menuStrip;
+            Name = "MainWindow";
+            Text = "ECP Tester";
+            statusStrip.ResumeLayout(false);
+            statusStrip.PerformLayout();
+            menuStrip.ResumeLayout(false);
+            menuStrip.PerformLayout();
+            hSplitContainer.Panel1.ResumeLayout(false);
+            hSplitContainer.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)hSplitContainer).EndInit();
+            hSplitContainer.ResumeLayout(false);
+            vSplitContainer.Panel1.ResumeLayout(false);
+            vSplitContainer.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)vSplitContainer).EndInit();
+            vSplitContainer.ResumeLayout(false);
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion

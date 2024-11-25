@@ -87,55 +87,42 @@ namespace Inventors.ECP
         public void Execute(DeviceFunction function, DeviceAddress address)
         {
             if (function is null)
-            {
                 return;
-            }
 
             lock (commLock)
             {
                 function.OnSend();
                 Initiate(function, address);
 
-                while (!IsCompleted())
-                {
-                    Thread.Sleep(1);
-                }
+                while (!IsCompleted()) ;
 
                 state = CommState.IDLE;
 
-                if (currentException is object)
-                {
+                if (currentException is not null)
                     throw currentException;
-                }
             }
         }
 
         private bool IsCompleted()
         {
-            bool retValue = false;
-
-            if (stopwatch.ElapsedMilliseconds < Timeout)
-            {
-                lock (lockObject)
-                {
-                    if (state != CommState.WAITING)
-                    {
-                        retValue = true;
-                    }
-                }
-            }
-            else
+            if (stopwatch.ElapsedMilliseconds >= Timeout)
             {
                 currentException = new PeripheralNotRespondingException(Resources.NO_RESPONSE);
-                retValue = true;
+                return true;
             }
 
-            return retValue;
+            lock (lockObject)
+            {
+                if (state != CommState.WAITING)
+                    return true;
+            }
+
+            return false;
         }
 
         private void Initiate(DeviceFunction function, DeviceAddress address)
         {
-            var bytes = function.GetRequest((byte) (address is object ? address.Value : 0));
+            var bytes = function.GetRequest((byte) (address is not null ? address.Value : 0));
 
             lock (lockObject)
             {
@@ -157,7 +144,7 @@ namespace Inventors.ECP
         /// <param name="message">The message to send</param>
         public void Send(DeviceMessage message, DeviceAddress address)
         {
-            if (connection.IsOpen && (message is object))
+            if (connection.IsOpen && (message is not null))
             {
                 lock (commLock)
                 {
@@ -307,8 +294,8 @@ namespace Inventors.ECP
 
         private readonly CommunicationLayer connection;
         private DeviceFunction current;
-        private readonly object lockObject = new object();
-        private readonly object commLock = new object();
+        private readonly object lockObject = new();
+        private readonly object commLock = new();
         private Exception currentException;
         private readonly Stopwatch stopwatch = new Stopwatch();
         private CommState state = CommState.WAITING;
