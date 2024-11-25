@@ -13,12 +13,7 @@ namespace Inventors.ECP.Tester
         [STAThread]
         static void Main(string[] args)
         {
-            #if NETFRAMEWORK
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            #else
             ApplicationConfiguration.Initialize();
-            #endif
 
             if (args.Length > 0)
             {

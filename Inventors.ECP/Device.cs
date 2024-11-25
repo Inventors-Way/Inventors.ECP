@@ -22,7 +22,7 @@ namespace Inventors.ECP
     public abstract class Device :
         IDisposable
     {
-        private readonly object lockObject = new object();
+        private readonly object lockObject = new();
 
         #region Properties
         #region PrintLevel
@@ -155,11 +155,7 @@ namespace Inventors.ECP
             Central.Add(new PrintfMessage());
         }
 
-        public void Add(MessageAnalyser analyser)
-        {
-            Central.Add(analyser);
-        }
-
+        public void Add(MessageAnalyser analyser) => Central.Add(analyser);
 
         #region Implementation of ping
 

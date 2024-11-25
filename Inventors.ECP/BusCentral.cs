@@ -87,50 +87,37 @@ namespace Inventors.ECP
         public void Execute(DeviceFunction function, DeviceAddress address)
         {
             if (function is null)
-            {
                 return;
-            }
 
             lock (commLock)
             {
                 function.OnSend();
                 Initiate(function, address);
 
-                while (!IsCompleted())
-                {
-                    Thread.Sleep(1);
-                }
+                while (!IsCompleted()) ;
 
                 state = CommState.IDLE;
 
-                if (currentException is object)
-                {
+                if (currentException is not null)
                     throw currentException;
-                }
             }
         }
 
         private bool IsCompleted()
         {
-            bool retValue = false;
-
-            if (stopwatch.ElapsedMilliseconds < Timeout)
-            {
-                lock (lockObject)
-                {
-                    if (state != CommState.WAITING)
-                    {
-                        retValue = true;
-                    }
-                }
-            }
-            else
+            if (stopwatch.ElapsedMilliseconds >= Timeout)
             {
                 currentException = new PeripheralNotRespondingException(Resources.NO_RESPONSE);
-                retValue = true;
+                return true;
             }
 
-            return retValue;
+            lock (lockObject)
+            {
+                if (state != CommState.WAITING)
+                    return true;
+            }
+
+            return false;
         }
 
         private void Initiate(DeviceFunction function, DeviceAddress address)
