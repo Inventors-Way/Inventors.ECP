@@ -91,10 +91,7 @@ namespace Inventors.ECP
                                     Destuffer.Add(bytesRead, received);
                                     BytesReceived += bytesRead;
                                 }
-                                catch (Exception e)
-                                {
-                                    Log.Error(e.Message);
-                                }
+                                catch { }
 
                                 reader();
                             }
