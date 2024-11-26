@@ -87,15 +87,15 @@ namespace Inventors.ECP
         /// <param name="function">The function to execute.</param>
         public void Execute(DeviceFunction function, DeviceAddress address)
         {
+            if (function is null)
+                return;
+
             Task.Run(async () =>
             {
                 await commSemaphore.WaitAsync();
 
                 try
                 {
-                    if (function is null)
-                        return;
-
                     function.OnSend();
                     Initiate(function, address);
 
@@ -217,8 +217,7 @@ namespace Inventors.ECP
                     }
                 }
                 else
-                {
-                    
+                {                    
                     lock (lockObject)
                     {
                         var errorCode = packet.GetByte(0);
