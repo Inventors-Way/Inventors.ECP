@@ -8,6 +8,6 @@ namespace Inventors.ECP
 {
     public static class ECPLog
     {
-        public static bool Enabled { get; set; } = true;
+        public static bool Enabled { get; set; } = false;
     }
 }
