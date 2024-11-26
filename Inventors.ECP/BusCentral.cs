@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Dynamic;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -86,21 +87,28 @@ namespace Inventors.ECP
         /// <param name="function">The function to execute.</param>
         public void Execute(DeviceFunction function, DeviceAddress address)
         {
-            if (function is null)
-                return;
-
-            lock (commLock)
+            Task.Run(async () =>
             {
-                function.OnSend();
-                Initiate(function, address);
+                await commSemaphore.WaitAsync();
 
-                while (!IsCompleted()) ;
+                try
+                {
+                    if (function is null)
+                        return;
 
-                state = CommState.IDLE;
+                    function.OnSend();
+                    Initiate(function, address);
 
-                if (currentException is not null)
-                    throw currentException;
-            }
+                    while (!IsCompleted())
+                        await Task.Yield();
+
+                    state = CommState.IDLE;
+
+                    if (currentException is not null)
+                        throw currentException;
+                }
+                finally { commSemaphore.Release(); }
+            }).Wait();
         }
 
         private bool IsCompleted()
@@ -146,10 +154,16 @@ namespace Inventors.ECP
         {
             if (connection.IsOpen && (message is not null))
             {
-                lock (commLock)
+                Task.Run(async () =>
                 {
-                    connection.Transmit(Frame.Encode(message.GetPacket(address)));
-                }
+                    await commSemaphore.WaitAsync();
+
+                    try
+                    {
+                        connection.Transmit(Frame.Encode(message.GetPacket(address)));
+                    }
+                    finally { commSemaphore.Release(); }
+                }).Wait();
             }
         }
 
@@ -301,7 +315,7 @@ namespace Inventors.ECP
         private readonly CommunicationLayer connection;
         private DeviceFunction current;
         private readonly object lockObject = new();
-        private readonly object commLock = new();
+        private readonly SemaphoreSlim commSemaphore = new(1, 1);
         private Exception currentException;
         private readonly Stopwatch stopwatch = new Stopwatch();
         private CommState state = CommState.WAITING;
