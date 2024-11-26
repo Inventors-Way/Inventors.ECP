@@ -199,7 +199,9 @@ namespace Inventors.ECP
                         }
 
                         if (ECPLog.Enabled)
-                            Log.Debug("Packet received [ Code: {code} ]", packet.Code);
+                            Log.Debug("Response received [ Code: {code} ]", packet.Code);
+                        else
+                            Log.Verbose("Response received [ Code: {code} ]", packet.Code);
                     }
                     else
                     {
@@ -210,7 +212,9 @@ namespace Inventors.ECP
                         catch (Exception e)
                         {
                             if (ECPLog.Enabled)
-                                Log.Error(e.Message);
+                                Log.Error("Exception when dispacthing message: {exception}", e);
+                            else
+                                Log.Verbose("Exception when dispacthing message: {exception}", e);
 
                             Profiler.Add(new TargetEvent(e.Message));
                         }
@@ -229,7 +233,9 @@ namespace Inventors.ECP
             catch (Exception e)
             {
                 if (ECPLog.Enabled)
-                    Log.Error("Error in HandleIncommingFrame: {0}", e.Message);
+                    Log.Error("Error in HandleIncommingFrame: {exception}", e);
+                else
+                    Log.Verbose("Error in HandleIncommingFrame: {exception}", e);
             }
         }
 
