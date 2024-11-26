@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Dynamic;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -89,18 +90,25 @@ namespace Inventors.ECP
             if (function is null)
                 return;
 
-            lock (commLock)
+            Task.Run(async () =>
             {
-                function.OnSend();
-                Initiate(function, address);
+                await commSemaphore.WaitAsync();
 
-                while (!IsCompleted()) ;
+                try
+                {
+                    function.OnSend();
+                    Initiate(function, address);
 
-                state = CommState.IDLE;
+                    while (!IsCompleted())
+                        await Task.Yield();
 
-                if (currentException is not null)
-                    throw currentException;
-            }
+                    state = CommState.IDLE;
+
+                    if (currentException is not null)
+                        throw currentException;
+                }
+                finally { commSemaphore.Release(); }
+            }).Wait();
         }
 
         private bool IsCompleted()
@@ -146,10 +154,16 @@ namespace Inventors.ECP
         {
             if (connection.IsOpen && (message is not null))
             {
-                lock (commLock)
+                Task.Run(async () =>
                 {
-                    connection.Transmit(Frame.Encode(message.GetPacket(address)));
-                }
+                    await commSemaphore.WaitAsync();
+
+                    try
+                    {
+                        connection.Transmit(Frame.Encode(message.GetPacket(address)));
+                    }
+                    finally { commSemaphore.Release(); }
+                }).Wait();
             }
         }
 
@@ -183,6 +197,11 @@ namespace Inventors.ECP
 
                             state = CommState.COMPLETED;
                         }
+
+                        if (ECPLog.Enabled)
+                            Log.Debug("Response received [ Code: {code} ]", packet.Code);
+                        else
+                            Log.Verbose("Response received [ Code: {code} ]", packet.Code);
                     }
                     else
                     {
@@ -192,14 +211,17 @@ namespace Inventors.ECP
                         }
                         catch (Exception e)
                         {
-                            Log.Error(e.Message);
+                            if (ECPLog.Enabled)
+                                Log.Error("Exception when dispacthing message: {exception}", e);
+                            else
+                                Log.Verbose("Exception when dispacthing message: {exception}", e);
+
                             Profiler.Add(new TargetEvent(e.Message));
                         }
                     }
                 }
                 else
-                {
-                    
+                {                    
                     lock (lockObject)
                     {
                         var errorCode = packet.GetByte(0);
@@ -210,7 +232,10 @@ namespace Inventors.ECP
             }
             catch (Exception e)
             {
-                Log.Verbose("Error in HandleIncommingFrame: {0}", e.Message);
+                if (ECPLog.Enabled)
+                    Log.Error("Error in HandleIncommingFrame: {exception}", e);
+                else
+                    Log.Verbose("Error in HandleIncommingFrame: {exception}", e);
             }
         }
 
@@ -295,7 +320,7 @@ namespace Inventors.ECP
         private readonly CommunicationLayer connection;
         private DeviceFunction current;
         private readonly object lockObject = new();
-        private readonly object commLock = new();
+        private readonly SemaphoreSlim commSemaphore = new(1, 1);
         private Exception currentException;
         private readonly Stopwatch stopwatch = new Stopwatch();
         private CommState state = CommState.WAITING;

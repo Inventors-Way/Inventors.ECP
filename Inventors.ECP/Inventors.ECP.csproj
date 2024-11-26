@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>net6.0</TargetFrameworks>
-    <Version>3.4.0</Version>
+    <Version>3.5.0</Version>
     <Authors>Inventors' Way</Authors>
     <Company>Inventors' Way ApS</Company>
     <Description>Library implementing the Embedded Communication Protocol (ECP)</Description>
@@ -17,8 +17,8 @@
     <PackageIconUrl></PackageIconUrl>
     <NeutralLanguage>en</NeutralLanguage>
     <PackageIcon>Logo128x128.png</PackageIcon>
-    <AssemblyVersion>3.4.0.0</AssemblyVersion>
-    <FileVersion>3.4.0.0</FileVersion>
+    <AssemblyVersion>3.5.0.0</AssemblyVersion>
+    <FileVersion>3.5.0.0</FileVersion>
     <Title>Embedded Communication Protocol (ECP)</Title>
   </PropertyGroup>
 

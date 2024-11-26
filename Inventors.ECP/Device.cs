@@ -351,13 +351,16 @@ namespace Inventors.ECP
                 {
                     if (n == Retries - 1)
                     {
-                        Log.Verbose("Failed to execute function [ {@Function} ]", function);
+                        if (ECPLog.Enabled)
+                            Log.Error("Failed to execute function [ {@Function} ]", function);
+
                         throw;
                     }
                 }
             }
 
-            Log.Verbose("Executed function: {@Function}", function);
+            if (ECPLog.Enabled)
+                Log.Debug("Executed function: {@Function}", function);
         }
 
         public void Send(DeviceMessage message)

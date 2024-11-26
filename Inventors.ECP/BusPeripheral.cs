@@ -118,18 +118,21 @@ namespace Inventors.ECP
                     {
                         if (!DispatchMessage(response))
                         {
-                            Log.Debug("MESSAGE [0x{0:X}] ERROR NO DISPATCHER FOUND", response.Code);
+                            if (ECPLog.Enabled)
+                                Log.Debug("MESSAGE [0x{0:X}] ERROR NO DISPATCHER FOUND", response.Code);
                         }
                     }
                 }
                 else
                 {
-                    Log.Debug("Received a NACK, should be impossible for a slave");
+                    if (ECPLog.Enabled)
+                        Log.Debug("Received a NACK, should be impossible for a slave");
                 }
             }
             catch (Exception e)
             {
-                Log.Debug("Error in creating Packet: {0}", e.Message);
+                if (ECPLog.Enabled)
+                    Log.Debug("Error in creating Packet: {0}", e.Message);
             }
         }
 

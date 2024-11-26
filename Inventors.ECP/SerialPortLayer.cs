@@ -1,9 +1,11 @@
 ﻿using Serilog;
+using Serilog.Parsing;
 using System;
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Inventors.ECP
@@ -38,7 +40,8 @@ namespace Inventors.ECP
         }
 
         #endregion
-        private readonly object lockObject = new object();
+        private CancellationTokenSource cancellationTokenSource;
+        private Task task;
 
         public SerialPortLayer()
         {
@@ -47,86 +50,72 @@ namespace Inventors.ECP
 
         protected override void DoOpen()
         {
-            lock (lockObject)
+            if (port.IsOpen)
+                return;
+
+            port.PortName = Location;
+            port.BaudRate = BaudRate;
+            port.Parity = Parity.None;
+            port.StopBits = StopBits.One;
+            port.DataBits = 8;
+            port.Handshake = Handshake.None;
+            port.DtrEnable = ResetOnConnection;
+            port.ReadTimeout = 10;
+
+            Destuffer.Reset();
+            port.Open();
+
+            cancellationTokenSource = new();
+            task = Task.Run(async() =>
             {
-                if (port.IsOpen)
+                byte[] buffer = new byte[BlockLimit];
+
+                try
                 {
-                    Close();
-                }
-
-                port.PortName = Location;
-                port.BaudRate = BaudRate;
-                port.Parity = Parity.None;
-                port.StopBits = StopBits.One;
-                port.DataBits = 8;
-                port.Handshake = Handshake.None;
-                port.DtrEnable = ResetOnConnection;
-                port.ReadTimeout = 10;
-
-                Destuffer.Reset();
-                port.Open();
-                InitializeRead();
-            }
-        }
-
-        private void InitializeRead()
-        {
-            byte[] buffer = new byte[BlockLimit];
-
-            void reader()
-            {
-                if (port.IsOpen)
-                {
-                    try
+                    while (port.IsOpen)
                     {
-                        port.BaseStream.BeginRead(buffer, 0, buffer.Length, delegate (IAsyncResult ar)
+                        try
                         {
-                            if (port.IsOpen)
-                            {
-                                try
-                                {
-                                    int bytesRead = port.BaseStream.EndRead(ar);
-                                    byte[] received = new byte[bytesRead];
-                                    Buffer.BlockCopy(buffer, 0, received, 0, bytesRead);
-                                    Destuffer.Add(bytesRead, received);
-                                    BytesReceived += bytesRead;
-                                }
-                                catch { }
-
-                                reader();
-                            }
-                        }, null);
+                            int bytesRead = await port.BaseStream.ReadAsync(buffer, cancellationTokenSource.Token);
+                            Destuffer.Add(bytesRead, buffer);
+                            BytesReceived += bytesRead;
+                        }
+                        catch (OperationCanceledException) { throw; }
+                        catch (Exception ex) 
+                        {
+                            if (ECPLog.Enabled)
+                                Log.Error("Exception in ECP read task: {exception}", ex);
+                            else
+                                Log.Verbose("Exception in ECP read task: {exception}", ex);
+                        }
                     }
-                    catch {}
                 }
-            }
-
-            reader();
+                catch (OperationCanceledException) { }
+            });
         }
 
         protected override void DoClose()
         {
-            lock (lockObject)
-            {
-                if (port.IsOpen)
-                {
-                    port.Close();
-                }
-            }
+            if (!port.IsOpen)
+                return;
+
+            cancellationTokenSource.Cancel();
+            task?.Wait();
+            port.Close();
         }
 
         protected override void DoTransmit(byte[] frame)
         {
-            lock (lockObject)
+            if (frame is null)
+                return;
+
+            if (port is null)
+                return; 
+
+            if (port.IsOpen)
             {
-                if ((port is object) && (frame is object))
-                {
-                    if (port.IsOpen)
-                    {
-                        port.Write(frame, 0, frame.Length);
-                        BytesTransmitted += frame.Length;
-                    }
-                }
+                port.Write(frame, 0, frame.Length);
+                BytesTransmitted += frame.Length;
             }
         }
 

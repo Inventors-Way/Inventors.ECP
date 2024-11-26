@@ -234,7 +234,9 @@ namespace Inventors.ECP
             }
             catch (Exception e)
             {
-                Log.Verbose("Exception in creating packet: {@e}", e);
+                if (ECPLog.Enabled)
+                    Log.Verbose("Exception in creating packet: {@e}", e);
+
                 throw;
             }
         }
